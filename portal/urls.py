@@ -5,7 +5,7 @@ from portal.api import *
 
 urlpatterns = [
 
-    url(r'^$', index, name="index"),
-    url(r'api/tasks/create/', api_create, name="api_create"),
+    url(r'^$', index),
+    url(r'api/tasks/create/', api_create),
 
  ]
