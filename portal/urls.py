@@ -6,6 +6,6 @@ from portal.api import *
 urlpatterns = [
 
     url(r'^$', index),
-    url(r'api/tasks/create/', api_create),
+    url(r'api/clients/create/', api_create),
 
  ]
