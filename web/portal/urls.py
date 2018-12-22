@@ -1,7 +1,11 @@
+import sys
+sys.path.append('../')
+
+
 from django.conf.urls import *
 
-from portal.index import *
-from portal.api import *
+from web.portal.index import *
+from web.portal.api import *
 
 urlpatterns = [
 

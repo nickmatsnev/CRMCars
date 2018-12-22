@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.core.wsgi import get_wsgi_application
@@ -16,14 +19,14 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['willz-dev.korishchenko.ru']
+ALLOWED_HOSTS = ['willz-dev.korishchenko.ru','127.0.0.1']
 
-WSGI_APPLICATION = 'portal.wsgi.application'
+WSGI_APPLICATION = 'web.portal.wsgi.application'
 
 # Application definition
 
 INSTALLED_APPS = (
-    'portal',
+    'web.portal',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,20 +47,27 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'portal.urls'
+ROOT_URLCONF = 'web.portal.urls'
 
 # Database
-
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'django_db',
+#         'USER': 'django_db',
+# 	'PASSWORD': '9-X0DO37FBJCNLPxNrT4c0FTHHiU',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_db',
-        'USER': 'django',
-	'PASSWORD': '9-X0DO37FBJCNLPxNrT4c0FTHHiU',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
