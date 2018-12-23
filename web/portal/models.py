@@ -3,6 +3,16 @@ sys.path.append('../')
 
 from django.db import models
 
+#class Client(models.Model):
+#    name=models.CharField(default=0,max_length=50)
+#    surname=models.CharField(default=0,max_length=100)
+#    passport_num=models.IntegerField
+
+
+#class License(models.Model):
+#    number = models.CharField(default=0, max_length=100)
+#    created_at = models.DateTimeField()
+
 
 class Passport(models.Model):
     number = models.CharField(max_length=100)
@@ -34,10 +44,10 @@ class Individual(models.Model):
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     gender = models.IntegerField(default=0)
-    gender = models.CharField(max_length=100)
+    #gender = models.CharField(max_length=100)
     birthday = models.DateTimeField()
-    passport = models.ForeignKey(Passport, on_delete=models.CASCADE, null=True)
-    license = models.ForeignKey(License, on_delete=models.CASCADE, null=True)
+    passport = models.ForeignKey(Passport, related_name='passports', on_delete=models.CASCADE, null=True)
+    license = models.ForeignKey(License, related_name='licenses', on_delete=models.CASCADE, null=True)
 
 
 #  def license(self):
@@ -54,8 +64,8 @@ class Individual(models.Model):
 
 
 class Image(models.Model):
-    passport = models.ForeignKey(Passport, on_delete=models.CASCADE, null=True)
-    license = models.ForeignKey(License, on_delete=models.CASCADE, null=True)
+    passport = models.ForeignKey(Passport, related_name='pass_images', on_delete=models.CASCADE, null=True)
+    license = models.ForeignKey(License, related_name='lcns_images', on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100, null=True)
 
@@ -72,7 +82,7 @@ class RawClientData(models.Model):
 
 
 class Client(models.Model):
-    primary_individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
+    primary_individual = models.ForeignKey(Individual, related_name='clients', on_delete=models.CASCADE)
     willz_id = models.IntegerField(default=0)
 
     created_at = models.DateTimeField()
@@ -145,3 +155,4 @@ class ConcreteScore(models.Model):
     payload = models.TextField
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
     score_task = models.IntegerField(default=0)
+
