@@ -1,16 +1,65 @@
 from django.http import HttpResponse
 import sys
 sys.path.append('../')
-
 import json
-from django.http import JsonResponse
-from django.shortcuts import redirect
-from web.portal.models import *
-import datetime
-import pytz
+
+import coreapi
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.schemas import AutoSchema
+from rest_framework.views import APIView
+from rest_framework.decorators import action
 
 
-def api_create(request):
+from django.forms.models import model_to_dict
+
+from web.portal.models import Client, License
+from web.portal.serializers import ClientSerializer, LicenseSerializer
+
+
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+    @action(detail=True, methods=['post'])
+    def get_custom_obj(self, request, id=None):
+        return self.get_serializer().get_client_willz_id_with_id1()
+
+
+
+class LicenseViewSet(viewsets.ModelViewSet):
+    queryset = License.objects.all()
+    serializer_class = LicenseSerializer
+
+
+class ListClients(APIView):
+    schema = AutoSchema(
+        manual_fields=[
+            coreapi.Field("param1",
+                          required=True,
+                          location='query',
+                          description='test param.'),
+        ]
+    )
+
+    def get(self, request, param1):
+        ob = Client.objects.first()
+
+        return Response(ob + param1)
+
+
+# ----- YAML below for Swagger -----
+
+
+@api_view(['GET', 'POST'])
+def hello_world(request):
+    if request.method == 'POST':
+        return Response({"message": "Got some data!", "data": request.data})
+    return Response({"message": "Hello, world!"})
+
+
+#def api_create(request):
     # if request.method == "POST":
     #     try:
     #         new_client = Client()
@@ -132,4 +181,4 @@ def api_create(request):
     #         return JsonResponse({'Status': 'OK'})
     #
     # else:
-    return JsonResponse({'Status': 'WAITING'})
+ #   return JsonResponse({'Status': 'WAITING'})

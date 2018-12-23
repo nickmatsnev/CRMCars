@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 from django.db import models
 
 
@@ -8,7 +11,6 @@ class Passport(models.Model):
     address_registration = models.CharField(max_length=100)
     division_code = models.CharField(max_length=100)
     birthplace = models.CharField(max_length=100)
-
     @property
     def images(self):
         ret_images = Image.objects.filter(passport=self.id)
