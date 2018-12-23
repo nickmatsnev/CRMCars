@@ -1,45 +1,96 @@
-from django.conf.urls import url, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+
+from rest_framework import serializers
 from web.portal.models import *
 
-# Serializers define the API representation.
-#hyperlinked means url is included for this method instead of id
 
-class PassportSerializer(serializers.HyperlinkedModelSerializer):
-    pass_images = serializers.StringRelatedField(many=True)
+class CheckModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CheckModel
+        fields = ('name', 'description')
+
+
+class ScoreModelSerializer(serializers.HyperlinkedModelSerializer):
+    check_models = CheckModelSerializer(many=True)
+
+    class Meta:
+        model = ScoreModel
+        fields = ('check_models')
+
+    def create(self, validated_data):
+        check_models = validated_data.pop('check_models')
+        passport = Passport.objects.create(**validated_data)
+        for check in check_models:
+            CheckModel.create
+        return passport
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('passport', 'driver_license', 'title', 'url')
+
+
+class PassportSerializer(serializers.ModelSerializer):
+    pass_images = ImageSerializer(many=True)
 
     class Meta:
         model = Passport
-        fields = ('number','issued_at','issued_by','address_registration','division_code','birthplace')
+        fields = (
+            'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace', 'pass_images')
+
+    def create(self, validated_data):
+        images = validated_data.pop('pass_images')
+        passport = Passport.objects.create(**validated_data)
+        for image_data in images:
+            Image.objects.create(passport=passport, **image_data)
+        return passport
 
 
-class LicenseSerializer(serializers.HyperlinkedModelSerializer):
-    lcns_images = serializers.StringRelatedField(many=True)
+class DriverLicenseSerializer(serializers.ModelSerializer):
+    lcns_images = ImageSerializer(many=True)
 
     class Meta:
-        model = License
-        fields = ('number', 'issued_at')
+        model = DriverLicense
+        fields = ('number', 'issued_at', 'lcns_images')
+
+    def create(self, validated_data):
+        images = validated_data.pop('pass_images')
+        driver_license = DriverLicense.objects.create(**validated_data)
+        for image_data in images:
+            Image.objects.create(driver_license=driver_license, **image_data)
+        return license
 
 
-class IndividualSerializer(serializers.HyperlinkedModelSerializer):
-    passports = serializers.StringRelatedField(many=True)
-    licenses = serializers.StringRelatedField(many=True)
+class IndividualSerializer(serializers.ModelSerializer):
+    passport = PassportSerializer(many=False)
+    driver_license = DriverLicenseSerializer(many=False)
 
     class Meta:
         model = Individual
-        fields = ('lastname', 'firstname', 'middlename', 'email', 'phone', 'gender', 'birthday')
+        fields = (
+            'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday', 'passport',
+            'driver_license')
+
+    def create(self, validated_data):
+        passport_data = validated_data.pop('passport')
+        passport = Passport.objects.create(passport_data)
+        driver_license_data = validated_data.pop('driver_license')
+        driver_license = DriverLicense.objects.create(driver_license_data)
+        individual_obj = Individual.objects.create(passport=passport, driver_license=driver_license, **validated_data)
+
+        return individual_obj
 
 
-class ImageSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Image
-        fields = ('passport', 'license', 'title', 'url')
-
-
-class ClientSerializer(serializers.HyperlinkedModelSerializer):
-    clients = serializers.StringRelatedField(many=True)
+class ClientSerializer(serializers.ModelSerializer):
+    primary_individual = IndividualSerializer(many=False)
 
     class Meta:
         model = Client
-        fields = ('willz_id', 'created_at')
+        fields = ('willz_id', 'created_at', 'primary_individual')
+
+    def create(self, validated_data):
+        primary_individual_data = validated_data.pop('primary_individual')
+        individual = Individual.objects.create(**primary_individual_data)
+        client = Client.objects.create(primary_individual=individual, **validated_data)
+
+        return client

@@ -28,7 +28,7 @@ WSGI_APPLICATION = 'web.portal.wsgi.application'
 INSTALLED_APPS = (
     'web.portal',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

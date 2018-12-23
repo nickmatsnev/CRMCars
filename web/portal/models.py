@@ -1,17 +1,6 @@
+from django.db import models
 import sys
 sys.path.append('../')
-
-from django.db import models
-
-#class Client(models.Model):
-#    name=models.CharField(default=0,max_length=50)
-#    surname=models.CharField(default=0,max_length=100)
-#    passport_num=models.IntegerField
-
-
-#class License(models.Model):
-#    number = models.CharField(default=0, max_length=100)
-#    created_at = models.DateTimeField()
 
 
 class Passport(models.Model):
@@ -21,51 +10,41 @@ class Passport(models.Model):
     address_registration = models.CharField(max_length=100)
     division_code = models.CharField(max_length=100)
     birthplace = models.CharField(max_length=100)
+
     @property
     def images(self):
         ret_images = Image.objects.filter(passport=self.id)
         return ret_images
 
 
-class License(models.Model):
+class DriverLicense(models.Model):
     number = models.CharField(default=0, max_length=100)
     issued_at = models.DateField(null=True)
 
     @property
     def images(self):
-        ret_images = Image.objects.filter(license=self.id)
+        ret_images = Image.objects.filter(driver_license=self.id)
         return ret_images
 
 
 class Individual(models.Model):
-    lastname = models.CharField(max_length=100)
-    firstname = models.CharField(max_length=100)
-    middlename = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     gender = models.IntegerField(default=0)
-    #gender = models.CharField(max_length=100)
+    # gender = models.CharField(max_length=100)
     birthday = models.DateTimeField()
-    passport = models.ForeignKey(Passport, related_name='passports', on_delete=models.CASCADE, null=True)
-    license = models.ForeignKey(License, related_name='licenses', on_delete=models.CASCADE, null=True)
 
-
-#  def license(self):
-#     ret_license = License.objects.get(my=self.id)
-#    return ret_license
-
-# def passport(self):
-#    ret_passport = Passport.objects.get(my=self.id)
-#   return ret_passport
-
-#k = Individual()
-# sample
-#k.passport.issued_at
+    passport = models.OneToOneField(Passport, on_delete=models.CASCADE, null=True)
+    driver_license = models.OneToOneField(DriverLicense, on_delete=models.CASCADE, null=True)
 
 
 class Image(models.Model):
     passport = models.ForeignKey(Passport, related_name='pass_images', on_delete=models.CASCADE, null=True)
-    license = models.ForeignKey(License, related_name='lcns_images', on_delete=models.CASCADE, null=True)
+    driver_license = models.ForeignKey(DriverLicense, related_name='drv_lcns_images', on_delete=models.CASCADE,
+                                       null=True)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100, null=True)
 
@@ -113,7 +92,17 @@ class SourceTask(models.Model):
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
 
 
+class CheckModel(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    score_model = models.ForeignKey
+
+
 class ScoreModel(models.Model):
+    check_models = models.ManyToManyField(CheckModel)
+
+
+class Score(models.Model):
     score = models.IntegerField(default=0)
 
 
@@ -129,24 +118,14 @@ class ScoringTask(models.Model):
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
 
 
-class CheckRegistry(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-
-
 class Check(models.Model):
-    checkRegistry = models.ForeignKey(CheckRegistry, on_delete=models.CASCADE)
+    checkModel = models.ForeignKey(CheckModel, on_delete=models.CASCADE)
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
     value = models.CharField(max_length=100)
 
 
-class ScoreModelCheckRegistry(models.Model):
-    score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
-    check_registry = models.ForeignKey(CheckRegistry, on_delete=models.CASCADE)
-
-
-class CheckRegistrySource(models.Model):
-    check_registry = models.ForeignKey(CheckRegistry, on_delete=models.CASCADE)
+class CheckModelSource(models.Model):
+    check_model = models.ForeignKey(CheckModel, on_delete=models.CASCADE)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
 
 
@@ -155,4 +134,3 @@ class ConcreteScore(models.Model):
     payload = models.TextField
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
     score_task = models.IntegerField(default=0)
-
