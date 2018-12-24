@@ -54,10 +54,11 @@ class Task(models.Model):
     finish_time = models.DateTimeField()
     processor = models.CharField(max_length=200, null=True)
     status = models.CharField(max_length=50, null=True)
+    task_type = models.CharField(max_length=5)
 
 
 class RawClientData(models.Model):
-    payload = models.aggregates
+    payload = models.TextField()
 
 
 class Client(models.Model):
@@ -68,8 +69,8 @@ class Client(models.Model):
 
 
 class ClientTask(models.Model):
-    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
-    raw_client_data = models.ForeignKey(RawClientData, on_delete=models.CASCADE)
+    task = models.OneToOneField(Task, on_delete=models.CASCADE,null=False)
+    raw_client_data = models.OneToOneField(RawClientData, on_delete=models.CASCADE,null=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
 
@@ -87,9 +88,9 @@ class SourceRawData(models.Model):
 
 
 class SourceTask(models.Model):
-    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
-    source_raw_data = models.ForeignKey(SourceRawData, on_delete=models.CASCADE)
-    individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
+    task = models.OneToOneField(Task, on_delete=models.CASCADE,null=False)
+    source_raw_data = models.OneToOneField(SourceRawData, on_delete=models.CASCADE)
+    individual = models.OneToOneField(Individual, on_delete=models.CASCADE)
 
 
 class CheckModel(models.Model):
@@ -106,17 +107,17 @@ class Score(models.Model):
     score = models.IntegerField(default=0)
 
 
-class ChecksTask(models.Model):
-    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
-    individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
-    score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
-
-
-class ScoringTask(models.Model):
-    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
-    individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
-    score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
-
+# class ChecksTask(models.Model):
+#     task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
+#     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
+#     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
+#
+#
+# class ScoringTask(models.Model):
+#     task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
+#     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
+#     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
+#
 
 class Check(models.Model):
     checkModel = models.ForeignKey(CheckModel, on_delete=models.CASCADE)

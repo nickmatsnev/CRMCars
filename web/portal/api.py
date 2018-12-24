@@ -16,7 +16,7 @@ class ClientApi(mixins.CreateModelMixin,
     serializer_class = ClientSerializer
 
     @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
-    def test_method(self, request,myparam = None):
+    def test_method(self, request, myparam=None):
         snippet = self.get_object()
         return Response(snippet.highlighted)
 
@@ -31,13 +31,27 @@ class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     serializer_class = ScoreModelSerializer
 
 
-class TasksModelApi(mixins.CreateModelMixin,
-                mixins.ListModelMixin,
-                mixins.RetrieveModelMixin,
-                viewsets.GenericViewSet):
+class TasksModelApi(mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-#
+
+
+class ClientTaskApi(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    viewsets.GenericViewSet):
+    queryset = ClientTask.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ClientTaskSerializer
+        if self.action == 'retrieve':
+            return RetrieveClientTaskSerializer
+        return ClientTaskSerializer(partial=True)
+
+
+
 
 # class start_task(APIView):
 #     def get(self,request):

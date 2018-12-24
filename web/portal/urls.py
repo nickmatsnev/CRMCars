@@ -29,6 +29,8 @@ schema_view = get_schema_view(
 
 router.register(r'api/clients', api.ClientApi)
 router.register(r'api/individuals', api.IndividualsApi)
+router.register(r'api/tasks/client_task',api.ClientTaskApi)
+router.register(r'api/tasks',api.TasksModelApi)
 
 
 urlpatterns = [
