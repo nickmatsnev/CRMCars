@@ -134,3 +134,4 @@ class ConcreteScore(models.Model):
     payload = models.TextField
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
     score_task = models.IntegerField(default=0)
+

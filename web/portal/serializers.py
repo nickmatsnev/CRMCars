@@ -109,6 +109,7 @@ class ClientTaskSerializer(serializers.ModelSerializer):
         return task
 
 
+
 class SourceTaskSerializer(serializers.ModelSerializer):
 #не понимаю как правильно дальше
     pass_images = ImageSerializer(many=True)

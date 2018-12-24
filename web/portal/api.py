@@ -38,6 +38,7 @@ class TasksModelApi(mixins.CreateModelMixin,
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 #
+
 # class start_task(APIView):
 #     def get(self,request):
 #         #дописать
