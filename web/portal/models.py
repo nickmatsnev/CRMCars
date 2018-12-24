@@ -68,7 +68,7 @@ class Client(models.Model):
 
 
 class ClientTask(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
     raw_client_data = models.ForeignKey(RawClientData, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
@@ -87,7 +87,7 @@ class SourceRawData(models.Model):
 
 
 class SourceTask(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
     source_raw_data = models.ForeignKey(SourceRawData, on_delete=models.CASCADE)
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
 
@@ -107,13 +107,13 @@ class Score(models.Model):
 
 
 class ChecksTask(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
 
 
 class ScoringTask(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='tasks', on_delete=models.CASCADE)
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
 

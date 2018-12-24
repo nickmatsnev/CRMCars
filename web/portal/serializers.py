@@ -94,3 +94,83 @@ class ClientSerializer(serializers.ModelSerializer):
         client = Client.objects.create(primary_individual=individual, **validated_data)
 
         return client
+
+
+#отсюда начал
+class ClientTaskSerializer(serializers.ModelSerializer):
+    pass_images = ImageSerializer(many=True)
+
+    class Meta:
+        model = ClientTask
+        fields = ('raw_client_data', 'client')
+
+    def create(self, validated_data):
+        task = Task.objects.create(**validated_data)
+        return task
+
+
+class SourceTaskSerializer(serializers.ModelSerializer):
+#не понимаю как правильно дальше
+    pass_images = ImageSerializer(many=True)
+
+    class Meta:
+        model = SourceTask
+        fields = (
+            'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace', 'pass_images')
+
+    def create(self, validated_data):
+        images = validated_data.pop('pass_images')
+        passport = Passport.objects.create(**validated_data)
+        for image_data in images:
+            Image.objects.create(passport=passport, **image_data)
+        return passport
+
+
+class ChecksTaskSerializer(serializers.ModelSerializer):
+    pass_images = ImageSerializer(many=True)
+
+    class Meta:
+        model = ChecksTask
+        fields = (
+            'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace', 'pass_images')
+
+    def create(self, validated_data):
+        images = validated_data.pop('pass_images')
+        passport = Passport.objects.create(**validated_data)
+        for image_data in images:
+            Image.objects.create(passport=passport, **image_data)
+        return passport
+
+
+class ScoringTaskSerializer(serializers.ModelSerializer):
+    pass_images = ImageSerializer(many=True)
+
+    class Meta:
+        model = ScoringTask
+        fields = (
+            'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace', 'pass_images')
+
+    def create(self, validated_data):
+        images = validated_data.pop('pass_images')
+        passport = Passport.objects.create(**validated_data)
+        for image_data in images:
+            Image.objects.create(passport=passport, **image_data)
+        return passport
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    clientTask = ClientTaskSerializer(many=True)
+    sourceTask = SourceTaskSerializer(many=True)
+    checksTask = ChecksTaskSerializer(many=True)
+    scoringTask = ScoringTaskSerializer(many=True)
+
+    class Meta:
+        model = Task
+        fields = ('create_time', 'finish_time', 'processor', 'status')
+
+    def create(self, validated_data):
+        primary_individual_data = validated_data.pop('primary_individual')
+        individual = Individual.objects.create(**primary_individual_data)
+        client = Client.objects.create(primary_individual=individual, **validated_data)
+
+        return client

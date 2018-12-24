@@ -23,6 +23,13 @@ class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ScoreModel.objects.all()
     serializer_class = ScoreModelSerializer
 
+
+class TasksModelApi(mixins.CreateModelMixin,
+                mixins.ListModelMixin,
+                mixins.RetrieveModelMixin,
+                viewsets.GenericViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 #
 # class start_task(APIView):
 #     def get(self,request):
