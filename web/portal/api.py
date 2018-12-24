@@ -1,5 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import mixins
+from rest_framework import mixins, renderers
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from web.portal.serializers import *
 
@@ -12,6 +14,11 @@ class ClientApi(mixins.CreateModelMixin,
                 viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+
+    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
+    def test_method(self, request,myparam = None):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
 
 
 class IndividualsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
