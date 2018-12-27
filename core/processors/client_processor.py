@@ -3,11 +3,11 @@ import sys
 sys.path.append('../')
 
 
-
 from lib.process import *
 from lib.constants import *
+from rest_framework.test import APIRequestFactory
 
-
+import json
 
 class ClientProcessor(BasicProcess):
 
@@ -18,6 +18,15 @@ class ClientProcessor(BasicProcess):
                              })
 
     def __process_raw_client(self, body):
+        factory = APIRequestFactory()
+        request = factory.post('/api/willz/{0}'.format(7))
+
+        #raw_client_id = json.parse ....
+        #api call get_raw_client_data
+        # parse raw_client_data
+        #api_call insert image.. license .. passport ...
+        # r = requests.post("localhost:8000/api/create_passport","data:pass")
+        #test_body = json = individual_id = 555 ....
         print("client is processed")
         self._publish_message(CLIENT_PROCESSED_MESSAGE,"test_body")
 

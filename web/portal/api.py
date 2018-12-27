@@ -1,11 +1,22 @@
+from django.contrib.sites import requests
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import mixins, renderers
+from rest_framework import mixins, renderers, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from drf_yasg import openapi
+from web.portal.serializers import RawClientDataSerializer
+
+import json
+import pika
+
+from core.lib import constants
 
 from web.portal.serializers import *
 
-from rest_framework import views, viewsets
+from rest_framework import viewsets
 
 
 class ClientApi(mixins.CreateModelMixin,
@@ -51,10 +62,36 @@ class ClientTaskApi(mixins.CreateModelMixin,
         return ClientTaskSerializer(partial=True)
 
 
+class WillzCreateClient(APIView):
+    @swagger_auto_schema(operation_description='POST /api/willz/',
+                        request_body=openapi.Schema(type=openapi.TYPE_STRING,description='Raw JSON from Willz'))
+    def post(self, request):
+        raw_json = json.dumps(request.data)
+        my_json = json.dumps({"payload": raw_json})
+        data_to_insert = json.loads(my_json)
+        serializer = RawClientDataSerializer(data=data_to_insert)
 
+        if serializer.is_valid():
+            resp_data = serializer.save()
+            resp = {'raw_client_id': resp_data.id}
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
+            channel = connection.channel()
+            channel.basic_publish(constants.MAIN_EXCHANGE_NAME,
+                              routing_key=constants.CLIENT_RAW_CREATED_MESSAGE,
+                              body=resp, properties=pika.BasicProperties(
+                delivery_mode=2,  # make message persistent
+                ))
+            connection.close()
+            return Response(resp_data.id, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = RawClientData.objects.all()
+    serializer_class = RawClientDataSerializer
 
 # class start_task(APIView):
-#     def get(self,request):
+#     def get(self,reque        r = requests.post('https://www.somedomain.com/some/url/save', params=request.POST)st):
 #         #дописать
 #         return Response(status=status.HTTP_200_OK)
 #

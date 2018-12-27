@@ -104,7 +104,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class RawClientDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawClientData
-        fields = ('payload',)
+        fields = ('id','payload')
 
 class ClientTaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -116,4 +116,6 @@ class RetrieveClientTaskSerializer(ClientTaskSerializer):
     task = TaskSerializer(many=False)
     raw_client_data = RawClientDataSerializer(many=False)
     client = ClientSerializer(many=False)
+
+
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-import redis
+#simport redis
 sys.path.append('../')
 
 
@@ -19,7 +19,7 @@ class SourcesManager(BasicProcess):
                                   constants.SCORISTA_SOURCE_PROCESSED_MESSAGE: self.__scorista_source_processed,
 
                               })
-        __redis = redis.StrictRedis(host='localhost', port=6379, db=0)
+        #__redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 
     def __process_all_sources(self, body):
         print("client start sources process")
