@@ -32,10 +32,15 @@ class ClientApi(mixins.CreateModelMixin,
         return Response(snippet.highlighted)
 
 
-class IndividualsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class IndividualsApi(mixins.CreateModelMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Individual.objects.all()
     serializer_class = IndividualSerializer
 
+    @swagger_auto_schema(operation_description='Used to get Primary Individual for current client')
+    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
+    def Primary_Individual(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
 
 class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ScoreModel.objects.all()
@@ -73,7 +78,7 @@ class WillzCreateClient(APIView):
 
         if serializer.is_valid():
             resp_data = serializer.save()
-            resp = {'raw_client_id': resp_data.id}
+            resp = json.dumps({'raw_client_id': resp_data.id})
             connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
             channel = connection.channel()
             channel.basic_publish(constants.MAIN_EXCHANGE_NAME,
@@ -82,7 +87,7 @@ class WillzCreateClient(APIView):
                 delivery_mode=2,  # make message persistent
                 ))
             connection.close()
-            return Response(resp_data.id, status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

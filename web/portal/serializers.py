@@ -67,7 +67,7 @@ class IndividualSerializer(serializers.ModelSerializer):
     class Meta:
         model = Individual
         fields = (
-            'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday', 'passport',
+            'id','last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday', 'passport',
             'driver_license')
 
     def create(self, validated_data):
@@ -81,18 +81,9 @@ class IndividualSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    primary_individual = IndividualSerializer(many=False)
-
     class Meta:
         model = Client
-        fields = ('willz_id', 'created_at', 'primary_individual')
-
-    def create(self, validated_data):
-        primary_individual_data = validated_data.pop('primary_individual')
-        individual = Individual.objects.create(**primary_individual_data)
-        client = Client.objects.create(primary_individual=individual, **validated_data)
-
-        return client
+        fields = ('id','willz_id', 'created_at')
 
 
 class TaskSerializer(serializers.ModelSerializer):

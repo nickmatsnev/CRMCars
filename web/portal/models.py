@@ -62,7 +62,7 @@ class RawClientData(models.Model):
 
 
 class Client(models.Model):
-    primary_individual = models.ForeignKey(Individual, related_name='clients', on_delete=models.CASCADE)
+    #primary_individual = models.ForeignKey(Individual, related_name='clients', on_delete=models.CASCADE)
     willz_id = models.IntegerField(default=0)
 
     created_at = models.DateTimeField()
