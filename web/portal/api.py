@@ -91,6 +91,7 @@ class WillzCreateClient(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = RawClientData.objects.all()
     serializer_class = RawClientDataSerializer

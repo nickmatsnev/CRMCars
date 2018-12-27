@@ -68,6 +68,7 @@ class Client(models.Model):
     created_at = models.DateTimeField()
 
 
+
 class ClientTask(models.Model):
     task = models.OneToOneField(Task, on_delete=models.CASCADE,null=False)
     raw_client_data = models.OneToOneField(RawClientData, on_delete=models.CASCADE,null=True)

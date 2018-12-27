@@ -86,6 +86,7 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ('id','willz_id', 'created_at')
 
 
+
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
