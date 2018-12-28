@@ -3,52 +3,6 @@ import sys
 sys.path.append('../')
 
 
-class Passport(models.Model):
-    number = models.CharField(max_length=100)
-    issued_at = models.DateField()
-    issued_by = models.CharField(max_length=100)
-    address_registration = models.CharField(max_length=100)
-    division_code = models.CharField(max_length=100)
-    birthplace = models.CharField(max_length=100)
-
-    @property
-    def images(self):
-        ret_images = Image.objects.filter(passport=self.id)
-        return ret_images
-
-
-class DriverLicense(models.Model):
-    number = models.CharField(default=0, max_length=100)
-    issued_at = models.DateField(null=True)
-
-    @property
-    def images(self):
-        ret_images = Image.objects.filter(driver_license=self.id)
-        return ret_images
-
-
-class Individual(models.Model):
-    last_name = models.CharField(max_length=100)
-    first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
-    gender = models.IntegerField(default=0)
-    # gender = models.CharField(max_length=100)
-    birthday = models.DateTimeField()
-
-    passport = models.OneToOneField(Passport, on_delete=models.CASCADE, null=True)
-    driver_license = models.OneToOneField(DriverLicense, on_delete=models.CASCADE, null=True)
-
-
-class Image(models.Model):
-    passport = models.ForeignKey(Passport, related_name='pass_images', on_delete=models.CASCADE, null=True)
-    driver_license = models.ForeignKey(DriverLicense, related_name='drv_lcns_images', on_delete=models.CASCADE,
-                                       null=True)
-    title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100, null=True)
-
-
 class Task(models.Model):
     create_time = models.DateTimeField()
     finish_time = models.DateTimeField()
@@ -62,11 +16,47 @@ class RawClientData(models.Model):
 
 
 class Client(models.Model):
-    #primary_individual = models.ForeignKey(Individual, related_name='clients', on_delete=models.CASCADE)
+    #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz_id = models.IntegerField(default=0)
-
     created_at = models.DateTimeField()
 
+
+class Individual(models.Model):
+    client = models.ForeignKey(Client, related_name='individuals', on_delete=models.CASCADE)
+    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    gender = models.IntegerField(default=0)
+    # gender = models.CharField(max_length=100)
+    birthday = models.DateTimeField()
+
+
+class Passport(models.Model):
+    individual = models.ForeignKey(Individual, related_name='passports', on_delete=models.CASCADE)
+
+    number = models.CharField(max_length=100)
+    issued_at = models.DateField()
+    issued_by = models.CharField(max_length=100)
+    address_registration = models.CharField(max_length=100)
+    division_code = models.CharField(max_length=100)
+    birthplace = models.CharField(max_length=100)
+
+
+class DriverLicense(models.Model):
+    individual = models.ForeignKey(Individual, related_name='driver_licenses', on_delete=models.CASCADE)
+
+    number = models.CharField(default=0, max_length=100)
+    issued_at = models.DateField(null=True)
+
+
+class Image(models.Model):
+    individual = models.ForeignKey(Individual, related_name='individual', on_delete=models.CASCADE)
+    passport = models.ForeignKey(Passport, null=True, related_name='pass_images', on_delete=models.CASCADE)
+    driver_license = models.ForeignKey(DriverLicense, null=True, related_name='drv_lcns_images', on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=100, null=True)
 
 
 class ClientTask(models.Model):

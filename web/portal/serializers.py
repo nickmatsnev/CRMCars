@@ -26,65 +26,34 @@ class ScoreModelSerializer(serializers.HyperlinkedModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('passport', 'driver_license', 'title', 'url')
+        fields = ('individual','passport','driver_license','title', 'url')
 
 
 class PassportSerializer(serializers.ModelSerializer):
-    pass_images = ImageSerializer(many=True)
-
     class Meta:
         model = Passport
-        fields = (
-            'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace', 'pass_images')
+        fields = ('individual',
+                  'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace')
 
-    def create(self, validated_data):
-        images = validated_data.pop('pass_images')
-        passport = Passport.objects.create(**validated_data)
-        for image_data in images:
-            Image.objects.create(passport=passport, **image_data)
-        return passport
 
 
 class DriverLicenseSerializer(serializers.ModelSerializer):
-    lcns_images = ImageSerializer(many=True)
-
     class Meta:
         model = DriverLicense
-        fields = ('number', 'issued_at', 'lcns_images')
-
-    def create(self, validated_data):
-        images = validated_data.pop('pass_images')
-        driver_license = DriverLicense.objects.create(**validated_data)
-        for image_data in images:
-            Image.objects.create(driver_license=driver_license, **image_data)
-        return license
+        fields = ('individual', 'number', 'issued_at')
 
 
 class IndividualSerializer(serializers.ModelSerializer):
-    passport = PassportSerializer(many=False)
-    driver_license = DriverLicenseSerializer(many=False)
-
     class Meta:
         model = Individual
         fields = (
-            'id','last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday', 'passport',
-            'driver_license')
-
-    def create(self, validated_data):
-        passport_data = validated_data.pop('passport')
-        passport = Passport.objects.create(passport_data)
-        driver_license_data = validated_data.pop('driver_license')
-        driver_license = DriverLicense.objects.create(**driver_license_data)
-        individual_obj = Individual.objects.create(passport=passport, driver_license=driver_license, **validated_data)
-
-        return individual_obj
+            'id', 'client', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday')
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('id','willz_id', 'created_at')
-
+        fields = ('id', 'willz_id', 'created_at')
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -96,7 +65,8 @@ class TaskSerializer(serializers.ModelSerializer):
 class RawClientDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawClientData
-        fields = ('id','payload')
+        fields = ('id', 'payload')
+
 
 class ClientTaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -108,6 +78,3 @@ class RetrieveClientTaskSerializer(ClientTaskSerializer):
     task = TaskSerializer(many=False)
     raw_client_data = RawClientDataSerializer(many=False)
     client = ClientSerializer(many=False)
-
-
-

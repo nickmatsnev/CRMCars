@@ -26,21 +26,44 @@ class ClientApi(mixins.CreateModelMixin,
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
-    def test_method(self, request, myparam=None):
-        snippet = self.get_object()
-        return Response(snippet.highlighted)
+
+#    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
+#    def test_method(self, request, myparam=None):
+#        snippet = self.get_object()
+#        return Response(snippet.highlighted)
 
 
-class IndividualsApi(mixins.CreateModelMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class IndividualsApi(mixins.CreateModelMixin,
+                     mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin,
+                     viewsets.GenericViewSet):
     queryset = Individual.objects.all()
     serializer_class = IndividualSerializer
 
-    @swagger_auto_schema(operation_description='Used to get Primary Individual for current client')
-    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
-    def Primary_Individual(self, request, *args, **kwargs):
-        snippet = self.get_object()
-        return Response(snippet.highlighted)
+
+class PassportsApi(mixins.CreateModelMixin,
+                     mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin,
+                     viewsets.GenericViewSet):
+    queryset = Passport.objects.all()
+    serializer_class = PassportSerializer
+
+
+class DriverLicesesApi(mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 viewsets.GenericViewSet):
+    queryset = DriverLicense.objects.all()
+    serializer_class = DriverLicenseSerializer
+
+
+class ImagesApi(mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 viewsets.GenericViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
 
 class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ScoreModel.objects.all()
@@ -67,9 +90,15 @@ class ClientTaskApi(mixins.CreateModelMixin,
         return ClientTaskSerializer(partial=True)
 
 
+class GetPrimaryIndividual(APIView):
+    @swagger_auto_schema(operation_description='Used to get Primary Individual for current client')
+    def get(self, request, pk, *args, **kwargs):
+        return Response(pk)
+
+
 class WillzCreateClient(APIView):
     @swagger_auto_schema(operation_description='POST /api/willz/',
-                        request_body=openapi.Schema(type=openapi.TYPE_STRING,description='Raw JSON from Willz'))
+                         request_body=openapi.Schema(type=openapi.TYPE_STRING, description='Raw JSON from Willz'))
     def post(self, request):
         raw_json = json.dumps(request.data)
         my_json = json.dumps({"payload": raw_json})
@@ -82,14 +111,13 @@ class WillzCreateClient(APIView):
             connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
             channel = connection.channel()
             channel.basic_publish(constants.MAIN_EXCHANGE_NAME,
-                              routing_key=constants.CLIENT_RAW_CREATED_MESSAGE,
-                              body=resp, properties=pika.BasicProperties(
-                delivery_mode=2,  # make message persistent
+                                  routing_key=constants.CLIENT_RAW_CREATED_MESSAGE,
+                                  body=resp, properties=pika.BasicProperties(
+                    delivery_mode=2,  # make message persistent
                 ))
             connection.close()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
