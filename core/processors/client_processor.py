@@ -88,49 +88,50 @@ class ClientProcessor(BasicProcess):
 
             # для всех индивидуалок
             for drvr in raw_json['drivers']:
-                # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
-                raw_to_individual = {'client': client_id, 'last_name': drvr['lastname']
-                    , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
-                                     'email': drvr['email']
-                    , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
-                                     'birthday': drvr['birthday']}
-                response = requests.post(url=url + '/api/individuals/', data=raw_to_individual, headers=headers)
-                raw_data = json.loads(response.content)
-                individual_id = raw_data['id']
+                if drvr['id'] != raw_json['driver_id']:
+                    # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
+                    raw_to_individual = {'client': client_id, 'last_name': drvr['lastname']
+                        , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
+                                         'email': drvr['email']
+                        , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
+                                         'birthday': drvr['birthday']}
+                    response = requests.post(url=url + '/api/individuals/', data=raw_to_individual, headers=headers)
+                    raw_data = json.loads(response.content)
+                    individual_id = raw_data['id']
 
-                # формируем права
-                raw_to_driving_license = {'individual': individual_id, 'number': drvr['driver_license']['number']
-                    , 'issued_at': drvr['driver_license']['issued_at']}
-                response = requests.post(url=url + '/api/driver_licenses/', data=raw_to_driving_license,
-                                         headers=headers)
-                raw_data = json.loads(response.content)
-                driver_license_id = raw_data['id']
+                    # формируем права
+                    raw_to_driving_license = {'individual': individual_id, 'number': drvr['driver_license']['number']
+                        , 'issued_at': drvr['driver_license']['issued_at']}
+                    response = requests.post(url=url + '/api/driver_licenses/', data=raw_to_driving_license,
+                                            headers=headers)
+                    raw_data = json.loads(response.content)
+                    driver_license_id = raw_data['id']
 
-                # формируем фото для прав
-                for img in range(1, 3):
-                    new_img_txt = 'image{0}'.format(img)
-                    raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                    requests.post(url=url + '/api/images/', data=raw_to_img, headers=headers)
+                    # формируем фото для прав
+                    for img in range(1, 3):
+                        new_img_txt = 'image{0}'.format(img)
+                        raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
+                                    'title': drvr['passport'][new_img_txt],
+                                    'url': drvr['passport'][new_img_txt + '_url']}
+                        requests.post(url=url + '/api/images/', data=raw_to_img, headers=headers)
 
-                # формируем паспорт
-                raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
-                    , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
-                    , 'address_registration': drvr['passport']['address_registration']
-                    , 'division_code': drvr['passport']['division_code'],
-                                   'birthplace': drvr['passport']['birthplace']}
-                response = requests.post(url=url + '/api/passports/', data=raw_to_passport, headers=headers)
-                raw_data = json.loads(response.content)
-                passport_id = raw_data['id']
+                    # формируем паспорт
+                    raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
+                        , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
+                        , 'address_registration': drvr['passport']['address_registration']
+                        , 'division_code': drvr['passport']['division_code'],
+                                    'birthplace': drvr['passport']['birthplace']}
+                    response = requests.post(url=url + '/api/passports/', data=raw_to_passport, headers=headers)
+                    raw_data = json.loads(response.content)
+                    passport_id = raw_data['id']
 
-                # формируем фото для паспорта
-                for img in range(1, 5):
-                    new_img_txt = 'image{0}'.format(img)
-                    raw_to_img = {'individual': individual_id, 'passport': passport_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                    requests.post(url=url + '/api/images/', data=raw_to_img, headers=headers)
+                    # формируем фото для паспорта
+                    for img in range(1, 5):
+                        new_img_txt = 'image{0}'.format(img)
+                        raw_to_img = {'individual': individual_id, 'passport': passport_id,
+                                    'title': drvr['passport'][new_img_txt],
+                                    'url': drvr['passport'][new_img_txt + '_url']}
+                        requests.post(url=url + '/api/images/', data=raw_to_img, headers=headers)
         #except Exception as e:
          #   print(" Some error: {0}".format(e))
 
