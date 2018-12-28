@@ -32,7 +32,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class PassportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Passport
-        fields = ('individual',
+        fields = ('id','individual',
                   'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace')
 
 
@@ -40,7 +40,7 @@ class PassportSerializer(serializers.ModelSerializer):
 class DriverLicenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverLicense
-        fields = ('individual', 'number', 'issued_at')
+        fields = ('id','individual', 'number', 'issued_at')
 
 
 class IndividualSerializer(serializers.ModelSerializer):

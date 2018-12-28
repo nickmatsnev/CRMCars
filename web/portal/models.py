@@ -18,8 +18,8 @@ class RawClientData(models.Model):
 class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz_id = models.IntegerField(default=0)
-    created_at = models.DateTimeField()
-
+    #created_at = models.DateTimeField()
+    created_at = models.TextField(null=True)
 
 class Individual(models.Model):
     client = models.ForeignKey(Client, related_name='individuals', on_delete=models.CASCADE)
@@ -30,15 +30,17 @@ class Individual(models.Model):
     phone = models.CharField(max_length=100)
     gender = models.IntegerField(default=0)
     # gender = models.CharField(max_length=100)
-    birthday = models.DateTimeField()
+    #birthday = models.DateTimeField()
+    birthday = models.TextField(null=True)
 
 
 class Passport(models.Model):
     individual = models.ForeignKey(Individual, related_name='passports', on_delete=models.CASCADE)
 
     number = models.CharField(max_length=100)
-    issued_at = models.DateField()
-    issued_by = models.CharField(max_length=100)
+    #issued_at = models.DateField()
+    issued_at = models.TextField()
+    issued_by = models.TextField()
     address_registration = models.CharField(max_length=100)
     division_code = models.CharField(max_length=100)
     birthplace = models.CharField(max_length=100)
@@ -48,7 +50,8 @@ class DriverLicense(models.Model):
     individual = models.ForeignKey(Individual, related_name='driver_licenses', on_delete=models.CASCADE)
 
     number = models.CharField(default=0, max_length=100)
-    issued_at = models.DateField(null=True)
+    #issued_at = models.DateField(null=True)
+    issued_at = models.TextField(null=True)
 
 
 class Image(models.Model):

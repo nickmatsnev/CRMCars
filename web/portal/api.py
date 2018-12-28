@@ -101,9 +101,8 @@ class WillzCreateClient(APIView):
                          request_body=openapi.Schema(type=openapi.TYPE_STRING, description='Raw JSON from Willz'))
     def post(self, request):
         raw_json = json.dumps(request.data)
-        my_json = json.dumps({"payload": raw_json})
-        data_to_insert = json.loads(my_json)
-        serializer = RawClientDataSerializer(data=data_to_insert)
+        my_json = {"payload": raw_json}
+        serializer = RawClientDataSerializer(data=my_json)
 
         if serializer.is_valid():
             resp_data = serializer.save()
