@@ -74,14 +74,12 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class ClientTaskSerializer(serializers.ModelSerializer):
-    task = TaskSerializer(many=False)
     raw_client_data = RawClientDataSerializer(many=False)
     client = ClientSerializer(many=False)
 
     class Meta:
         model = ClientTask
-        # таск надо спрятать
-        fields = ('raw_client_data', 'client', 'task')
+        fields = ('raw_client_data', 'client')
 
     def create(self, validated_data):
         raw_client_data_data = validated_data.pop('raw_client_data')
@@ -101,14 +99,12 @@ class ClientTaskSerializer(serializers.ModelSerializer):
 
 
 class SourceTaskSerializer(serializers.ModelSerializer):
-    task = TaskSerializer(many=False)
     source_raw_data = SourceRawDataSerializer(many=False)
     individual = IndividualSerializer(many=False)
 
     class Meta:
         model = SourceTask
-        # таск надо спрятать
-        fields = ('source_raw_data', 'individual', 'task')
+        fields = ('source_raw_data', 'individual')
 
     def create(self, validated_data):
         source_raw_data_data = validated_data.pop('source_raw_data')
