@@ -36,7 +36,6 @@ class PassportSerializer(serializers.ModelSerializer):
                   'number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace')
 
 
-
 class DriverLicenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverLicense
@@ -56,25 +55,44 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ('id', 'willz_id', 'created_at')
 
 
-class TaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = ('create_time', 'finish_time', 'processor', 'status', 'task_type')
-
-
 class RawClientDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawClientData
         fields = ('id', 'payload')
 
 
+class SourceRawDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RawClientData
+        fields = ('id', 'payload', 'individual', 'source')
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('create_time', 'finish_time', 'processor', 'status', 'task_type')
+
+
 class ClientTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientTask
-        fields = ('task', 'raw_client_data', 'client')
+        fields = ('raw_client_data', 'client')
+
+  #  def create(self, validated_data):
+  #      task = TaskSerializer
+  #       status = in_progress...
 
 
-class RetrieveClientTaskSerializer(ClientTaskSerializer):
+class CreateClientTaskSerializer(ClientTaskSerializer):
     task = TaskSerializer(many=False)
     raw_client_data = RawClientDataSerializer(many=False)
     client = ClientSerializer(many=False)
+
+
+class UpdateClientTaskSerializer(ClientTaskSerializer):
+    task = TaskSerializer(many=False)
+    raw_client_data = RawClientDataSerializer(many=False)
+    client = ClientSerializer(many=False)
+
+
+

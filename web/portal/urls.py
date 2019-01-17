@@ -29,15 +29,23 @@ schema_view = get_schema_view(
    public=True,
    permission_classes=(permissions.AllowAny,),
 )
+# Работа с новой заявкой
+router.register(r'api/willz', api.RawClientData)
 
+# Работа с клиентскими данными
 router.register(r'api/clients', api.ClientApi)
 router.register(r'api/individuals', api.IndividualsApi)
 router.register(r'api/passports', api.PassportsApi)
 router.register(r'api/driver_licenses', api.DriverLicesesApi)
 router.register(r'api/images', api.ImagesApi)
-router.register(r'api/tasks/client_task', api.ClientTaskApi)
+
+# Работа с тасками
 router.register(r'api/tasks', api.TasksModelApi)
-router.register(r'api/willz', api.RawClientData)
+router.register(r'api/tasks/client_task', api.ClientTaskApi)
+#router.register(r'api/tasks/scoring_task', api.ClientTaskApi)
+#router.register(r'api/tasks/source_task', api.ClientTaskApi)
+#router.register(r'api/tasks/checks_task', api.ClientTaskApi)
+
 
 urlpatterns = [
 
@@ -49,4 +57,5 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/willz/', api.WillzCreateClient.as_view()),
     path('api/clients/<int:pk>/primary_individual/', api.GetPrimaryIndividual.as_view()),
+    path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
  ]
