@@ -46,6 +46,9 @@ router.register(r'api/tasks/client_task', api.ClientTaskApi)
 #router.register(r'api/tasks/source_task', api.ClientTaskApi)
 #router.register(r'api/tasks/checks_task', api.ClientTaskApi)
 
+# Работа с генерацией
+router.register(r'api/generation', api.GenerationCreateApi)
+
 
 urlpatterns = [
 
@@ -58,4 +61,6 @@ urlpatterns = [
     path('api/willz/', api.WillzCreateClient.as_view()),
     path('api/clients/<int:pk>/primary_individual/', api.GetPrimaryIndividual.as_view()),
     path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
+    path('api/generation/individual_<int:pk>/all', api.GenerationGetAllApi.as_view()),
+    path('api/generation/individual_<int:pk>/tasks', api.GenerationGetTasksApi.as_view()),
  ]

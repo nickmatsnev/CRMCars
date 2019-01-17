@@ -95,4 +95,13 @@ class UpdateClientTaskSerializer(ClientTaskSerializer):
     client = ClientSerializer(many=False)
 
 
+class GenerationCreateSerializer(ClientSerializer):
+    class Meta:
+        model = Generation
+        fields = ('individual','source_task')
 
+
+class GenerationGetSerializer(ClientSerializer):
+    class Meta:
+        model = Generation
+        fields = ('id', 'individual', 'number', 'create_time', 'source_task')

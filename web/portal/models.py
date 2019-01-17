@@ -130,3 +130,10 @@ class ConcreteScore(models.Model):
     score_model = models.ForeignKey(ScoreModel, on_delete=models.CASCADE)
     score_task = models.IntegerField(default=0)
 
+
+class Generation(models.Model):
+    individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
+    number = models.IntegerField(default=0)
+    create_time = models.DateTimeField()
+    source_task = models.ForeignKey(SourceTask,on_delete=models.CASCADE,null=True)
+
