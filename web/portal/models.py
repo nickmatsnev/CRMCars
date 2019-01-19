@@ -17,7 +17,7 @@ class RawClientData(models.Model):
 
 class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
-    willz_id = models.IntegerField(default=0)
+    willz = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
     created_at = models.TextField(null=True)
 

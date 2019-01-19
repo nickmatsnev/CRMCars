@@ -34,10 +34,11 @@ router.register(r'api/willz', api.RawClientData)
 
 # Работа с клиентскими данными
 router.register(r'api/clients', api.ClientApi)
+#router.register(r'api/generation', api.GetFullClientApi)
 router.register(r'api/individuals', api.IndividualsApi)
 router.register(r'api/passports', api.PassportsApi)
 router.register(r'api/driver_licenses', api.DriverLicesesApi)
-router.register(r'api/images', api.ImagesApi)
+
 
 # Работа с тасками
 router.register(r'api/tasks', api.TasksModelApi)
@@ -59,6 +60,7 @@ urlpatterns = [
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/willz/', api.WillzCreateClient.as_view()),
+    path('api/clients/<int:pk>/', api.GetClientApi.as_view()),
     path('api/clients/<int:pk>/primary_individual/', api.GetPrimaryIndividual.as_view()),
     path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
     path('api/generation/individual_<int:pk>/all', api.GenerationGetAllApi.as_view()),

@@ -19,10 +19,8 @@ from web.portal.serializers import *
 
 from rest_framework import viewsets
 
-
 class ClientApi(mixins.CreateModelMixin,
                 mixins.ListModelMixin,
-                mixins.RetrieveModelMixin,
                 viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
@@ -64,6 +62,29 @@ class ImagesApi(mixins.CreateModelMixin,
                  viewsets.GenericViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+
+
+class GetClientApi(APIView):
+
+    @swagger_auto_schema(operation_description='Used to get current client')
+    def get(self, request, pk, *args, **kwargs):
+        queryset = Client.objects.filter(id=pk)
+        client = ClientSerializer(queryset)
+        json_info = client.data
+
+        queryset = Individual.objects.filter(client=json_info['id'])
+        individuals = IndividualSerializer(queryset, many=True)
+        json_info['individuals']= individuals.data
+
+
+#        for individual in json_info['individuals']:
+ #           passport = PassportSerializer(Passport.objects.get(individual=individual.id), many=False)
+  #          json_info['individuals'][individual]['Passport'] = passport.data
+   #         images = ImageSerializer(Image.objects.get(individual=individual.id, passport= passport.data.id),many=True)
+    #        for image in images.data:
+     #           json_info['individuals'][individual]['Passport']['Images']= image
+
+        return Response(data= json.dumps(json_info))
 
 
 class GetPrimaryIndividual(APIView):
