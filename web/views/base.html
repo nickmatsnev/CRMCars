@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="author" content="Jennifer Bland">
         <meta name="description" content="Demonstration of layouts using FlexBox">
-        <title>Willz</title>
+        <title>{{ title }}</title>
 {% load static %}
         <link rel="stylesheet" href="{% static "loader.css" %}">
         <link rel="stylesheet" href="{% static "layout/normalize.css" %}">
@@ -40,29 +40,26 @@
                 </ul>
 
                 <ul class="nav flexItem flexCenter">
-
+                    <li><strong>Пользователь:</strong><br> {{ request.user.username }} </li>
                 </ul>
                 <ul class="nav flexContainer flexEnd">
                     <ul class="nav">
-                    <li><a style="color:black" id="login-logoutbutton" href="signout" class="regButton">Выход</a></li>
-                    <br>
+                   <li></li>
 
                      <li style="color:black">
 
+                        <a style="color:black; border: 1px solid black; margin: 0px 15px 0px 0px; background: silver" class="button17" id="logoutbutton" href="signout">Выход</a>
+                         <br>
+                         <p style="margin: 0px 15px 0px 0px;">
                         <script language="javascript" type="text/javascript"><!--
                             var d = new Date();
+                                    var month=new Array("янв","февр","мар","апр","мая","июн",
+                                    "июл","авг","сент","окт","ноябр","дек");
 
-                                var day=new Array("Воскресенье","Понедельник","Вторник",
-                                        "Среда","Четверг","Пятница","Суббота");
-
-                                    var month=new Array("января","февраля","марта","апреля","мая","июня",
-                                    "июля","августа","сентября","октября","ноября","декабря");
-
-                                document.write(day[d.getDay()]+" " +d.getDate()+ " " + month[d.getMonth()]
+                                document.write(d.getDate()+ " " + month[d.getMonth()]
                                 + " " + d.getFullYear() + " г.");
                         //--></script>
-                         <br>
-                         Welcome, {{ request.user.username }}
+                         </p>
                     </li>
                     </ul>
                 </ul>
@@ -86,10 +83,8 @@
 
 
                         <div class="specialBackground " id="ots">
-
-                            <p></p><a style="color:black"  href="check">Check</a><br>
                             <p></p><a style="color:black"  href="">Продукты</a><br>
-                        <a style="color:black"  href="scoring">Скоринг</a><br>
+                        <a style="color:black"  href="client_scoring">Скоринг</a><br>
                         <a style="color:black"  href="source">Source</a><br>
                         </div>
                             <div class="specialBackground" id="ots">

@@ -1,0 +1,179 @@
+{% extends "../base.html" %}
+
+{% block title %}My Blog{% endblock %}
+
+
+{% block content %}
+<div class="container" id="">
+    <p><strong>Заявка №6</strong></p>
+  <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+       <thead>
+      <tr>
+        <th></th>
+          <td></td>
+      </tr>
+    </thead>
+    <tbody>
+<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
+          <!--  <td>создана</td>
+            <td>11/11/2011</td>
+            <td>на проверке скориста</td>
+            <td>11/11/2011</td>
+            <td> прошла все проверки</td>
+            <td>11/11/2011</td>
+            <td>ожидает согласования</td>
+            <td>11/11/2011</td>
+            <td>согласована иваном</td>
+            <td>11/11/2011</td>-->
+
+   <tr>
+    <td> Имя:</td><td>Андрей</td><td>Статус:</td><td>В работе</td>
+   </tr>
+   <tr>
+    <td>Отчество:</td><td>Петрович</td><td>Скоринг:</td><td>Завершено</td>
+   </tr>
+   <tr>
+    <td>Фамилия:</td><td>Сидоров</td><td>Стоп-факторы:</td><td>Задолженность ГИБДД</td>
+   </tr>
+   <tr>
+    <td>Пол:</td><td> Мужской</td>
+   </tr>
+   <tr>
+    <td>Дата рождения:</td><td> 18.06.1988</td>
+   </tr>
+   <tr>
+    <td>Номер паспорта:</td><td>45 15 188833</td>
+   </tr>
+   <tr>
+    <td>Дата выдачи паспорта:</td><td> 20.03.2015</td>
+   </tr>
+   <tr>
+    <td>кем выдан:</td><td> Отделом УФМС по гор. Москве по району Пресненский</td>
+   </tr>
+   <tr>
+    <td>Адрес прописки:</td><td> Москва, ул. мал. Грузинская, 27, кв. 148</td>
+   </tr>
+
+  </tr>
+
+</tbody>
+</table>
+
+
+<div class="panel-heading">
+    <p><strong>Сканы документов</strong></p>
+  </div>
+
+
+ <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+        <th>Фио</th>
+          <td>номер ВУ</td>
+          <td>дата выдачи ВУ</td>
+          <td>Стаж</td>
+          <td>Тип</td>
+      </tr>
+    </thead>
+    <tbody>
+
+            <td>Ivan</td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+
+  </tr>
+
+</tbody>
+</table>
+    <!--  Имя: Отчество: Фамилия: Пол: Дата рождения: Номер паспорта: Дата выдачи паспорта: кем выдан: Адрес прописки:
+
+сканы документов(таблица, подгрузить пикчи)
+
+Водители
+Фио, номер ВУ, дата выдачи ВУ, стаж, тип
+история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном
+-->
+    <div class="panel-heading">
+    <p><strong>Водители</strong></p>
+  </div>
+
+
+    <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+         <th>ФИО</th>
+          <td>Номер ВУ</td>
+          <td>Дата выдачи ВУ</td>
+          <td>Стаж</td>
+          <td>Тип</td>
+      </tr>
+    </thead>
+    <tbody>
+
+            <td>Иван Иванов</td>
+            <td>78 383891862</td>
+            <td>12.24.2012</td>
+            <td>15 лет</td>
+           <td>Основной водитель</td>
+
+  </tr>
+
+</tbody>
+</table>
+
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
+
+
+
+<div class="panel-heading">
+    <p><strong>История операций</strong></p>
+  </div>
+
+
+ <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+        <th>Операция</th>
+          <td>Дата</td>
+      </tr>
+    </thead>
+    <tbody>
+<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
+          <!--  <td>создана</td>
+            <td>11/11/2011</td>
+            <td>на проверке скориста</td>
+            <td>11/11/2011</td>
+            <td> прошла все проверки</td>
+            <td>11/11/2011</td>
+            <td>ожидает согласования</td>
+            <td>11/11/2011</td>
+            <td>согласована иваном</td>
+            <td>11/11/2011</td>-->
+
+   <tr>
+    <td>Создана: </td><td>11/12/2012, 14:05</td>
+   </tr>
+   <tr>
+    <td>На проверке скориста: </td><td>11/12/2012, 18:07</td>
+   </tr>
+   <tr>
+    <td>Прошла все проверки: </td><td>12/12/2012, 16:04</td>
+   </tr>
+   <tr>
+    <td>Ожидает согласования: </td><td>12/12/2012, 19:04</td>
+   </tr>
+   <tr>
+    <td>Согласована оператором: </td><td>12/12/2012, 21:58</td>
+   </tr>
+
+  </tr>
+
+</tbody>
+</table>
+</div>
+
+{% endblock %}
