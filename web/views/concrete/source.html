@@ -1,0 +1,137 @@
+{% extends "../base.html" %}
+{% block content %}
+
+
+<script>
+$(document).ready(function() {
+
+   $(".scoring-delete").click(function(event) {
+      var scoring_name = $(this).parent().parent().find("td:first").text();
+
+      $.get("{% url 'scoring_delete' %}", {scoring_name: scoring_name}, function(){
+
+         location.reload();
+      });
+  });
+
+$(".scoring-add-name, .scoring-add-price").on("keydown",function(e){
+		if (e.keyCode==13)
+			 $(".scoring-add-button").click();
+	});
+
+
+  $(".scoring-add-button").click(function(event) {
+
+    var scoring_name = $(".scoring-add-name").val();
+    var scoring_price = $(".scoring-add-price").val();
+
+    if (scoring_name.length == 0  ){
+      $(".scoring-add-name").popover({ content : "Must enter scoring name", placement: "bottom"});
+      $(".scoring-add-name").popover('show');
+    } else if (scoring_price.length == 0){
+      $(".scoring-add-price").popover({ content : "Must enter scoring price", placement: "bottom"});
+      $(".scoring-add-price").popover('show');
+
+    }else {
+
+         $.get("{% url 'scoring_create' %}", {scoring_name: scoring_name, scoring_price: scoring_price}, function(){
+
+           location.reload();
+        });
+     }
+  });
+});
+ </script>
+
+
+		<div id="ots" class="container">
+  <div class="panel-heading">
+    <h1 class="panel-title" >источники</h1>
+      <big>адаптеры</big>
+  </div>
+  <div class="panel-body">
+
+  <div class="input-group">
+      <span class="input-group-btn">
+        <button class="btn btn-default scoring-add-button" type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
+      </span>
+      <input type="text" class="form-control scoring-add-button" placeholder="Введите номер заявки, пожалуйста">
+    </div>
+<!--
+источники
+
+адаптеры
+имя описание логин пароль формат статус схема настройка
+кнопка сохранить справа
+
+
+логирование
+имя время вызова статус
+контур-фокус
+скориста
+гибдд
+-->
+<table border=" solid 1px black"  bgcolor="#FFFFFF">
+    <thead>
+      <tr>
+        <th> имя</th>
+          <td> описание</td>
+          <td> логин</td>
+          <td> пароль</td>
+          <td> формат</td>
+          <td> Статус</td>
+          <td> настройка</td>
+          <td></td>
+      </tr>
+    </thead>
+    <tbody>
+            <td>Skorista</td>
+            <td>----</td>
+
+            <td>login</td>
+            <td>password</td>
+            <td>XML</td>
+            <td>&#9989;</td>
+
+           <td>
+    <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  настройка </button>
+    </td>
+
+  </tr>
+</tbody>
+</table>
+
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  сохранить </button>
+
+<div class="panel-heading">
+      <big>логирование</big>
+  </div>
+  <table border=" solid 1px black"  bgcolor="#FFFFFF">
+    <thead>
+      <tr>
+        <th> имя</th>
+          <td>время вызова</td>
+          <td> Дата регистрации</td>
+          <td> статус</td>
+          <td></td>
+      </tr>
+    </thead>
+    <tbody>
+
+            <td>Skorista</td>
+            <td>14.01.2018 15:00</td>
+            <td>13.01.2018</td>
+            <td>Accepted</td>
+
+
+  </tr>
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+{% endblock %}
+

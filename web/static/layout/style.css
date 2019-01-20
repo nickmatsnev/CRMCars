@@ -1,0 +1,216 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    font-size: 1em;
+    line-height: 1.428em;
+    color: #000000;
+    background-color: white;
+}
+
+h2 {
+
+    text-align: center;
+}
+a{
+    text-decoration: none;
+}
+td{
+    background: #b5b5b5;
+}
+.container {
+    width: 95%;
+    margin-top: 15px;
+    margin-left: 1px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    background: white;
+    border-radius: 0px;
+    padding: 0px 10px 5px 10px;
+    border: 0px;
+    float:left;
+
+}
+.homeButton {
+    background: lightyellow;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #1e1e1e;
+    font-weight: bold;
+    border-radius: 8px ;
+    border: 2px dashed #000000;
+}.regButton {
+    background: lightyellow;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #1e1e1e;
+    font-weight: bold;
+    border-radius: 8px ;
+    border: 2px #0f3e68;
+}
+.homeButtonInverse {
+    background: lightyellow;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #1e1e1e;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+
+/* *********************************
+ *    Generic FlexBox Styling      *
+ **********************************/
+.flexContainer {
+    display: flex;
+}
+.flexItem {
+    flex: 1;
+}
+.flexStart {
+    justify-content: flex-start;
+}
+.flexCenter {
+    justify-content: center;
+}
+.flexEnd {
+    justify-content: flex-end;
+}
+.flexWrap {
+    flex-wrap: wrap;
+}
+.itemCenter {
+    align-items: center;
+}
+.flexColumn {
+    flex-direction: column;
+}
+.flexSpaceBetween {
+    justify-content: space-between;
+}
+.flexSpaceAround {
+    justify-content: space-around;
+}
+
+/* *********************************
+ *    Shared Styling               *
+ **********************************/
+.fullHeight {
+    height: 100vh;
+}
+.blueBackground {
+    background: lightgray;
+}
+.whiteBackground {
+    background: lightgray;
+}
+.screwbackground{
+    background: lavender;
+}
+.specialBackground {
+    background: white;
+}
+.whiteText {
+    color: white;
+}
+.height50 {
+    height: 50px;
+    line-height: 50px;
+}
+.marginTop {
+    margin-top: 50px;
+}
+.marginBottom {
+    margin-bottom: 25px;
+}
+
+/* *********************************
+ *    Navigation                   *
+ **********************************/
+.nav {
+    list-style: none;
+}
+.nav a {
+    text-decoration: none;
+    display: block;
+    padding: 0 1em;
+    color: white;
+}
+
+
+/* *********************************
+ *    Responsive Website           *
+ **********************************/
+.main{
+    order: 2;
+    padding: 20px;
+    border-left: 1px solid #777777;
+    border-right: 1px solid #777777;
+}
+.sidebar {
+    width: 20%;
+    background: lightgray;
+    padding: 20px;
+}
+.sidebarLeft{
+    order: 1;
+}
+.sidebarRight{
+    order: 3;
+}
+
+/* *********************************
+ *    Input AddOn                  *
+ **********************************/
+.entry {
+    border: 1px solid rgba(147, 128, 108, 0.25);
+    padding: 0.5em 0.75em;
+    background-color: rgba(147, 128, 108, 0.1);
+    color: #666666;
+}
+
+/* *********************************
+ *    Center Image                 *
+ **********************************/
+.centerImage {
+    background-size: cover;
+}
+
+/* *********************************
+ *    3 Column Layout              *
+ **********************************/
+.subContainer {
+    width: 80%;
+    margin: 0 auto;
+}
+.col {
+    width: 32%;
+    border: 1px solid #777777;
+    border-radius: 8px;
+    background: white;
+    padding: 20px;
+}
+.containermain{
+    max-width: 1000px;
+    background-color: #f0f0f0;
+    margin: 0 auto;
+    padding: 0 40px;
+
+    display: flex;
+    flex-direction: column;
+}
+body {
+    background-color: #f0f0f0;
+    color: #000000;
+    font: normal 16px sans-serif;
+}
+aside
+{
+    background-color: rgba(240, 85, 112, 0.58);
+    color: #4e4544;
+
+}

@@ -3,7 +3,7 @@ sys.path.append('../')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from django.core.wsgi import get_wsgi_application
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nc6_!f*gt@l8*ia*#)q@71q0p!sa*e0$4yu^r%h00#q!sk3kh@'
+SECRET_KEY = '7_qi+kxx81)^l0&&505=v$vrlrtrrtt=1k3qutgo_m)@72b1%v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -22,6 +22,16 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = ['willz-dev.korishchenko.ru','127.0.0.1']
 
 WSGI_APPLICATION = 'web.portal.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'portal.renders.UTF8JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES':(
+        'rest_framework.parsers.JSONParser',
+    )
+}
 
 # Application definition
 
@@ -38,16 +48,18 @@ INSTALLED_APPS = (
 
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+LOGIN_URL='/sign_in/'
 
 ROOT_URLCONF = 'web.portal.urls'
 
@@ -89,7 +101,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/Users/justkru/Documents/GitHub/willz-dev/web/static',
+]
 
 TEMPLATES = [
     {

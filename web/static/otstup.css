@@ -1,0 +1,72 @@
+ otstup {
+     border: 1px;
+        background-color: #ffffff;
+        color: #5a5a5a;
+        padding: 40%; /*внутренний отступ для всех сторон*/
+        margin: 2px;   /*внешний отступ для всех сторон*/
+     float:right;
+      }
+ #strip {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+            }
+ #ots
+ {
+      border: 1px;
+        background-color: #ffffff;
+        color: #5a5a5a;
+
+        padding: 5px;
+margin-top:1%;
+margin-right: 5%;
+margin-left: 5%;
+margin-bottom:2%;
+        width: 100%;
+ }
+
+
+
+
+
+        #otst
+ {
+      border: 1px;
+        background-color: #ffffff;
+        color: #5a5a5a;
+        padding: 40%;
+margin-top:5%;
+margin-right: 5%;
+margin-left: 5%;
+margin-bottom:2%;
+        width: 100%;
+ }
+
+           #headermenu{
+                background-color: #9a9a9a;  margin: 10px;
+                color: #5a5a5a;
+                border: 1px;
+                font-size: 20px;
+                height: 80px;
+            }
+            #rast
+            {
+                height: 200px;
+    margin-left: 170px;
+    margin-right: 170px;
+            }
+
+            rastat
+            {
+                float:right;
+            }
+            prints
+            {
+                border: 1px;
+        background-color: #ffffff;
+        color: #000000;
+        padding: 0px; /*внутренний отступ для всех сторон*/
+
+            }

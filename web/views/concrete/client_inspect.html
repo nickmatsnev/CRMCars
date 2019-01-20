@@ -1,0 +1,179 @@
+{% extends "../base.html" %}
+
+
+
+{% block content %}
+<div class="container" id="">
+<p>Заявка № {{ id }}</p>
+<form  action="inspectform" method="get">
+    <input type="submit" value="Показать">
+  <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+       <thead>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
+          <!--  <td>создана</td>
+            <td>11/11/2011</td>
+            <td>на проверке скориста</td>
+            <td>11/11/2011</td>
+            <td> прошла все проверки</td>
+            <td>11/11/2011</td>
+            <td>ожидает согласования</td>
+            <td>11/11/2011</td>
+            <td>согласована иваном</td>
+            <td>11/11/2011</td>-->
+
+   <tr>
+    <td> Имя:</td> <td>{{ name }}</td> <td>Статус:</td><td>{{ status }}</td>
+   </tr>
+   <tr>
+    <td>Отчество:</td><td>{{ fatname }}</td><td>Скоринг:</td><td>{{ procent }}</td>
+   </tr>
+   <tr>
+    <td>Фамилия:</td> <td>{{ surname }}</td> <td>Стоп-факторы:</td><td><td>{{ name }}</td></td>
+   </tr>
+   <tr>
+    <td>Пол:</td><td>{{ name }}</td><td></td>
+   </tr>
+   <tr>
+    <td>Дата рождения:</td><td>{{ dataregis }}</td><td></td>
+   </tr>
+   <tr>
+    <td>Номер паспорта:</td><td>{{ name }}</td><td></td>
+   </tr>
+   <tr>
+    <td>Дата выдачи паспорта:</td><td>{{ dataregis }}</td><td></td>
+   </tr>
+   <tr>
+    <td>кем выдан:</td><td>{{ operator }}</td><td></td>
+   </tr>
+   <tr>
+    <td>Адрес прописки:</td><td>Россия, Москва, Никольская ул., 27к2, 148</td><td></td>
+   </tr>
+
+  </tr>
+
+</tbody>
+</table>
+
+
+<div class="panel-heading">
+    <p><strong>Сканы документов</strong></p>
+  </div>
+
+
+ <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+        <th>Фио</th>
+          <td>номер ВУ</td>
+          <td>дата выдачи ВУ</td>
+          <td>стаж</td>
+          <td>тип</td>
+      </tr>
+    </thead>
+    <tbody>
+
+            <td>Ivan</td>
+            <td><img src="static/logo-willz.svg"></td>
+            <td><img src="static/logo-willz.svg"></td>
+            <td><img src="static/logo-willz.svg"></td>
+            <td><img src="static/logo-willz.svg"></td>
+
+  </tr>
+
+</tbody>
+</table>
+    <!--  Имя: Отчество: Фамилия: Пол: Дата рождения: Номер паспорта: Дата выдачи паспорта: кем выдан: Адрес прописки:
+
+сканы документов(таблица, подгрузить пикчи)
+
+Водители
+Фио, номер ВУ, дата выдачи ВУ, стаж, тип
+история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном
+-->
+    <div class="panel-heading">
+    <p><strong>Водители</strong></p>
+  </div>
+
+
+    <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+         <th>Фио</th>
+          <td>номер ВУ</td>
+          <td>дата выдачи ВУ</td>
+          <td>стаж</td>
+          <td>тип</td>
+      </tr>
+    </thead>
+    <tbody>
+
+            <td>Иван Иванов</td>
+            <td>111111111111</td>
+            <td>12.24.2012</td>
+            <td>95 лет</td>
+           <td>Основной водитель   </td>
+
+  </tr>
+
+</tbody>
+</table>
+<!--
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
+      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
+-->
+
+
+<div class="panel-heading">
+    <p><strong>История операций</strong></p>
+  </div>
+
+
+ <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+        <th>операция</th>
+          <td>дата</td>
+      </tr>
+    </thead>
+    <tbody>
+<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
+          <!--  <td>создана</td>
+            <td>11/11/2011</td>
+            <td>на проверке скориста</td>
+            <td>11/11/2011</td>
+            <td> прошла все проверки</td>
+            <td>11/11/2011</td>
+            <td>ожидает согласования</td>
+            <td>11/11/2011</td>
+            <td>согласована иваном</td>
+            <td>11/11/2011</td>-->
+
+   <tr>
+    <td>создана</td><td>11/11/2011</td>
+   </tr>
+   <tr>
+    <td>на проверке скориста</td><td>11/11/2011</td>
+   </tr>
+   <tr>
+    <td>прошла все проверки</td><td>11/11/2011</td>
+   </tr>
+   <tr>
+    <td>ожидает согласования</td><td>11/11/2011</td>
+   </tr>
+   <tr>
+    <td>согласована иваном</td><td>11/11/2011</td>
+   </tr>
+
+  </tr>
+
+</tbody>
+</table>
+</form>
+</div>
+
+{% endblock %}

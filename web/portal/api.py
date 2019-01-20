@@ -68,23 +68,28 @@ class GetClientApi(APIView):
 
     @swagger_auto_schema(operation_description='Used to get current client')
     def get(self, request, pk, *args, **kwargs):
-        queryset = Client.objects.filter(id=pk)
-        client = ClientSerializer(queryset)
+        obj = Client.objects.get(pk=pk)
+        client = ClientSerializer(obj)
+
         json_info = client.data
 
         queryset = Individual.objects.filter(client=json_info['id'])
         individuals = IndividualSerializer(queryset, many=True)
-        json_info['individuals']= individuals.data
+        json_info['individuals'] = individuals.data
 
-
-#        for individual in json_info['individuals']:
- #           passport = PassportSerializer(Passport.objects.get(individual=individual.id), many=False)
-  #          json_info['individuals'][individual]['Passport'] = passport.data
-   #         images = ImageSerializer(Image.objects.get(individual=individual.id, passport= passport.data.id),many=True)
-    #        for image in images.data:
-     #           json_info['individuals'][individual]['Passport']['Images']= image
-
-        return Response(data= json.dumps(json_info))
+        k = 0
+        for individual in json_info['individuals']:
+            where_id = individual['id']
+            passport_obj = Passport.objects.get(individual_id=where_id)
+            passport = PassportSerializer(passport_obj)
+            json_info['individuals'][k]['Passport'] = passport.data
+            psp_where_id = passport.data['id']
+            k+=1
+          #  img_objs = Image.objects.get(individualtfp_id=where_id)
+           # images = ImageSerializer(img_objs, many=True)
+           # for image in images.data:
+            #    json_info['individuals'][0]['Passport']['Images'] = image
+        return Response(data=json.dumps(json_info,ensure_ascii=False).encode('utf8'))
 
 
 class GetPrimaryIndividual(APIView):

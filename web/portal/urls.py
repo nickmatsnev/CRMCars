@@ -9,11 +9,9 @@ from rest_framework import routers
 from rest_framework import permissions
 from django.urls import path
 
-from web.portal.index import *
 from web.portal import api
-
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from .views import *
+from .controllers.auth import *
 
 router = routers.DefaultRouter()
 
@@ -52,9 +50,12 @@ router.register(r'api/generation', api.GenerationCreateApi)
 
 
 urlpatterns = [
-
-    url(r'^$', index),
+    url(r'^$', sign_in, name="signup"),
     url(r'^', include(router.urls)),
+
+    url(r'^signup/$', sign_up, name='signup'),
+    url(r'signin/$', sign_in, name="signin"),
+    url(r'signout/$', sign_out, name="signout"),
 
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -65,4 +66,6 @@ urlpatterns = [
     path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
     path('api/generation/individual_<int:pk>/all', api.GenerationGetAllApi.as_view()),
     path('api/generation/individual_<int:pk>/tasks', api.GenerationGetTasksApi.as_view()),
- ]
+    url(r'client_inspect', client_inspect,name="client_inspect"),
+    url(r'clients_list', clients_list,name="clients_list")
+]

@@ -1,0 +1,84 @@
+{% extends "../base.html" %}
+{% block content %}
+
+
+		<div id="" class="container">
+  <form action="scoringform" method="get">
+    <prints>Заявки</prints>
+
+<br>
+  <div class="input-group">
+      <span class="input-group-btn">
+          <p></p>
+         <input type="submit" value="test">
+      </span>
+    </div>
+
+
+<!--
+        <p>
+            <label>Введите имя</label><br>
+            <input type="text" name="name" />
+        </p>
+        <p>
+            <label>Введите id</label><br>
+            <input type="number" name="iduser" />
+        </p>
+        <input type="submit" value="Сохранить" >
+
+    {% if people.count > 0 %}
+    <h2>Список пользователей</h2>
+    <table>
+        <tr><th>Id</th><th>Имя</th><th>Возраст</th></tr>
+        {% for person in people %}
+        <tr><td>{{ person.id }}</td><td>{{ person.name }}</td><td>{{ person.age }}</td></tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+-->
+
+<table  bgcolor="#FFFFFF">
+    <thead>
+      <tr>
+        <th>Номер</th>
+          <td> Фамилия и Имя</td>
+          <td>Дата регистрации</td>
+          <td> Продукт</td>
+          <td>Оператор</td>
+          <td>Статус</td>
+          <td> %</td>
+      </tr>
+    </thead>
+
+
+    <tbody>
+        <tr  style="background: #50B948">
+            <td><a href="zayavkainspect">{{ id }}</a></td>
+            <td><a href="zayavkainspect">{{ name }}</a></td>
+            <td><a href="zayavkainspect">{{ dataregis }}</a></td>
+            <td><a href="zayavkainspect">{{ product }}</a></td>
+            <td><a href="zayavkainspect">{{ operator }}</a></td>
+            <td><a href="zayavkainspect"> {{ status }}</a></td>
+            <td><a href="zayavkainspect">{{ procent }}</a></td>
+             </tr>
+
+     <tr style="background: #ffff00">
+
+            <td>126</td>
+            <td>Sidorov A. A.</td>
+            <td>12.12.2012</td>
+            <td>Willz</td>
+            <td>Kottsov P. A.</td>
+            <td>В работе</td>
+            <td>56%</td>
+
+     </tr>
+    </tbody>
+</table>
+  </form>
+</div>
+
+
+{% endblock %}
+
