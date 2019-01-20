@@ -41,7 +41,6 @@ class IndividualsApi(mixins.CreateModelMixin,
 
 
 class PassportsApi(mixins.CreateModelMixin,
-                     mixins.ListModelMixin,
                      mixins.RetrieveModelMixin,
                      viewsets.GenericViewSet):
     queryset = Passport.objects.all()
@@ -49,7 +48,6 @@ class PassportsApi(mixins.CreateModelMixin,
 
 
 class DriverLicesesApi(mixins.CreateModelMixin,
-                 mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  viewsets.GenericViewSet):
     queryset = DriverLicense.objects.all()
@@ -57,7 +55,6 @@ class DriverLicesesApi(mixins.CreateModelMixin,
 
 
 class ImagesApi(mixins.CreateModelMixin,
-                 mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
                  viewsets.GenericViewSet):
     queryset = Image.objects.all()
@@ -73,24 +70,59 @@ class GetClientApi(APIView):
 
         json_info = client.data
 
-        queryset = Individual.objects.filter(client=json_info['id'])
+        queryset = Individual.objects.filter(client_id=json_info['id'])
         individuals = IndividualSerializer(queryset, many=True)
         json_info['individuals'] = individuals.data
+
+        del json_info['id']
 
         k = 0
         for individual in json_info['individuals']:
             where_id = individual['id']
             passport_obj = Passport.objects.get(individual_id=where_id)
             passport = PassportSerializer(passport_obj)
-            json_info['individuals'][k]['Passport'] = passport.data
             psp_where_id = passport.data['id']
-            k+=1
-          #  img_objs = Image.objects.get(individualtfp_id=where_id)
-           # images = ImageSerializer(img_objs, many=True)
-           # for image in images.data:
-            #    json_info['individuals'][0]['Passport']['Images'] = image
-        return Response(data=json.dumps(json_info,ensure_ascii=False).encode('utf8'))
+            json_info['individuals'][k]['passport'] = passport.data
 
+            del json_info['individuals'][k]['id']
+            del json_info['individuals'][k]['client']
+            del json_info['individuals'][k]['passport']['id']
+            del json_info['individuals'][k]['passport']['individual']
+
+            img_objs = Image.objects.filter(individual_id=where_id,passport_id=psp_where_id)
+            images = ImageSerializer(img_objs, many=True)
+            json_info['individuals'][k]['passport']['images'] = images.data
+
+            img = 0
+            for image in json_info['individuals'][k]['passport']['images']:
+                del json_info['individuals'][k]['passport']['images'][img]['individual']
+                del json_info['individuals'][k]['passport']['images'][img]['passport']
+                del json_info['individuals'][k]['passport']['images'][img]['driver_license']
+                img += 1
+
+            driver_license_obj = DriverLicense.objects.get(individual_id=where_id)
+            driver_license = DriverLicenseSerializer(driver_license_obj)
+            drv_where_id = driver_license.data['id']
+            json_info['individuals'][k]['driver_license'] = driver_license.data
+
+            del json_info['individuals'][k]['driver_license']['id']
+            del json_info['individuals'][k]['driver_license']['individual']
+
+            img_objs = Image.objects.filter(individual_id=where_id,driver_license=drv_where_id)
+            images = ImageSerializer(img_objs, many=True)
+            json_info['individuals'][k]['driver_license']['images'] = images.data
+
+            img = 0
+            for image in json_info['individuals'][k]['driver_license']['images']:
+                del json_info['individuals'][k]['driver_license']['images'][img]['individual']
+                del json_info['individuals'][k]['driver_license']['images'][img]['passport']
+                del json_info['individuals'][k]['driver_license']['images'][img]['driver_license']
+                img += 1
+
+            k += 1
+
+        #return Response(data=json.dumps(json_info,ensure_ascii=False).encode('utf8'))
+        return Response(data=json_info)
 
 class GetPrimaryIndividual(APIView):
     def get_object(self, pk):

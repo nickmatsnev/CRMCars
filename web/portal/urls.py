@@ -36,11 +36,12 @@ router.register(r'api/clients', api.ClientApi)
 router.register(r'api/individuals', api.IndividualsApi)
 router.register(r'api/passports', api.PassportsApi)
 router.register(r'api/driver_licenses', api.DriverLicesesApi)
+router.register(r'api/images', api.ImagesApi)
 
 
 # Работа с тасками
 router.register(r'api/tasks', api.TasksModelApi)
-router.register(r'api/tasks/client_task', api.ClientTaskApi)
+#router.register(r'api/tasks/client_task', api.ClientTaskApi)
 #router.register(r'api/tasks/scoring_task', api.ClientTaskApi)
 #router.register(r'api/tasks/source_task', api.ClientTaskApi)
 #router.register(r'api/tasks/checks_task', api.ClientTaskApi)

@@ -49,15 +49,15 @@ class Passport(models.Model):
 class DriverLicense(models.Model):
     individual = models.ForeignKey(Individual, related_name='driver_licenses', on_delete=models.CASCADE)
 
-    number = models.CharField(default=0, max_length=100)
+    number = models.CharField(max_length=100, default="")
     #issued_at = models.DateField(null=True)
     issued_at = models.TextField(null=True)
 
 
 class Image(models.Model):
     individual = models.ForeignKey(Individual, related_name='individual', on_delete=models.CASCADE)
-    passport = models.ForeignKey(Passport, null=True, related_name='pass_images', on_delete=models.CASCADE)
-    driver_license = models.ForeignKey(DriverLicense, null=True, related_name='drv_lcns_images', on_delete=models.CASCADE)
+    passport = models.ForeignKey(Passport, null=True, related_name='passport_images', on_delete=models.CASCADE)
+    driver_license = models.ForeignKey(DriverLicense, null=True, related_name='driver_license_images', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100, null=True)
 
