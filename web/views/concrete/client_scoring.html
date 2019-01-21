@@ -7,7 +7,7 @@
 {% block content %}
 
 		<div id="" class="container">
-    <h1>Оценка заявки №123</h1>
+    <h1>Оценка заявки № {{ id }}</h1>
             <div style=" border:1px solid lightgray;" id="" class="container">
                 <big>Данные</big>
 
@@ -38,7 +38,11 @@
 {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказать </button>#}
 {#            </div>#}
 </div>
+    <div style=" border:1px solid lightgray;" id="" class="container">
+        <big style="color:red">Сырые данные</big>
+        <div style="height:200px; width:570px;border:2px solid #5e5e5e;font:16px/26px Georgia, Garamond, Serif;overflow-y: scroll;">
+            {{ raw_data }}</div>
 
-
+    </div>
 {% endblock %}
 

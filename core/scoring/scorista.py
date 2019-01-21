@@ -56,7 +56,7 @@ def get_scorista():
 
     r = requests.post(url, data=json.dumps(request), headers=headers)
     scorista_res = json.loads(r.text)
-    return json.dumps(scorista_res, indent=4, ensure_ascii=True)
+    return json.dumps(scorista_res, indent=4, ensure_ascii=False)
 
 
 def get_checks(passport_user, license_user, scorista_json):

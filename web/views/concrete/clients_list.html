@@ -46,7 +46,6 @@
           <td> ФИО</td>
           <td>Дата регистрации</td>
           <td> Продукт</td>
-          <td>Оператор</td>
           <td>Статус</td>
           <td> </td>
           <td> </td>
@@ -63,7 +62,6 @@
              <td>{{ item.willz }}</td>
             <td>{{ item.created_at }}</td>
             <td>Willz</td>
-            <td>Седов P. A.</td>
             <td>В работе</td>
              <td><a  href="{% url "client_inspect" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Клиент</button></a></td>
              <td><a  href="{% url "client_scoring" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Скоринг</button></a></td>

@@ -30,31 +30,40 @@
             <td>11/11/2011</td>-->
 
    <tr>
-    <td> Имя:</td><td>{{ first_name}}</td><td>Статус:</td><td>В работе</td>
+       <td> Имя:</td>
+       <td>{{ individual.first_name }}</td>
    </tr>
    <tr>
-    <td>Отчество:</td><td>{{ middle_name }}</td><td>Скоринг:</td><td>Завершено</td>
+       <td>Отчество:</td>
+       <td>{{ individual.middle_name }}</td>
    </tr>
    <tr>
-    <td>Фамилия:</td><td>{{  last_name}}</td><td>Стоп-факторы:</td><td>Задолженность ГИБДД</td>
+       <td>Фамилия:</td>
+       <td>{{ individual.last_name }}</td>
    </tr>
    <tr>
-    <td>Пол:</td><td> Мужской</td>
+       <td>Пол:</td>
+       <td> {{ individual.gender }}</td>
    </tr>
    <tr>
-    <td>Дата рождения:</td><td> 18.06.1988</td>
+       <td>Дата рождения:</td>
+       <td> {{ individual.birthday }}</td>
    </tr>
    <tr>
-    <td>Номер паспорта:</td><td>{{ passport_num }}</td>
+       <td>Номер паспорта:</td>
+       <td>{{ individual.passport.number }}</td>
    </tr>
    <tr>
-    <td>Дата выдачи паспорта:</td><td> 20.03.2015</td>
+       <td>Дата выдачи паспорта:</td>
+       <td> {{ individual.passport.issued_at }}</td>
    </tr>
    <tr>
-    <td>кем выдан:</td><td> Отделом УФМС по гор. Москве по району Пресненский</td>
+       <td>кем выдан:</td>
+       <td> {{ individual.passport.issued_by }}</td>
    </tr>
    <tr>
-    <td>Адрес прописки:</td><td> Москва, ул. мал. Грузинская, 27, кв. 148</td>
+       <td>Адрес прописки:</td>
+       <td> {{ individual.passport.address_registration }}</td>
    </tr>
 
   </tr>
@@ -69,22 +78,26 @@
 
 
  <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <thead>
-      <tr>
-        <th>Фио</th>
-          <td>номер ВУ</td>
-          <td>дата выдачи ВУ</td>
-          <td>Стаж</td>
-          <td>Тип</td>
-      </tr>
-    </thead>
     <tbody>
+    <tr>
+        {% for item in passport_images %}
+            <td>
+                <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
+                                                                alt=""/></a>
 
-            <td>Ivan</td>
-            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
-            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
-            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
-            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            </td>
+
+
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for item in license_images %}
+            <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
+                                                            alt=""/></a>
+
+
+        {% endfor %}
+    </tr>
 
   </tr>
 
@@ -106,20 +119,17 @@
     <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
-         <th>ФИО</th>
           <td>Номер ВУ</td>
           <td>Дата выдачи ВУ</td>
-          <td>Стаж</td>
-          <td>Тип</td>
+
       </tr>
     </thead>
     <tbody>
 
-            <td>Иван Иванов</td>
-            <td>78 383891862</td>
-            <td>12.24.2012</td>
-            <td>15 лет</td>
-           <td>Основной водитель</td>
+    <td>{{ license.number }}</td>
+    <td>{{ license.issued_at }}</td>
+
+    <td>Основной водитель</td>
 
   </tr>
 
@@ -131,52 +141,55 @@
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
 
 
+    {##}
+    {#<div class="panel-heading">#}
+    {#    <p><strong>История операций</strong></p>#}
+    {#  </div>#}
 
-<div class="panel-heading">
-    <p><strong>История операций</strong></p>
-  </div>
-
-
- <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <thead>
-      <tr>
-        <th>Операция</th>
-          <td>Дата</td>
-      </tr>
-    </thead>
-    <tbody>
-<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
-          <!--  <td>создана</td>
-            <td>11/11/2011</td>
-            <td>на проверке скориста</td>
-            <td>11/11/2011</td>
-            <td> прошла все проверки</td>
-            <td>11/11/2011</td>
-            <td>ожидает согласования</td>
-            <td>11/11/2011</td>
-            <td>согласована иваном</td>
-            <td>11/11/2011</td>-->
-
-   <tr>
-    <td>Создана: </td><td>11/12/2012, 14:05</td>
-   </tr>
-   <tr>
-    <td>На проверке скориста: </td><td>11/12/2012, 18:07</td>
-   </tr>
-   <tr>
-    <td>Прошла все проверки: </td><td>12/12/2012, 16:04</td>
-   </tr>
-   <tr>
-    <td>Ожидает согласования: </td><td>12/12/2012, 19:04</td>
-   </tr>
-   <tr>
-    <td>Согласована оператором: </td><td>12/12/2012, 21:58</td>
-   </tr>
-
-  </tr>
-
-</tbody>
-</table>
+    {##}
+    {# <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">#}
+    {#    <thead>#}
+    {#      <tr>#}
+    {#        <th>Операция</th>#}
+    {#          <td>Дата</td>#}
+    {#      </tr>#}
+    {#    </thead>#}
+    {#    <tbody>#}
+    {#<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->#}
+    {#          <!--  <td>создана</td>#}
+    {#            <td>11/11/2011</td>#}
+    {#            <td>на проверке скориста</td>#}
+    {#            <td>11/11/2011</td>#}
+    {#            <td> прошла все проверки</td>#}
+    {#            <td>11/11/2011</td>#}
+    {#            <td>ожидает согласования</td>#}
+    {#            <td>11/11/2011</td>#}
+    {#            <td>согласована иваном</td>#}
+    {#            <td>11/11/2011</td>-->#}
+    {##}
+    {#   <tr>#}
+    {#    <td>Создана: </td><td>11/12/2012, 14:05</td>#}
+    {#   </tr>#}
+    {#   <tr>#}
+    {#    <td>На проверке скориста: </td><td>11/12/2012, 18:07</td>#}
+    {#   </tr>#}
+    {#   <tr>#}
+    {#    <td>Прошла все проверки: </td><td>12/12/2012, 16:04</td>#}
+    {#   </tr>#}
+    {#   <tr>#}
+    {#    <td>Ожидает согласования: </td><td>12/12/2012, 19:04</td>#}
+    {#   </tr>#}
+    {#   <tr>#}
+    {#    <td>Согласована оператором: </td><td>12/12/2012, 21:58</td>#}
+    {#   </tr>#}
+    {##}
+    {#  </tr>#}
+    {##}
+    {#</tbody>#}
+    {#</table>#}
 </div>
 
+
 {% endblock %}
+
+
