@@ -6,43 +6,79 @@
 {% endblock %}
 {% block content %}
 
-		<div id="" class="container">
-    <h1>Оценка заявки № {{ id }}</h1>
-            <div style=" border:1px solid lightgray;" id="" class="container">
-                <big>Данные</big>
+    <div id="" class="container">
 
-                <p>Скориста <strong style="color:green">Успешно </strong></p>
+        <h1>Оценка заявки № {{ id }}</h1>
+        <a href="{% url "accept_client" id %}">
+            <button class="btn btn-default  " type="button" {{ disabled }}><span
+                    class="glyphicon glyphicon-plus"></span>Одобрить
+            </button>
+        </a></td>
+        <a href="{% url "reject_client" id %}">
+            <button class="btn btn-default  " type="button" {{ disabled }}><span
+                    class="glyphicon glyphicon-plus"></span>Отказать
+            </button>
+        </a></td>
 
-            </div>
-          <div style=" border:1px solid lightgray;" id="" class="container">
-                 <big>Скоринг</big>
+
+        <div style=" border:1px solid lightgray;" id="" class="container">
+            <big>Данные</big>
+
+            <p>Скориста <strong style="color:green">Успешно </strong></p>
+
+        </div>
+
+        <div style=" border:1px solid lightgray;" id="" class="container">
+            <big>Скоринг</big>
 
 
-                <p>
-                    Оценка клиента: <strong style="color:green">{{ score.scoring }} </strong></p>
-{#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
-{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
-            </div>
-          <div style=" border:1px solid lightgray;" id="" class="container">
-    <big style="color:red">Стоп-Факторы</big>
+            <p>
+                Оценка клиента: <strong style="color:green">{{ score.scoring }} </strong></p>
+            {#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
+            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
+        </div>
 
+        <div style=" border:1px solid lightgray;" class="container">
+            <big style="color:red">Стоп-Факторы</big>
+            <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
+                <thead>
+                <tr>
+
+                    <td style="width:300px;position:relative;">Проверка</td>
+                    <td>Статус</td>
+                    <td>План</td>
+                    <td>Факт</td>
+                </tr>
+                </thead>
+                <tbody>
                 {% for item in checks %}
-                <p>
-                    {{ item.name }} -  {{ item.type }} - {{ item.value }} - {{ item.info }}
-                </p>
-                {% endfor %}
-{#                <p>#}
-{#                    Оценка клиента: <strong style="color:green">80 баллов </strong></p>#}
-{#                <p>Задолженность по ФССП в размере 1000 рублей. Штрафы ГИБДД в размере 2000 рублей.</p>#}
-{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить </button>#}
-{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказать </button>#}
-{#            </div>#}
-</div>
-    <div style=" border:1px solid lightgray;" id="" class="container">
-        <big style="color:red">Сырые данные</big>
-        <div style="height:200px; width:570px;border:2px solid #5e5e5e;font:16px/26px Georgia, Garamond, Serif;overflow-y: scroll;">
-            {{ raw_data }}</div>
 
+                    <tr>
+                        <td class="td-data">{{ item.info }}</td>
+
+                        <td class="td-data">{{ item.value|yesno:"Пройдена,Провалена,maybe" }} </td>
+                        <td class="td-data">{{ item.plan }} </td>
+                        <td class="td-data">{{ item.fact }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+            {#                <p>#}
+            {#                    Оценка клиента: <strong style="color:green">80 баллов </strong></p>#}
+            {#                <p>Задолженность по ФССП в размере 1000 рублей. Штрафы ГИБДД в размере 2000 рублей.</p>#}
+            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить </button>#}
+            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказать </button>#}
+            {#            </div>#}
+
+
+        </div>
+        <div style=" border:1px solid lightgray;" id="" class="container">
+            <big style="color:red">Сырые данные</big>
+            <div style="height:200px; width:570px;border:2px solid #5e5e5e;font:16px/26px Georgia, Garamond, Serif;overflow-y: scroll;">
+                {{ raw_data }}</div>
+
+        </div>
     </div>
 {% endblock %}
 

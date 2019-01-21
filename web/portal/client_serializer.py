@@ -42,7 +42,7 @@ class IndividualSerializer(serializers.ModelSerializer):
         Generation.objects.create(individual=individual,
                                   number=0,
                                   create_time=datetime.datetime.now(),
-                                  status='in_progress')
+                                  status='Новая')
         return individual
 
 

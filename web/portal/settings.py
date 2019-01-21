@@ -24,6 +24,7 @@ ALLOWED_HOSTS = ['willz-dev.korishchenko.ru','127.0.0.1']
 WSGI_APPLICATION = 'web.portal.wsgi.application'
 
 REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%Y-%m-%d  %H:%M",
     'DEFAULT_RENDERER_CLASSES': (
         'portal.renders.UTF8JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -32,6 +33,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     )
 }
+TIME_ZONE = 'Europe/Moscow'
+
 
 # Application definition
 

@@ -9,8 +9,9 @@
 
 
 		<div id="" class="container">
-            <prints><strong>Заявки</strong></prints>
-        <p></p>
+            <h1 class="panel-title">Заявки</h1>
+
+            <p></p>
 
 <br>
 
@@ -62,7 +63,7 @@
              <td>{{ item.fio }}</td>
             <td>{{ item.created_at }}</td>
             <td>Willz</td>
-            <td>В работе</td>
+             <td>{{ item.status }}</td>
              <td><a  href="{% url "client_inspect" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Клиент</button></a></td>
              <td><a  href="{% url "client_scoring" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Скоринг</button></a></td>
 
@@ -72,8 +73,13 @@
 
     </tbody>
 </table>
-</div>
 
+</div>
+    <a href="{% url "clients_list" %}">
+        <button class="btn btn-default  " type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>Загрузить
+            новые заявки
+        </button>
+    </a></td>
 
 {% endblock %}
 

@@ -71,6 +71,9 @@ urlpatterns = [
     url(r'users_list', users_list, name="users_list"),
 
     path(r'client_scoring/<int:id>/', client_scoring, name="client_scoring"),
+    path(r'accept_client/<int:id>/', accept_client, name="accept_client"),
+    path(r'reject_client/<int:id>/', reject_client, name="reject_client"),
+
     url(r'source', source, name="source"),
     path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect")
 ]

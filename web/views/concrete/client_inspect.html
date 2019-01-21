@@ -8,8 +8,9 @@
 
 {% block content %}
 <div class="container" id="">
-    <p><strong>Заявка № {{ id }}</strong></p>
-  <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <h1 class="panel-title">Заявка № {{ id }}</h1>
+
+    <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
        <thead>
       <tr>
         <th></th>
@@ -141,52 +142,30 @@
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
 
 
-    {##}
-    {#<div class="panel-heading">#}
-    {#    <p><strong>История операций</strong></p>#}
-    {#  </div>#}
+    <div class="panel-heading">
+        <p><strong>История операций</strong></p>
+    </div>
 
-    {##}
-    {# <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">#}
-    {#    <thead>#}
-    {#      <tr>#}
-    {#        <th>Операция</th>#}
-    {#          <td>Дата</td>#}
-    {#      </tr>#}
-    {#    </thead>#}
-    {#    <tbody>#}
-    {#<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->#}
-    {#          <!--  <td>создана</td>#}
-    {#            <td>11/11/2011</td>#}
-    {#            <td>на проверке скориста</td>#}
-    {#            <td>11/11/2011</td>#}
-    {#            <td> прошла все проверки</td>#}
-    {#            <td>11/11/2011</td>#}
-    {#            <td>ожидает согласования</td>#}
-    {#            <td>11/11/2011</td>#}
-    {#            <td>согласована иваном</td>#}
-    {#            <td>11/11/2011</td>-->#}
-    {##}
-    {#   <tr>#}
-    {#    <td>Создана: </td><td>11/12/2012, 14:05</td>#}
-    {#   </tr>#}
-    {#   <tr>#}
-    {#    <td>На проверке скориста: </td><td>11/12/2012, 18:07</td>#}
-    {#   </tr>#}
-    {#   <tr>#}
-    {#    <td>Прошла все проверки: </td><td>12/12/2012, 16:04</td>#}
-    {#   </tr>#}
-    {#   <tr>#}
-    {#    <td>Ожидает согласования: </td><td>12/12/2012, 19:04</td>#}
-    {#   </tr>#}
-    {#   <tr>#}
-    {#    <td>Согласована оператором: </td><td>12/12/2012, 21:58</td>#}
-    {#   </tr>#}
-    {##}
-    {#  </tr>#}
-    {##}
-    {#</tbody>#}
-    {#</table>#}
+
+    <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+        <thead>
+        <tr>
+            <th>Операция</th>
+            <td>Дата</td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>Создана:</td>
+            <td>{{ history.create_time }}</td>
+        </tr>
+
+
+        </tr>
+
+        </tbody>
+    </table>
 </div>
 
 
