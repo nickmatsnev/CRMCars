@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container" id="">
-    <p><strong>Заявка №6</strong></p>
+    <p><strong>Заявка № {{ id }}</strong></p>
   <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
        <thead>
       <tr>
@@ -27,13 +27,13 @@
             <td>11/11/2011</td>-->
 
    <tr>
-    <td> Имя:</td><td>Андрей</td><td>Статус:</td><td>В работе</td>
+    <td> Имя:</td><td>{{ first_name}}</td><td>Статус:</td><td>В работе</td>
    </tr>
    <tr>
-    <td>Отчество:</td><td>Петрович</td><td>Скоринг:</td><td>Завершено</td>
+    <td>Отчество:</td><td>{{ middle_name }}</td><td>Скоринг:</td><td>Завершено</td>
    </tr>
    <tr>
-    <td>Фамилия:</td><td>Сидоров</td><td>Стоп-факторы:</td><td>Задолженность ГИБДД</td>
+    <td>Фамилия:</td><td>{{  last_name}}</td><td>Стоп-факторы:</td><td>Задолженность ГИБДД</td>
    </tr>
    <tr>
     <td>Пол:</td><td> Мужской</td>
@@ -42,7 +42,7 @@
     <td>Дата рождения:</td><td> 18.06.1988</td>
    </tr>
    <tr>
-    <td>Номер паспорта:</td><td>45 15 188833</td>
+    <td>Номер паспорта:</td><td>{{ passport_num }}</td>
    </tr>
    <tr>
     <td>Дата выдачи паспорта:</td><td> 20.03.2015</td>

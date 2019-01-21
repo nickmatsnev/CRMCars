@@ -1,15 +1,16 @@
 {% extends "../base.html" %}
 
+{% block title %}My Blog{% endblock %}
 
 
 {% block content %}
 <div class="container" id="">
-<p>Заявка № {{ id }}</p>
-<form  action="inspectform" method="get">
-    <input type="submit" value="Показать">
+    <p><strong>Заявка № {{ id }}</strong></p>
   <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
        <thead>
       <tr>
+        <th></th>
+          <td></td>
       </tr>
     </thead>
     <tbody>
@@ -26,31 +27,31 @@
             <td>11/11/2011</td>-->
 
    <tr>
-    <td> Имя:</td> <td>{{ name }}</td> <td>Статус:</td><td>{{ status }}</td>
+    <td> Имя:</td><td>{{ first_name}}</td><td>Статус:</td><td>В работе</td>
    </tr>
    <tr>
-    <td>Отчество:</td><td>{{ fatname }}</td><td>Скоринг:</td><td>{{ procent }}</td>
+    <td>Отчество:</td><td>{{ middle_name }}</td><td>Скоринг:</td><td>Завершено</td>
    </tr>
    <tr>
-    <td>Фамилия:</td> <td>{{ surname }}</td> <td>Стоп-факторы:</td><td><td>{{ name }}</td></td>
+    <td>Фамилия:</td><td>{{  last_name}}</td><td>Стоп-факторы:</td><td>Задолженность ГИБДД</td>
    </tr>
    <tr>
-    <td>Пол:</td><td>{{ name }}</td><td></td>
+    <td>Пол:</td><td> Мужской</td>
    </tr>
    <tr>
-    <td>Дата рождения:</td><td>{{ dataregis }}</td><td></td>
+    <td>Дата рождения:</td><td> 18.06.1988</td>
    </tr>
    <tr>
-    <td>Номер паспорта:</td><td>{{ name }}</td><td></td>
+    <td>Номер паспорта:</td><td>{{ passport_num }}</td>
    </tr>
    <tr>
-    <td>Дата выдачи паспорта:</td><td>{{ dataregis }}</td><td></td>
+    <td>Дата выдачи паспорта:</td><td> 20.03.2015</td>
    </tr>
    <tr>
-    <td>кем выдан:</td><td>{{ operator }}</td><td></td>
+    <td>кем выдан:</td><td> Отделом УФМС по гор. Москве по району Пресненский</td>
    </tr>
    <tr>
-    <td>Адрес прописки:</td><td>Россия, Москва, Никольская ул., 27к2, 148</td><td></td>
+    <td>Адрес прописки:</td><td> Москва, ул. мал. Грузинская, 27, кв. 148</td>
    </tr>
 
   </tr>
@@ -70,17 +71,17 @@
         <th>Фио</th>
           <td>номер ВУ</td>
           <td>дата выдачи ВУ</td>
-          <td>стаж</td>
-          <td>тип</td>
+          <td>Стаж</td>
+          <td>Тип</td>
       </tr>
     </thead>
     <tbody>
 
             <td>Ivan</td>
-            <td><img src="static/logo-willz.svg"></td>
-            <td><img src="static/logo-willz.svg"></td>
-            <td><img src="static/logo-willz.svg"></td>
-            <td><img src="static/logo-willz.svg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
+            <td><img style="height: 25px; width: 25px" src="static/scan.jpg"></td>
 
   </tr>
 
@@ -102,30 +103,30 @@
     <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
-         <th>Фио</th>
-          <td>номер ВУ</td>
-          <td>дата выдачи ВУ</td>
-          <td>стаж</td>
-          <td>тип</td>
+         <th>ФИО</th>
+          <td>Номер ВУ</td>
+          <td>Дата выдачи ВУ</td>
+          <td>Стаж</td>
+          <td>Тип</td>
       </tr>
     </thead>
     <tbody>
 
             <td>Иван Иванов</td>
-            <td>111111111111</td>
+            <td>78 383891862</td>
             <td>12.24.2012</td>
-            <td>95 лет</td>
-           <td>Основной водитель   </td>
+            <td>15 лет</td>
+           <td>Основной водитель</td>
 
   </tr>
 
 </tbody>
 </table>
-<!--
+
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
--->
+
 
 
 <div class="panel-heading">
@@ -136,8 +137,8 @@
  <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
-        <th>операция</th>
-          <td>дата</td>
+        <th>Операция</th>
+          <td>Дата</td>
       </tr>
     </thead>
     <tbody>
@@ -154,26 +155,25 @@
             <td>11/11/2011</td>-->
 
    <tr>
-    <td>создана</td><td>11/11/2011</td>
+    <td>Создана: </td><td>11/12/2012, 14:05</td>
    </tr>
    <tr>
-    <td>на проверке скориста</td><td>11/11/2011</td>
+    <td>На проверке скориста: </td><td>11/12/2012, 18:07</td>
    </tr>
    <tr>
-    <td>прошла все проверки</td><td>11/11/2011</td>
+    <td>Прошла все проверки: </td><td>12/12/2012, 16:04</td>
    </tr>
    <tr>
-    <td>ожидает согласования</td><td>11/11/2011</td>
+    <td>Ожидает согласования: </td><td>12/12/2012, 19:04</td>
    </tr>
    <tr>
-    <td>согласована иваном</td><td>11/11/2011</td>
+    <td>Согласована оператором: </td><td>12/12/2012, 21:58</td>
    </tr>
 
   </tr>
 
 </tbody>
 </table>
-</form>
 </div>
 
 {% endblock %}

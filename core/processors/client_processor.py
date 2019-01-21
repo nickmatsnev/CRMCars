@@ -19,7 +19,7 @@ class ClientProcessor(BasicProcess):
 
     def __process_raw_client(self, body):
         #try:
-            url = "http://127.0.0.1:8000"
+            url = "http://127.0.0.1:8002"
             headers = {"accept": "application/json", "Content-Type" : "application/json",
                    "X-CSRFToken": "hDnSpAaGh1PBYRa4mLozhjdXUMKXVIeOsYXUbJpcGtGoJ5KxZKF9kmjpZj3hKJGD"}
 

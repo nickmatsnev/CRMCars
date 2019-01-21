@@ -67,9 +67,8 @@ urlpatterns = [
     path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
     path('api/generation/individual_<int:pk>/all', api.GenerationGetAllApi.as_view()),
     path('api/generation/individual_<int:pk>/tasks', api.GenerationGetTasksApi.as_view()),
-    url(r'client_inspect', client_inspect,name="client_inspect"),
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'client_scoring', client_scoring, name="client_scoring"),
     url(r'source', source, name="source"),
-    url(r'userpage', userpage, name="userpage")
+    path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect")
 ]
