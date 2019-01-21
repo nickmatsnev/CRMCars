@@ -45,8 +45,8 @@ def client_inspect(request,id):
     raw_data = api_requestor.request('/clients/{0}/'.format(id))
     individual = raw_data['individuals'][0]
     license = raw_data['individuals'][0]['driver_license']
-    passport_images = individual['passport']['images']
-    license_images = license['images']
+    passport_images = individual['passport']['passport_images']
+    license_images = license['driver_license_images']
 
     context = {'individual': individual, 'license': license, 'passport_images': passport_images,
                'license_images': license_images, 'id': id}

@@ -19,8 +19,20 @@ from web.portal.serializers import *
 
 from rest_framework import viewsets
 
-class ClientApi(mixins.CreateModelMixin,
-                mixins.ListModelMixin,
+
+class GenerationApi(mixins.CreateModelMixin, mixins.ListModelMixin,
+                       mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+    queryset = Generation.objects.all()
+    serializer_class = GenerationSerializer
+
+
+class ClientApi(mixins.ListModelMixin,mixins.RetrieveModelMixin,
+                viewsets.GenericViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientGetSerializer
+
+
+class CreateClientApi(mixins.CreateModelMixin,
                 viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
@@ -201,38 +213,38 @@ class UpdateClientTaskApi(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GenerationCreateApi(mixins.CreateModelMixin,
-                    viewsets.GenericViewSet):
-    queryset = Generation.objects.all()
-    serializer_class = GenerationCreateSerializer
+#class GenerationCreateApi(mixins.CreateModelMixin,
+#                    viewsets.GenericViewSet):
+#    queryset = Generation.objects.all()
+#    serializer_class = GenerationCreateSerializer
 
 
-class GenerationGetAllApi(APIView):
-    def get_object(self, pk):
-        try:
-            return Generation.objects.filter(individual=pk)[0]
-        except Individual.DoesNotExist:
-            raise Http404
+#class GenerationGetAllApi(APIView):
+#    def get_object(self, pk):
+#        try:
+#            return Generation.objects.filter(individual=pk)[0]
+#        except Individual.DoesNotExist:
+#            raise Http404
 
-    @swagger_auto_schema(operation_description='Used to get all generations for individual')
-    def get(self, request, pk, *args, **kwargs):
-        queryset = self.get_object(pk)
-        serializer = GenerationGetSerializer(queryset)
-        return Response(serializer.data)
+#    @swagger_auto_schema(operation_description='Used to get all generations for individual')
+#    def get(self, request, pk, *args, **kwargs):
+#        queryset = self.get_object(pk)
+#        serializer = GenerationGetSerializer(queryset)
+#        return Response(serializer.data)
 
 
-class GenerationGetTasksApi(APIView):
-    def get_object(self, pk):
-        try:
-            return Generation.objects.filter(individual=pk)[0]
-        except Individual.DoesNotExist:
-            raise Http404
+#class GenerationGetTasksApi(APIView):
+#    def get_object(self, pk):
+#        try:
+#            return Generation.objects.filter(individual=pk)[0]
+#        except Individual.DoesNotExist:
+#            raise Http404
 
-    @swagger_auto_schema(operation_description='Used to get all tasks for individual')
-    def get(self, request, pk, *args, **kwargs):
-        queryset = self.get_object(pk)
-        serializer = GenerationGetSerializer(queryset)
-        return Response(serializer.data)
+#    @swagger_auto_schema(operation_description='Used to get all tasks for individual')
+#    def get(self, request, pk, *args, **kwargs):
+#        queryset = self.get_object(pk)
+#        serializer = GenerationGetSerializer(queryset)
+#        return Response(serializer.data)
 
 # class start_task(APIView):
 #     def get(self,reque        r = requests.post('https://www.somedomain.com/some/url/save', params=request.POST)st):

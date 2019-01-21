@@ -32,115 +32,66 @@ class ClientProcessor(BasicProcess):
             raw_json = json.loads(raw_data['payload'])
         # делаем формат для Клиента, отправляем и получаем client_id
             raw_to_client = {'willz_id': raw_json['id'], 'created_at': raw_json['created_at']}
-            response = requests.post(url=url + '/api/clients/', data=json.dumps(raw_to_client), headers=headers)
+            response = requests.post(url=url + '/api/clients/new/', data=json.dumps(raw_to_client), headers=headers)
             if response == 415:
-                return;
+                return
 
             raw_data = json.loads(response.content.decode('utf-8'))
             client_id = raw_data['id']
 
-        # ищем главную индивидуалку
+         # для всех индивидуалок
             for drvr in raw_json['drivers']:
-            # Ищем совпадения ID с вилзом и пихаем в первую очередь
+         # проверяем на главного
                 if drvr['id'] == raw_json['driver_id']:
-                # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
-                    raw_to_individual = {'client': client_id, 'last_name': drvr['lastname']
+                    primary = True
+                else:
+                    primary = False
+        # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
+                raw_to_individual = {'client': client_id,'primary':primary, 'last_name': drvr['lastname']
                     , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
                                      'email': drvr['email']
                     , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
                                      'birthday': drvr['birthday']}
-                    response = requests.post(url=url + '/api/individuals/', data=json.dumps(raw_to_individual),
-                                             headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    individual_id = raw_data['id']
+                response = requests.post(url=url + '/api/individuals/', data=json.dumps(raw_to_individual), headers=headers)
+                raw_data = json.loads(response.content.decode('utf-8'))
+                individual_id = raw_data['id']
 
-                # формируем права
-                    lcn_number = drvr['driver_license']['number']
-                    if lcn_number == "":
-                        lcn_number = 0
-                    raw_to_driving_license = {'individual': individual_id, 'number': lcn_number
+            # формируем права
+                lcn_number = drvr['driver_license']['number']
+                if lcn_number == "":
+                    lcn_number = 0
+                raw_to_driving_license = {'individual': individual_id, 'number': lcn_number
                     , 'issued_at': drvr['driver_license']['issued_at']}
-                    response = requests.post(url=url + '/api/driver_licenses/', data=json.dumps(raw_to_driving_license),
+                response = requests.post(url=url + '/api/driver_licenses/', data=json.dumps(raw_to_driving_license),
                                          headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    driver_license_id = raw_data['id']
+                raw_data = json.loads(response.content.decode('utf-8'))
+                driver_license_id = raw_data['id']
 
-                # формируем фото для прав
-                    for img in range(1, 3):
-                        new_img_txt = 'image{0}'.format(img)
-                        raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
+            # формируем фото для прав
+                for img in range(1, 3):
+                    new_img_txt = 'image{0}'.format(img)
+                    raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
-                        requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
+                    requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
 
-                # формируем паспорт
-                    raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
-                        , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
-                        , 'address_registration': drvr['passport']['address_registration']
-                        , 'division_code': drvr['passport']['division_code'],
-                                   'birthplace': drvr['passport']['birthplace']}
-                    response = requests.post(url=url + '/api/passports/', data=json.dumps(raw_to_passport), headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    passport_id = raw_data['id']
-
-                # формируем фото для паспорта
-                    for img in range(1, 5):
-                        new_img_txt = 'image{0}'.format(img)
-                        raw_to_img = {'individual': individual_id, 'passport': passport_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                        requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
-                    break
-
-        # для всех индивидуалок
-            for drvr in raw_json['drivers']:
-                if drvr['id'] != raw_json['driver_id']:
-                # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
-                    raw_to_individual = {'client': client_id, 'last_name': drvr['lastname']
-                    , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
-                                     'email': drvr['email']
-                    , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
-                                     'birthday': drvr['birthday']}
-                    response = requests.post(url=url + '/api/individuals/', data=json.dumps(raw_to_individual), headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    individual_id = raw_data['id']
-
-                # формируем права
-                    lcn_number = drvr['driver_license']['number']
-                    if lcn_number == "":
-                        lcn_number = 0
-                    raw_to_driving_license = {'individual': individual_id, 'number': lcn_number
-                    , 'issued_at': drvr['driver_license']['issued_at']}
-                    response = requests.post(url=url + '/api/driver_licenses/', data=json.dumps(raw_to_driving_license),
-                                         headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    driver_license_id = raw_data['id']
-
-                # формируем фото для прав
-                    for img in range(1, 3):
-                        new_img_txt = 'image{0}'.format(img)
-                        raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                        requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
-
-                # формируем паспорт
-                    raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
+            # формируем паспорт
+                raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
                     , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
                     , 'address_registration': drvr['passport']['address_registration']
                     , 'division_code': drvr['passport']['division_code'],
                                    'birthplace': drvr['passport']['birthplace']}
-                    response = requests.post(url=url + '/api/passports/', data=json.dumps(raw_to_passport), headers=headers)
-                    raw_data = json.loads(response.content.decode('utf-8'))
-                    passport_id = raw_data['id']
+                response = requests.post(url=url + '/api/passports/', data=json.dumps(raw_to_passport), headers=headers)
+                raw_data = json.loads(response.content.decode('utf-8'))
+                passport_id = raw_data['id']
 
-                # формируем фото для паспорта
-                    for img in range(1, 5):
-                        new_img_txt = 'image{0}'.format(img)
-                        raw_to_img = {'individual': individual_id, 'passport': passport_id,
+            # формируем фото для паспорта
+                for img in range(1, 5):
+                    new_img_txt = 'image{0}'.format(img)
+                    raw_to_img = {'individual': individual_id, 'passport': passport_id,
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
-                        requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
+                    requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
         #except Exception as e:
          #       print(" Some error: {0}".format(e))
 

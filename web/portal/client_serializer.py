@@ -22,10 +22,28 @@ class DriverLicenseSerializer(serializers.ModelSerializer):
         fields = ('id','individual','number', 'issued_at')
 
 
+class GenerationSerializer(serializers.ModelSerializer):
+   # tasks = TasksSerializer()
+
+    class Meta:
+        model = Generation
+      #  fields = ('individual','number','create_time','status','client_task','scoring_task','source_task','checks_task')
+        fields = ('individual','number','create_time','status')
+
+
 class IndividualSerializer(serializers.ModelSerializer):
     class Meta:
         model = Individual
-        fields = ('id','client', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday')
+        fields = ('id','primary','client', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
+                  'birthday')
+
+    def create(self, validated_data):
+        individual = Individual.objects.create(**validated_data)
+        Generation.objects.create(individual=individual,
+                                  number=0,
+                                  create_time=datetime.datetime.now(),
+                                  status='in_progress')
+        return individual
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -33,3 +51,63 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ('id','willz', 'created_at')
 
+
+class ImageGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('title', 'url')
+
+
+class PassportGetSerializer(serializers.ModelSerializer):
+  passport_images = ImageGetSerializer(many=True)
+
+  class Meta:
+        model = Passport
+        fields = ('number', 'issued_at', 'issued_by', 'address_registration', 'division_code', 'birthplace',
+                  'passport_images')
+
+
+class DriverLicenseGetSerializer(serializers.ModelSerializer):
+  driver_license_images = ImageGetSerializer(many=True)
+
+  class Meta:
+        model = DriverLicense
+        fields = ('number', 'issued_at','driver_license_images')
+
+
+class IndividualGetSerializer(serializers.ModelSerializer):
+    passport = PassportGetSerializer(many=False)
+    driver_license = DriverLicenseGetSerializer(many=False)
+
+    class Meta:
+        model = Individual
+        fields = ('primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday',
+                  'passport','driver_license')
+
+
+class ClientGetSerializer(serializers.ModelSerializer):
+    individuals = IndividualGetSerializer(many=True)
+
+    class Meta:
+        model = Client
+        fields = ('willz', 'created_at','individuals')
+
+#        def create(self, validated_data):
+#            individuals_data = validated_data.pop('individuals')
+#            client = Client.objects.create(**validated_data)
+
+#            for individual_data in individuals_data:
+#                individual = Individual.objects.create(client=client, **individual_data)
+
+#                passport_data = individual_data.pop('passport')
+#                passport = Passport.objects.create(individual=individual,**passport_data)
+#                passport_images_data = passport_data.pop('passport_images')
+#                for passport_image_data in passport_images_data:
+#                    Image.objects.create(individual=individual,passport=passport,**passport_image_data)
+
+#                driver_license_data = individual_data.pop('driver_license')
+#                driver_license = DriverLicense.objects.create(individual=individual,**driver_license_data)
+#                driver_license_images_data = passport_data.pop('driver_license_images')
+#                for driver_license_image_data in driver_license_images_data:
+#                    Image.objects.create(individual=individual,driver_license=driver_license,**driver_license_image_data)
+#            return client

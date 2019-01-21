@@ -92,31 +92,6 @@ class SourceTaskSerializer(serializers.ModelSerializer):
         return source_task
 
 
-class GenerationCreateSerializer(ClientSerializer):
-    source_task = ClientTaskSerializer()
-    individual = IndividualSerializer()
-
-    class Meta:
-        model = Generation
-        fields = ('individual','source_task')
-
-    def create(self, validated_data):
-        source_task_data = validated_data.pop('source_task')
-        individual_data = validated_data.pop('individual')
-        generation = Generation.objects.create(**validated_data)
-        generation.create_time = datetime.datetime.now()
-# проверка на наличие генераций, если нет -, если есть то +1
-#       if (Generation.objects.get(individual=individual)!=0:
-            #+1
-        #else
-        generation.number=0
-        SourceTask.objects.create(generation=generation, **source_task_data)
-        Individual.objects.create(generation=generation, **individual_data)
-        return generation
 
 
-class GenerationGetSerializer(ClientSerializer):
-    class Meta:
-        model = Generation
-        fields = ('id', 'individual', 'number', 'create_time', 'source_task')
 

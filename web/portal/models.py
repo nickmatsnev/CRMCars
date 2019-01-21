@@ -21,8 +21,10 @@ class Client(models.Model):
     #created_at = models.DateTimeField()
     created_at = models.TextField(null=True)
 
+
 class Individual(models.Model):
     client = models.ForeignKey(Client, related_name='individuals', on_delete=models.CASCADE)
+    primary = models.BooleanField(default=False)
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100)
@@ -35,7 +37,7 @@ class Individual(models.Model):
 
 
 class Passport(models.Model):
-    individual = models.ForeignKey(Individual, related_name='passports', on_delete=models.CASCADE)
+    individual = models.OneToOneField(Individual, related_name='passport', on_delete=models.CASCADE)
 
     number = models.CharField(max_length=100)
     #issued_at = models.DateField()
@@ -47,7 +49,7 @@ class Passport(models.Model):
 
 
 class DriverLicense(models.Model):
-    individual = models.ForeignKey(Individual, related_name='driver_licenses', on_delete=models.CASCADE)
+    individual = models.OneToOneField(Individual, related_name='driver_license', on_delete=models.CASCADE)
 
     number = models.CharField(max_length=100, default="")
     #issued_at = models.DateField(null=True)
@@ -135,5 +137,9 @@ class Generation(models.Model):
     individual = models.ForeignKey(Individual, on_delete=models.CASCADE)
     number = models.IntegerField(default=0)
     create_time = models.DateTimeField()
-    source_task = models.ForeignKey(SourceTask,on_delete=models.CASCADE,null=True)
-
+    status = models.TextField()
+    #tasks = models.ForeignKey(Task, on_delete=models.CASCADE)
+    #client_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
+    #scoring_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
+    #source_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
+    #checks_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)

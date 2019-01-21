@@ -10,3 +10,4 @@ headers = {"accept": "application/json", "Content-Type": "application/json",
 def request(relative_url):
     response = requests.get(url+relative_url, headers=headers)
     return json.loads(response.content.decode('utf-8'))
+#    return  response
