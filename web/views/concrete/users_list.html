@@ -3,13 +3,13 @@
 
 
 {% block title %}
-   Список заявок
+   Список пользователей
 {% endblock %}
 {% block content %}
 
 
 		<div id="" class="container">
-            <prints><strong>Заявки</strong></prints>
+            <prints><strong>Пользователи</strong></prints>
         <p></p>
 
 <br>
@@ -42,14 +42,14 @@
 <table  bgcolor="#FFFFFF">
     <thead>
       <tr>
-        <th>Номер</th>
-          <td> ФИО</td>
-          <td>Дата регистрации</td>
-          <td> Продукт</td>
-          <td>Оператор</td>
-          <td>Статус</td>
-          <td> </td>
-          <td> </td>
+          <th>Id</th>
+        <th>Юзернейм</th>
+          <td>Имя</td>
+          <td>Фамилия</td>
+          <td>Почта</td>
+          <td>Последний вход</td>
+          <td>Активен</td>
+
       </tr>
     </thead>
 
@@ -60,13 +60,12 @@
          <tr style="background: #ffff00">
 
             <td>{{ item.id }}</td>
-             <td>{{ item.willz }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>Willz</td>
-            <td>Седов P. A.</td>
-            <td>В работе</td>
-             <td><a  href="{% url "client_inspect" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Клиент</button></a></td>
-             <td><a  href="{% url "client_scoring" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Скоринг</button></a></td>
+             <td>{{ item.username }}</td>
+            <td>{{ item.first_name }}</td>
+            <td>{{ item.last_name }}</td>
+            <td>{{ item.email }}</td>
+             <td>{{ item.last_login }}</td>
+          <td>{{ item.is_active }}</td>
 
      </tr>
 
@@ -74,6 +73,8 @@
 
     </tbody>
 </table>
+            <td><a  href="{% url "signup" %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Регистрация пользователя</button></a></td>
+
 </div>
 
 

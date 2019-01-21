@@ -25,7 +25,7 @@ def sign_in(request):
 
 def sign_up(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -34,7 +34,7 @@ def sign_up(request):
             login(request, user)
             return redirect('clients_list')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
 def sign_out(request):

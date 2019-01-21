@@ -25,7 +25,7 @@ class SourcesManager(BasicProcess):
         print("client start sources process")
         #__redis.set("555","{scorista:undone}")
 
-        self._publish_message(constants.SCORISTA_SOURCE_PROCESS_MESSAGE, "test_body")
+        self._publish_message(constants.SCORISTA_SOURCE_PROCESS_MESSAGE, body)
 
     def __scorista_source_processed(self, body):
         print("scorista source processed")

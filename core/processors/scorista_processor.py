@@ -5,6 +5,7 @@ sys.path.append('../')
 
 from lib import constants
 from lib.process import *
+from scoring.scorista import  *
 
 
 class ScoristaProcessor(BasicProcess):
@@ -17,6 +18,7 @@ class ScoristaProcessor(BasicProcess):
 
         def __process_source(self, body):
             print("source scorista is processed")
+            get_scorista()
             self._publish_message(constants.SCORISTA_SOURCE_PROCESSED_MESSAGE, "test_body")
 
 

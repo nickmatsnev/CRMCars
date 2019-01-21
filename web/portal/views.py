@@ -6,24 +6,36 @@ import sys
 
 import requests
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import *
 
 from core.lib import api_requestor
+from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 
 @login_required(login_url="signin")
 def clients_list(request):
   raw_data = api_requestor.request('/clients/')
 
-  return render(request, 'concrete/clients_list.html', {'title': 'Список заявок','items':raw_data})
+  return render(request, 'concrete/clients_list.html', {'items':raw_data})
 
 @login_required(login_url="signin")
-def client_scoring(request):
-  return render(request, 'concrete/client_scoring.html', {'title': 'Скоринг клиента'})
+def users_list(request):
+  users = User.objects.all()
+
+  return render(request, 'concrete/users_list.html', {'items':users})
+
+
+@login_required(login_url="signin")
+def client_scoring(request,id):
+    res = get_scorista()
+    score = get_scoring(res)
+    checks = get_checks('3333','4444',res)
+    return render(request, 'concrete/client_scoring.html', {'id':id,'score':score,'checks':checks})
 
 @login_required(login_url="signin")
 def source(request):
-  return render(request, 'concrete/source.html', {'title': 'Ресурс//Source'})
+  return render(request, 'concrete/source.html')
 
 
 @login_required(login_url="signin")

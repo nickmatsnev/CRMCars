@@ -1,74 +1,42 @@
-{% extends "../base.html" %}
+{% extends "../index.html" %}
+
+
+{% block title %}
+    Скоринг клиента
+{% endblock %}
 {% block content %}
 
-
 		<div id="" class="container">
-    <prints>Заявки</prints>
-<br>
-  <div class="input-group">
-      <span class="input-group-btn">
-          <p></p>
-        <button class="btn btn-default scoring-add-button" type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
-      </span>
-      <input type="text" class="form-control scoring-add-button" placeholder="Введите номер заявки, пожалуйста">
-    </div>
+    <h1>Оценка заявки №123</h1>
+            <div style=" border:1px solid lightgray;" id="" class="container">
+                <big>Данные</big>
 
-<table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <thead>
-      <tr>
-        <th>&#9660; Номер</th>
-          <td>&#9660; Фамилия и Имя</td>
-          <td>&#9660; Дата регистрации</td>
-          <td>&#9660; Продукт</td>
-          <td>&#9660; Оператор</td>
-          <td>&#9660; Статус</td>
-          <td>&#9660; %</td>
-          <td></td>
-      </tr>
-    </thead>
-    <tbody>
+                <p>Скориста <strong style="color:green">Успешно </strong></p>
+
+            </div>
+          <div style=" border:1px solid lightgray;" id="" class="container">
+                 <big>Скоринг</big>
 
 
-        <tr style="background: #ffff00">
+                <p>
+                    Оценка клиента: <strong style="color:green">{{ score.scoring }} </strong></p>
+{#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
+{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
+            </div>
+          <div style=" border:1px solid lightgray;" id="" class="container">
+    <big style="color:red">Стоп-Факторы</big>
 
-            <td>6</td>
-            <td>Сидоров A. П.</td>
-            <td>16.12.2015</td>
-            <td>Willz</td>
-            <td>Седов P. A.</td>
-            <td>В работе</td>
-            <td>26%</td>
-
-     </tr>
-        <tr style="background: #ffff00">
-
-            <td>126</td>
-            <td>Иванов В. Д.</td>
-            <td>02.05.2010</td>
-            <td>Willz</td>
-            <td>Широков Д. Н.</td>
-            <td>В работе</td>
-            <td>58%</td>
-
-     </tr>
-        <tr style="background: #ffff00">
-
-            <td>1   </td>
-            <td>Шерлок Х. К.</td>
-            <td>12.02.2012</td>
-            <td>Willz</td>
-            <td>Елесин P. A.</td>
-            <td>В работе</td>
-            <td>74%</td>
-
-     </tr>
-    </button>
-    </td>
-
-  </tr>
-
-</tbody>
-</table>
+                {% for item in checks %}
+                <p>
+                    {{ item.name }} -  {{ item.type }} - {{ item.value }} - {{ item.info }}
+                </p>
+                {% endfor %}
+{#                <p>#}
+{#                    Оценка клиента: <strong style="color:green">80 баллов </strong></p>#}
+{#                <p>Задолженность по ФССП в размере 1000 рублей. Штрафы ГИБДД в размере 2000 рублей.</p>#}
+{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить </button>#}
+{#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказать </button>#}
+{#            </div>#}
 </div>
 
 

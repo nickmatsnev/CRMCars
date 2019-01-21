@@ -105,7 +105,7 @@ def get_checks(passport_user, license_user, scorista_json):
     res_list.append(make_check_map('check_invalid_inn', 'bool', check_invalid_inn,
                                    dictall['data']['inn']['textResult']))
 
-    return json.dumps({'checks': res_list}, indent=4, sort_keys=False, ensure_ascii=True)
+    return res_list
 
 
 def get_scoring(scorista_json):
@@ -138,12 +138,12 @@ def get_scoring(scorista_json):
             scoring -= 20
             break
 
-    return json.dumps({'scoring': scoring}, indent=4, sort_keys=False, ensure_ascii=True)
+    return {'scoring': scoring}
 
-
-# For test purposes
-with open('checks.json', 'w') as outfile:
-    outfile.write(get_checks('4607 167793', '50КЕ066037', get_scorista()))
-
-with open('scoring.json', 'w') as outfile:
-    outfile.write(get_scoring(get_scorista()))
+#
+# # For test purposes
+# with open('checks.json', 'w') as outfile:
+#     outfile.write(get_checks('4607 167793', '50КЕ066037', get_scorista()))
+#
+# with open('scoring.json', 'w') as outfile:
+#     outfile.write(get_scoring(get_scorista()))
