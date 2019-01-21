@@ -138,6 +138,7 @@ class Generation(models.Model):
     number = models.IntegerField(default=0)
     create_time = models.DateTimeField()
     status = models.TextField()
+    #
     #tasks = models.ForeignKey(Task, on_delete=models.CASCADE)
     #client_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
     #scoring_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
