@@ -17,8 +17,13 @@ from core.scoring.scorista import get_scorista, get_scoring, get_checks
 @login_required(login_url="signin")
 def clients_list(request):
   raw_data = api_requestor.request('/clients/')
+  items = []
+  for elem in raw_data:
+      elem['individuals'][0]['fio'] = elem['individuals'][0]['first_name'] + ' ' + elem['individuals'][0]['last_name']
+      elem['individuals'][0]['created_at'] = elem['created_at']
+      items.append(elem['individuals'][0])
 
-  return render(request, 'concrete/clients_list.html', {'items':raw_data})
+  return render(request, 'concrete/clients_list.html', {'items': items})
 
 @login_required(login_url="signin")
 def users_list(request):

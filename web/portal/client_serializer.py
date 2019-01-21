@@ -81,7 +81,7 @@ class IndividualGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Individual
-        fields = ('primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday',
+        fields = ('id', 'primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender', 'birthday',
                   'passport','driver_license')
 
 
