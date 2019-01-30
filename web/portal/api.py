@@ -20,7 +20,7 @@ from web.portal.serializers import *
 from rest_framework import viewsets
 
 
-class GenerationApi(mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+class GenerationApi(mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = Generation.objects.all()
     serializer_class = GenerationSerializer
 

@@ -66,8 +66,8 @@
 
     </table>
 
-    <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить отказ </button>
-    <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отмена </button>
+    <a  href="{% url "reject_client" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить отказ </button></a>
+    <a  href="{% url "client_inspect" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отмена </button></a>
 </div>
 
 

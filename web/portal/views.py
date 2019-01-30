@@ -13,6 +13,7 @@ from django.shortcuts import *
 from django.utils.encoding import smart_text
 
 from core.lib import api_requestor
+from core.lib import new_action
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 
@@ -28,8 +29,8 @@ def clients_list(request):
             id = indiv['id']
             new_item['id'] = id
             new_item['created_at'] = elem['created_at']
-            gen_data = api_requestor.request('/generation/{0}'.format(id))
-            new_item['status'] = gen_data['status']
+
+            new_item['status'] = get_status(id)
 
             items.append(new_item)
 
@@ -115,15 +116,29 @@ def client_inspect(request,id):
 
 @login_required(login_url="signin")
 def accept_client(request, id):
-    gen = Generation.objects.filter(individual_id=id)[0]
-    gen.status = "Потдверждена"
-    gen.save()
+    new_action.add(id, 'accepted', 'user')
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
 def reject_client(request, id):
-    gen = Generation.objects.filter(individual_id=id)[0]
-    gen.status = "Отказано"
-    gen.save()
+    new_action.add(id,'declined','user')
     return redirect("clients_list")
+
+
+def get_status(individual_id):
+    gen_data = api_requestor.request('/generation/{0}'.format(individual_id))
+    source_cnt = 0
+    check_cnt = 0
+    scorint_cnt = 0
+    if len(gen_data['actions'])==0:
+        return 'Новая'
+
+    for act in gen_data['actions']:
+        if act['action_type'] == 'declined':
+            return 'Отказано'
+        if act['action_type'] == 'accepted':
+            return 'Одобрено'
+
+    return 'Неизвестен'
+
