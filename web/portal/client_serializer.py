@@ -22,13 +22,25 @@ class DriverLicenseSerializer(serializers.ModelSerializer):
         fields = ('id','individual','number', 'issued_at')
 
 
+class ActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Action
+        fields = ('create_time', 'processor', 'action_type')
+
+
+class NewActionSerializer(serializers.Serializer):
+    individual = serializers.IntegerField()
+    processor = serializers.CharField()
+    action_type = serializers.CharField()
+
+
 class GenerationSerializer(serializers.ModelSerializer):
-   # tasks = TasksSerializer()
+    actions = ActionSerializer(many=True)
 
     class Meta:
         model = Generation
       #  fields = ('individual','number','create_time','status','client_task','scoring_task','source_task','checks_task')
-        fields = ('individual','number','create_time','status')
+        fields = ('individual','number','create_time','actions')
 
 
 class IndividualSerializer(serializers.ModelSerializer):
@@ -41,8 +53,7 @@ class IndividualSerializer(serializers.ModelSerializer):
         individual = Individual.objects.create(**validated_data)
         Generation.objects.create(individual=individual,
                                   number=0,
-                                  create_time=datetime.datetime.now(),
-                                  status='Новая')
+                                  create_time=datetime.datetime.now())
         return individual
 
 

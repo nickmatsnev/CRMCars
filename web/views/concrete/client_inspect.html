@@ -1,6 +1,5 @@
 {% extends "../base.html" %}
 
-
 {% block title %}
     Данные клиента
 {% endblock %}
@@ -10,6 +9,7 @@
 <div class="container" id="">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
+    <a  href="{% url "client_decline" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказ по заявке </button>
     <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
        <thead>
       <tr>
@@ -140,7 +140,6 @@
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
-
 
     <div class="panel-heading">
         <p><strong>История операций</strong></p>

@@ -1,0 +1,78 @@
+{% extends "../base.html" %}
+
+{% block title %}
+    Отказ в заявке
+{% endblock %}
+
+
+{% block content %}
+<div class="container" id="">
+    <h1 class="panel-title">Заявка № {{ id }}</h1>
+
+   <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+       <thead>
+      <tr>
+        <th></th>
+          <td></td>
+      </tr>
+    </thead>
+    <tbody>
+<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
+          <!--  <td>создана</td>
+            <td>11/11/2011</td>
+            <td>на проверке скориста</td>
+            <td>11/11/2011</td>
+            <td> прошла все проверки</td>
+            <td>11/11/2011</td>
+            <td>ожидает согласования</td>
+            <td>11/11/2011</td>
+            <td>согласована иваном</td>
+            <td>11/11/2011</td>-->
+
+   <tr>
+       <td> Имя:</td>
+       <td>{{ individual.first_name }}</td>
+   </tr>
+   <tr>
+       <td>Отчество:</td>
+       <td>{{ individual.middle_name }}</td>
+   </tr>
+   <tr>
+       <td>Фамилия:</td>
+       <td>{{ individual.last_name }}</td>
+   </tr>
+  </tr>
+
+</tbody>
+</table>
+
+
+<div class="panel-heading">
+    <p><strong>Работа с отказом</strong></p>
+  </div>
+
+
+
+    <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
+    <thead>
+      <tr>
+          <td>Причина отказа</td>
+      </tr>
+    </thead>
+    <tbody>
+  </tr>
+    <td><textarea rows="10" cols="45" name="text"></textarea></td>
+</tbody>
+
+    </table>
+
+    <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить отказ </button>
+    <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отмена </button>
+</div>
+
+
+
+
+{% endblock %}
+
+

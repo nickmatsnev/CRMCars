@@ -20,8 +20,7 @@ from web.portal.serializers import *
 from rest_framework import viewsets
 
 
-class GenerationApi(mixins.CreateModelMixin, mixins.ListModelMixin,
-                       mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+class GenerationApi(mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     queryset = Generation.objects.all()
     serializer_class = GenerationSerializer
 
@@ -73,19 +72,29 @@ class ImagesApi(mixins.CreateModelMixin,
     serializer_class = ImageSerializer
 
 
+class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = RawClientData.objects.all()
+    serializer_class = RawClientDataSerializer
 
-class GetPrimaryIndividual(APIView):
-    def get_object(self, pk):
-        try:
-            return Individual.objects.filter(client=pk)[0]
-        except Individual.DoesNotExist:
-            raise Http404
 
-    @swagger_auto_schema(operation_description='Used to get Primary Individual for current client')
-    def get(self, request, pk, *args, **kwargs):
-        queryset = self.get_object(pk)
-        serializer = IndividualSerializer(queryset)
-        return Response(serializer.data)
+class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = ScoreModel.objects.all()
+    serializer_class = ScoreModelSerializer
+
+
+class NewActionApi(APIView):
+    @swagger_auto_schema(operation_description='POST /api/willz/',
+                         request_body=NewActionSerializer)
+    def post(self, request):
+        raw_data = request.data
+
+        generation = Generation.objects.filter(individual_id=raw_data['individual'])[0]
+        action = Action.objects.create(generation=generation, processor=raw_data['processor'],
+                                           action_type=raw_data['action_type'],
+                                           create_time=datetime.datetime.now())
+        action.save()
+        return Response(status=status.HTTP_201_CREATED)
+
 
 
 class WillzCreateClient(APIView):
@@ -111,44 +120,6 @@ class WillzCreateClient(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = RawClientData.objects.all()
-    serializer_class = RawClientDataSerializer
-
-
-class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = ScoreModel.objects.all()
-    serializer_class = ScoreModelSerializer
-
-
-class TasksModelApi(mixins.ListModelMixin,
-                    viewsets.GenericViewSet):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-
-class ClientTaskApi(mixins.CreateModelMixin,
-                    viewsets.GenericViewSet):
-    queryset = ClientTask.objects.all()
-    serializer_class = ClientTaskSerializer
-
-
-class UpdateClientTaskApi(APIView):
-        def get_object(self, pk):
-            try:
-                return ClientTask.objects.get(pk=pk)
-            except Individual.DoesNotExist:
-                raise Http404
-
-        @swagger_auto_schema(operation_description='Update task by ID',
-                             request_body=ClientTaskSerializer)
-        def post(self, request, pk, *args, **kwargs):
-            queryset = self.get_object(pk)
-            serializer = ClientTaskSerializer(queryset)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 #class GenerationCreateApi(mixins.CreateModelMixin,

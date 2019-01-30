@@ -39,13 +39,6 @@ router.register(r'api/driver_licenses', api.DriverLicesesApi)
 router.register(r'api/images', api.ImagesApi)
 router.register(r'api/clients', api.ClientApi)
 
-# Работа с тасками
-router.register(r'api/tasks', api.TasksModelApi)
-#router.register(r'api/tasks/client_task', api.ClientTaskApi)
-#router.register(r'api/tasks/scoring_task', api.ClientTaskApi)
-#router.register(r'api/tasks/source_task', api.ClientTaskApi)
-#router.register(r'api/tasks/checks_task', api.ClientTaskApi)
-
 # Работа с генерацией
 router.register(r'api/generation', api.GenerationApi)
 
@@ -62,11 +55,9 @@ urlpatterns = [
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/willz/', api.WillzCreateClient.as_view()),
-#    path('api/clients/<int:pk>/', api.GetClientApi.as_view()),
-#    path('api/clients/<int:pk>/primary_individual/', api.GetPrimaryIndividual.as_view()),
-    path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
-#    path('api/generation/individual_<int:pk>/all', api.GenerationGetAllApi.as_view()),
-#    path('api/generation/individual_<int:pk>/tasks', api.GenerationGetTasksApi.as_view()),
+    #path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
+    path('api/new_action/', api.NewActionApi.as_view()),
+
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
 
@@ -75,5 +66,7 @@ urlpatterns = [
     path(r'reject_client/<int:id>/', reject_client, name="reject_client"),
 
     url(r'source', source, name="source"),
-    path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect")
+    path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
+    path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
+
 ]

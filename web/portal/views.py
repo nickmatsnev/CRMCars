@@ -21,13 +21,17 @@ def clients_list(request):
   raw_data = api_requestor.request('/clients/')
   items = []
   for elem in raw_data:
-      elem['individuals'][0]['fio'] = elem['individuals'][0]['first_name'] + ' ' + elem['individuals'][0]['last_name']
-      elem['individuals'][0]['created_at'] = elem['created_at']
-      id = elem['individuals'][0]['id']
-      gen = Generation.objects.filter(individual_id=id)[0]
-      elem['individuals'][0]['status'] = gen.status
+      for indiv in elem['individuals']:
+          if indiv['primary'] == True:
+            new_item = {}
+            new_item['fio'] = indiv['first_name'] + ' ' + indiv['last_name']
+            id = indiv['id']
+            new_item['id'] = id
+            new_item['created_at'] = elem['created_at']
+            gen_data = api_requestor.request('/generation/{0}'.format(id))
+            new_item['status'] = gen_data['status']
 
-      items.append(elem['individuals'][0])
+            items.append(new_item)
 
   return render(request, 'concrete/clients_list.html', {'items': items})
 
@@ -36,6 +40,29 @@ def users_list(request):
   users = User.objects.all()
 
   return render(request, 'concrete/users_list.html', {'items':users})
+
+
+@login_required(login_url="signin")
+def client_decline(request,id):
+    raw_data = api_requestor.request('/clients/{0}/'.format(id))
+    individual = raw_data['individuals'][0]
+    license = raw_data['individuals'][0]['driver_license']
+    passport_images = individual['passport']['passport_images']
+    license_images = license['driver_license_images']
+
+    generation_data = api_requestor.request('/generation/')
+
+    op_history = None
+    for element in generation_data:
+        if element['individual'] == individual['id']:
+            op_history = element
+
+
+
+    context = {'individual': individual, 'license': license, 'passport_images': passport_images,
+               'license_images': license_images, 'id': id, 'history': op_history}
+
+    return render(request, 'concrete/client_decline.html',context)
 
 
 @login_required(login_url="signin")
