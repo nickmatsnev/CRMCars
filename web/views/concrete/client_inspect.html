@@ -85,7 +85,7 @@
             <td>
                 <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
                                                                 alt=""/></a>
-
+                  <img id="img-custom" src="{{ item.url }}" alt="" />
             </td>
 
 
@@ -95,7 +95,8 @@
         {% for item in license_images %}
             <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
                                                             alt=""/></a>
-
+        
+          <img id="img-custom" src="{{ item.url }}" alt="" />
 
         {% endfor %}
     </tr>
