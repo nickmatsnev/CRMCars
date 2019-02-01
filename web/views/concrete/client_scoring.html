@@ -7,8 +7,10 @@
 {% block content %}
 
     <div id="" class="container">
-
-        <h1>Оценка заявки № {{ id }}</h1>
+        <div class="grid-container">
+            <div class="item1"><h1>Оценка заявки № {{ id }}</h1></div>
+            <div class="item1"><p>{{ individual.last_name }} <br> Продукт: Willz</p></div>
+        </div>
         <a href="{% url "accept_client" id %}">
             <button class="btn btn-default  " type="button" {{ disabled }}><span
                     class="glyphicon glyphicon-plus"></span>Одобрить
