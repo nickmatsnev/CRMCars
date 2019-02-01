@@ -87,7 +87,7 @@
  <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <tbody>
     <tr>
-        {% for item in passport_images %}
+        {% for item in individual.passport.passport_images %}
             <td>
                 <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
                                                                 alt=""/></a>
@@ -127,18 +127,32 @@
     <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
+          <td>Фамилия</td>
+          <td>Имя</td>
           <td>Номер ВУ</td>
           <td>Дата выдачи ВУ</td>
-
+          <td></td>
+          <td></td>
       </tr>
     </thead>
     <tbody>
+    {% for item in drivers %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.surname }}</td>
+        <td>{{ item.driver_license_number }}</td>
+        <td>{{ item.driver_license_number }}</td>
 
-    <td>{{ license.number }}</td>
-    <td>{{ license.issued_at }}</td>
+        {%  if item.primary == True %}
+            <td>{{ "Основной"}}</td>
+            <td></td>
+            {% else %}
+            <td>{{ "Дополнительный"}}</td>
+            <td><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button></td>
+        {% endif %}
 
-    <td>Основной водитель</td>
-
+    </tr>>
+        {% endfor %}
   </tr>
 
 </tbody>
@@ -146,7 +160,7 @@
 
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
       <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
-      <button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button>
+
 
     <div class="panel-heading">
         <p><strong>История операций</strong></p>
@@ -156,17 +170,22 @@
     <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
         <thead>
         <tr>
-            <th>Операция</th>
+            <td>Действие</td>
+            <td>Процессор</td>
             <td>Дата</td>
+            <td>Информация</td>
         </tr>
         </thead>
         <tbody>
 
+        {% for item in history.actions %}
         <tr>
-            <td>Создана:</td>
-            <td>{{ history.create_time }}</td>
+                <td>{{ item.action_type }}</td>
+                <td>{{ item.processor }}</td>
+                <td>{{ item.create_time }}</td>
+        <td><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Просмотр </button></td>
         </tr>
-
+            {% endfor %}
 
         </tr>
 

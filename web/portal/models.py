@@ -139,4 +139,5 @@ class Action(models.Model):
     create_time = models.DateTimeField()
     processor = models.CharField(max_length=200, null=True)
     action_type = models.CharField(max_length=50)
+    payload = models.TextField(null=True)
 

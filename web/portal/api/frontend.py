@@ -50,6 +50,41 @@ class ClientsListApi(APIView):
         return Response(items)
 
 
+class ClientInspectApi(APIView):
+
+    @swagger_auto_schema(operation_description='GET /front/clients/<int:id>/')
+    def get(self, request, pk):
+        queryset = Client.objects.get(id=pk)
+        serializer = ClientGetSerializer(queryset, many=False)
+
+        individual = {}
+        drivers = []
+        for individual_raw in serializer.data['individuals']:
+            driver ={}
+            driver['name']=individual_raw['first_name']
+            driver['surname'] = individual_raw['last_name']
+            driver['number'] = individual_raw['driver_license']['number']
+            driver['issued_at'] = individual_raw['driver_license']['issued_at']
+            driver['primary'] = individual_raw['primary']
+            if individual_raw['primary'] == True:
+                individual = individual_raw
+
+            drivers.append(driver)
+
+        op_history = []
+        queryset = Generation.objects.get(individual_id=individual['id'])
+        serializer = GenerationSerializer(queryset, many=False)
+        op_history = serializer.data
+
+        items = {}
+        items['id'] = pk
+        items['individual'] = individual
+        items['drivers'] = drivers
+        items['op_history'] = op_history
+
+        return Response(items)
+
+
 def get_status(individual_id):
     gen_data = api_requestor.request('/generation/{0}'.format(individual_id))
     source_cnt = 0

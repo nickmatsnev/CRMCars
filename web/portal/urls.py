@@ -32,7 +32,7 @@ schema_view = get_schema_view(
 router.register(r'api/willz', backend.RawClientDataApi)
 
 # Работа с клиентскими данными
-router.register(r'api/clients/new', backend.ClientApi)
+router.register(r'api/clients/new', backend.CreateClientApi)
 #router.register(r'api/generation', api.GetGenerationApi)
 router.register(r'api/individuals', backend.IndividualsApi)
 router.register(r'api/passports', backend.PassportsApi)
@@ -63,6 +63,7 @@ urlpatterns = [
     #path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
     path('api/new_action/', backend.NewActionApi.as_view()),
     path('api/front/clients/', frontend.ClientsListApi.as_view()),
+    path('api/front/clients/<int:pk>/', frontend.ClientInspectApi.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),

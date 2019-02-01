@@ -18,7 +18,7 @@ class ClientProcessor(BasicProcess):
                              })
 
     def __process_raw_client(self, body):
-        #try:
+        try:
             url = "http://127.0.0.1:8002"
             headers = {"accept": "application/json", "Content-Type" : "application/json",
                    "X-CSRFToken": "hDnSpAaGh1PBYRa4mLozhjdXUMKXVIeOsYXUbJpcGtGoJ5KxZKF9kmjpZj3hKJGD"}
@@ -92,10 +92,10 @@ class ClientProcessor(BasicProcess):
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
                     requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
-        #except Exception as e:
-         #       print(" Some error: {0}".format(e))
+        except Exception as e:
+                print(" Some error: {0}".format(e))
 
-        #else:
+        else:
             print(" client is processed")
             self._publish_message(CLIENT_PROCESSED_MESSAGE, "test_body")
 

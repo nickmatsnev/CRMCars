@@ -33,23 +33,10 @@ def users_list(request):
 
 @login_required(login_url="signin")
 def client_decline(request,id):
-    raw_data = api_requestor.request('/clients/{0}/'.format(id))
-    individual = raw_data['individuals'][0]
-    license = raw_data['individuals'][0]['driver_license']
-    passport_images = individual['passport']['passport_images']
-    license_images = license['driver_license_images']
+    raw_data = api_requestor.request('/front/clients/{0}/'.format(id))
 
-    generation_data = api_requestor.request('/generation/')
-
-    op_history = None
-    for element in generation_data:
-        if element['individual'] == individual['id']:
-            op_history = element
-
-
-
-    context = {'individual': individual, 'license': license, 'passport_images': passport_images,
-               'license_images': license_images, 'id': id, 'history': op_history}
+    context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
+               'history': raw_data['op_history']}
 
     return render(request, 'concrete/client_decline.html',context)
 
@@ -81,23 +68,10 @@ def source(request):
 
 @login_required(login_url="signin")
 def client_inspect(request,id):
-    raw_data = api_requestor.request('/clients/{0}/'.format(id))
-    individual = raw_data['individuals'][0]
-    license = raw_data['individuals'][0]['driver_license']
-    passport_images = individual['passport']['passport_images']
-    license_images = license['driver_license_images']
+    raw_data = api_requestor.request('/front/clients/{0}/'.format(id))
 
-    generation_data = api_requestor.request('/generation/')
-
-    op_history = None
-    for element in generation_data:
-        if element['individual'] == individual['id']:
-            op_history = element
-
-
-
-    context = {'individual': individual, 'license': license, 'passport_images': passport_images,
-               'license_images': license_images, 'id': id, 'history': op_history}
+    context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
+               'history': raw_data['op_history']}
 
     return render(request, 'concrete/client_inspect.html',context)
 
@@ -109,7 +83,7 @@ def accept_client(request, id):
 
 
 @login_required(login_url="signin")
-def reject_client(request, id):
+def reject_client(request, id,):
     new_action.add(id,'declined','user')
     return redirect("clients_list")
 

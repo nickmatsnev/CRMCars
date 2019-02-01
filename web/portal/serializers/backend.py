@@ -25,13 +25,14 @@ class DriverLicenseSerializer(serializers.ModelSerializer):
 class ActionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Action
-        fields = ('create_time', 'processor', 'action_type')
+        fields = ('create_time', 'processor', 'action_type', 'payload')
 
 
 class NewActionSerializer(serializers.Serializer):
     individual = serializers.IntegerField()
     processor = serializers.CharField()
     action_type = serializers.CharField()
+    payload = serializers.CharField()
 
 
 class GenerationSerializer(serializers.ModelSerializer):
