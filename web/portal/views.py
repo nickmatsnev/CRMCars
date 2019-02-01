@@ -19,26 +19,14 @@ from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 @login_required(login_url="signin")
 def clients_list(request):
-  raw_data = api_requestor.request('/clients/')
-  items = []
-  for elem in raw_data:
-      for indiv in elem['individuals']:
-          if indiv['primary'] == True:
-            new_item = {}
-            new_item['fio'] = indiv['first_name'] + ' ' + indiv['last_name']
-            id = indiv['id']
-            new_item['id'] = id
-            new_item['created_at'] = elem['created_at']
+    items = api_requestor.request('/front/clients/')
 
-            new_item['status'] = get_status(id)
+    return render(request, 'concrete/clients_list.html', {'items': items})
 
-            items.append(new_item)
-
-  return render(request, 'concrete/clients_list.html', {'items': items})
 
 @login_required(login_url="signin")
 def users_list(request):
-  users = User.objects.all()
+  users = api_requestor.request('/front/users/')
 
   return render(request, 'concrete/users_list.html', {'items':users})
 
@@ -126,19 +114,5 @@ def reject_client(request, id):
     return redirect("clients_list")
 
 
-def get_status(individual_id):
-    gen_data = api_requestor.request('/generation/{0}'.format(individual_id))
-    source_cnt = 0
-    check_cnt = 0
-    scorint_cnt = 0
-    if len(gen_data['actions'])==0:
-        return 'Новая'
 
-    for act in gen_data['actions']:
-        if act['action_type'] == 'declined':
-            return 'Отказано'
-        if act['action_type'] == 'accepted':
-            return 'Одобрено'
-
-    return 'Неизвестен'
 

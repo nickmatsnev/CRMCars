@@ -7,7 +7,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from drf_yasg import openapi
-from web.portal.serializers import RawClientDataSerializer
+from web.portal.serializers.backend import *
+from web.portal.models import *
 from django.http import Http404
 
 import json
@@ -72,14 +73,14 @@ class ImagesApi(mixins.CreateModelMixin,
     serializer_class = ImageSerializer
 
 
-class RawClientData(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class RawClientDataApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = RawClientData.objects.all()
     serializer_class = RawClientDataSerializer
 
 
-class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    queryset = ScoreModel.objects.all()
-    serializer_class = ScoreModelSerializer
+#class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+#    queryset = ScoreModel.objects.all()
+#    serializer_class = ScoreModelSerializer
 
 
 class NewActionApi(APIView):
@@ -118,6 +119,27 @@ class WillzCreateClient(APIView):
             connection.close()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CheckModel
+        fields = ('name', 'description')
+
+
+class ScoreModelSerializer(serializers.HyperlinkedModelSerializer):
+    check_models = CheckModelSerializer(many=True)
+
+    class Meta:
+        model = ScoreModel
+        fields = ('check_models')
+
+    def create(self, validated_data):
+        check_models = validated_data.pop('check_models')
+        passport = Passport.objects.create(**validated_data)
+        for check in check_models:
+            CheckModel.create
+        return passport
 
 
 

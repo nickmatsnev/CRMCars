@@ -9,7 +9,8 @@ from rest_framework import routers
 from rest_framework import permissions
 from django.urls import path
 
-from web.portal import api
+from web.portal.api import backend
+from web.portal.api import frontend
 from .views import *
 from .controllers.auth import *
 
@@ -28,19 +29,23 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 # Работа с новой заявкой
-router.register(r'api/willz', api.RawClientData)
+router.register(r'api/willz', backend.RawClientDataApi)
 
 # Работа с клиентскими данными
-router.register(r'api/clients/new', api.CreateClientApi)
+router.register(r'api/clients/new', backend.ClientApi)
 #router.register(r'api/generation', api.GetGenerationApi)
-router.register(r'api/individuals', api.IndividualsApi)
-router.register(r'api/passports', api.PassportsApi)
-router.register(r'api/driver_licenses', api.DriverLicesesApi)
-router.register(r'api/images', api.ImagesApi)
-router.register(r'api/clients', api.ClientApi)
+router.register(r'api/individuals', backend.IndividualsApi)
+router.register(r'api/passports', backend.PassportsApi)
+router.register(r'api/driver_licenses', backend.DriverLicesesApi)
+router.register(r'api/images', backend.ImagesApi)
+router.register(r'api/clients', backend.ClientApi)
 
 # Работа с генерацией
-router.register(r'api/generation', api.GenerationApi)
+router.register(r'api/generation', backend.GenerationApi)
+
+
+# Работа с фронтом
+router.register(r'api/front/users', frontend.UserListApi)
 
 
 urlpatterns = [
@@ -54,9 +59,10 @@ urlpatterns = [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/willz/', api.WillzCreateClient.as_view()),
+    path('api/willz/', backend.WillzCreateClient.as_view()),
     #path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
-    path('api/new_action/', api.NewActionApi.as_view()),
+    path('api/new_action/', backend.NewActionApi.as_view()),
+    path('api/front/clients/', frontend.ClientsListApi.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
@@ -68,5 +74,6 @@ urlpatterns = [
     url(r'source', source, name="source"),
     path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
+
 
 ]

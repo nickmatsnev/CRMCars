@@ -103,6 +103,18 @@ class ClientGetSerializer(serializers.ModelSerializer):
         model = Client
         fields = ('willz', 'created_at','individuals')
 
+
+class RawClientDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RawClientData
+        fields = ('id', 'payload')
+
+
+class SourceRawDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RawClientData
+        fields = ('id', 'payload', 'individual', 'source')
+
 #        def create(self, validated_data):
 #            individuals_data = validated_data.pop('individuals')
 #            client = Client.objects.create(**validated_data)
