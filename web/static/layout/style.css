@@ -16,17 +16,16 @@ body {
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-gap: 10px;
-  background-color: #FFFFFF;
-  padding: 10px;
+  background-color: #white  ;
+  padding: 20px;
 }
 
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color:white;
   text-align: center;
   padding: 20px 0;
-  font-size: 30px;
+  font-size: 1em;
 }
-
 .item1 {
   grid-row: 1 / 3;
 }
