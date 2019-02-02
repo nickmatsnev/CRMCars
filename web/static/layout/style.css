@@ -3,6 +3,22 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+.menuButton
+{
+    background: white;
+    color: #000000 ;
+    padding: 5px; /* Поля вокруг текста */
+    border-radius: 5px; /* Уголки */
+    border: 1px solid #000000; 
+}
+.siteButton
+{
+     background: #ffffff;
+    color: #cacaca;
+    padding: 3px 3px 3px 3px;
+    border: 1px solid #000000; 
+    
+}
 body {
     margin: 0;
     font-family: 'Helvetica', sans-serif;
