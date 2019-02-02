@@ -53,15 +53,19 @@ h2 {
 a{
     text-decoration: none;
 }
-td{
-    background: #b5b5b5;
+table
+{
+    border-collapse: collapse;
+}
+td{ 
+    border: 2px solid lightgrey ;
+    background: #ffffff;
     padding: 5px;
     horiz-align: center;
     width: 150px;
     font-size: 11pt;
     position: relative;
 }
-
 .container {
     width: 95%;
     margin-top: 15px;
