@@ -197,17 +197,21 @@ td{
 .main{
     order: 2;
     padding: 20px;
+    border-bottom: 1px solid #777777;
 }
 .sidebar {
     width: 20%;
     background: lightgray;
     padding: 20px;
+    border-bottom: 1px solid #777777;
 }
 .sidebarLeft{
     order: 1;
+    border-bottom: 1px solid #777777;
 }
 .sidebarRight{
     order: 3;
+    border-bottom: 1px solid #777777;
 }
 
 /* *********************************
