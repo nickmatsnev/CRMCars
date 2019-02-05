@@ -11,7 +11,7 @@ from django.urls import path
 
 from web.portal.api import backend
 from web.portal.api import frontend
-from .views import *
+from portal.controllers.views import *
 from .controllers.auth import *
 
 router = routers.DefaultRouter()
@@ -28,9 +28,9 @@ schema_view = get_schema_view(
    public=True,
    permission_classes=(permissions.AllowAny,),
 )
+
 # Работа с новой заявкой
 router.register(r'api/willz', backend.RawClientDataApi)
-
 # Работа с клиентскими данными
 router.register(r'api/clients/new', backend.CreateClientApi)
 #router.register(r'api/generation', api.GetGenerationApi)
@@ -39,11 +39,8 @@ router.register(r'api/passports', backend.PassportsApi)
 router.register(r'api/driver_licenses', backend.DriverLicesesApi)
 router.register(r'api/images', backend.ImagesApi)
 router.register(r'api/clients', backend.ClientApi)
-
 # Работа с генерацией
 router.register(r'api/generation', backend.GenerationApi)
-
-
 # Работа с фронтом
 router.register(r'api/front/users', frontend.UserListApi)
 
@@ -60,8 +57,9 @@ urlpatterns = [
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/willz/', backend.WillzCreateClient.as_view()),
-    #path('api/tasks/client_task/<int:pk>/', api.UpdateClientTaskApi.as_view()),
     path('api/new_action/', backend.NewActionApi.as_view()),
+    path('api/bus_message/', backend.BusMessageAPI.as_view()),
+
     path('api/front/clients/', frontend.ClientsListApi.as_view()),
     path('api/front/clients/<int:pk>/', frontend.ClientInspectApi.as_view()),
 

@@ -7,6 +7,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from drf_yasg import openapi
+
+from lib import message_sender, api_requestor
 from web.portal.serializers.backend import *
 from web.portal.models import *
 from django.http import Http404
@@ -84,11 +86,11 @@ class RawClientDataApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
 
 class NewActionApi(APIView):
-    @swagger_auto_schema(operation_description='POST /api/willz/',
+    @swagger_auto_schema(operation_description='Create new action',
                          request_body=NewActionSerializer)
     def post(self, request):
         raw_data = request.data
-
+        # TODO FIX using fixed [0] index in here
         generation = Generation.objects.filter(individual_id=raw_data['individual'])[0]
         action = Action.objects.create(generation=generation, processor=raw_data['processor'],
                                            action_type=raw_data['action_type'],
@@ -97,9 +99,23 @@ class NewActionApi(APIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
+class BusMessageAPI(APIView):
+    @swagger_auto_schema(operation_description='Send message to message bus',
+                         request_body=BusMessageSerializer)
+    def post(self, request):
+        raw_data = request.data
+        serializer = BusMessageSerializer(data=raw_data)
+        if serializer.is_valid():
+            message_sender.send_message(message_code=serializer.validated_data['message_type'],
+                                        body=serializer.validated_data['body'])
+            return Response(status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class WillzCreateClient(APIView):
-    @swagger_auto_schema(operation_description='POST /api/willz/',
+    @swagger_auto_schema(operation_description='Create new Willz client from raw_data',
                          request_body=openapi.Schema(type=openapi.TYPE_STRING, description='Raw JSON from Willz'))
     def post(self, request):
         raw_json = json.dumps(request.data)
@@ -108,19 +124,15 @@ class WillzCreateClient(APIView):
 
         if serializer.is_valid():
             resp_data = serializer.save()
-            resp = json.dumps({'raw_client_id': resp_data.id})
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-            channel = connection.channel()
-            channel.basic_publish(constants.MAIN_EXCHANGE_NAME,
-                                  routing_key=constants.CLIENT_RAW_CREATED_MESSAGE,
-                                  body=resp, properties=pika.BasicProperties(
-                    delivery_mode=2,  # make message persistent
-                ))
-            connection.close()
+            resp = json.dumps({'message_type': constants.CLIENT_RAW_CREATED_MESSAGE,
+                               'body': json.dumps({'raw_client_id': resp_data.id})});
+
+            raw_data = api_requestor.post('/bus_message/', resp)
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+#TODO what the hell serializer is doing in API ??
 class CheckModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckModel

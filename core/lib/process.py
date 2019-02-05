@@ -4,9 +4,11 @@ from datetime import datetime
 import pika
 
 from lib import constants
+from lib.global_settings import BUS_HOST
+
 
 class BasicProcess:
-    __host = 'localhost'
+    __host = BUS_HOST
 
     def __init__(self,queue_name="",callbacks=None
                  ):
@@ -42,8 +44,7 @@ class BasicProcess:
                                      , properties=pika.BasicProperties(
                 delivery_mode=2))
 
-
-    @property  # when you do Stock.name, it will call this function
+    @property
     def channel(self):
         return self.__channel
 

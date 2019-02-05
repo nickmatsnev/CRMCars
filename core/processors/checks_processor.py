@@ -10,6 +10,7 @@ from lib.process import *
 
 class ChecksProcessor(BasicProcess):
 
+
     def __init__(self):
         super(ChecksProcessor, self).__init__( constants.CHECKS_PROCESSOR_QUEUE,
                               {
@@ -18,6 +19,7 @@ class ChecksProcessor(BasicProcess):
 
     def __process_checks(self, body):
         print("checks are processed")
+        ChecksProcessor.get_processor_name()
         self._publish_message(constants.INDIVIDUAL_CHECKS_PROCESSED_MESSAGE,"test_body")
 
 

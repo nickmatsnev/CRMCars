@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from lib import constants
 from web.portal.models import *
 import datetime
 
@@ -33,6 +35,16 @@ class NewActionSerializer(serializers.Serializer):
     processor = serializers.CharField()
     action_type = serializers.CharField()
     payload = serializers.CharField()
+
+
+class BusMessageSerializer(serializers.Serializer):
+    MESSAGE_CHOICES = (
+        (constants.CLIENT_RAW_CREATED_MESSAGE),
+        (constants.CLIENT_PROCESSED_MESSAGE),
+    )
+    message_type = serializers.ChoiceField(MESSAGE_CHOICES)
+    body = serializers.CharField()
+
 
 
 class GenerationSerializer(serializers.ModelSerializer):

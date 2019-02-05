@@ -1,17 +1,12 @@
 import json
-
 import sys
 
 sys.path.append('../')
 
 from web.portal.models import *
-
-import requests
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.shortcuts import *
 from django.utils.encoding import smart_text
-
 from core.lib import api_requestor
 from core.lib import new_action
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
@@ -46,15 +41,7 @@ def client_scoring(request,id):
     res = get_scorista()
 
     checks = get_checks('4518334452', '77МА051161', res)['checks']
-    disabled = ""
-    gen = Generation.objects.filter(individual_id=id)[0]
 
-    #  if gen.status == "Новая":
-    #     gen.status = 'В работе'
-    #    gen.save()
-
-    # if gen.status == "Потдверждена" or gen.status == "Отказано":
-    #   disabled = "disabled"
     score = get_scoring(json.dumps({'checks': checks}, indent=4, sort_keys=False, ensure_ascii=True))
 
     return render(request, 'concrete/client_scoring.html',

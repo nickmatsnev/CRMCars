@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import sys
+
+from lib.global_settings import API_ROOT_URL
+
 sys.path.append('../')
 
 
@@ -19,7 +22,8 @@ class ClientProcessor(BasicProcess):
 
     def __process_raw_client(self, body):
         try:
-            url = "http://127.0.0.1:8002"
+            # TODO rewrite method using api_requestor
+            url = API_ROOT_URL
             headers = {"accept": "application/json", "Content-Type" : "application/json",
                    "X-CSRFToken": "hDnSpAaGh1PBYRa4mLozhjdXUMKXVIeOsYXUbJpcGtGoJ5KxZKF9kmjpZj3hKJGD"}
 
