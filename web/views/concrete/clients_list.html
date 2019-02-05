@@ -64,8 +64,12 @@
             <td>{{ item.created_at }}</td>
             <td>Willz</td>
              <td>{{ item.status }}</td>
-             <td><a  href="{% url "client_inspect" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Клиент</button></a></td>
-             <td><a  href="{% url "client_scoring" item.id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>Скоринг</button></a></td>
+             <td><a href="{% url "client_inspect" item.id %}">
+                 <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Клиент</button>
+             </a></td>
+             <td><a href="{% url "client_scoring" item.id %}">
+                 <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Скоринг</button>
+             </a></td>
      </tr>
 
     {% endfor %}
@@ -75,7 +79,7 @@
 
 </div>
     <a href="{% url "clients_list" %}">
-        <button class="btn btn-default  " type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>Загрузить
+        <button class="menuButton" type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>Загрузить
             новые заявки
         </button>
     </a></td>

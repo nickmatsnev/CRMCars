@@ -9,28 +9,18 @@
 <div class="container" id="">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
-   <a  href="{% url "client_decline" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказ по заявке </button></a>
+    <a href="{% url "client_decline" id %}">
+        <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Отказ по заявке</button>
+    </a>
+    <div class="panel-heading">
+        <p><strong>Данные</strong></p>
+    </div>
    <div class="grid-container">
        <div class="item1">
     <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-       <thead>
-      <tr>
-        <th></th>
-          <td></td>
-      </tr>
-    </thead>
+
     <tbody>
-<!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
-          <!--  <td>создана</td>
-            <td>11/11/2011</td>
-            <td>на проверке скориста</td>
-            <td>11/11/2011</td>
-            <td> прошла все проверки</td>
-            <td>11/11/2011</td>
-            <td>ожидает согласования</td>
-            <td>11/11/2011</td>
-            <td>согласована иваном</td>
-            <td>11/11/2011</td>-->
+
 
    <tr>
        <td> Имя:</td>
@@ -89,9 +79,9 @@
     <tr>
         {% for item in individual.passport.passport_images %}
             <td>
-                <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
-                                                                alt=""/></a>
-                  <img id="img-custom" src="{{ item.url }}" alt="" />
+                <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
+                                                                src="{{ item.url }}" alt=""/></a>
+
             </td>
 
 
@@ -99,10 +89,10 @@
     </tr>
     <tr>
         {% for item in license_images %}
-            <a id="single_image" href="{{ item.url }}"><img style="height: 100px; width: 100px" src="{{ item.url }}"
-                                                            alt=""/></a>
+            <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
+                                                            src="{{ item.url }}" alt=""/></a>
         
-          <img id="img-custom" src="{{ item.url }}" alt="" />
+
 
         {% endfor %}
     </tr>
@@ -119,11 +109,10 @@
 Фио, номер ВУ, дата выдачи ВУ, стаж, тип
 история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном
 -->
+
     <div class="panel-heading">
     <p><strong>Водители</strong></p>
-  </div>
-
-
+    </div>
     <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
@@ -148,18 +137,21 @@
             <td></td>
             {% else %}
             <td>{{ "Дополнительный"}}</td>
-            <td><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Выбрать основным </button></td>
+            <td>
+                <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Выбрать основным
+                </button>
+            </td>
         {% endif %}
 
-    </tr>>
+    </tr>
         {% endfor %}
   </tr>
 
-</tbody>
-</table>
+    </tbody>
+    </table>
 
-      <button class="btn btn-default  " type="menuButton"> <span class="glyphicon glyphicon-plus"></span>  Добавить </button>
-      <button class="btn btn-default  " type="menuButton"> <span class="glyphicon glyphicon-plus"></span>  Удалить </button>
+    <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Добавить</button>
+    <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Удалить</button>
 
 
     <div class="panel-heading">
@@ -183,7 +175,10 @@
                 <td>{{ item.action_type }}</td>
                 <td>{{ item.processor }}</td>
                 <td>{{ item.create_time }}</td>
-        <td><button class="btn btn-default  " type="menuButton"> <span class="glyphicon glyphicon-plus"></span>  Просмотр </button></td>
+            <td>
+                <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Просмотр
+                </button>
+            </td>
         </tr>
             {% endfor %}
 

@@ -49,17 +49,17 @@ def client_scoring(request,id):
     disabled = ""
     gen = Generation.objects.filter(individual_id=id)[0]
 
-    if gen.status == "Новая":
-        gen.status = 'В работе'
-        gen.save()
+    #  if gen.status == "Новая":
+    #     gen.status = 'В работе'
+    #    gen.save()
 
-    if gen.status == "Потдверждена" or gen.status == "Отказано":
-        disabled = "disabled"
+    # if gen.status == "Потдверждена" or gen.status == "Отказано":
+    #   disabled = "disabled"
     score = get_scoring(json.dumps({'checks': checks}, indent=4, sort_keys=False, ensure_ascii=True))
 
     return render(request, 'concrete/client_scoring.html',
                   {'id': id, 'score': score, 'checks': checks, 'raw_data': smart_text(res, "utf-8"),
-                   'disabled': disabled})
+                   'disabled': 'disabled'})
 
 @login_required(login_url="signin")
 def source(request):

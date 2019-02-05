@@ -35,7 +35,6 @@ REST_FRAMEWORK = {
 }
 TIME_ZONE = 'Europe/Moscow'
 
-
 # Application definition
 
 INSTALLED_APPS = (

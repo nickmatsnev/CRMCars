@@ -93,12 +93,12 @@
                               </p>   
                                             <p style="color:black">112</p>
                         </div>
-                        <br>
-                        <br>
+
 
 			    <a style="color:black"  href="">В работе</a><br>
-                  <a style="color:black"  href="">На согласовании</a><br>
+
                    <a style="color:black"  href="">Отказ</a><br>
+                              <a style="color:black" href="">Подтверждены</a><br>
                         </div>
 
 
@@ -115,17 +115,17 @@
 
                             <div class="specialBackground" id="ots">
                               <p style="color:black"> <a style="color:black"  href="">Отчёты</a><br></p>
-                       </div>#}
+                            </div>
 
                             <div class="specialBackground" id="ots">
                            <a style="color:black" href="">Admin</a>
-                        </div>#}
+                            </div>
                 </aside>
             </div>
  </nav>
     </div>
 </div>
- <script src="build/zooming.js"></script>
+<script src="{% static 'js/zooming.js' %}"></script>
   <script>
     const defaultZooming = new Zooming()
     const customZooming = new Zooming()
@@ -136,8 +136,8 @@
     const ACTIVE_CLASS = 'button-primary'
 
     document.addEventListener('DOMContentLoaded', function () {
-      defaultZooming.listen('#img-default')
-      customZooming.listen('#img-custom')
+        defaultZooming.listen('.img-default')
+        customZooming.listen('.img-custom')
     })
 
     btnFast.addEventListener('click', function (event) {
