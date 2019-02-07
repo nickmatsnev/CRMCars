@@ -43,10 +43,11 @@
 <table  bgcolor="#FFFFFF">
     <thead>
       <tr>
-        <th>Номер</th>
-          <td> ФИО</td>
+        <th>П/П</th>
+          <td>Номер</td>
+          <td>ФИО</td>
           <td>Дата регистрации</td>
-          <td> Продукт</td>
+          <td>Продукт</td>
           <td>Статус</td>
           <td> </td>
           <td> </td>
@@ -59,6 +60,7 @@
     {% for item in items %}
          <tr style="background: #ffff00">
 
+            <td>{{ item.num }}</td>
             <td>{{ item.id }}</td>
              <td>{{ item.fio }}</td>
             <td>{{ item.created_at }}</td>

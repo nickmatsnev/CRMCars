@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.utils.encoding import smart_text
 from core.lib import api_requestor
-from core.lib import new_action
+from core.lib import action_helper
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 
@@ -60,18 +60,18 @@ def client_inspect(request,id):
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
                'history': raw_data['op_history']}
 
-    return render(request, 'concrete/client_inspect.html',context)
+    return render(request, 'concrete/client_inspect.html', context)
 
 
 @login_required(login_url="signin")
 def accept_client(request, id):
-    new_action.add(id, 'accepted', 'user')
+    action_helper.add_action(id, 'accepted', 'user')
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
-def reject_client(request, id,):
-    new_action.add(id,'declined','user')
+def reject_client(request, id, ):
+    action_helper.add_action(id,'declined','user')
     return redirect("clients_list")
 
 

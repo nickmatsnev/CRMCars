@@ -1,9 +1,9 @@
 import json
 
-from core.lib import api_requestor
+from lib import api_requestor
 
 
-def add(individual_id, action_type, processor, payload=""):
+def add_action(individual_id, action_type, processor, payload=""):
     action = {}
     action['individual']=individual_id
     action['processor'] = processor

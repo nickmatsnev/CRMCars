@@ -90,10 +90,10 @@ class NewActionApi(APIView):
                          request_body=NewActionSerializer)
     def post(self, request):
         raw_data = request.data
-        # TODO FIX using fixed [0] index in here
-        generation = Generation.objects.filter(individual_id=raw_data['individual'])[0]
+        generation = Generation.objects.get(individual_id=raw_data['individual'])
         action = Action.objects.create(generation=generation, processor=raw_data['processor'],
                                            action_type=raw_data['action_type'],
+                                           payload=raw_data['payload'],
                                            create_time=datetime.datetime.now())
         action.save()
         return Response(status=status.HTTP_201_CREATED)
@@ -131,27 +131,6 @@ class WillzCreateClient(APIView):
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-#TODO what the hell serializer is doing in API ??
-class CheckModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CheckModel
-        fields = ('name', 'description')
-
-
-class ScoreModelSerializer(serializers.HyperlinkedModelSerializer):
-    check_models = CheckModelSerializer(many=True)
-
-    class Meta:
-        model = ScoreModel
-        fields = ('check_models')
-
-    def create(self, validated_data):
-        check_models = validated_data.pop('check_models')
-        passport = Passport.objects.create(**validated_data)
-        for check in check_models:
-            CheckModel.create
-        return passport
 
 
 

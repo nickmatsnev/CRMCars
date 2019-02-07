@@ -9,7 +9,7 @@
 <div class="container" id="">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
-    <a href="{% url "client_decline" id %}">
+    <a href="{% url "client_decline" individual.id %}">
         <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Отказ по заявке</button>
     </a>
     <div class="panel-heading">

@@ -17,3 +17,7 @@ def post(relative_url,body):
     response = requests.post(API_ROOT_URL + relative_url, headers=headers, data=body)
     return response
 
+
+def post_decode(relative_url,body):
+    response = requests.post(API_ROOT_URL + relative_url, headers=headers, data=body)
+    return json.loads(response.content.decode('utf-8'))

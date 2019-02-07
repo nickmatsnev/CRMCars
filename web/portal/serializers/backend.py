@@ -114,7 +114,7 @@ class ClientGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ('willz', 'created_at','individuals')
+        fields = ('id', 'created_at','individuals')
 
 
 class RawClientDataSerializer(serializers.ModelSerializer):

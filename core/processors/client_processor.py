@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 import sys
 
-from lib.global_settings import API_ROOT_URL
-
 sys.path.append('../')
 
-
+from lib import api_requestor
+from lib import action_helper
+from lib import basic_process
 from lib.process import *
 from lib.constants import *
 
-import requests
 import json
 
 class ClientProcessor(BasicProcess):
@@ -22,25 +21,15 @@ class ClientProcessor(BasicProcess):
 
     def __process_raw_client(self, body):
         try:
-            # TODO rewrite method using api_requestor
-            url = API_ROOT_URL
-            headers = {"accept": "application/json", "Content-Type" : "application/json",
-                   "X-CSRFToken": "hDnSpAaGh1PBYRa4mLozhjdXUMKXVIeOsYXUbJpcGtGoJ5KxZKF9kmjpZj3hKJGD"}
-
         # дергаем сырок
             input_message = json.loads(body)
             raw_client_id = input_message['raw_client_id']
-            response = requests.get(url=url + '/api/willz/{0}/'.format(raw_client_id), headers=headers)
-        # парсим полученное
-            raw_data = json.loads(response.content.decode('utf-8'))
+            raw_data = api_requestor.request('/willz/{0}/'.format(raw_client_id))
+         # парсим полученное
             raw_json = json.loads(raw_data['payload'])
         # делаем формат для Клиента, отправляем и получаем client_id
             raw_to_client = {'willz_id': raw_json['id'], 'created_at': raw_json['created_at']}
-            response = requests.post(url=url + '/api/clients/new/', data=json.dumps(raw_to_client), headers=headers)
-            if response == 415:
-                return
-
-            raw_data = json.loads(response.content.decode('utf-8'))
+            raw_data = api_requestor.post_decode('/clients/new/', json.dumps(raw_to_client))
             client_id = raw_data['id']
 
          # для всех индивидуалок
@@ -56,9 +45,10 @@ class ClientProcessor(BasicProcess):
                                      'email': drvr['email']
                     , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
                                      'birthday': drvr['birthday']}
-                response = requests.post(url=url + '/api/individuals/', data=json.dumps(raw_to_individual), headers=headers)
-                raw_data = json.loads(response.content.decode('utf-8'))
+                raw_data = api_requestor.post_decode('/individuals/', json.dumps(raw_to_individual))
                 individual_id = raw_data['id']
+
+                action_helper.add_action(individual_id, 'new', basic_process.get_name(self))
 
             # формируем права
                 lcn_number = drvr['driver_license']['number']
@@ -66,9 +56,7 @@ class ClientProcessor(BasicProcess):
                     lcn_number = 0
                 raw_to_driving_license = {'individual': individual_id, 'number': lcn_number
                     , 'issued_at': drvr['driver_license']['issued_at']}
-                response = requests.post(url=url + '/api/driver_licenses/', data=json.dumps(raw_to_driving_license),
-                                         headers=headers)
-                raw_data = json.loads(response.content.decode('utf-8'))
+                raw_data = api_requestor.post_decode('/driver_licenses/', json.dumps(raw_to_driving_license))
                 driver_license_id = raw_data['id']
 
             # формируем фото для прав
@@ -77,7 +65,7 @@ class ClientProcessor(BasicProcess):
                     raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
-                    requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
+                    api_requestor.post('/images/', json.dumps(raw_to_img))
 
             # формируем паспорт
                 raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
@@ -85,8 +73,7 @@ class ClientProcessor(BasicProcess):
                     , 'address_registration': drvr['passport']['address_registration']
                     , 'division_code': drvr['passport']['division_code'],
                                    'birthplace': drvr['passport']['birthplace']}
-                response = requests.post(url=url + '/api/passports/', data=json.dumps(raw_to_passport), headers=headers)
-                raw_data = json.loads(response.content.decode('utf-8'))
+                raw_data = api_requestor.post_decode('/passports/', json.dumps(raw_to_passport))
                 passport_id = raw_data['id']
 
             # формируем фото для паспорта
@@ -95,7 +82,7 @@ class ClientProcessor(BasicProcess):
                     raw_to_img = {'individual': individual_id, 'passport': passport_id,
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
-                    requests.post(url=url + '/api/images/', data=json.dumps(raw_to_img), headers=headers)
+                    api_requestor.post('/images/', json.dumps(raw_to_img))
         except Exception as e:
                 print(" Some error: {0}".format(e))
 

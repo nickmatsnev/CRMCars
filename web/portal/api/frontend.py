@@ -34,16 +34,17 @@ class ClientsListApi(APIView):
         queryset = Client.objects.all()
         serializer = ClientGetSerializer(queryset, many=True)
         items = []
+        cntr = 0
         for client in serializer.data:
              for individual in client['individuals']:
                 if individual['primary'] == True:
                     new_item = {}
                     new_item['fio'] = individual['first_name'] + ' ' + individual['last_name']
-                    my_id = individual['id']
-                    new_item['id'] = my_id
+                    cntr += 1
+                    new_item['num'] = cntr
+                    new_item['id'] = client['id']
                     new_item['created_at'] = client['created_at']
-
-                    new_item['status'] = get_status(my_id)
+                    new_item['status'] = get_status(individual['id'])
 
                     items.append(new_item)
 
@@ -90,13 +91,27 @@ def get_status(individual_id):
     source_cnt = 0
     check_cnt = 0
     scorint_cnt = 0
-    if len(gen_data['actions'])==0:
-        return 'Новая'
+    declined = False
+    accepted = False
+    new = False
 
     for act in gen_data['actions']:
         if act['action_type'] == 'declined':
-            return 'Отказано'
+            declined =  True
         if act['action_type'] == 'accepted':
-            return 'Одобрено'
+            accepted = True
+        if act['action_type'] == 'new':
+            new = True
 
-    return 'Неизвестен'
+
+    # определить что выше по приоритетам!
+    if declined==True:
+        return 'Отказано'
+    if accepted==True:
+        return 'Одобрено'
+
+    if new == True:
+        return 'Новый'
+
+    return 'Неизвестно'
+
