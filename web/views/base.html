@@ -86,40 +86,40 @@
                 {% block content %}{% endblock %}
                 </main>
                 <aside class="sidebar sidebarLeft container">
-
-                          <div class="specialBackground "  id="container">
-                                    <div class="row">
-                              <p style="color:black"><a style="color:black" href="{% url "clients_list" %}">Заявки</a>
-                              </p>   
-                                            <p style="color:black">112</p>
+ <div class="specialBackground " id="container">
+                                        <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
+                                <ul>
+                                        <li> В работе</li>
+                                        <li>На согласовании </li>
+                                        <li> Отказ</li>
+                                        </ul>
                         </div>
-
-
-			    <a style="color:black"  href="">В работе</a><br>
-
-                   <a style="color:black"  href="">Отказ</a><br>
-                              <a style="color:black" href="">Подтверждены</a><br>
-                        </div>
-
-
+                            <br>
                         <div class="specialBackground " id="ots">
-                           <p></p><a style="color:black"  href="">Продукты</a><br>
-                        <a style="color:black"  href="client_scoring">Скоринг</a><br>
-                            <p style="color:black"><a style="color:black" href="source">Источники</a><br></p>
+                             <a style="color:black" href="">Модули</a>
+                            <br>
+                            <ul>
+                                            <li>Модули парсера</li>
+                                            <li>Модули скоринга</li>
+                            </ul>
+                                    <a style="color:black" href=""> Скоринг</a>
+                                    <ul>    
+                                            <li> Список скоринговых параметров</li>
+                                           </ul>
+                            <a style="color:black" href=""> Продукты</a>
                         </div>
-                            <div class="specialBackground" id="ots">
-                                <p style="color:black"><a style="color:black"
-                                                          href="{% url "users_list" %}">Пользователи</a>
+
+                        <div class="specialBackground" id="ots">
+                            <p style="color:black">
+                                <a style="color:black" href="">Отчёты</a>
+                                <br>
+                            </p>
                         </div>
 
-
-                            <div class="specialBackground" id="ots">
-                              <p style="color:black"> <a style="color:black"  href="">Отчёты</a><br></p>
-                            </div>
-
-                            <div class="specialBackground" id="ots">
-                           <a style="color:black" href="">Admin</a>
-                            </div>
+                        <div class="specialBackground" id="ots">
+                            <a style="color:black" href="{% url "users_list" %}">Пользователи</a>
+                        </div>
+			
                 </aside>
             </div>
  </nav>
