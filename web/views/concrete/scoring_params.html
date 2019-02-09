@@ -1,0 +1,42 @@
+{% extends "./base.html" %}
+
+{% block title %} About {% endblock %}
+
+{% block content %} 
+
+ <div class="container" id="ots">
+                            <p><strong>Страница скоринговых параметров</strong></p>
+                            <table>
+                                    <tr>
+                                            <th>Источники</th>
+                                            <th>Парсер</th>
+                                            <th>Кодовое имя</th>
+                                            <th>Описание</th>
+                                            <th>Тип</th>
+                                           </tr>
+                                           <tr>
+                                            <td>
+                                                    <select>
+                                                            <option>Пункт 1</option>
+                                                            <option>Пункт 2</option>
+                                                          </select>
+                                            </td>
+                                            <td>
+                                                    <select>
+                                                            <option>Пункт 1</option>
+                                                            <option>Пункт 2</option>
+                                                          </select>
+                                            </td>
+                                            <td><input readonly size="10"></td>
+                                            <td><input readonly size="10"></td>
+                                            <td>
+                                                    <select>
+                                                            <option>Boolean</option>
+                                                            <option>Float</option>
+                                                            <option>Integer</option>
+                                                          </select>
+                                            </td>
+                                          </tr>
+                            </table>
+                        </div>
+{% endblock %}
