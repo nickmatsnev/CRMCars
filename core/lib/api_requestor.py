@@ -1,8 +1,7 @@
 import json
-
 import requests
 
-from lib.global_settings import API_ROOT_URL
+from core.lib.global_settings import API_ROOT_URL
 
 headers = {"accept": "application/json", "Content-Type": "application/json",
                 "X-CSRFToken": "cs7VEXgiMjC8AkslcgzThx8Mb7daEynFhxpl6UjpquwhePwWhBbZCHKZbbQED28c"}

@@ -60,6 +60,9 @@ urlpatterns = [
     path('api/new_action/', backend.NewActionApi.as_view()),
     path('api/bus_message/', backend.BusMessageAPI.as_view()),
 
+    path('api/parsing_module/', backend.ParsingModuleAPI.as_view()),
+    path('api/scoring_module/', backend.ScoringModuleAPI.as_view()),
+
     path('api/front/clients/', frontend.ClientsListApi.as_view()),
     path('api/front/clients/<int:pk>/', frontend.ClientInspectApi.as_view()),
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from lib import constants
+from core.lib import constants
 from web.portal.models import *
 import datetime
 
@@ -127,6 +127,29 @@ class SourceRawDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = RawClientData
         fields = ('id', 'payload', 'individual', 'source')
+
+
+class ParsingModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('name','path')
+
+    def create(self, validated_data):
+        raw_data = Individual.objects.create(**validated_data)
+        module = Module.objects.create(type='PM', **raw_data)
+        return module
+
+
+class ScoringModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('name','path')
+
+    def create(self, validated_data):
+        raw_data = Individual.objects.create(**validated_data)
+        module = Module.objects.create(type='SM', **raw_data)
+        return module
+
 
 #        def create(self, validated_data):
 #            individuals_data = validated_data.pop('individuals')

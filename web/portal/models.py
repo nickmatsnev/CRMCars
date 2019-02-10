@@ -1,6 +1,7 @@
 from django.db import models
 import sys
 sys.path.append('../')
+from enum import Enum
 
 
 class RawClientData(models.Model):
@@ -140,4 +141,19 @@ class Action(models.Model):
     processor = models.CharField(max_length=200, null=True)
     action_type = models.CharField(max_length=50)
     payload = models.TextField(null=True)
+
+
+class ModuleType(Enum):
+    ParsingModule = 'PM'
+    ScoringModule = 'SM'
+
+
+class Module(models.Model):
+    type = models.CharField(max_length=2,choices=[
+        (ModuleType.ParsingModule,'PM'),
+        (ModuleType.ScoringModule,'SM'),
+    ])
+    name = models.TextField()
+    path = models.TextField()
+
 

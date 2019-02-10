@@ -8,10 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from drf_yasg import openapi
 
-from lib import message_sender, api_requestor
+from core.lib import message_sender, api_requestor
 from web.portal.serializers.backend import *
 from web.portal.models import *
-from django.http import Http404
 
 import json
 import pika
@@ -132,7 +131,54 @@ class WillzCreateClient(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class ParsingModuleAPI(APIView):
+    @swagger_auto_schema(operation_description='Send message to parsing module',
+                         request_body=ParsingModuleSerializer)
+    def post(self, request):
+        raw_json = json.dumps(request.data)
+        serializer = ParsingModuleSerializer(data=raw_json)
 
+        if serializer.is_valid():
+            resp_data = serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(operation_description='Retrieve parsing module',
+                         responses={200: ParsingModuleSerializer, 500: 'Internal Error', 204: 'No data'})
+    def get(self, request):
+        raw_data = Module.objects.filter(type='PM')
+        if raw_data.count() ==0:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        serializer = ParsingModuleSerializer(data=raw_data,many=True)
+        if serializer.is_valid():
+            return Response(serializer.data)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ScoringModuleAPI(APIView):
+    @swagger_auto_schema(operation_description='Send message to scoring module',
+                         request_body=ScoringModuleSerializer)
+    def post(self, request):
+        raw_json = json.dumps(request.data)
+        serializer = ScoringModuleSerializer(data=raw_json)
+
+        if serializer.is_valid():
+            resp_data = serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(operation_description='Retrieve scoring module',
+                         responses={200: ScoringModuleSerializer, 500: 'Internal Error', 204: 'No data'})
+    def get(self, request):
+        raw_data = Module.objects.filter(type='SM')
+        if raw_data.count() == 0:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        serializer = ScoringModuleSerializer(data=raw_data,many=True)
+        if serializer.is_valid():
+            return Response(serializer.data)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 #class GenerationCreateApi(mixins.CreateModelMixin,

@@ -1,7 +1,7 @@
 import pika
 
-from lib import constants
-from lib.global_settings import BUS_HOST
+from core.lib import constants
+from core.lib.global_settings import BUS_HOST
 
 
 def send_message(message_code, body):
