@@ -31,10 +31,13 @@ body {
 /**
  * Add the correct display in IE 9-.
  */
-
+footer{
+    position:fixed;
+    top: 90%;
+    align-self: center;
+}
 article,
 aside,
-footer,
 header,
 nav,
 section {
