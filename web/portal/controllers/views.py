@@ -90,7 +90,7 @@ def upload_parser_module(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             file_to_send = request.FILES['file']
-            response = api_requestor.post('/back/parser_modules/upload_new_module/', file_to_send)
+            response = api_requestor.post('/front/parser_modules/upload_new_module/', file_to_send)
             if response.status_code == status.HTTP_201_CREATED:
                 return HttpResponse('SUCCESS!!!!!!')
             else:
