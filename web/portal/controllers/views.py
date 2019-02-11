@@ -1,14 +1,22 @@
 import json
 import sys
 
+import os
+
+
 sys.path.append('../')
 
-from web.portal.models import *
+from portal.controllers.forms import UploadFileForm
+
+from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.utils.encoding import smart_text
 from core.lib import api_requestor
 from core.lib import action_helper
+from core.lib import module
+from web.portal.models import Module
+
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 
@@ -75,5 +83,43 @@ def reject_client(request, id, ):
     return redirect("clients_list")
 
 
+@login_required(login_url="signin")
+def upload_parser_module(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file_uploaded = request.FILES['file']
+            path = os.path.join(apps.get_app_config('portal').path, "../../core/parsers/")
+            with open(path + file_uploaded.name, 'wb+') as file:
+                for chunk in file_uploaded.chunks():
+                    file.write(chunk)
+            file_path = os.path.abspath(file.name)
+            parser_m = module.ParserModule(file_path)
+
+            resp = json.dumps({'name': parser_m.get_module_name(),
+                               'path': file_path});
+
+            api_requestor.post('/parsing_module/', resp)
+            return HttpResponse('SUCCESS!!!!!!')
+    else:
+        form = UploadFileForm()
+    return render(request, 'concrete/forms/parser_module_upload.html', {'form': form})
 
 
+@login_required(login_url="signin")
+def parameters_list(request):
+    queryset = Module.objects.all()
+    items = []
+    for parser in queryset:
+        parser_m = module.ParserModule(parser.path)
+        parameters = parser_m.get_parameters_meta()
+        for parameter in parameters:
+            new_item = {}
+            new_item['source'] = parser_m.get_source()
+            new_item['parser'] = parser_m.get_module_name()
+            new_item['name'] = parameter['name']
+            new_item['description'] = parameter['description']
+            new_item['type'] = parameter['type']
+            items.append(new_item)
+
+    return render(request, 'concrete/parameters_list.html', {'items': items})

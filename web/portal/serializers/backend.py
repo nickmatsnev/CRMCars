@@ -135,8 +135,11 @@ class ParsingModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path')
 
     def create(self, validated_data):
-        raw_data = Individual.objects.create(**validated_data)
-        module = Module.objects.create(type='PM', **raw_data)
+        # TODO ЛЕША, бросай курить траву и писать код за полчаса, что за позорный косяк, какой нахрен ИНДВИДУАЛ ТУТ?? ПОЗОР БЛЯТЬ
+        # TODO Еще раз увижу позорную копипасту кода, без тестированием перед загрузкой на репозиторий, буду вычитать из ЗП. заебало.
+        # TODO + 1.5 часа работы в этом месяце , т.к я потратил на фикс бага 2 часа.
+        # raw_data = Individual.objects.create(**validated_data)
+        module = Module.objects.create(type='PM', **validated_data)
         return module
 
 
@@ -146,8 +149,8 @@ class ScoringModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path')
 
     def create(self, validated_data):
-        raw_data = Individual.objects.create(**validated_data)
-        module = Module.objects.create(type='SM', **raw_data)
+        # raw_data = Individual.objects.create(**validated_data)
+        module = Module.objects.create(type='SM', **validated_data)
         return module
 
 

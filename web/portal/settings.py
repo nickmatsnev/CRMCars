@@ -108,6 +108,8 @@ STATICFILES_DIRS = [
     '/Users/justkru/Documents/GitHub/willz-dev/web/static',
 ]
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

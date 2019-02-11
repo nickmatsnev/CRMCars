@@ -38,5 +38,5 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
 
-
-
+class UploadFileForm(forms.Form):
+    file = forms.FileField()

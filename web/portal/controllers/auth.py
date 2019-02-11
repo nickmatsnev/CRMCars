@@ -19,7 +19,7 @@ def sign_in(request):
                 return HttpResponse('Неверная пара логин\пароль')
     else:
         form = LoginForm()
-    return render(request, 'signin.html', {'form': form})
+    return render(request, 'concrete/forms/signin.html', {'form': form})
 
 
 
@@ -35,7 +35,7 @@ def sign_up(request):
             return redirect('users_list')
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'concrete/forms/signup.html', {'form': form})
 
 def sign_out(request):
    logout(request)

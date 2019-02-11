@@ -44,6 +44,9 @@ class BasicProcess:
                                      , properties=pika.BasicProperties(
                 delivery_mode=2))
 
+    def get_name(self):
+        raise NotImplementedError
+
     @property
     def channel(self):
         return self.__channel

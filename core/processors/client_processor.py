@@ -6,7 +6,6 @@ sys.path.append('..')
 
 from lib import api_requestor
 from lib import action_helper
-from lib import basic_process
 from lib.process import *
 from lib.constants import *
 
@@ -18,6 +17,9 @@ class ClientProcessor(BasicProcess):
                                               {
                                                   constants.CLIENT_RAW_CREATED_MESSAGE: self.__process_raw_client
                                               })
+
+    def get_name(self):
+        return CLIENT_PROCESSOR_NAME
 
     def __process_raw_client(self, body):
         try:
@@ -48,7 +50,8 @@ class ClientProcessor(BasicProcess):
                 raw_data = api_requestor.post_decode('/individuals/', json.dumps(raw_to_individual))
                 individual_id = raw_data['id']
 
-                action_helper.add_action(individual_id, 'new', basic_process.get_name(self))
+                # TODO ЛЕША, вот так делать по красоте. Добавили константу, метод в бейз классе и его оверрайд
+                action_helper.add_action(individual_id, 'new', self.get_name())
 
                 # формируем права
                 lcn_number = drvr['driver_license']['number']

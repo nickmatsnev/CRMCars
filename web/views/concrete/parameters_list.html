@@ -1,0 +1,51 @@
+{% extends "../base.html" %}
+
+
+
+{% block title %}
+    Список параметров
+{% endblock %}
+{% block content %}
+
+
+    <div id="" class="container">
+        <h1 class="panel-title">Параметры</h1>
+
+        <p></p>
+
+        <br>
+
+
+        <table bgcolor="#FFFFFF">
+            <thead>
+            <tr>
+                <td>Источник</td>
+                <td>Парсер</td>
+                <td>Имя параметра</td>
+                <td>Описание параметра</td>
+                <td>Тип</td>
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+            {% for item in items %}
+                <tr style="background: #ffff00">
+
+                    <td>{{ item.source }}</td>
+                    <td>{{ item.parser }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.type }}</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
+

@@ -131,12 +131,15 @@ class WillzCreateClient(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+# TODO Rename ParsingModule to ParserModule
+# TODO доделать метод удаления модуля с учетом удаления файла с диска
 class ParsingModuleAPI(APIView):
     @swagger_auto_schema(operation_description='Send message to parsing module',
                          request_body=ParsingModuleSerializer)
     def post(self, request):
-        raw_json = json.dumps(request.data)
-        serializer = ParsingModuleSerializer(data=raw_json)
+        # TODO ЛЕША, ЗА БЕЗДУМНОЕ ИСПОЛЬЗОВАНИЕ КОДА, Я БУДУ БИТЬ НОГАМИ. НАХРЕНА ТУТ ДЕЛАТЬ JSON DUMPS, ЕСЛИ НАДО НАПРЯМУЮ request data передавать как в BUS_MESSAGE_API ???
+        #  raw_json = json.dumps(request.data)
+        serializer = ParsingModuleSerializer(data=request.data)
 
         if serializer.is_valid():
             resp_data = serializer.save()
@@ -146,23 +149,27 @@ class ParsingModuleAPI(APIView):
     @swagger_auto_schema(operation_description='Retrieve parsing module',
                          responses={200: ParsingModuleSerializer, 500: 'Internal Error', 204: 'No data'})
     def get(self, request):
-        raw_data = Module.objects.filter(type='PM')
-        if raw_data.count() ==0:
+        # TODO Поля Леша так не именуются. если это много объектов, то это не raw_data а objects
+        modules = Module.objects.filter(type='PM')  # TODO CHANGE TO normal abbreviation - PARSING MODULE
+        if modules.count() ==0:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        serializer = ParsingModuleSerializer(data=raw_data,many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        serializer = ParsingModuleSerializer(modules, many=True)
+        return Response(serializer.data)
+
+
+#        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ScoringModuleAPI(APIView):
     @swagger_auto_schema(operation_description='Send message to scoring module',
                          request_body=ScoringModuleSerializer)
     def post(self, request):
-        raw_json = json.dumps(request.data)
-        serializer = ScoringModuleSerializer(data=raw_json)
-
+        # TODO ДУБЛЬ ДВА, ОПЯТЬ КОПИПАСТА ГОВНОКОДА
+        # raw_json = json.dumps(request.data)
+        serializer = ScoringModuleSerializer(data=request.data)
+        # TODO ЛЕША, ДУБЛЬ ТРИ, ЗАЕБАЛ КОПИПАСТИТЬ КОД БЕЗДУМНО, Я ЕЩЕ 40 минут потратил на то чтобы блять понять:
+        #TODO ЕСЛИ ТЫ ПИШЕШЬ - то is_valid нужен, если нет, то просто выдаешь data (когда чтение!!!)
         if serializer.is_valid():
             resp_data = serializer.save()
             return Response(status=status.HTTP_201_CREATED)

@@ -68,6 +68,7 @@ urlpatterns = [
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
+    url(r'parameters_list', parameters_list, name="parameters_list"),
 
     path(r'client_scoring/<int:id>/', client_scoring, name="client_scoring"),
     path(r'accept_client/<int:id>/', accept_client, name="accept_client"),
@@ -76,6 +77,8 @@ urlpatterns = [
     url(r'source', source, name="source"),
     path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
+
+    url(r'upload_parser_module', upload_parser_module, name="upload_parser_module")
 
 
 ]

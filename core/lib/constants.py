@@ -34,6 +34,4 @@ INDIVIDUAL_SOURCES_PROCESSED_MESSAGE="individiual_sources_processed"
 SCORISTA_SOURCE_PROCESS_MESSAGE="individual_scorista_source_process"
 SCORISTA_SOURCE_PROCESSED_MESSAGE="individual_scorista_source_processed"
 
-
-
-
+CLIENT_PROCESSOR_NAME = "New Client Processor"
