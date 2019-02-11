@@ -30,17 +30,17 @@ schema_view = get_schema_view(
 )
 
 # Работа с новой заявкой
-router.register(r'api/willz', backend.RawClientDataApi)
+router.register(r'api/back/willz', backend.RawClientDataApi)
 # Работа с клиентскими данными
-router.register(r'api/clients/new', backend.CreateClientApi)
+router.register(r'api/back/clients/new', backend.CreateClientApi)
 #router.register(r'api/generation', api.GetGenerationApi)
-router.register(r'api/individuals', backend.IndividualsApi)
-router.register(r'api/passports', backend.PassportsApi)
-router.register(r'api/driver_licenses', backend.DriverLicesesApi)
-router.register(r'api/images', backend.ImagesApi)
-router.register(r'api/clients', backend.ClientApi)
+router.register(r'api/back/individuals', backend.IndividualsApi)
+router.register(r'api/back/passports', backend.PassportsApi)
+router.register(r'api/back/driver_licenses', backend.DriverLicesesApi)
+router.register(r'api/back/images', backend.ImagesApi)
+router.register(r'api/back/clients', backend.ClientApi)
 # Работа с генерацией
-router.register(r'api/generation', backend.GenerationApi)
+router.register(r'api/back/generation', backend.GenerationApi)
 # Работа с фронтом
 router.register(r'api/front/users', frontend.UserListApi)
 
@@ -56,9 +56,9 @@ urlpatterns = [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/willz/', backend.WillzCreateClient.as_view()),
-    path('api/new_action/', backend.NewActionApi.as_view()),
-    path('api/bus_message/', backend.BusMessageAPI.as_view()),
+    path('api/back/willz/', backend.WillzCreateClient.as_view()),
+    path('api/back/new_action/', backend.NewActionApi.as_view()),
+    path('api/back/bus_message/', backend.BusMessageAPI.as_view()),
 
 # *** PARSER METHODS ***
     # backend
