@@ -15,7 +15,8 @@ from web.portal.models import *
 import json
 import pika
 
-from core.lib import constants
+from core.lib import module
+from core.lib import process
 
 from web.portal.serializers import *
 
@@ -131,61 +132,244 @@ class WillzCreateClient(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-# TODO Rename ParsingModule to ParserModule
-# TODO доделать метод удаления модуля с учетом удаления файла с диска
-class ParsingModuleAPI(APIView):
-    @swagger_auto_schema(operation_description='Send message to parsing module',
-                         request_body=ParsingModuleSerializer)
-    def post(self, request):
-        # TODO ЛЕША, ЗА БЕЗДУМНОЕ ИСПОЛЬЗОВАНИЕ КОДА, Я БУДУ БИТЬ НОГАМИ. НАХРЕНА ТУТ ДЕЛАТЬ JSON DUMPS, ЕСЛИ НАДО НАПРЯМУЮ request data передавать как в BUS_MESSAGE_API ???
-        #  raw_json = json.dumps(request.data)
-        serializer = ParsingModuleSerializer(data=request.data)
+# *** PARSER METHODS ***
+class ParserGetAPI(APIView):
+    @swagger_auto_schema(operation_description='Get current module',
+                        responses={200: ParserGetModuleSerializer,
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
 
-        if serializer.is_valid():
-            resp_data = serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    @swagger_auto_schema(operation_description='Retrieve parsing module',
-                         responses={200: ParsingModuleSerializer, 500: 'Internal Error', 204: 'No data'})
-    def get(self, request):
-        # TODO Поля Леша так не именуются. если это много объектов, то это не raw_data а objects
-        modules = Module.objects.filter(type='PM')  # TODO CHANGE TO normal abbreviation - PARSING MODULE
-        if modules.count() ==0:
-            return Response(status=status.HTTP_204_NO_CONTENT)
-
-        serializer = ParsingModuleSerializer(modules, many=True)
-        return Response(serializer.data)
+        try:
+            parsing_module = Module.objects.get(id=pk, type='Parser')
+            serializer = ParserGetModuleSerializer(parsing_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
 
 
-#        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class ParserActivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Activate current module',
+                        responses={200: 'Activated',
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            parsing_module = Module.objects.get(id=pk, type='Parser')
+            parsing_module.is_active = True
+            parsing_module.save()
+            serializer = ParserGetModuleSerializer(parsing_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
 
 
-class ScoringModuleAPI(APIView):
-    @swagger_auto_schema(operation_description='Send message to scoring module',
-                         request_body=ScoringModuleSerializer)
-    def post(self, request):
-        # TODO ДУБЛЬ ДВА, ОПЯТЬ КОПИПАСТА ГОВНОКОДА
-        # raw_json = json.dumps(request.data)
-        serializer = ScoringModuleSerializer(data=request.data)
-        # TODO ЛЕША, ДУБЛЬ ТРИ, ЗАЕБАЛ КОПИПАСТИТЬ КОД БЕЗДУМНО, Я ЕЩЕ 40 минут потратил на то чтобы блять понять:
-        #TODO ЕСЛИ ТЫ ПИШЕШЬ - то is_valid нужен, если нет, то просто выдаешь data (когда чтение!!!)
-        if serializer.is_valid():
-            resp_data = serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+class ParserDeactivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Deactivate current module',
+                        responses={200: 'Deactivated',
+                                204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
 
-    @swagger_auto_schema(operation_description='Retrieve scoring module',
-                         responses={200: ScoringModuleSerializer, 500: 'Internal Error', 204: 'No data'})
-    def get(self, request):
-        raw_data = Module.objects.filter(type='SM')
-        if raw_data.count() == 0:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            parsing_module = Module.objects.get(id=pk, type='Parser')
+            parsing_module.is_active = False
+            parsing_module.save()
+            serializer = ParserGetModuleSerializer(parsing_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
 
-        serializer = ScoringModuleSerializer(data=raw_data,many=True)
-        if serializer.is_valid():
-            return Response(serializer.data)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# TODO: Не было тестирования этой части(с настоящими файлами!)
+class ParserGetParametersAPI(APIView):
+    @swagger_auto_schema(operation_description='Get parameters',
+                        responses={200: 'Parameters',
+                                    204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            parsing_module = Module.objects.get(id=pk, type='Parser')
+            load = module.ParserModule(parsing_module.path)
+            parameters = load.get_parameters_meta()
+
+            response_data = parameters
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+# *** SCORING METHODS ***
+class ScoringGetAPI(APIView):
+    @swagger_auto_schema(operation_description='Get current module',
+                        responses={200: ScoringGetModuleSerializer,
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            scoring_module = Module.objects.get(id=pk, type='Scoring')
+            serializer = ScoringGetModuleSerializer(scoring_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+class ScoringActivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Activate current module',
+                        responses={200: 'Activated',
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            scoring_module = Module.objects.get(id=pk, type='Scoring')
+            scoring_module.is_active = True
+            scoring_module.save()
+            serializer = ParserGetModuleSerializer(scoring_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+class ScoringDeactivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Deactivate current module',
+                        responses={200: 'Deactivated',
+                                204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            scoring_module = Module.objects.get(id=pk, type='Scoring')
+            scoring_module.is_active = False
+            scoring_module.save()
+            serializer = ParserGetModuleSerializer(scoring_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+# TODO: Не было тестирования этой части(с настоящими файлами!)
+class ScoringGetParametersAPI(APIView):
+    @swagger_auto_schema(operation_description='Get parameters',
+                        responses={200: 'Parameters',
+                                    204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            scoring_module = Module.objects.get(id=pk, type='Scoring')
+            load = module.ParserModule(scoring_module.path)
+            parameters = load.get_parameters_meta()
+
+            response_data = parameters
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+# *** SOURCE METHODS ***
+class SourceGetAPI(APIView):
+    @swagger_auto_schema(operation_description='Get current module',
+                        responses={200: SourceGetModuleSerializer,
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            source_module = Module.objects.get(id=pk, type='Source')
+            serializer = SourceGetModuleSerializer(source_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+class SourceActivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Activate current module',
+                        responses={200: 'Activated',
+                                   204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            source_module = Module.objects.get(id=pk, type='Source')
+            source_module.is_active = True
+            source_module.save()
+            serializer = SourceGetModuleSerializer(source_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+class SourceDeactivateAPI(APIView):
+    @swagger_auto_schema(operation_description='Deactivate current module',
+                        responses={200: 'Deactivated',
+                                204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            source_module = Module.objects.get(id=pk, type='Source')
+            source_module.is_active = False
+            source_module.save()
+            serializer = SourceGetModuleSerializer(source_module, many=False)
+            response_data = serializer.data
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
+
+
+# TODO: Не было тестирования этой части(с настоящими файлами!)
+class SourceGetParametersAPI(APIView):
+    @swagger_auto_schema(operation_description='Get parameters',
+                        responses={200: 'Parameters',
+                                    204: 'No module with such PK'})
+    def get(self, request, pk):
+        current_status = status.HTTP_200_OK
+        response_data = ""
+
+        try:
+            source_module = Module.objects.get(id=pk, type='Source')
+            load = module.ParserModule(source_module.path)
+            parameters = load.get_parameters_meta()
+
+            response_data = parameters
+        except:
+            current_status=status.HTTP_204_NO_CONTENT
+        finally:
+            return Response(status=current_status,data=response_data)
 
 
 #class GenerationCreateApi(mixins.CreateModelMixin,

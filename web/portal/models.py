@@ -144,16 +144,20 @@ class Action(models.Model):
 
 
 class ModuleType(Enum):
-    ParsingModule = 'PM'
-    ScoringModule = 'SM'
+    ImportModule = 'Source'
+    ParserModule = 'Parser'
+    ScoringModule = 'Scoring'
 
 
 class Module(models.Model):
-    type = models.CharField(max_length=2,choices=[
-        (ModuleType.ParsingModule,'PM'),
-        (ModuleType.ScoringModule,'SM'),
+    type = models.TextField(choices=[
+        (ModuleType.ImportModule,'Source'),
+        (ModuleType.ParserModule,'Parser'),
+        (ModuleType.ScoringModule, 'Scoring'),
     ])
     name = models.TextField()
     path = models.TextField()
-
+    is_active = models.BooleanField()
+    create_time = models.DateTimeField()
+    credentials = models.TextField(null=True)
 

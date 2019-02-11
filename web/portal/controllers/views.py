@@ -16,6 +16,7 @@ from core.lib import api_requestor
 from core.lib import action_helper
 from core.lib import module
 from web.portal.models import Module
+from rest_framework import status
 
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
@@ -88,19 +89,12 @@ def upload_parser_module(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            file_uploaded = request.FILES['file']
-            path = os.path.join(apps.get_app_config('portal').path, "../../core/parsers/")
-            with open(path + file_uploaded.name, 'wb+') as file:
-                for chunk in file_uploaded.chunks():
-                    file.write(chunk)
-            file_path = os.path.abspath(file.name)
-            parser_m = module.ParserModule(file_path)
-
-            resp = json.dumps({'name': parser_m.get_module_name(),
-                               'path': file_path});
-
-            api_requestor.post('/parsing_module/', resp)
-            return HttpResponse('SUCCESS!!!!!!')
+            file_to_send = request.FILES['file']
+            response = api_requestor.post('/back/parser_modules/upload_new_module/', file_to_send)
+            if response.status_code == status.HTTP_201_CREATED:
+                return HttpResponse('SUCCESS!!!!!!')
+            else:
+                return HttpResponse('Some error :(')
     else:
         form = UploadFileForm()
     return render(request, 'concrete/forms/parser_module_upload.html', {'form': form})
@@ -108,18 +102,6 @@ def upload_parser_module(request):
 
 @login_required(login_url="signin")
 def parameters_list(request):
-    queryset = Module.objects.all()
-    items = []
-    for parser in queryset:
-        parser_m = module.ParserModule(parser.path)
-        parameters = parser_m.get_parameters_meta()
-        for parameter in parameters:
-            new_item = {}
-            new_item['source'] = parser_m.get_source()
-            new_item['parser'] = parser_m.get_module_name()
-            new_item['name'] = parameter['name']
-            new_item['description'] = parameter['description']
-            new_item['type'] = parameter['type']
-            items.append(new_item)
+    items = api_requestor.request('/front/parser_modules/get_active_parsers_parameters')
 
     return render(request, 'concrete/parameters_list.html', {'items': items})

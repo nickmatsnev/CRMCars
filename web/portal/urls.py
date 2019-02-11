@@ -60,8 +60,38 @@ urlpatterns = [
     path('api/new_action/', backend.NewActionApi.as_view()),
     path('api/bus_message/', backend.BusMessageAPI.as_view()),
 
-    path('api/parsing_module/', backend.ParsingModuleAPI.as_view()),
-    path('api/scoring_module/', backend.ScoringModuleAPI.as_view()),
+# *** PARSER METHODS ***
+    # backend
+    path('api/back/parser_modules/<int:pk>/', backend.ParserGetAPI.as_view()),
+    path('api/back/parser_modules/<int:pk>/activate/', backend.ParserActivateAPI.as_view()),
+    path('api/back/parser_modules/<int:pk>/deactivate/', backend.ParserDeactivateAPI.as_view()),
+    path('api/back/parser_modules/<int:pk>/parameters/', backend.ParserGetParametersAPI.as_view()),
+    #frontend
+    path('api/front/parser_modules/get_active_parsers_parameters/', frontend.ParserGetActiveAPI.as_view()),
+    path('api/front/parser_modules/get_all_parsers/', frontend.ParserGetAllAPI.as_view()),
+    path('api/front/parser_modules/upload_new_module/', frontend.ParserUploadAPI.as_view()),
+
+# *** SCORING METHODS ***
+    # backend
+    path('api/back/scoring_modules/<int:pk>/', backend.ScoringGetAPI.as_view()),
+    path('api/back/scoring_modules/<int:pk>/activate/', backend.ScoringActivateAPI.as_view()),
+    path('api/back/scoring_modules/<int:pk>/deactivate/', backend.ScoringDeactivateAPI.as_view()),
+    path('api/back/scoring_modules/<int:pk>/parameters/', backend.ScoringGetParametersAPI.as_view()),
+    #frontend
+    path('api/front/scoring_modules/get_active_scorings_parameters/', frontend.ScoringGetActiveAPI.as_view()),
+    path('api/front/scoring_modules/get_all_scorings/', frontend.ScoringGetAllAPI.as_view()),
+    path('api/front/scoring_modules/upload_new_module/', frontend.ScoringUploadAPI.as_view()),
+
+# *** SOURCE METHODS ***
+    # backend
+    path('api/back/source_modules/<int:pk>/', backend.SourceGetAPI.as_view()),
+    path('api/back/source_modules/<int:pk>/activate/', backend.SourceActivateAPI.as_view()),
+    path('api/back/source_modules/<int:pk>/deactivate/', backend.SourceDeactivateAPI.as_view()),
+    path('api/back/source_modules/<int:pk>/parameters/', backend.SourceGetParametersAPI.as_view()),
+    #frontend
+    path('api/front/source_modules/get_active_sourcess_parameters/', frontend.SourceGetActiveAPI.as_view()),
+    path('api/front/source_modules/get_all_sources/', frontend.SourceGetAllAPI.as_view()),
+    path('api/front/source_modules/upload_new_module/', frontend.SourceUploadAPI.as_view()),
 
     path('api/front/clients/', frontend.ClientsListApi.as_view()),
     path('api/front/clients/<int:pk>/', frontend.ClientInspectApi.as_view()),

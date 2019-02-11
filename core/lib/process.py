@@ -3,8 +3,9 @@
 from datetime import datetime
 import pika
 
-from lib import constants
-from lib.global_settings import BUS_HOST
+from core.lib import constants
+from core.lib.global_settings import BUS_HOST
+from django.core.files import File
 
 
 class BasicProcess:

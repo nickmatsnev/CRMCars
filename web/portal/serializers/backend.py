@@ -129,18 +129,21 @@ class SourceRawDataSerializer(serializers.ModelSerializer):
         fields = ('id', 'payload', 'individual', 'source')
 
 
-class ParsingModuleSerializer(serializers.ModelSerializer):
+class ParserModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
         fields = ('name','path')
 
     def create(self, validated_data):
-        # TODO ЛЕША, бросай курить траву и писать код за полчаса, что за позорный косяк, какой нахрен ИНДВИДУАЛ ТУТ?? ПОЗОР БЛЯТЬ
-        # TODO Еще раз увижу позорную копипасту кода, без тестированием перед загрузкой на репозиторий, буду вычитать из ЗП. заебало.
-        # TODO + 1.5 часа работы в этом месяце , т.к я потратил на фикс бага 2 часа.
-        # raw_data = Individual.objects.create(**validated_data)
-        module = Module.objects.create(type='PM', **validated_data)
+        module = Module.objects.create(type='Parser',is_active=True, create_time=datetime.datetime.now(),
+                                       **validated_data)
         return module
+
+
+class ParserGetModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('id','name','path','is_active','create_time')
 
 
 class ScoringModuleSerializer(serializers.ModelSerializer):
@@ -149,10 +152,32 @@ class ScoringModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path')
 
     def create(self, validated_data):
-        # raw_data = Individual.objects.create(**validated_data)
-        module = Module.objects.create(type='SM', **validated_data)
+        module = Module.objects.create(type='Scoring',is_active=True, create_time=datetime.datetime.now(),
+                                       **validated_data)
         return module
 
+
+class ScoringGetModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('id','name','path','is_active','create_time')
+
+
+class SourceModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('name','path','credentials')
+
+    def create(self, validated_data):
+        module = Module.objects.create(type='Scoring',is_active=True, create_time=datetime.datetime.now(),
+                                       **validated_data)
+        return module
+
+
+class SourceGetModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = ('id','name','path','is_active','create_time','credentials')
 
 #        def create(self, validated_data):
 #            individuals_data = validated_data.pop('individuals')
