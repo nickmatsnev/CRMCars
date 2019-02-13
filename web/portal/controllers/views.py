@@ -92,13 +92,13 @@ def upload_module(request, module_type):
 
         files = {'file': file.open()}
         response = api_requestor.post_file("/front/%s_modules/upload_new_module/" % module_type, files=files)
-            if response.status_code == status.HTTP_201_CREATED:
-                return redirect("modules_list", module_type=module_type)
-            else:
-                return HttpResponse('Some error :(')
+        if response.status_code == status.HTTP_201_CREATED:
+            return redirect("modules_list", module_type=module_type)
+        else:
+            return HttpResponse('Some error :(')
     else:
         form = UploadFileForm()
-return render(request, 'concrete/forms/upload_module.html', {'form': form, 'module_type': module_type})
+    return render(request, 'concrete/forms/upload_module.html', {'form': form, 'module_type': module_type})
 
 
 @login_required(login_url="signin")
