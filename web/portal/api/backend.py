@@ -1,24 +1,13 @@
-from django.contrib.sites import requests
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import mixins, renderers, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import mixins
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from drf_yasg import openapi
-
+import json
 from core.lib import message_sender, api_requestor
+from portal.lib.backend_api_helpers import *
+from core.lib.modules import ScoringModule, SourceModule
 from web.portal.serializers.backend import *
 from web.portal.models import *
-
-import json
-import pika
-
-from core.lib import module
-from core.lib import process
-
-from web.portal.serializers import *
 
 from rest_framework import viewsets
 
@@ -38,13 +27,6 @@ class CreateClientApi(mixins.CreateModelMixin,
                 viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-
-
-#    @action(detail=False, renderer_classes=[renderers.StaticHTMLRenderer])
-#    def test_method(self, request, myparam=None):
-#        snippet = self.get_object()
-#        return Response(snippet.highlighted)
-
 
 class IndividualsApi(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
@@ -79,10 +61,6 @@ class RawClientDataApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = RawClientData.objects.all()
     serializer_class = RawClientDataSerializer
 
-
-#class ScoringModelsApi(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-#    queryset = ScoreModel.objects.all()
-#    serializer_class = ScoreModelSerializer
 
 
 class NewActionApi(APIView):
@@ -127,7 +105,7 @@ class WillzCreateClient(APIView):
             resp = json.dumps({'message_type': constants.CLIENT_RAW_CREATED_MESSAGE,
                                'body': json.dumps({'raw_client_id': resp_data.id})});
 
-            raw_data = api_requestor.post('/bus_message/', resp)
+            raw_data = api_requestor.post('/back/bus_message/', resp)
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -138,17 +116,7 @@ class ParserGetAPI(APIView):
                         responses={200: ParserGetModuleSerializer,
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            parsing_module = Module.objects.get(id=pk, type='Parser')
-            serializer = ParserGetModuleSerializer(parsing_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, get_module_by_id_type, module_type=ParserModule)
 
 
 class ParserActivateAPI(APIView):
@@ -156,19 +124,8 @@ class ParserActivateAPI(APIView):
                         responses={200: 'Activated',
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            parsing_module = Module.objects.get(id=pk, type='Parser')
-            parsing_module.is_active = True
-            parsing_module.save()
-            serializer = ParserGetModuleSerializer(parsing_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=True,
+                                  module_type=ParserModule)
 
 
 class ParserDeactivateAPI(APIView):
@@ -176,19 +133,8 @@ class ParserDeactivateAPI(APIView):
                         responses={200: 'Deactivated',
                                 204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            parsing_module = Module.objects.get(id=pk, type='Parser')
-            parsing_module.is_active = False
-            parsing_module.save()
-            serializer = ParserGetModuleSerializer(parsing_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=False,
+                                  module_type=ParserModule)
 
 
 # TODO: Не было тестирования этой части(с настоящими файлами!)
@@ -197,19 +143,7 @@ class ParserGetParametersAPI(APIView):
                         responses={200: 'Parameters',
                                     204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            parsing_module = Module.objects.get(id=pk, type='Parser')
-            load = module.ParserModule(parsing_module.path)
-            parameters = load.get_parameters_meta()
-
-            response_data = parameters
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, get_module_parameters, module_type=ParserModule)
 
 
 # *** SCORING METHODS ***
@@ -218,57 +152,23 @@ class ScoringGetAPI(APIView):
                         responses={200: ScoringGetModuleSerializer,
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            scoring_module = Module.objects.get(id=pk, type='Scoring')
-            serializer = ScoringGetModuleSerializer(scoring_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
-
+        return standard_get_by_pk(request, pk, get_module_by_id_type, module_type=ScoringModule)
 
 class ScoringActivateAPI(APIView):
     @swagger_auto_schema(operation_description='Activate current module',
                         responses={200: 'Activated',
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            scoring_module = Module.objects.get(id=pk, type='Scoring')
-            scoring_module.is_active = True
-            scoring_module.save()
-            serializer = ParserGetModuleSerializer(scoring_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
-
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=True,
+                                  module_type=ScoringModule)
 
 class ScoringDeactivateAPI(APIView):
     @swagger_auto_schema(operation_description='Deactivate current module',
                         responses={200: 'Deactivated',
                                 204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            scoring_module = Module.objects.get(id=pk, type='Scoring')
-            scoring_module.is_active = False
-            scoring_module.save()
-            serializer = ParserGetModuleSerializer(scoring_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=False,
+                                  module_type=ScoringModule)
 
 
 # TODO: Не было тестирования этой части(с настоящими файлами!)
@@ -277,19 +177,8 @@ class ScoringGetParametersAPI(APIView):
                         responses={200: 'Parameters',
                                     204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
+        return standard_get_by_pk(request, pk, get_module_parameters, module_type=ScoringModule)
 
-        try:
-            scoring_module = Module.objects.get(id=pk, type='Scoring')
-            load = module.ParserModule(scoring_module.path)
-            parameters = load.get_parameters_meta()
-
-            response_data = parameters
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
 
 
 # *** SOURCE METHODS ***
@@ -298,17 +187,7 @@ class SourceGetAPI(APIView):
                         responses={200: SourceGetModuleSerializer,
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            source_module = Module.objects.get(id=pk, type='Source')
-            serializer = SourceGetModuleSerializer(source_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, get_module_by_id_type, module_type=SourceModule)
 
 
 class SourceActivateAPI(APIView):
@@ -316,19 +195,8 @@ class SourceActivateAPI(APIView):
                         responses={200: 'Activated',
                                    204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            source_module = Module.objects.get(id=pk, type='Source')
-            source_module.is_active = True
-            source_module.save()
-            serializer = SourceGetModuleSerializer(source_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=True,
+                                  module_type=SourceModule)
 
 
 class SourceDeactivateAPI(APIView):
@@ -336,19 +204,8 @@ class SourceDeactivateAPI(APIView):
                         responses={200: 'Deactivated',
                                 204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            source_module = Module.objects.get(id=pk, type='Source')
-            source_module.is_active = False
-            source_module.save()
-            serializer = SourceGetModuleSerializer(source_module, many=False)
-            response_data = serializer.data
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
+        return standard_get_by_pk(request, pk, set_module_is_active_by_id_type, is_active=False,
+                                  module_type=SourceModule)
 
 
 # TODO: Не было тестирования этой части(с настоящими файлами!)
@@ -357,193 +214,4 @@ class SourceGetParametersAPI(APIView):
                         responses={200: 'Parameters',
                                     204: 'No module with such PK'})
     def get(self, request, pk):
-        current_status = status.HTTP_200_OK
-        response_data = ""
-
-        try:
-            source_module = Module.objects.get(id=pk, type='Source')
-            load = module.ParserModule(source_module.path)
-            parameters = load.get_parameters_meta()
-
-            response_data = parameters
-        except:
-            current_status=status.HTTP_204_NO_CONTENT
-        finally:
-            return Response(status=current_status,data=response_data)
-
-
-#class GenerationCreateApi(mixins.CreateModelMixin,
-#                    viewsets.GenericViewSet):
-#    queryset = Generation.objects.all()
-#    serializer_class = GenerationCreateSerializer
-
-
-#class GenerationGetAllApi(APIView):
-#    def get_object(self, pk):
-#        try:
-#            return Generation.objects.filter(individual=pk)[0]
-#        except Individual.DoesNotExist:
-#            raise Http404
-
-#    @swagger_auto_schema(operation_description='Used to get all generations for individual')
-#    def get(self, request, pk, *args, **kwargs):
-#        queryset = self.get_object(pk)
-#        serializer = GenerationGetSerializer(queryset)
-#        return Response(serializer.data)
-
-
-#class GenerationGetTasksApi(APIView):
-#    def get_object(self, pk):
-#        try:
-#            return Generation.objects.filter(individual=pk)[0]
-#        except Individual.DoesNotExist:
-#            raise Http404
-
-#    @swagger_auto_schema(operation_description='Used to get all tasks for individual')
-#    def get(self, request, pk, *args, **kwargs):
-#        queryset = self.get_object(pk)
-#        serializer = GenerationGetSerializer(queryset)
-#        return Response(serializer.data)
-
-# class start_task(APIView):
-#     def get(self,reque        r = requests.post('https://www.somedomain.com/some/url/save', params=request.POST)st):
-#         #дописать
-#         return Response(status=status.HTTP_200_OK)
-#
-#
-# class finalize_task(APIView):
-#     def get(self,request):
-#         task_id = self.request.query_params.get('task_id', None)
-#         if task_id is not None:
-#             #не пойму какую таблицу юзать
-#             task_table = Task.objects.filter(task=task_id)
-#             task_table.task_status =2
-#             task_table.save
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
-# class create_passport(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#     def post(self,request):
-#         serializer = PassportSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class create_license(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#     def post(self,request):
-#         serializer = LicenseSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class create_individual(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#     def post(self,request):
-#         serializer = IndividualSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class create_image(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#     def post(self,request):
-#         serializer = ImageSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class create_client(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-#     def post(self,request):
-#         serializer = ClientSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class update_client_task_data(APIView):
-#     def get(self,request):
-#         task_id = self.request.query_params.get('task_id', None)
-#         client_id = self.request.query_params.get('client_id', None)
-#
-#         if task_id and client_id is not None:
-#             task_table = ClientTask.objects.filter(task=task_id)
-#             task_table.client = client_id
-#             task_table.save
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
-# class get_default_score_model(APIView):
-#     def get(self,request):
-#         return JsonResponse({'score_model id': '1'})
-#
-#
-# class get_sources(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_200_OK)
-#
-#
-# class get_individual_passport(APIView):
-#     def get(self,request):
-#         queryset = PassportSerializer.objects.all()
-#         individual_id = self.request.query_params.get('individual_id', None)
-#         if individual_id is not None:
-#             queryset = queryset.filter(individual_id=individual_id)
-#             return queryset
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class get_individual_license(APIView):
-#     def get(self,request):
-#         queryset = LicenseSerializer.objects.all()
-#         individual_id = self.request.query_params.get('individual_id', None)
-#         if individual_id is not None:
-#             queryset = queryset.filter(individual_id=individual_id)
-#             return queryset
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# class create_source_raw_data(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_200_OK)
-#
-#
-# class update_source_task(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_200_OK)
-#
-#
-# class get_source_raw_data_for_individual(APIView):
-#     def get(self,request):
-#         return Response(status=status.HTTP_200_OK)
-#
-#
-# class insert_check(APIView):
-#     def get(self,request):
-#         individual_id = self.request.query_params.get('individual_id', None)
-#         value = self.request.query_params.get('value', None)
-#         check_registry_id = self.request.query_params.get('check_registry_id', None)
-#
-#         if individual_id and value and check_registry_id is not None:
-#             check_table = Check.objects.filter(individual=individual_id,checkRegistry=check_registry_id)
-#             check_table.value = value
-#             check_table.save
-#             return Response(status=status.HTTP_200_OK)
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#
+        return standard_get_by_pk(request, pk, get_module_parameters, module_type=SourceModule)

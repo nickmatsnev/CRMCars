@@ -1,6 +1,7 @@
 from django.db import models
 import sys
 sys.path.append('../')
+sys.path.append('../../')
 from enum import Enum
 
 

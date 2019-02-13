@@ -67,8 +67,9 @@ urlpatterns = [
     path('api/back/parser_modules/<int:pk>/deactivate/', backend.ParserDeactivateAPI.as_view()),
     path('api/back/parser_modules/<int:pk>/parameters/', backend.ParserGetParametersAPI.as_view()),
     #frontend
-    path('api/front/parser_modules/get_active_parsers_parameters/', frontend.ParserGetActiveAPI.as_view()),
-    path('api/front/parser_modules/get_all_parsers/', frontend.ParserGetAllAPI.as_view()),
+    path('api/front/parser_modules/get_active_parsers_parameters/',
+         frontend.ParserGetParametersFromActiveModules.as_view()),
+    path('api/front/parser_modules/get_all_parser/', frontend.ParserGetAllAPI.as_view()),
     path('api/front/parser_modules/upload_new_module/', frontend.ParserUploadAPI.as_view()),
 
 # *** SCORING METHODS ***
@@ -78,8 +79,7 @@ urlpatterns = [
     path('api/back/scoring_modules/<int:pk>/deactivate/', backend.ScoringDeactivateAPI.as_view()),
     path('api/back/scoring_modules/<int:pk>/parameters/', backend.ScoringGetParametersAPI.as_view()),
     #frontend
-    path('api/front/scoring_modules/get_active_scorings_parameters/', frontend.ScoringGetActiveAPI.as_view()),
-    path('api/front/scoring_modules/get_all_scorings/', frontend.ScoringGetAllAPI.as_view()),
+    path('api/front/scoring_modules/get_all_scoring/', frontend.ScoringGetAllAPI.as_view()),
     path('api/front/scoring_modules/upload_new_module/', frontend.ScoringUploadAPI.as_view()),
 
 # *** SOURCE METHODS ***
@@ -89,8 +89,7 @@ urlpatterns = [
     path('api/back/source_modules/<int:pk>/deactivate/', backend.SourceDeactivateAPI.as_view()),
     path('api/back/source_modules/<int:pk>/parameters/', backend.SourceGetParametersAPI.as_view()),
     #frontend
-    path('api/front/source_modules/get_active_sourcess_parameters/', frontend.SourceGetActiveAPI.as_view()),
-    path('api/front/source_modules/get_all_sources/', frontend.SourceGetAllAPI.as_view()),
+    path('api/front/source_modules/get_all_source/', frontend.SourceGetAllAPI.as_view()),
     path('api/front/source_modules/upload_new_module/', frontend.SourceUploadAPI.as_view()),
 
     path('api/front/clients/', frontend.ClientsListApi.as_view()),
@@ -100,15 +99,17 @@ urlpatterns = [
     url(r'users_list', users_list, name="users_list"),
     url(r'parameters_list', parameters_list, name="parameters_list"),
 
+    path(r'modules_list/<slug:module_type>/', modules_list, name="modules_list"),
+
     path(r'client_scoring/<int:id>/', client_scoring, name="client_scoring"),
     path(r'accept_client/<int:id>/', accept_client, name="accept_client"),
     path(r'reject_client/<int:id>/', reject_client, name="reject_client"),
 
-    url(r'source', source, name="source"),
+
     path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
 
-    url(r'upload_parser_module', upload_parser_module, name="upload_parser_module")
-
+    path(r'upload_module/<slug:module_type>/', upload_module, name="upload_module"),
+    # url(r'source', source, name="source")
 
 ]

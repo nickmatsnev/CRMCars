@@ -3,6 +3,7 @@ import sys
 
 import os
 
+from django.views.decorators.csrf import csrf_exempt
 
 sys.path.append('../')
 
@@ -14,7 +15,7 @@ from django.shortcuts import *
 from django.utils.encoding import smart_text
 from core.lib import api_requestor
 from core.lib import action_helper
-from core.lib import module
+from core.lib import modules
 from web.portal.models import Module
 from rest_framework import status
 
@@ -85,23 +86,30 @@ def reject_client(request, id, ):
 
 
 @login_required(login_url="signin")
-def upload_parser_module(request):
+def upload_module(request, module_type):
     if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file_to_send = request.FILES['file']
-            response = api_requestor.post('/front/parser_modules/upload_new_module/', file_to_send)
+        file = request.FILES['file']
+
+        files = {'file': file.open()}
+        response = api_requestor.post_file("/front/%s_modules/upload_new_module/" % module_type, files=files)
             if response.status_code == status.HTTP_201_CREATED:
-                return HttpResponse('SUCCESS!!!!!!')
+                return redirect("modules_list", module_type=module_type)
             else:
                 return HttpResponse('Some error :(')
     else:
         form = UploadFileForm()
-    return render(request, 'concrete/forms/parser_module_upload.html', {'form': form})
+return render(request, 'concrete/forms/upload_module.html', {'form': form, 'module_type': module_type})
 
 
 @login_required(login_url="signin")
 def parameters_list(request):
-    items = api_requestor.request('/front/parser_modules/get_active_parsers_parameters')
+    items = api_requestor.request('/front/parser_modules/get_active_parsers_parameters/')
 
     return render(request, 'concrete/parameters_list.html', {'items': items})
+
+
+@login_required(login_url="signin")
+def modules_list(request, module_type):
+    items = api_requestor.request("/front/%s_modules/get_all_%s/" % (module_type, module_type))
+
+    return render(request, 'concrete/modules_list.html', {'module': module_type, 'items': items})

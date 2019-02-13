@@ -43,7 +43,7 @@
 </head>
 
 
-
+<body>
 <div class="containermain">
     <div class="flexContainer flexColumn whiteBackground">
             <nav class="flexContainer blueBackground">
@@ -99,12 +99,14 @@
                              <a style="color:black" href="">Модули</a>
                             <br>
                             <ul>
-                                            <li>Модули парсера</li>
-                                            <li>Модули скоринга</li>
+                                <li><a href="{% url "modules_list" "source" %}">Модули источников</a></li>
+                                <li><a href="{% url "modules_list" "parser" %}">Модули парсинга</a></li>
+                                <li><a href="{% url "modules_list" "scoring" %}">Модули скоринга</a></li>
                             </ul>
                                     <a style="color:black" href=""> Скоринг</a>
-                                    <ul>    
-                                            <li> Список скоринговых параметров</li>
+                            <ul>
+                                <li><a><a href="{% url "parameters_list" %}"> Список параметров из
+                                    источников</a></li>
                                            </ul>
                             <a style="color:black" href=""> Продукты</a>
                         </div>
@@ -191,7 +193,7 @@
 
   </script>
    <a class="add_palitra" href="">
-            <img title="Modal Window" src="{% static modal.png %}" alt="buttons" />
+       <img title="Modal Window" src="{% static "modal.png" %}" alt="buttons"/>
         </a>
     </body>
 </html>

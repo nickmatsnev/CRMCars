@@ -68,7 +68,7 @@ class ClientProcessor(BasicProcess):
                     raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
                                   'title': drvr['passport'][new_img_txt],
                                   'url': drvr['passport'][new_img_txt + '_url']}
-                    api_requestor.post('/images/', json.dumps(raw_to_img))
+                    api_requestor.post('/back/images/', json.dumps(raw_to_img))
 
                 # формируем паспорт
                 raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']

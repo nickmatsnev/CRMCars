@@ -36,3 +36,6 @@ SCORISTA_SOURCE_PROCESSED_MESSAGE="individual_scorista_source_processed"
 
 CLIENT_PROCESSOR_NAME = "New Client Processor"
 
+PATH_TO_SCORING_MODULES = "../../core/scoring_modules/"
+PATH_TO_PARSER_MODULES = "../../core/parsers/"
+PATH_TO_SOURCE_MODULES = "../../core/sources/"

@@ -3,20 +3,21 @@
 
 
 {% block title %}
-    Загрузка модуля парсера
+    Загрузка модуля {{ module_type }}
 {% endblock %}
 {% block content %}
 
     <div id="" class="container">
-        <h1 class="panel-title">Пользователи</h1>
+        <h1 class="panel-title">Загрузка модуля {{ module_type }}</h1>
         <p></p>
 
         <br>
-        <form method="POST" enctype="multipart/form-data"  action="/api/front/parser_modules/upload_new_module/">
+        <form method="POST" enctype="multipart/form-data" action="">
             {% csrf_token %}
             <table>
                 {{ form }}
-            </table>s
+            </table>
+
             <input type="submit" value="Submit">
 
         </form>

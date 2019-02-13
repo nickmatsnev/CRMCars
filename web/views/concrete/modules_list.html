@@ -1,0 +1,63 @@
+{% extends "../base.html" %}
+
+
+
+{% block title %}
+    Модули {{ module }}
+{% endblock %}
+{% block content %}
+
+
+    <div id="" class="container">
+        <h1 class="panel-title">Модули {{ module }}</h1>
+
+        <p></p>
+
+        <br>
+
+
+        <table bgcolor="#FFFFFF">
+            <thead>
+            <tr>
+                <td>Имя модуля</td>
+                <td>Путь</td>
+                <td>Дата добавления</td>
+                <td>Включен</td>
+                {% if module == "source" %}
+                    <td>URL</td>
+                    <td>Параметры доступа</td>
+                {% endif %}
+
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+            {% for item in items %}
+                <tr style="background: #ffff00">
+
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.path }}</td>
+                    <td>{{ item.creation_time }}</td>
+                    <td>{{ item.is_active }}</td>
+
+                    {% if module == "source" %}
+                        <td>{{ item.credentials }}</td>
+                        <td>{{ item.module_url }}</td>
+                    {% endif %}
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <a href="{% url "upload_module" module %}">
+            <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Загрузить модуль
+            </button>
+        </a>
+    </div>
+
+{% endblock %}
+

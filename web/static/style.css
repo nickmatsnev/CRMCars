@@ -75,6 +75,7 @@ body {
 	color: #000000;
 	overflow-x: hidden;
 	position: relative;
+    height: 100%;
 }
 img {
     max-width: 100%;
