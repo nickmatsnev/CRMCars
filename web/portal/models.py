@@ -162,3 +162,9 @@ class Module(models.Model):
     create_time = models.DateTimeField()
     credentials = models.TextField(null=True)
 
+
+class Product(models.Model):
+    name = models.TextField()
+    client = models.OneToOneField(Client, related_name='product', on_delete=models.CASCADE)
+    primary_scoring = models.OneToOneField(Module, null=True, related_name='primary_scoring', on_delete=models.CASCADE)
+    other_scoring = models.OneToOneField(Module, null=True, related_name='other_scoring', on_delete=models.CASCADE)

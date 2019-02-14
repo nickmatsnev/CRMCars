@@ -215,3 +215,4 @@ class SourceGetParametersAPI(APIView):
                                     204: 'No module with such PK'})
     def get(self, request, pk):
         return standard_get_by_pk(request, pk, get_module_parameters, module_type=SourceModule)
+

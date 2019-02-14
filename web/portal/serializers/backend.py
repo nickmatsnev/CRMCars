@@ -75,6 +75,11 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ('id','willz', 'created_at')
 
+    def create(self, validated_data):
+        client = Client.objects.create(**validated_data)
+        Product.objects.create(client=client,name='Willz')
+        return client
+
 
 class ImageGetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -178,6 +183,17 @@ class SourceGetModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
         fields = ('id','name','path','is_active','create_time','credentials')
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    client = ClientGetSerializer()
+    primary_scoring = ScoringGetModuleSerializer()
+    other_scoring = ScoringGetModuleSerializer()
+
+    class Meta:
+        model = Module
+        fields = ('id','name','client','primary_scoring','other_scoring')
+
 
 #        def create(self, validated_data):
 #            individuals_data = validated_data.pop('individuals')

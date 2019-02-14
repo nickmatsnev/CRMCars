@@ -3,6 +3,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_yasg import openapi
 
 from portal.lib.frontend_api_helpers import save_module, standard_post, standard_get_list, \
     get_modules, get_all_parameters_from_active_modules
@@ -17,9 +18,10 @@ from rest_framework.parsers import FormParser,MultiPartParser
 
 
 from core.lib import constants
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from core.lib import api_requestor
 
+import json
 
 class UserListApi(mixins.ListModelMixin, mixins.CreateModelMixin,viewsets.GenericViewSet):
     queryset = User.objects.all()
@@ -74,14 +76,36 @@ class ClientInspectApi(APIView):
         queryset = Generation.objects.get(individual_id=individual['id'])
         serializer = GenerationSerializer(queryset, many=False)
         op_history = serializer.data
-
+        queryset = Product.objects.get(client_id=pk)
+        product = ProductSerializer(queryset,many=False)
         items = {}
         items['id'] = pk
         items['individual'] = individual
         items['drivers'] = drivers
         items['op_history'] = op_history
+#TODO внес продукт сюда
+        items['product'] = product.data['name']
 
         return Response(items)
+
+    @swagger_auto_schema(operation_description='POST /front/clients/<int:id>/ send product_name, primary_scoring, other_scoring',
+                         request_body=openapi.Schema(type=openapi.TYPE_STRING, description='format: {"param":"value"}'))
+    def post(self, request, pk):
+        product = Product.objects.get(client_id=pk)
+        if product is None:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        raw_json = request.data
+        if 'product_name' in raw_json:
+                product.name=raw_json['product_name']
+        if 'primary_scoring' in raw_json:
+                product.primary_scoring_id=raw_json['primary_scoring']
+        if 'other_scoring' in raw_json:
+                product.other_scoring_id = raw_json['other_scoring']
+        product.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+
 
 
 def get_status(individual_id):

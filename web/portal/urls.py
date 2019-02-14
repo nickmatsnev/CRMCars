@@ -60,7 +60,11 @@ urlpatterns = [
     path('api/back/new_action/', backend.NewActionApi.as_view()),
     path('api/back/bus_message/', backend.BusMessageAPI.as_view()),
 
-# *** PARSER METHODS ***
+
+
+
+    # *** PARSER METHODS ***
+
     # backend
     path('api/back/parser_modules/<int:pk>/', backend.ParserGetAPI.as_view()),
     path('api/back/parser_modules/<int:pk>/activate/', backend.ParserActivateAPI.as_view()),

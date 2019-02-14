@@ -76,3 +76,4 @@ def get_modules(params):
             item['module_url'] = module_loader.get_module_url()
         items.append(item)
     return items
+
