@@ -32,9 +32,11 @@ body {
  * Add the correct display in IE 9-.
  */
 footer{
-    position:fixed;
+  position:fixed;
     top: 90%;
+    width: 60%;
     align-self: center;
+    display: block;
 }
 article,
 aside,
