@@ -38,7 +38,7 @@ TIME_ZONE = 'Europe/Moscow'
 # Application definition
 
 INSTALLED_APPS = (
-    'web.portal',
+    'portal',
     'rest_framework',
     'drf_yasg',
     'django.contrib.admin',
@@ -63,7 +63,7 @@ MIDDLEWARE = (
 
 LOGIN_URL='/sign_in/'
 
-ROOT_URLCONF = 'web.portal.urls'
+ROOT_URLCONF = 'portal.urls'
 
 # Database
 #

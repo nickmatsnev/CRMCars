@@ -52,8 +52,20 @@ class DriverLicense(models.Model):
 
 class Image(models.Model):
     individual = models.ForeignKey(Individual, related_name='individual', on_delete=models.CASCADE)
-    passport = models.ForeignKey(Passport, null=True, related_name='passport_images', on_delete=models.CASCADE)
-    driver_license = models.ForeignKey(DriverLicense, null=True, related_name='driver_license_images', on_delete=models.CASCADE)
+    #passport = models.ForeignKey(Passport, null=True, related_name='passport_images', on_delete=models.CASCADE)
+    #driver_license = models.ForeignKey(DriverLicense, null=True, related_name='driver_license_images', on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=100, null=True)
+
+
+class PassportImage(models.Model):
+    passport = models.ForeignKey(Passport,  related_name='images', on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=100, null=True)
+
+
+class DriverLicenseImage(models.Model):
+    driver_license = models.ForeignKey(DriverLicense,  related_name='images', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     url = models.CharField(max_length=100, null=True)
 
@@ -128,7 +140,7 @@ class ConcreteScore(models.Model):
 
 
 class Generation(models.Model):
-    individual = models.ForeignKey(Individual,on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, related_name='generations', on_delete=models.CASCADE)
     number = models.IntegerField(default=0)
     create_time = models.DateTimeField()
     #scoring_task = models.OneToOneField(Task, on_delete=models.CASCADE, null=True)

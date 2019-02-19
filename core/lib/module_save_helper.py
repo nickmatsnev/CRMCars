@@ -3,9 +3,9 @@ from core.lib import modules
 from django.apps import apps
 
 
-def save_file_from_request(request, path):
+def save_file_from_request(request, dest_path):
     uploaded_file = request.FILES['file']
-    path = os.path.join(apps.get_app_config('portal').path, path)
+    path = os.path.join(apps.get_app_config('portal').path, dest_path)
 
     destination = open(path + uploaded_file.name, 'wb+')
     for chunk in uploaded_file.chunks():

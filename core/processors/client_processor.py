@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import sys
 import json
+import requests
 
-sys.path.append('..')
+from django.http.response import HttpResponse
 
-from lib import api_requestor
-from lib import action_helper
+sys.path.append('../')
+
+from lib.global_settings import API_ROOT_URL
+from lib import api_requestor, action_helper, willz_to_client
 from lib.process import *
 from lib.constants import *
 
@@ -22,76 +25,37 @@ class ClientProcessor(BasicProcess):
         return CLIENT_PROCESSOR_NAME
 
     def __process_raw_client(self, body):
-        try:
+
             # дергаем сырок
             input_message = json.loads(body)
             raw_client_id = input_message['raw_client_id']
-            raw_data = api_requestor.request('/back/willz/{0}/'.format(raw_client_id))
-            # парсим полученное
+            raw_data = api_requestor.request('/willz/{0}/'.format(raw_client_id))
+            # парсим payload виллзовский
             raw_json = json.loads(raw_data['payload'])
-            # делаем формат для Клиента, отправляем и получаем client_id
-            raw_to_client = {'willz_id': raw_json['id'], 'created_at': raw_json['created_at']}
-            raw_data = api_requestor.post_decode('/back/clients/new/', json.dumps(raw_to_client))
-            client_id = raw_data['id']
 
-            # для всех индивидуалок
-            for drvr in raw_json['drivers']:
-                # проверяем на главного
-                if drvr['id'] == raw_json['driver_id']:
-                    primary = True
-                else:
-                    primary = False
-                # делаем формат для Индивидуалки, отправляем и получаем individual_id для привязки паспорта и прав
-                raw_to_individual = {'client': client_id, 'primary': primary, 'last_name': drvr['lastname']
-                    , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
-                                     'email': drvr['email']
-                    , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
-                                     'birthday': drvr['birthday']}
-                raw_data = api_requestor.post_decode('/back/individuals/', json.dumps(raw_to_individual))
-                individual_id = raw_data['id']
+            new_client = willz_to_client.Convert(raw_json)
+            json_data = json.dumps(new_client)
 
-                # TODO ЛЕША, вот так делать по красоте. Добавили константу, метод в бейз классе и его оверрайд
-                action_helper.add_action(individual_id, 'new', self.get_name())
+            try:
+                response = requests.post(API_ROOT_URL + '/client/', data=json_data,
+                                         headers = {'Content-Type': 'application/json'})
+                client = json.loads(response.content.decode('utf-8'))
 
-                # формируем права
-                lcn_number = drvr['driver_license']['number']
-                if lcn_number == "":
-                    lcn_number = 0
-                raw_to_driving_license = {'individual': individual_id, 'number': lcn_number
-                    , 'issued_at': drvr['driver_license']['issued_at']}
-                raw_data = api_requestor.post_decode('/back/driver_licenses/', json.dumps(raw_to_driving_license))
-                driver_license_id = raw_data['id']
+                client_id = client['id']
 
-                # формируем фото для прав
-                for img in range(1, 3):
-                    new_img_txt = 'image{0}'.format(img)
-                    raw_to_img = {'individual': individual_id, 'driver_license': driver_license_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                    api_requestor.post('/back/images/', json.dumps(raw_to_img))
+                action = {}
+                action['processor'] = self.get_name()
+                action['action_type'] = 'new'
 
-                # формируем паспорт
-                raw_to_passport = {'individual': individual_id, 'number': drvr['passport']['number']
-                    , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
-                    , 'address_registration': drvr['passport']['address_registration']
-                    , 'division_code': drvr['passport']['division_code'],
-                                   'birthplace': drvr['passport']['birthplace']}
-                raw_data = api_requestor.post_decode('/back/passports/', json.dumps(raw_to_passport))
-                passport_id = raw_data['id']
+                response = requests.post(API_ROOT_URL +'/client/{0}/add_action/'.format(client_id), json.dumps(action),
+                                              headers = {'Content-Type': 'application/json'})
 
-                # формируем фото для паспорта
-                for img in range(1, 5):
-                    new_img_txt = 'image{0}'.format(img)
-                    raw_to_img = {'individual': individual_id, 'passport': passport_id,
-                                  'title': drvr['passport'][new_img_txt],
-                                  'url': drvr['passport'][new_img_txt + '_url']}
-                    api_requestor.post('/back/images/', json.dumps(raw_to_img))
-        except Exception as e:
-            print(" Some error: {0}".format(e))
+                print(" client is processed")
 
-        else:
-            print(" client is processed")
-            self._publish_message(CLIENT_PROCESSED_MESSAGE, "test_body")
+            except:
+                print(" client is not processed")
+            finally:
+                self._publish_message(CLIENT_PROCESSED_MESSAGE, "test_body")
 
 
 proc = ClientProcessor()

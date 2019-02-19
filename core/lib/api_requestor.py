@@ -1,6 +1,7 @@
 import json
 import requests
 import sys
+from django.http.response import HttpResponse
 
 sys.path.append('../../')
 
@@ -18,8 +19,10 @@ def post(relative_url,body):
     return response
 
 
-def post_file(relative_url, files):
-    response = requests.post(API_ROOT_URL + relative_url, files=files)
+def post_file(relative_url, request):
+    file = request.FILES['file']
+    files = {'file': file.open()}
+    response = requests.post(API_ROOT_URL + relative_url,files=files)
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 

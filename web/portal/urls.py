@@ -1,7 +1,6 @@
 import sys
 sys.path.append('../')
 
-
 from django.conf.urls import *
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -9,8 +8,12 @@ from rest_framework import routers
 from rest_framework import permissions
 from django.urls import path
 
-from web.portal.api import backend
-from web.portal.api import frontend
+from portal.api import api_client
+from portal.api import api_willz
+from portal.api import api_user
+from portal.api import api_message
+from portal.api import api_module
+
 from portal.controllers.views import *
 from .controllers.auth import *
 
@@ -29,23 +32,43 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-# Работа с новой заявкой
-router.register(r'api/back/willz', backend.RawClientDataApi)
-# Работа с клиентскими данными
-router.register(r'api/back/clients/new', backend.CreateClientApi)
-#router.register(r'api/generation', api.GetGenerationApi)
-router.register(r'api/back/individuals', backend.IndividualsApi)
-router.register(r'api/back/passports', backend.PassportsApi)
-router.register(r'api/back/driver_licenses', backend.DriverLicesesApi)
-router.register(r'api/back/images', backend.ImagesApi)
-router.register(r'api/back/clients', backend.ClientApi)
-# Работа с генерацией
-router.register(r'api/back/generation', backend.GenerationApi)
-# Работа с фронтом
-router.register(r'api/front/users', frontend.UserListApi)
 
+router.register(r'api/client', api_client.MainAPI)
+router.register(r'api/willz', api_willz.MainAPI)
+router.register(r'api/user', api_user.MainAPI)
+
+#reformat:
+
+#POST api/client/ - кидаем структурированного клиента полного, создаем и генерацию и продукты и проч
+#GET  api/client/ - получаем сырые данные из базы
+#PUT  api/client/ - отправляем структурированного полного клиента с целью обновления
+#GET  api/client/fields - получаем доступные поля из базы
+#POST api/client/view - отправляем параметры, которые нужны, получаем табличку для HTML
+#GET  api/client/<id>/ - получаем конкретного сырого клиента
+#POST api/client/<id>/view - получаем конкретного клиента по полям, которые отправили
+#POST api/client/<id>/action - добавляем новое действие для клиента
+#POST api/client/<id>/update - меняем данные по связке поле:значение
+
+
+#POST api/willz/   - отправляем любое г от виллза
+#POST api/willz/update   - отправляем любое обновление для г от виллза, айди берем вилзовское изнутри и ищем совпадение
+#GET  api/willz/<id> - получаем обратно любое г от виллза
+
+
+#POST api/message/ - отправляем новое сообщение
+#GET  api/message/ - получаем все сообщения со статусом доставки !!!под вопросом - нужо ли??? !!!!
+
+
+#GET  api/module/<type>/ 	- получить модули со всеми типами
+#POST api/module/<type>/upload   - загрузить новый модуль
+#GET  api/module/parser/parameters 	- получить все активные параметры парсера
+
+#GET  api/module/<type>/<id> 	- получить конкретный модуль
+#GET  api/module/<type>/<id>/activate 	- включить
+#GET  api/module/<type>/<id>/deactivate 	- выключить
 
 urlpatterns = [
+
     url(r'^$', sign_in, name="signup"),
     url(r'^', include(router.urls)),
 
@@ -56,48 +79,20 @@ urlpatterns = [
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/back/willz/', backend.WillzCreateClient.as_view()),
-    path('api/back/new_action/', backend.NewActionApi.as_view()),
-    path('api/back/bus_message/', backend.BusMessageAPI.as_view()),
+
+    path('api/message/', api_message.MainApi.as_view()),
+
+    path('api/module/<slug:module_type>/', api_module.GetModuleApi.as_view()),
+    path('api/module/<slug:module_type>/view/', api_module.UploadModuleApi.as_view()),
+    path('api/module/<slug:module_type>/view/parameters/', api_module.GetViewParametersApi.as_view()),
+    path('api/module/<slug:module_type>/upload/', api_module.UploadModuleApi.as_view()),
 
 
+    path('api/module/<slug:module_type>/<int:id>/', api_module.GetModuleByIdApi.as_view()),
+    path('api/module/<slug:module_type>/<int:id>/parameters/', api_module.GetModuleParametersByIdApi.as_view()),
+    path('api/module/<slug:module_type>/<int:id>/activate/', api_module.ActivateApi.as_view()),
+    path('api/module/<slug:module_type>/<int:id>/deactivate/', api_module.DeactivateApi.as_view()),
 
-
-    # *** PARSER METHODS ***
-
-    # backend
-    path('api/back/parser_modules/<int:pk>/', backend.ParserGetAPI.as_view()),
-    path('api/back/parser_modules/<int:pk>/activate/', backend.ParserActivateAPI.as_view()),
-    path('api/back/parser_modules/<int:pk>/deactivate/', backend.ParserDeactivateAPI.as_view()),
-    path('api/back/parser_modules/<int:pk>/parameters/', backend.ParserGetParametersAPI.as_view()),
-    #frontend
-    path('api/front/parser_modules/get_active_parsers_parameters/',
-         frontend.ParserGetParametersFromActiveModules.as_view()),
-    path('api/front/parser_modules/get_all_parser/', frontend.ParserGetAllAPI.as_view()),
-    path('api/front/parser_modules/upload_new_module/', frontend.ParserUploadAPI.as_view()),
-
-# *** SCORING METHODS ***
-    # backend
-    path('api/back/scoring_modules/<int:pk>/', backend.ScoringGetAPI.as_view()),
-    path('api/back/scoring_modules/<int:pk>/activate/', backend.ScoringActivateAPI.as_view()),
-    path('api/back/scoring_modules/<int:pk>/deactivate/', backend.ScoringDeactivateAPI.as_view()),
-    path('api/back/scoring_modules/<int:pk>/parameters/', backend.ScoringGetParametersAPI.as_view()),
-    #frontend
-    path('api/front/scoring_modules/get_all_scoring/', frontend.ScoringGetAllAPI.as_view()),
-    path('api/front/scoring_modules/upload_new_module/', frontend.ScoringUploadAPI.as_view()),
-
-# *** SOURCE METHODS ***
-    # backend
-    path('api/back/source_modules/<int:pk>/', backend.SourceGetAPI.as_view()),
-    path('api/back/source_modules/<int:pk>/activate/', backend.SourceActivateAPI.as_view()),
-    path('api/back/source_modules/<int:pk>/deactivate/', backend.SourceDeactivateAPI.as_view()),
-    path('api/back/source_modules/<int:pk>/parameters/', backend.SourceGetParametersAPI.as_view()),
-    #frontend
-    path('api/front/source_modules/get_all_source/', frontend.SourceGetAllAPI.as_view()),
-    path('api/front/source_modules/upload_new_module/', frontend.SourceUploadAPI.as_view()),
-
-    path('api/front/clients/', frontend.ClientsListApi.as_view()),
-    path('api/front/clients/<int:pk>/', frontend.ClientInspectApi.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
@@ -114,6 +109,5 @@ urlpatterns = [
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
 
     path(r'upload_module/<slug:module_type>/', upload_module, name="upload_module"),
-    # url(r'source', source, name="source")
 
 ]

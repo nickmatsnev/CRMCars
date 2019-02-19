@@ -1,9 +1,11 @@
 from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
+from portal.serializers.module_serializer import *
+from core.lib.constants import *
 
 # this is special class to call method from python lib by name dynamically
-from portal.serializers.backend import ParserModuleSerializer, SourceModuleSerializer, ScoringModuleSerializer, \
-    ParserGetModuleSerializer, SourceGetModuleSerializer, ScoringGetModuleSerializer
+#from portal.serializers.backend import ParserModuleSerializer, SourceModuleSerializer, ScoringModuleSerializer, \
+#    ParserGetModuleSerializer, SourceGetModuleSerializer, ScoringGetModuleSerializer
 
 
 class BasicModule:
@@ -58,28 +60,46 @@ class ScoringModule(BasicModule):
         super(ScoringModule, self).__init__(module_path)
 
 
+def get_class_by_module_type(module_type):
+    if (module_type == "parser"):
+        return ParserModule
+    if (module_type == "source"):
+        return SourceModule
+    if (module_type == "scoring"):
+        return ScoringModule
+
+
 def get_subtype_by_module_type(module_type):
-    if (module_type == ParserModule):
-        return "Parser";
-    if (module_type == SourceModule):
-        return "Source";
-    if (module_type == ScoringModule):
-        return "Scoring";
+    if (module_type == "parser"):
+        return "Parser"
+    if (module_type == "source"):
+        return "Source"
+    if (module_type == "scoring"):
+        return "Scoring"
 
 
 def get_read_serializer_by_module_type(module_type):
-    if (module_type == ParserModule):
-        return ParserGetModuleSerializer;
-    if (module_type == SourceModule):
-        return SourceGetModuleSerializer;
-    if (module_type == ScoringModule):
-        return ScoringGetModuleSerializer;
+    if (module_type == "parser"):
+        return ParserGetModuleSerializer
+    if (module_type ==  "source"):
+        return SourceGetModuleSerializer
+    if (module_type == "scoring"):
+        return ScoringGetModuleSerializer
 
 
 def get_normal_serializer_by_module_type(module_type):
-    if (module_type == ParserModule):
-        return ParserModuleSerializer;
-    if (module_type == SourceModule):
-        return SourceModuleSerializer;
-    if (module_type == ScoringModule):
-        return ScoringModuleSerializer;
+    if (module_type == "parser"):
+        return ParserModuleSerializer
+    if (module_type ==  "source"):
+        return SourceModuleSerializer
+    if (module_type == "scoring"):
+        return ScoringModuleSerializer
+
+
+def get_path_by_module_type(module_type):
+    if (module_type == "parser"):
+        return PATH_TO_PARSER_MODULES
+    if (module_type ==  "source"):
+        return PATH_TO_SOURCE_MODULES
+    if (module_type == "scoring"):
+        return PATH_TO_SCORING_MODULES

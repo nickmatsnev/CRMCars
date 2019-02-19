@@ -16,7 +16,7 @@ from django.utils.encoding import smart_text
 from core.lib import api_requestor
 from core.lib import action_helper
 from core.lib import modules
-from web.portal.models import Module
+from portal.models import Module
 from rest_framework import status
 
 from core.scoring.scorista import get_scorista, get_scoring, get_checks
@@ -24,21 +24,21 @@ from core.scoring.scorista import get_scorista, get_scoring, get_checks
 
 @login_required(login_url="signin")
 def clients_list(request):
-    items = api_requestor.request('/front/clients/')
+    items = api_requestor.request('/client/view/')
 
     return render(request, 'concrete/clients_list.html', {'items': items})
 
 
 @login_required(login_url="signin")
 def users_list(request):
-  users = api_requestor.request('/front/users/')
+  users = api_requestor.request('/user/')
 
   return render(request, 'concrete/users_list.html', {'items':users})
 
 
 @login_required(login_url="signin")
 def client_decline(request,id):
-    raw_data = api_requestor.request('/front/clients/{0}/'.format(id))
+    raw_data = api_requestor.request('/client/{0}/view/'.format(id))
 
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
                'history': raw_data['op_history']}
@@ -65,7 +65,7 @@ def source(request):
 
 @login_required(login_url="signin")
 def client_inspect(request,id):
-    raw_data = api_requestor.request('/front/clients/{0}/'.format(id))
+    raw_data = api_requestor.request('/client/{0}/view/'.format(id))
 
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
                'history': raw_data['op_history']}
@@ -88,11 +88,8 @@ def reject_client(request, id, ):
 @login_required(login_url="signin")
 def upload_module(request, module_type):
     if request.method == 'POST':
-        file = request.FILES['file']
-
-        files = {'file': file.open()}
-        response = api_requestor.post_file("/front/%s_modules/upload_new_module/" % module_type, files=files)
-        if response.status_code == status.HTTP_201_CREATED:
+        response = api_requestor.post_file("/module/%s/upload/" % module_type, request)
+        if response.status_code == status.HTTP_200_OK:
             return redirect("modules_list", module_type=module_type)
         else:
             return HttpResponse('Some error :(')
@@ -103,13 +100,13 @@ def upload_module(request, module_type):
 
 @login_required(login_url="signin")
 def parameters_list(request):
-    items = api_requestor.request('/front/parser_modules/get_active_parsers_parameters/')
+    items = api_requestor.request('/module/parser/view/parameters/')
 
     return render(request, 'concrete/parameters_list.html', {'items': items})
 
 
 @login_required(login_url="signin")
 def modules_list(request, module_type):
-    items = api_requestor.request("/front/%s_modules/get_all_%s/" % (module_type, module_type))
+    items = api_requestor.request("/module/%s/view/" % module_type)
 
     return render(request, 'concrete/modules_list.html', {'module': module_type, 'items': items})
