@@ -13,6 +13,7 @@ from portal.api import api_willz
 from portal.api import api_user
 from portal.api import api_message
 from portal.api import api_module
+from portal.api import api_product
 
 from portal.controllers.views import *
 from .controllers.auth import *
@@ -36,6 +37,8 @@ schema_view = get_schema_view(
 router.register(r'api/client', api_client.MainAPI)
 router.register(r'api/willz', api_willz.MainAPI)
 router.register(r'api/user', api_user.MainAPI)
+router.register(r'api/product', api_product.MainAPI)
+
 
 #reformat:
 

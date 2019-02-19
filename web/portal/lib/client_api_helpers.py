@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from portal.models import *
 from portal.serializers.client_serializer import *
-
+from portal.serializers.product_serializer import *
 
 def get_all_clients_info():
     queryset = Client.objects.all()
@@ -57,9 +57,7 @@ def get_current_client_info(client_id):
     generation_serializer = GenerationSerializer(queryset, many=False)
     items['op_history'] = generation_serializer.data
 
-    queryset = Product.objects.get(client_id=client_id)
-    product_serializer = ProductSerializer(queryset, many=False)
-    items['product'] = product_serializer.data
+    items['product'] = client_serializer.data['product']
 
     return items
 
@@ -76,26 +74,25 @@ def new_action(data,client_id):
 
 
 def update_product(data,client_id):
-    checked_data = ProductSerializer(data=data)
+    checked_data = ProductUpdateSerializer(data=data)
     if checked_data.is_valid():
-        queryset = Product.objects.get(client_id=client_id)
-        queryset.name=checked_data.data['name']
 
-        module = ScoringGetModuleSerializer(data=checked_data['primary_scoring'])
-        if module.is_valid():
-            queryset.primary_scoring = module.data
+        product = Product.objects.filter(name=checked_data.data['product'])
+        if product is None:
+            product = Product.objects.create(name=checked_data.data['product'])
+            product.save()
 
-        module = ScoringGetModuleSerializer(data=checked_data['other_scoring'])
-        if module.is_valid():
-            queryset.other_scoring = module.data
+        product = Product.objects.get(name=checked_data.data['product'])
 
-        queryset.save()
-        product_serializer = ProductSerializer(queryset)
-        return product_serializer.data
+        serializer = ProductSerializer(product)
+# TODO: Тут какая-то хрень с обновлением продукта - пока не понял как many-to-many обновить можно
+        client = Client.objects.get(id=client_id)
+        client.product.clear()
+        client.product.add(serializer)
+        client.save()
 
-    return status.HTTP_400_BAD_REQUEST
-
-
+        client_serializer = ClientGetSerializer(client)
+        return client_serializer.data
 
 
 def get_status(current_id):

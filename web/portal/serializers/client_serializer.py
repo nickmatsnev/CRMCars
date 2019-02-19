@@ -54,8 +54,8 @@ class ClientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         individuals_data = validated_data.pop('individuals')
-        client = Client.objects.create(**validated_data)
-        Product.objects.create(client=client,name='Willz')
+        client = Client.objects.create( **validated_data)
+
         list_of_individuals_id = []
         Generation.objects.create(client=client, number=1, create_time=datetime.datetime.now())
 
@@ -64,7 +64,6 @@ class ClientSerializer(serializers.ModelSerializer):
             driver_license_data = individual_data.pop('driver_license')
 
             individual = Individual.objects.create(client=client, **individual_data)
-
 
 
             passport_images_data = passport_data.pop('images')
@@ -87,7 +86,7 @@ class ClientSerializer(serializers.ModelSerializer):
     def update(self, validated_data):
         individuals_data = validated_data.pop('individuals')
         client = Client.objects.create(**validated_data)
-        Product.objects.create(client=client,name='Willz')
+        #Product.objects.create(client=client,name='Willz')
         Generation.objects.create(client=client, number=1, create_time=datetime.datetime.now())
 
         for individual_data in individuals_data:
@@ -125,10 +124,11 @@ class IndividualGetSerializer(serializers.ModelSerializer):
 
 class ClientGetSerializer(serializers.ModelSerializer):
     individuals = IndividualGetSerializer(many=True)
+    product = ProductSerializer(many=False)
 
     class Meta:
         model = Client
-        fields = ('id', 'willz', 'created_at', 'individuals')
+        fields = ('id', 'willz', 'created_at', 'individuals', 'product')
 
 
 class ActionSerializer(serializers.ModelSerializer):

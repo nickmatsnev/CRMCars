@@ -8,6 +8,7 @@ from core.lib import message_sender, api_requestor
 from portal.lib.client_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
 from portal.serializers.client_serializer import *
+from portal.serializers.product_serializer import *
 from portal.serializers.module_serializer import  *
 from portal.models import *
 from rest_framework import viewsets
@@ -35,7 +36,7 @@ class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveMod
     def add_action(self, request, pk):
         return Response(new_action(request.data,pk))
 
-    @action(methods=['post'], detail=True, url_path='update_product', serializer_class=ProductSerializer)
+    @action(methods=['post'], detail=True, url_path='update_product', serializer_class=ProductUpdateSerializer)
     def update_fields(self, request, pk):
         return Response(update_product(request.data,pk))
 

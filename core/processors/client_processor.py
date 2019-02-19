@@ -43,11 +43,16 @@ class ClientProcessor(BasicProcess):
 
                 client_id = client['id']
 
+                json_data = json.dumps({"product":"Willz"})
+                response = requests.post(API_ROOT_URL + '/client/{0}/update_product/'.format(client_id), data=json_data,
+                                         headers={'Content-Type': 'application/json'})
+
                 action = {}
                 action['processor'] = self.get_name()
                 action['action_type'] = 'new'
 
-                response = requests.post(API_ROOT_URL +'/client/{0}/add_action/'.format(client_id), json.dumps(action),
+                json_data = json.dumps(action)
+                response = requests.post(API_ROOT_URL +'/client/{0}/add_action/'.format(client_id), json_data,
                                               headers = {'Content-Type': 'application/json'})
 
                 print(" client is processed")

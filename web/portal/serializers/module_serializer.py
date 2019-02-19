@@ -59,8 +59,8 @@ class SourceGetModuleSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    primary_scoring = ScoringGetModuleSerializer()
-    other_scoring = ScoringGetModuleSerializer()
+    primary_scoring = ScoringGetModuleSerializer(required=False)
+    other_scoring = ScoringGetModuleSerializer(required=False)
 
     class Meta:
         model = Module

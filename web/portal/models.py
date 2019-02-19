@@ -8,12 +8,37 @@ from enum import Enum
 class RawClientData(models.Model):
     payload = models.TextField()
 
+class ModuleType(Enum):
+    ImportModule = 'Source'
+    ParserModule = 'Parser'
+    ScoringModule = 'Scoring'
+
+
+class Module(models.Model):
+    type = models.TextField(choices=[
+        (ModuleType.ImportModule,'Source'),
+        (ModuleType.ParserModule,'Parser'),
+        (ModuleType.ScoringModule, 'Scoring'),
+    ])
+    name = models.TextField()
+    path = models.TextField()
+    is_active = models.BooleanField()
+    create_time = models.DateTimeField()
+    credentials = models.TextField(null=True)
+
+
+class Product(models.Model):
+    name = models.TextField()
+    primary_scoring = models.OneToOneField(Module, null=True, related_name='primary_scoring', on_delete=models.CASCADE)
+    other_scoring = models.OneToOneField(Module, null=True, related_name='other_scoring', on_delete=models.CASCADE)
+
 
 class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
     created_at = models.TextField(null=True)
+    product = models.ManyToManyField(Product,  null=True)
 
 
 class Individual(models.Model):
@@ -156,27 +181,5 @@ class Action(models.Model):
     payload = models.TextField(null=True)
 
 
-class ModuleType(Enum):
-    ImportModule = 'Source'
-    ParserModule = 'Parser'
-    ScoringModule = 'Scoring'
 
 
-class Module(models.Model):
-    type = models.TextField(choices=[
-        (ModuleType.ImportModule,'Source'),
-        (ModuleType.ParserModule,'Parser'),
-        (ModuleType.ScoringModule, 'Scoring'),
-    ])
-    name = models.TextField()
-    path = models.TextField()
-    is_active = models.BooleanField()
-    create_time = models.DateTimeField()
-    credentials = models.TextField(null=True)
-
-
-class Product(models.Model):
-    name = models.TextField()
-    client = models.OneToOneField(Client, related_name='product', on_delete=models.CASCADE)
-    primary_scoring = models.OneToOneField(Module, null=True, related_name='primary_scoring', on_delete=models.CASCADE)
-    other_scoring = models.OneToOneField(Module, null=True, related_name='other_scoring', on_delete=models.CASCADE)
