@@ -1,6 +1,7 @@
 import json
 
-def Convert(willz_json_data):
+
+def convert(willz_json_data):
     client = {}
     client['willz'] = willz_json_data['id']
     client['created_at'] = willz_json_data['created_at']

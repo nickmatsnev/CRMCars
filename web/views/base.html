@@ -83,10 +83,10 @@
   <div class="flexContainer flexStart">
   </div>
             <div class="flexContainer flexItem">
-                <main class="flexItem whiteBackground main fullHeight container" id="">
+                <main class="flexItem whiteBackground main fullHeight ">
                 {% block content %}{% endblock %}
                 </main>
-                <aside class="sidebar sidebarLeft container">
+                <aside class="sidebar sidebarLeft container fullHeight" >
  <div class="specialBackground " id="container">
                                         <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
                                 <ul>
@@ -126,7 +126,7 @@
                 </aside>
             </div>
  </nav>
-	     <footer class="flexContainer flexCenter blueBackground height50">&copy;  Willz 2019</footer>
+	     <footer class="flexContainer flexCenter blueBackground height50 ">&copy;  Willz 2019</footer>
     </div>
 </div>
 <script src="{% static 'js/zooming.js' %}"></script>

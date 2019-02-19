@@ -33,7 +33,7 @@ class ClientProcessor(BasicProcess):
             # парсим payload виллзовский
             raw_json = json.loads(raw_data['payload'])
 
-            new_client = willz_to_client.Convert(raw_json)
+            new_client = willz_to_client.convert(raw_json)
             json_data = json.dumps(new_client)
 
             try:
