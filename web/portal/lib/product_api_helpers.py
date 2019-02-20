@@ -18,6 +18,7 @@ def get_all_products_info():
 
     for item in serializer.data:
             new_item = {}
+            new_item['id'] = item['id']
             new_item['name'] = item['name']
             new_item['primary'] = set_module_name(item,"primary_scoring")
             new_item['other'] = set_module_name(item, "other_scoring")

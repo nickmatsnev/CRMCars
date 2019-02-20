@@ -7,7 +7,7 @@ sys.path.append('../../')
 
 from core.lib.global_settings import API_ROOT_URL
 
-
+headers = {'Content-type': 'application/json'}
 def request(relative_url):
     response = requests.get(API_ROOT_URL + relative_url)
     return json.loads(response.content.decode('utf-8'))
@@ -18,6 +18,11 @@ def post(relative_url,body):
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
+
+def patch(relative_url, body):
+    response = requests.patch(API_ROOT_URL + relative_url, data=body, headers=headers)
+    # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
+    return response
 
 def post_file(relative_url, request):
     file = request.FILES['file']

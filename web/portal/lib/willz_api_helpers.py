@@ -15,6 +15,6 @@ def new_willz_client(data):
                                'body': json.dumps({'raw_client_id': model.id})});
 
     raw_data = api_requestor.post('/message/', resp)
-    #message_sender.send_message(message_code=constants.CLIENT_RAW_CREATED_MESSAGE,
-    #                           body=json.dumps({'raw_client_id': model.id}))
+    message_sender.send_message(message_code=constants.CLIENT_RAW_CREATED_MESSAGE,
+                                body=json.dumps({'raw_client_id': model.id}))
     return status.HTTP_201_CREATED

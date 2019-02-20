@@ -112,6 +112,8 @@ urlpatterns = [
     path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
 
+    path(r'product_edit/<int:id>/', product_edit, name="product_edit"),
+
     path(r'upload_module/<slug:module_type>/', upload_module, name="upload_module"),
 
 ]

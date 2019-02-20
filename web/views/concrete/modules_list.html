@@ -3,13 +3,13 @@
 
 
 {% block title %}
-    Список продуктов
+    Модули {{ module }}
 {% endblock %}
 {% block content %}
 
 
     <div id="" class="container">
-        <h1 class="panel-title">Модули</h1>
+        <h1 class="panel-title">Модули {{ module }}</h1>
 
         <p></p>
 
@@ -35,7 +35,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.path }}</td>
                     <td>{{ item.is_active }}</td>
-                    <td>{{ item.create_time }}</td>
+                    <td>{{ item.creation_time }}</td>
                 </tr>
 
             {% endfor %}
@@ -43,7 +43,10 @@
             </tbody>
         </table>
        <br>
-
+        <a href="{% url "upload_module" module %}">
+            <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Загрузить модуль
+            </button>
+        </a>
 
     </div>
 

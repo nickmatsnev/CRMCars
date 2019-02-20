@@ -19,7 +19,8 @@ import coreschema
 from rest_framework.schemas import AutoSchema
 
 
-class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class MainAPI(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin,
+              viewsets.GenericViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 

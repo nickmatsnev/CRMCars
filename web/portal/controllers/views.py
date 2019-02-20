@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 sys.path.append('../')
 
-from portal.controllers.forms import UploadFileForm
+from portal.controllers.forms import UploadFileForm, ProductEditForm
 
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
@@ -117,3 +117,23 @@ def modules_list(request, module_type):
     items = api_requestor.request("/module/%s/view/" % module_type)
 
     return render(request, 'concrete/modules_list.html', {'module': module_type, 'items': items})
+
+
+@login_required(login_url="signin")
+def product_edit(request, id):
+    product = api_requestor.request('/product/{0}/'.format(id))
+
+    if request.method == 'POST':
+        patch_data = json.dumps(
+            {'primary_scoring': request.POST['primary_scoring'], 'other_scoring': request.POST['other_scoring']});
+
+        response = api_requestor.patch('/product/{0}/'.format(id), patch_data)
+        if response.status_code == status.HTTP_200_OK:
+            return redirect("products_list")
+        else:
+            return HttpResponse('Some error :(')
+
+    modules = api_requestor.request('/module/scoring/view/')
+    context = {'modules': modules, 'product': product}
+
+    return render(request, 'concrete/forms/product_edit.html', context)

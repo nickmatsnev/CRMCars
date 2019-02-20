@@ -34,6 +34,11 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.primary }}</td>
                     <td>{{ item.other }}</td>
+                    <td><a href="{% url "product_edit" item.id %}">
+                        <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Редактировать
+                        </button>
+                    </a>
+                    </td>
                 </tr>
 
             {% endfor %}

@@ -28,6 +28,7 @@ def view_module_by_type(module_type):
     items = []
     for module in modules:
         item = {}
+        item['id'] = module.id
         item['name'] = module.name
         item['path'] = module.path
         item['is_active'] = module.is_active
