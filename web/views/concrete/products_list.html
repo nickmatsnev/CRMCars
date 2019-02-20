@@ -9,7 +9,7 @@
 
 
     <div id="" class="container">
-        <h1 class="panel-title">Модули</h1>
+        <h1 class="panel-title">Продукты</h1>
 
         <p></p>
 
@@ -20,9 +20,8 @@
             <thead>
             <tr>
                 <td>Имя</td>
-                <td>Путь</td>
-                <td>Активен</td>
-                <td>Создан</td>
+                <td>Основной</td>
+                <td>Дополнительный</td>
             </tr>
             </thead>
 
@@ -33,17 +32,14 @@
                 <tr style="background: #ffff00">
 
                     <td>{{ item.name }}</td>
-                    <td>{{ item.path }}</td>
-                    <td>{{ item.is_active }}</td>
-                    <td>{{ item.create_time }}</td>
+                    <td>{{ item.primary }}</td>
+                    <td>{{ item.other }}</td>
                 </tr>
 
             {% endfor %}
 
             </tbody>
         </table>
-       <br>
-
 
     </div>
 

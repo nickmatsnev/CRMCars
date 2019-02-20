@@ -57,7 +57,14 @@ def get_current_client_info(client_id):
     generation_serializer = GenerationSerializer(queryset, many=False)
     items['op_history'] = generation_serializer.data
 
-    items['product'] = client_serializer.data['product']
+    field = ''
+    if client_serializer.data['product']!=0:
+        product = Product.objects.get(id=client_serializer.data['product'])
+        field = product.name
+    else:
+        field = 'Not set'
+
+    items['product']=field
 
     return items
 
@@ -76,23 +83,13 @@ def new_action(data,client_id):
 def update_product(data,client_id):
     checked_data = ProductUpdateSerializer(data=data)
     if checked_data.is_valid():
-
-        product = Product.objects.filter(name=checked_data.data['product'])
-        if product is None:
-            product = Product.objects.create(name=checked_data.data['product'])
-            product.save()
-
+        product = Product.objects.get_or_create(name=checked_data.data['product'])
         product = Product.objects.get(name=checked_data.data['product'])
 
-        serializer = ProductSerializer(product)
-# TODO: Тут какая-то хрень с обновлением продукта - пока не понял как many-to-many обновить можно
         client = Client.objects.get(id=client_id)
-        client.product.clear()
-        client.product.add(serializer)
+        client.product = product.id
         client.save()
-
-        client_serializer = ClientGetSerializer(client)
-        return client_serializer.data
+        return ClientGetSerializer(client).data
 
 
 def get_status(current_id):

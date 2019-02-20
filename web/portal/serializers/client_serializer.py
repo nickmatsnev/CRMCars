@@ -124,7 +124,6 @@ class IndividualGetSerializer(serializers.ModelSerializer):
 
 class ClientGetSerializer(serializers.ModelSerializer):
     individuals = IndividualGetSerializer(many=True)
-    product = ProductSerializer(many=False)
 
     class Meta:
         model = Client

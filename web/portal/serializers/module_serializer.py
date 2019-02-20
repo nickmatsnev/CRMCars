@@ -57,11 +57,3 @@ class SourceGetModuleSerializer(serializers.ModelSerializer):
         model = Module
         fields = ('id','name','path','is_active','create_time','credentials')
 
-
-class ProductSerializer(serializers.ModelSerializer):
-    primary_scoring = ScoringGetModuleSerializer(required=False)
-    other_scoring = ScoringGetModuleSerializer(required=False)
-
-    class Meta:
-        model = Module
-        fields = ('name','primary_scoring','other_scoring')

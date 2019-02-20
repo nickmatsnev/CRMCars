@@ -100,6 +100,7 @@ urlpatterns = [
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
     url(r'parameters_list', parameters_list, name="parameters_list"),
+    url(r'products_list', products_list, name="products_list"),
 
     path(r'modules_list/<slug:module_type>/', modules_list, name="modules_list"),
 

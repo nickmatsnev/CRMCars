@@ -106,6 +106,13 @@ def parameters_list(request):
 
 
 @login_required(login_url="signin")
+def products_list(request):
+    items = api_requestor.request('/product/view/')
+
+    return render(request, 'concrete/products_list.html', {'items': items})
+
+
+@login_required(login_url="signin")
 def modules_list(request, module_type):
     items = api_requestor.request("/module/%s/view/" % module_type)
 

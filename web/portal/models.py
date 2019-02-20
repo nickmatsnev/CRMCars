@@ -8,37 +8,13 @@ from enum import Enum
 class RawClientData(models.Model):
     payload = models.TextField()
 
-class ModuleType(Enum):
-    ImportModule = 'Source'
-    ParserModule = 'Parser'
-    ScoringModule = 'Scoring'
-
-
-class Module(models.Model):
-    type = models.TextField(choices=[
-        (ModuleType.ImportModule,'Source'),
-        (ModuleType.ParserModule,'Parser'),
-        (ModuleType.ScoringModule, 'Scoring'),
-    ])
-    name = models.TextField()
-    path = models.TextField()
-    is_active = models.BooleanField()
-    create_time = models.DateTimeField()
-    credentials = models.TextField(null=True)
-
-
-class Product(models.Model):
-    name = models.TextField()
-    primary_scoring = models.OneToOneField(Module, null=True, related_name='primary_scoring', on_delete=models.CASCADE)
-    other_scoring = models.OneToOneField(Module, null=True, related_name='other_scoring', on_delete=models.CASCADE)
-
 
 class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
     created_at = models.TextField(null=True)
-    product = models.ManyToManyField(Product,  null=True)
+    product = models.IntegerField(default=0)
 
 
 class Individual(models.Model):
@@ -73,14 +49,6 @@ class DriverLicense(models.Model):
     number = models.CharField(max_length=100, default="")
     #issued_at = models.DateField(null=True)
     issued_at = models.TextField(null=True)
-
-
-class Image(models.Model):
-    individual = models.ForeignKey(Individual, related_name='individual', on_delete=models.CASCADE)
-    #passport = models.ForeignKey(Passport, null=True, related_name='passport_images', on_delete=models.CASCADE)
-    #driver_license = models.ForeignKey(DriverLicense, null=True, related_name='driver_license_images', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100, null=True)
 
 
 class PassportImage(models.Model):
@@ -179,6 +147,30 @@ class Action(models.Model):
     processor = models.CharField(max_length=200, null=True)
     action_type = models.CharField(max_length=50)
     payload = models.TextField(null=True)
+
+class ModuleType(Enum):
+    ImportModule = 'Source'
+    ParserModule = 'Parser'
+    ScoringModule = 'Scoring'
+
+
+class Module(models.Model):
+    type = models.TextField(choices=[
+        (ModuleType.ImportModule,'Source'),
+        (ModuleType.ParserModule,'Parser'),
+        (ModuleType.ScoringModule, 'Scoring'),
+    ])
+    name = models.TextField()
+    path = models.TextField()
+    is_active = models.BooleanField()
+    create_time = models.DateTimeField()
+    credentials = models.TextField(null=True)
+
+
+class Product(models.Model):
+    name = models.TextField()
+    primary_scoring = models.IntegerField(default=0)
+    other_scoring = models.IntegerField(default=0)
 
 
 
