@@ -40,3 +40,8 @@ class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveMod
     def update_fields(self, request, pk):
         return Response(update_product(request.data,pk))
 
+
+class IndividualAPI(mixins.ListModelMixin,  mixins.RetrieveModelMixin,  viewsets.GenericViewSet):
+    queryset = Individual.objects.all()
+    serializer_class = IndividualGetSerializer
+

@@ -14,7 +14,7 @@ def request(relative_url):
 
 
 def post(relative_url,body):
-    response = requests.post(API_ROOT_URL + relative_url, data=body)
+    response = requests.post(API_ROOT_URL + relative_url, data=body, headers=headers)
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 

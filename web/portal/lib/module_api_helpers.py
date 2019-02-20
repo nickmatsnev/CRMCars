@@ -17,7 +17,12 @@ def get_module_by_type(module_type, pk=None):
     many = True
     if pk is not None:
         many = False
-    module = Module.objects.filter(type=get_subtype_by_module_type(module_type), id=pk)
+        module = Module.objects.get(id=pk)
+        if module.type != get_subtype_by_module_type(module_type):
+            return {}
+    else:
+        module = Module.objects.filter(type=get_subtype_by_module_type(module_type))
+
     serializer = get_read_serializer_by_module_type(module_type)(module, many=many)
     return serializer.data
 

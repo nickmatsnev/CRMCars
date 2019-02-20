@@ -35,6 +35,7 @@ schema_view = get_schema_view(
 
 
 router.register(r'api/client', api_client.MainAPI)
+router.register(r'api/individual', api_client.IndividualAPI)
 router.register(r'api/willz', api_willz.MainAPI)
 router.register(r'api/user', api_user.MainAPI)
 router.register(r'api/product', api_product.MainAPI)
@@ -113,6 +114,7 @@ urlpatterns = [
     path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
 
     path(r'product_edit/<int:id>/', product_edit, name="product_edit"),
+    path(r'product_new/', product_new, name="product_new"),
 
     path(r'upload_module/<slug:module_type>/', upload_module, name="upload_module"),
 

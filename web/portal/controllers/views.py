@@ -125,7 +125,7 @@ def product_edit(request, id):
 
     if request.method == 'POST':
         patch_data = json.dumps(
-            {'primary_scoring': request.POST['primary_scoring'], 'other_scoring': request.POST['other_scoring']});
+            {'primary_scoring': request.POST['primary_scoring'], 'other_scoring': request.POST['other_scoring']})
 
         response = api_requestor.patch('/product/{0}/'.format(id), patch_data)
         if response.status_code == status.HTTP_200_OK:
@@ -135,5 +135,35 @@ def product_edit(request, id):
 
     modules = api_requestor.request('/module/scoring/view/')
     context = {'modules': modules, 'product': product}
+
+    return render(request, 'concrete/forms/product_edit.html', context)
+
+
+@login_required(login_url="signin")
+def product_new(request):
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        primary_scoring = request.POST['primary_scoring']
+        other_scoring = request.POST['other_scoring']
+
+        if primary_scoring == "":
+            primary_scoring = 0
+        if other_scoring == "":
+            other_scoring = 0
+
+        post_data = json.dumps(
+            {'name': name,
+             'primary_scoring': primary_scoring,
+             'other_scoring': other_scoring})
+
+        response = api_requestor.post('/product/', post_data)
+        if response.status_code == status.HTTP_201_CREATED:
+            return redirect("products_list")
+        else:
+            return HttpResponse('Some error :(')
+
+    modules = api_requestor.request('/module/scoring/view/')
+    context = {'modules': modules, 'product': ''}
 
     return render(request, 'concrete/forms/product_edit.html', context)

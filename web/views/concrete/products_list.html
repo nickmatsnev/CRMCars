@@ -42,7 +42,13 @@
                 </tr>
 
             {% endfor %}
-
+            <td>
+                <a href="{% url "product_new" %}">
+                <button class="menuButton" type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>
+                    Создать
+                </button>
+                </a>
+            </td>
             </tbody>
         </table>
 

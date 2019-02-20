@@ -168,7 +168,7 @@ class Module(models.Model):
 
 
 class Product(models.Model):
-    name = models.TextField()
+    name = models.TextField(unique=True)
     primary_scoring = models.IntegerField(default=0)
     other_scoring = models.IntegerField(default=0)
 
