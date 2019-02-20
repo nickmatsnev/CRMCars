@@ -14,6 +14,14 @@ def get_all_clients_info():
     items = []
     cntr = 0
     for client in serializer.data:
+
+        if client['product'] != 0:
+            product = Product.objects.get(id=client['product'])
+            field_product = product.name
+        else:
+            field_product = 'Not set'
+
+
         for individual in client['individuals']:
             if individual['primary'] == True:
                 new_item = {}
@@ -25,6 +33,7 @@ def get_all_clients_info():
                 new_item['id'] = current_id
                 new_item['created_at'] = client['created_at']
                 new_item['status'] = get_status(current_id)
+                new_item['product'] = field_product
 
                 items.append(new_item)
     return items
