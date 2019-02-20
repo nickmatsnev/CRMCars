@@ -93,7 +93,7 @@ td{
     position: relative;
 }
 #hei {
-    height: 100vh; /* 100vh - 100% от высоты viewport(окна браузера) */
+    height: 88vh; /* 100vh - 100% от высоты viewport(окна браузера) */
 }
 .container {
     width: 95%;
