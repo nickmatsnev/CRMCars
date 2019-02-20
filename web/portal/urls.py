@@ -91,8 +91,9 @@ urlpatterns = [
     path('api/module/<slug:module_type>/view/parameters/', api_module.GetViewParametersApi.as_view()),
     path('api/module/<slug:module_type>/upload/', api_module.UploadModuleApi.as_view()),
 
+    path('api/module/<slug:module_type>/<int:pk>/', api_module.GetModuleByIdApi.as_view()),
+    path('api/module/<slug:module_type>/<slug:module_name>/', api_module.GetModuleByNameApi.as_view()),
 
-    path('api/module/<slug:module_type>/<int:id>/', api_module.GetModuleByIdApi.as_view()),
     path('api/module/<slug:module_type>/<int:id>/parameters/', api_module.GetModuleParametersByIdApi.as_view()),
     path('api/module/<slug:module_type>/<int:id>/activate/', api_module.ActivateApi.as_view()),
     path('api/module/<slug:module_type>/<int:id>/deactivate/', api_module.DeactivateApi.as_view()),

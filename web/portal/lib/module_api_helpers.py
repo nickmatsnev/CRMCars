@@ -15,6 +15,7 @@ from core.lib.runtime_logger_helper import log
 
 def get_module_by_type(module_type, pk=None):
     many = True
+
     if pk is not None:
         many = False
         module = Module.objects.get(id=pk)
@@ -24,6 +25,13 @@ def get_module_by_type(module_type, pk=None):
         module = Module.objects.filter(type=get_subtype_by_module_type(module_type))
 
     serializer = get_read_serializer_by_module_type(module_type)(module, many=many)
+    return serializer.data
+
+
+def get_module_by_name(module_type,module_name):
+    module = Module.objects.filter(type=get_subtype_by_module_type(module_type), name=module_name)
+
+    serializer = get_read_serializer_by_module_type(module_type)(module, many=True)
     return serializer.data
 
 
@@ -89,5 +97,13 @@ def view_all_parameters_from_active_modules(module_type):
     return modules_parameters
 
 
+def post_test(module_type,request):
+    serializer_class = get_normal_serializer_by_module_type(module_type)
+    serializer = serializer_class(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return status.HTTP_202_ACCEPTED
+    return status.HTTP_400_BAD_REQUEST
 
 

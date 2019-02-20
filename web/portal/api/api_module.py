@@ -23,6 +23,10 @@ class GetModuleApi(APIView):
     def get(self, request, module_type):
         return Response(get_module_by_type(module_type))
 
+  #  @swagger_auto_schema(operation_description='Get module as it is', request_body=SourceGetModuleSerializer)
+  #  def post(self, request, module_type):
+
+    #    return Response(post_test(module_type,request))
 
 class ViewModuleApi(APIView):
     @swagger_auto_schema(operation_description='Get module in a table view')
@@ -44,11 +48,15 @@ class UploadModuleApi(APIView):
     def post(self, request, module_type):
        return Response(save_module(request, module_type))
 
-
 class GetModuleByIdApi(APIView):
+    @swagger_auto_schema(operation_description='GetModule by name and type')
+    def get(self, request, module_type, pk):
+        return Response(get_module_by_type(module_type, pk))
+
+class GetModuleByNameApi(APIView):
     @swagger_auto_schema(operation_description='Send message to message bus')
-    def get(self, request, module_type,id):
-        return Response(get_module_by_type(module_type,id))
+    def get(self, request, module_type,module_name):
+        return Response(get_module_by_name(module_type,module_name))
 
 
 class GetModuleParametersByIdApi(APIView):
