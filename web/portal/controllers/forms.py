@@ -4,8 +4,6 @@ from django.contrib.auth.forms import *
 from django import forms
 import json
 from django import forms
-from floppyforms import ModelForm
-import floppyforms
 
 from portal.models import Product
 

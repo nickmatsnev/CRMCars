@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'portal',
     'rest_framework',
     'drf_yasg',
-    'floppyforms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

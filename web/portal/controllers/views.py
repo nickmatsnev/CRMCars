@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 sys.path.append('../')
 
-from portal.controllers.forms import UploadFileForm, ProductEditForm
+from portal.controllers.forms import UploadFileForm
 
 from django.apps import apps
 from django.contrib.auth.decorators import login_required
