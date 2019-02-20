@@ -26,29 +26,32 @@
 
 
     {% block head %}
-     <style>
+  <style>
         table {
             border: solid 0px black;
+            width: 100%;
         }
      td{
          border: solid 1px white;
-         background: #f0f0f0;
+         background: #f0f0f0; max-width: 0;
+    overflow: auto;
      }
      th{
          border: solid 1px white;
          background: #f0f0f0;
      }
-    </style>
+    </style>	
 {% endblock %}
 </head>
 
 
 <body>
+
 <div class="containermain">
-    <div class="flexContainer flexColumn fullHeight whiteBackground">
+    <div class="flexContainer flexColumn  whiteBackground">
             <nav class="flexContainer blueBackground">
                 <ul class="nav flexItem flexStart">
-                    <li><img src="{% static "logo-willz.svg"%}"></li>
+                    <li style="margin-left: 10px"><img src="{% static "logo-willz.svg"%}"></li>
                 </ul>
 
                 <ul class="nav flexItem flexCenter">
@@ -82,12 +85,14 @@
  <nav class="flexContainer blueBackground">
   <div class="flexContainer flexStart">
   </div>
-            <div class="flexContainer flexItem">
-                <main class="flexItem whiteBackground main fullHeight ">
+            <div  id="hei" class="flexContainer flexItem fullHeight">
+                <div   class=" flexItem whiteBackground main fullwidth ">
                 {% block content %}{% endblock %}
-                </main>
-                <aside class="sidebar sidebarLeft container fullHeight" >
- <div class="specialBackground " id="container">
+                </div>
+
+
+                <aside class="sidebar sidebarLeft container " >
+                        <div class="specialBackground " id="container">
                                         <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
                                 <ul>
                                         <li> В работе</li>
@@ -106,10 +111,10 @@
                             </ul>
                                     <a style="color:black" href=""> Скоринг</a>
                             <ul>
-                                <li><a><a href="{% url "parameters_list" %}"> Список параметров из
+                                <li><a href="{% url "parameters_list" %}"> Список параметров из
                                     источников</a></li>
                                            </ul>
-                            <a style="color:black" href="{% url "products_list" %}"> Продукты</a>
+                            <a style="color:black" href=""> Продукты</a>
                         </div>
 
                         <div class="specialBackground" id="ots">
@@ -124,9 +129,9 @@
                         </div>
 			
                 </aside>
-            </div>
+                </div>
  </nav>
-	     <footer class="flexContainer flexCenter blueBackground height50 ">&copy;  Willz 2019</footer>
+             <footer class="flexContainer flexCenter blueBackground  height50">&copy; Willz 2019</footer>
     </div>
 </div>
 <script src="{% static 'js/zooming.js' %}"></script>
