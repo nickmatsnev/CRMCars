@@ -20,7 +20,7 @@
     </style>
 {% block content %}
     <div style="background: white;  height: 100%; max-width: 100%;  overflow: auto;  overflow-x: hidden;"  id="hei">
-<div class="container" id="">
+<div class="container fullHeight" style="width: 100%; height: 100%" id="hei">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
     <a href="{% url "client_decline" individual.id %}">
