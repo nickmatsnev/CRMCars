@@ -19,6 +19,7 @@
     padding: 5px; /* Поля вокруг текста */
     border-radius: 5px; /* Уголки */
     border: 1px solid #000000; 
+    margin: 5px 1px 5px 1px;
 }
 .siteButton
 {
