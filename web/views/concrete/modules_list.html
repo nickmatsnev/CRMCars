@@ -8,7 +8,7 @@
 {% block content %}
 
 
-    <div id="" class="container">
+    <div  class="container ">
         <h1 class="panel-title">Модули {{ module }}</h1>
 
         <p></p>
@@ -18,6 +18,8 @@
 
         <table bgcolor="#FFFFFF">
             <thead>
+            <tr >
+                <td>Имя модуля</td>
             <tr>
                 <td>Имя</td>
                 <td>Путь</td>
@@ -30,7 +32,7 @@
             <tbody>
 
             {% for item in items %}
-                <tr style="background: #ffff00">
+                <tr style="height: 20%;width: 40%; overflow: auto; background: #ffff00">
 
                     <td>{{ item.name }}</td>
                     <td>{{ item.path }}</td>
@@ -51,4 +53,5 @@
     </div>
 
 {% endblock %}
+
 
