@@ -15,6 +15,7 @@ html {
     line-height: 1.15; /* 2 */
     -ms-text-size-adjust: 100%; /* 3 */
     -webkit-text-size-adjust: 100%; /* 3 */
+     height: 100%;
 }
 
 /* Sections
@@ -25,21 +26,35 @@ html {
  */
 
 body {
-    margin: 0;
+     position: relative;
+  margin: 0;
+  /* Растягиваем body по высоте html */
+  min-height: 100%;
+
 }
 
 /**
  * Add the correct display in IE 9-.
  */
 footer{
+  position: center;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
     display: block;
 }
 article,
 aside,
-header,
-nav,
-section {
+nav {
     display: block;
+}
+header{ flex: 0 0 auto;
+
+}
+
+section {
+    flex: 1 0 auto;
 }
 
 /**
@@ -63,7 +78,7 @@ h1 {
 figcaption,
 figure,
 main { /* 1 */
-    display: block;
+    display: block;  flex-grow: 1;
 }
 
 /**
