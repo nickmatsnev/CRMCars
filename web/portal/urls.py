@@ -39,7 +39,6 @@ router.register(r'api/client', api_client.MainAPI)
 router.register(r'api/willz', api_willz.MainAPI)
 router.register(r'api/user', api_user.MainAPI)
 router.register(r'api/product', api_product.MainAPI)
-router.register(r'api/module_data', api_module.ModuleDataAPI)
 
 #reformat:
 
@@ -99,6 +98,7 @@ urlpatterns = [
     path('api/module/<slug:module_type>/<int:id>/deactivate/', api_module.DeactivateApi.as_view()),
 
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
+    path('api/individual/<int:pk>/module_data/<slug:module_type>/',api_module.ModuleDataApi.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),

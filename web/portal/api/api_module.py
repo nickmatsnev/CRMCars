@@ -18,9 +18,21 @@ from rest_framework.schemas import AutoSchema
 from rest_framework.parsers import FormParser,MultiPartParser
 
 
-class ModuleDataAPI(mixins.CreateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
-    queryset = ModuleData.objects.all()
-    serializer_class = ModuleDataSerializer
+class ModuleDataApi(APIView):
+    @swagger_auto_schema(operation_description='Get module data is it is', responses={200: ModuleDataSerializer})
+    def get(self, request, pk,module_type):
+        queryset = ModuleData.objects.filter(individual=pk,type=module_type).first()
+        serializer_class = ModuleDataSerializer(queryset,many=False)
+        return Response(serializer_class.data)
+
+#TODO: нет проверки типа модуля при создании!
+    @swagger_auto_schema(operation_description='Update module data', request_body=ModuleUpdateDataSerializer)
+    def post(self, request, pk,module_type):
+        json_data = request.data
+        queryset = ModuleData.objects.create(type=module_type,individual=pk,raw_data=json_data['raw_data'])
+        serializer_class = ModuleDataSerializer(queryset,many=False)
+        return Response(serializer_class.data)
+
 
 
 class GetModuleApi(APIView):
