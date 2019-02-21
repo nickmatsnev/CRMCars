@@ -26,7 +26,7 @@
 
 
     {% block head %}
-  <style>
+     <style>
         table {
             border: solid 0px black;
             width: 100%;
@@ -40,7 +40,8 @@
          border: solid 1px white;
          background: #f0f0f0;
      }
-    </style>	
+    </style>
+
 {% endblock %}
 </head>
 
@@ -49,7 +50,9 @@
 
 <div class="containermain">
     <div class="flexContainer flexColumn  whiteBackground">
-            <nav class="flexContainer blueBackground">
+    <div id="container" style="padding-bottom: 40px">
+    <div id="header">
+        <!-- Содержимое шапки -->  <nav class="flexContainer blueBackground">
                 <ul class="nav flexItem flexStart">
                     <li style="margin-left: 10px"><img src="{% static "logo-willz.svg"%}"></li>
                 </ul>
@@ -65,8 +68,9 @@
 
                      <li style="color:black">
 
+
                           <a style="color:black; border: 1px solid black; margin: 0px 15px 0px 0px; background: white" class="siteButton" id="" href="signout">Выход</a>
-                          
+
                          <br>
                          <p style="margin: 0px 15px 0px 0px;">
                         <script language="javascript" type="text/javascript"><!--
@@ -82,17 +86,19 @@
                     </ul>
                 </ul>
             </nav>
- <nav class="flexContainer blueBackground">
-  <div class="flexContainer flexStart">
-  </div>
-          <div style="max-width: 100%;  overflow: auto;  overflow-x: hidden;" id="hei" class="flexContainer flexItem fullHeight">
-                <div   class=" flexItem whiteBackground main fullwidth ">
+    </div>
+    <div id="body">
+        <!-- Содержимое центральной части -->
+        <div   class="flexContainer flexItem ">
+                <div style="width: 100%"class=" flexItem whiteBackground main ">
                 {% block content %}{% endblock %}
-                </div>
+
+
+</div>
 
 
                 <aside class="sidebar sidebarLeft container " >
-                        <div class="specialBackground " id="container">
+                        <div class="specialBackground " id="">
                                         <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
                                 <ul>
                                         <li> В работе</li>
@@ -127,13 +133,22 @@
                         <div class="specialBackground" id="ots">
                             <a style="color:black" href="{% url "users_list" %}">Пользователи</a>
                         </div>
-			
+
                 </aside>
+
                 </div>
- </nav>
-             <footer class="flexContainer flexCenter blueBackground  height50">&copy; Willz 2019</footer>
+
     </div>
+
 </div>
+
+
+    </div>
+
+
+ <footer style="padding-top: 20px; background: #d1d1d1; padding-bottom: 20px;">Willz 2019</footer>
+</div>
+
 <script src="{% static 'js/zooming.js' %}"></script>
   <script>
     const defaultZooming = new Zooming()
@@ -198,8 +213,11 @@
    
 
   </script>
+<a id="go-up" href="#top"></a>
    <a class="add_palitra" href="">
        <img title="Modal Window" src="{% static "modal.png" %}" alt="buttons"/>
         </a>
+
+
     </body>
 </html>
