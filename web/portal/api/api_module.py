@@ -18,6 +18,11 @@ from rest_framework.schemas import AutoSchema
 from rest_framework.parsers import FormParser,MultiPartParser
 
 
+class ModuleDataAPI(mixins.CreateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+    queryset = ModuleData.objects.all()
+    serializer_class = ModuleDataSerializer
+
+
 class GetModuleApi(APIView):
     @swagger_auto_schema(operation_description='Get module as it is', responses={200: SourceGetModuleSerializer})
     def get(self, request, module_type):
@@ -75,3 +80,6 @@ class DeactivateApi(APIView):
     @swagger_auto_schema(operation_description='Deactivate current module')
     def get(self, request, module_type,id,active_module):
         return Response(set_module_is_active_by_id_type(module_type,id,False))
+
+
+

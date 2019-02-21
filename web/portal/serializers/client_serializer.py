@@ -150,6 +150,22 @@ class GenerationSerializer(serializers.ModelSerializer):
         fields = ('number','create_time','actions')
 
 
+class GenerationGetSerializer(serializers.ModelSerializer):
+    actions = ActionSerializer(many=True)
+
+    class Meta:
+        model = Generation
+        fields = ('id','number','create_time','actions')
+
+
+class IndividualGetGenerationSerializer(serializers.ModelSerializer):
+    generation = GenerationGetSerializer()
+
+    class Meta:
+        model = Individual
+        fields = ('id','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
+                  'birthday', 'passport', 'driver_license','generation')
+
 class ViewTableSerializer(serializers.Serializer):
     list_of_fields = serializers.CharField(max_length=255, required=True)
 

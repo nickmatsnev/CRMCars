@@ -57,3 +57,9 @@ class SourceGetModuleSerializer(serializers.ModelSerializer):
         model = Module
         fields = ('id','name','path','is_active','create_time','credentials')
 
+
+class ModuleDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModuleData
+        fields = ('id','type','individual','raw_data')
+

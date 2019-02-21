@@ -173,5 +173,16 @@ class Product(models.Model):
     other_scoring = models.IntegerField(default=0)
 
 
+class ModuleData(models.Model):
+    type = models.TextField(choices=[
+        ('source','Source'),
+        ('parser_validate','ParserValidate'),
+        ('parser_parameters', 'ParserParameters'),
+        ('scoring', 'Scoring'),
+    ])
+    individual = models.IntegerField()
+    raw_data = models.TextField()
+
+
 
 
