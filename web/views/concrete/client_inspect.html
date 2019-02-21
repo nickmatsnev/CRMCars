@@ -91,8 +91,9 @@
 
  <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <tbody>
+
     <tr>
-        {% for item in individual.passport.images %}
+    {% for item in individual.passport.images %}
             <td>
                 <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
                                                                 src="{{ item.url }}" alt=""/></a>
@@ -101,12 +102,12 @@
 
 
         {% endfor %}
-    </tr>
-    <tr>
+
         {% for item in individual.driver_license.images %}
+            <td>
             <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
                                                             src="{{ item.url }}" alt=""/></a>
-
+            </td>
 
 
         {% endfor %}
