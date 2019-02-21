@@ -63,3 +63,6 @@ class ModuleDataSerializer(serializers.ModelSerializer):
         model = ModuleData
         fields = ('id','type','individual','raw_data')
 
+
+class ModuleUpdateDataSerializer(serializers.Serializer):
+    raw_data = serializers.CharField(max_length=20)
