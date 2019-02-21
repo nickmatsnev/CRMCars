@@ -3,7 +3,7 @@
 {% block title %}
     Данные клиента
 {% endblock %}
-
+{% block head %}
   <style>
         table {
             border: solid 0px black;
@@ -18,9 +18,10 @@
          background: #f0f0f0;
      }
     </style>
+{% endblock %}
+
 {% block content %}
-    <div style="background: white;  height: 100%; max-width: 100%;  overflow: auto;  overflow-x: hidden;"  id="hei">
-<div class="container fullHeight" style="width: 100%; height: 100%" id="hei">
+<div class="container fullHeight" id="hei">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
     <a href="{% url "client_decline" individual.id %}">
@@ -80,7 +81,7 @@
 </div>
 
  <div class="item1">Статус: <br> Требует подтверждения <br> Скоринг: <br> Willz: Пройден <br> Стоп-Факторы: <br> Не обнар</div>
-    
+
 </div>
 
 <div class="panel-heading">
@@ -105,7 +106,7 @@
         {% for item in individual.driver_license.images %}
             <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
                                                             src="{{ item.url }}" alt=""/></a>
-        
+
 
 
         {% endfor %}
@@ -199,10 +200,7 @@
         </tr>
 
         </tbody>
-    </table>
-</div>
-</div>
-
+    </table></div>
 
 {% endblock %}
 
