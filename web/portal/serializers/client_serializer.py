@@ -160,10 +160,11 @@ class GenerationGetSerializer(serializers.ModelSerializer):
 
 class IndividualGetGenerationSerializer(serializers.ModelSerializer):
     generation = GenerationGetSerializer()
+    client = serializers.IntegerField()
 
     class Meta:
         model = Individual
-        fields = ('id','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
+        fields = ('id','client','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
                   'birthday', 'passport', 'driver_license','generation')
 
 class ViewTableSerializer(serializers.Serializer):

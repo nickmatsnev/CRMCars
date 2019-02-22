@@ -30,6 +30,7 @@ class MainApi(APIView):
         generation = Generation.objects.get(client=client)
         generation_serializer = GenerationGetSerializer(generation, many = False)
         response_data['generation'] = generation_serializer.data
+        response_data['client'] = client.id
 
         return Response(response_data)
 
