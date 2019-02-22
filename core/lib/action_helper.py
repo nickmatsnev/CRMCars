@@ -13,4 +13,4 @@ def add_action(client_id, action_type, processor, payload=""):
 
 def add_action_individual(individual_id, action_type, processor, payload=""):
     request = api_requestor.request('/individual/{0}/'.format(individual_id))
-    return add_action(request['client'],action_type, processor, payload="")
+    return add_action(request['client'],action_type, processor, payload)
