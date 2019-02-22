@@ -23,12 +23,13 @@ class BasicProcess:
         print("connected")
 
     def callback(self, ch, method, properties, body):
-
-        print(str(datetime.now())[:-3],end='')
+        print("-----callback------")
+        print(str(datetime.now())[:-3], end='\n')
+        print(method.routing_key + ":")
+        print("--------------------")
         routing_key = method.routing_key
-        ch.basic_ack(delivery_tag=method.delivery_tag, multiple=False)
-
         self.__callbacks[routing_key](body)
+        ch.basic_ack(delivery_tag=method.delivery_tag, multiple=False)
 
     def __del__(self):
         self.__channel.close()
@@ -43,6 +44,10 @@ class BasicProcess:
                                    body
                                      , properties=pika.BasicProperties(
                 delivery_mode=2))
+        print("-----publish------")
+        print(str(datetime.now())[:-3], end='\n')
+        print(message + ":" + body)
+        print("--------------------")
 
     def get_name(self):
         raise NotImplementedError

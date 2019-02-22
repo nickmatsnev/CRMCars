@@ -17,7 +17,7 @@ $(document).ready(function () {
     $("#reject-button").click(function () {
 
         var text = $('textarea#textform').val();
-        $.ajax("/api/client/1/add_action/", {
+        $.ajax("/api/client/" + client_id + "/add_action/", {
             data: JSON.stringify({"processor": "User", "action_type": "manual_decline", "payload": text}),
             contentType: 'application/json',
             type: 'POST'

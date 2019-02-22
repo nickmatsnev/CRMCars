@@ -231,8 +231,8 @@ a#go-up{
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    top: 400px;
-    left: 50px;
+    top: 80%;
+    left: 10%;
     background-image: url(../pic/up.jpg);
     background-position: center;
     z-index: 100;

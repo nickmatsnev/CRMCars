@@ -21,7 +21,7 @@ from lib.modules import *
 
 
 class ScoringProcessor(BasicProcess):
-    products_cache = {}
+    products_cache = {1: 2}
     def __init__(self):
         super(ScoringProcessor, self).__init__(constants.SCORING_PROCESSOR_QUEUE,
                                                {
@@ -35,8 +35,10 @@ class ScoringProcessor(BasicProcess):
         product_id = input_message['product_id']
         individual_id = input_message['individual_id']
         self.products_cache[individual_id] = product_id;
-        action_helper.add_action()
+        action_helper.add_action_individual(individual_id, "scoring", "scoring_processor",
+                                            payload="Начат процесс скоринга")
         source_deps = scoring_deps_helper.get_sources_deps(product_id)
+
 
         body_sources = {"individual_id": individual_id, "sources": source_deps}
         self._publish_message(constants.INDIVIDUAL_SOURCES_PROCESS_MESSAGE, json.dumps(body_sources))
@@ -47,27 +49,19 @@ class ScoringProcessor(BasicProcess):
 
         parsers_deps = scoring_deps_helper.get_parser_deps(self.products_cache[individual_id])
         body_parsers = {"individual_id": individual_id, "parsers": parsers_deps}
-        print("parsers")
+        action_helper.add_action_individual(individual_id, "scoring", "parsers_processor")
         self._publish_message(constants.INDIVIDUAL_PARSERS_PROCESS_MESSAGE, json.dumps(body_parsers))
 
     def __finalize_scoring(self, body):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
-
+        action_helper.add_action_individual(individual_id, "scoring_complete", "scoring_processor",
+                                            payload="Завершен процесс скоринга")
         score_res = scoring_deps_helper.get_scoring_module(self.products_cache[individual_id])
         all_params = {}
         raw_data = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_parameters"))[
             'raw_data']
         parsers_parameters = ast.literal_eval(raw_data)
-
-        # params = parser_m.get_values(sources_data[src])
-        # new_dict = {item['name']: item['value'] for item in params}
-        # params_data[parser['name']] = new_dict
-
-        # for k,v in parsers_parameters:
-        #    all_params.update(v)
-
-        # score = score_res.get_score(parsers_parameters)
 
         api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "scoring"),
                            json.dumps(({"raw_data": 100})))

@@ -20,7 +20,7 @@ CLIENT_RAW_CREATED_MESSAGE="client_raw_created"
 
 # CLIENT_SCORING_COMPLETE_MESSAGE="client_scoring_complete"
 
-INDIVIDUAL_PARSERS_PROCESS_MESSAGE = "individual_parsers_processed"
+INDIVIDUAL_PARSERS_PROCESS_MESSAGE = "individual_parsers_process"
 INDIVIDUAL_PARSERS_PROCESSED_MESSAGE = "individual_parsers_processed"
 
 INDIVIDUAL_SCORING_PROCESS="individual_scoring_process"

@@ -1,6 +1,7 @@
 import sys
 
-
+sys.path.append('../')
+sys.path.append('../../')
 from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
 from core.lib.constants import *

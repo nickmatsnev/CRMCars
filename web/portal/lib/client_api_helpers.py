@@ -125,6 +125,8 @@ def get_status(current_id):
         return 'Отказано до скоринга'
     if last_action == 'scoring':
         return 'Скоринг обрабатывается'
+    if last_action == 'scoring_complete':
+        return 'Ожидает согласования'
     if last_action == 'scoring_checks_failed':
         return 'Ошибка на этапе пре-скоринга'
     return "Неизвестно"

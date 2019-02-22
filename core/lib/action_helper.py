@@ -2,7 +2,8 @@ import json
 
 from core.lib import api_requestor
 
-def add_action(client, action_type, processor, payload=""):
+
+def add_action(client, action_type, processor, payload="empty"):
     action = {}
     action['processor'] = processor
     action['action_type'] = action_type

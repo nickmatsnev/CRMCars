@@ -1,3 +1,4 @@
+import ast
 import json
 import sys
 
@@ -50,12 +51,19 @@ def client_decline(request,id):
 def client_scoring(request,id):
     #   res = get_scorista()
 
-    #  checks = get_checks('4518334452', '77МА051161', res)['checks']
+    individual_id = api_requestor.request('/client/{0}/view/'.format(id))['individual']['id']
 
-    # score = get_scoring(json.dumps({'checks': ''}, indent=4, sort_keys=False, ensure_ascii=True))
+    scoring = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "scoring"))['raw_data']
 
+    parameters = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_parameters"))[
+        'raw_data']
+
+    validate = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_validate"))[
+        'raw_data']
+    val = ast.literal_eval(validate)
+    checks = val['ScoristaParserModule']['errors']
     return render(request, 'concrete/client_scoring.html',
-                  {'id': id, 'score': '', 'checks': '', 'raw_data': smart_text('', "utf-8"),
+                  {'id': id, 'score': scoring, 'checks': checks, 'raw_data': smart_text(parameters, "utf-8"),
                    'disabled': 'disabled'})
 
 @login_required(login_url="signin")
@@ -76,13 +84,13 @@ def client_inspect(request,id):
 
 @login_required(login_url="signin")
 def accept_client(request, id):
-    action_helper.add_action(id, 'accepted', 'user')
+    action_helper.add_action(id, 'scoring_complete_accepted', 'user')
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
 def reject_client(request, id):
-    action_helper.add_action(id, 'declined', 'user')
+    action_helper.add_action(id, 'scoring_complete_declined', 'user')
     return redirect("clients_list")
 
 

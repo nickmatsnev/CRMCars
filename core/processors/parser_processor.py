@@ -5,11 +5,12 @@ import ast
 
 from django.utils.baseconv import base64
 
-from lib.modules import ParserModule
+
 
 sys.path.append('../')
 
-from lib import constants, api_requestor
+from lib.modules import ParserModule
+from lib import constants, api_requestor, action_helper
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
 
@@ -27,7 +28,10 @@ class ParserProcessor(BasicProcess):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
         individual_json = api_requestor.request('/individual/{0}'.format(individual_id))
-        parsers = input_message['parsers']
+        try:
+            parsers = input_message['parsers']
+        except:
+            return
         raw_data = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "source"))['raw_data']
 
         sources_data = ast.literal_eval(raw_data)
@@ -52,6 +56,8 @@ class ParserProcessor(BasicProcess):
 
             api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_parameters"),
                                json.dumps(({"raw_data": params_data}), cls=DatetimeEncoder))
+            action_helper.add_action_individual(individual_id, "scoring", "parsers_processor",
+                                                payload="Обработаны данные от источников")
 
             self._publish_message(constants.INDIVIDUAL_PARSERS_PROCESSED_MESSAGE,
                                   json.dumps({"individual_id": individual_id}))
