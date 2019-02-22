@@ -26,10 +26,9 @@ class BasicProcess:
 
         print(str(datetime.now())[:-3],end='')
         routing_key = method.routing_key
+        ch.basic_ack(delivery_tag=method.delivery_tag, multiple=False)
 
         self.__callbacks[routing_key](body)
-
-        ch.basic_ack(delivery_tag=method.delivery_tag, multiple=False)
 
     def __del__(self):
         self.__channel.close()

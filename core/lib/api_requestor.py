@@ -13,11 +13,21 @@ def request(relative_url):
     return json.loads(response.content.decode('utf-8'))
 
 
+def request_no_recode(relative_url):
+    response = requests.get(API_ROOT_URL + relative_url)
+    return json.loads(response.content)
+
+
 def post(relative_url,body):
     response = requests.post(API_ROOT_URL + relative_url, data=body, headers=headers)
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
+
+def post_json(relative_url, body):
+    response = requests.post(API_ROOT_URL + relative_url, json=body)
+    # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
+    return response
 
 def patch(relative_url, body):
     response = requests.patch(API_ROOT_URL + relative_url, data=body, headers=headers)

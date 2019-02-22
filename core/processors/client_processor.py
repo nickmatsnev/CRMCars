@@ -59,8 +59,6 @@ class ClientProcessor(BasicProcess):
 
             except:
                 print(" client is not processed")
-            finally:
-                self._publish_message(CLIENT_PROCESSED_MESSAGE, "test_body")
 
 
 proc = ClientProcessor()

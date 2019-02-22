@@ -24,6 +24,10 @@
                 <td>Путь</td>
                 <td>Активен</td>
                 <td>Создан</td>
+                {% if module == "source" %}
+                    <td>URL</td>
+                    <td>Параметры доступа</td>
+                {% endif %}
             </tr>
             </thead>
 
@@ -37,6 +41,10 @@
                     <td>{{ item.path }}</td>
                     <td>{{ item.is_active }}</td>
                     <td>{{ item.creation_time }}</td>
+                    {% if module == "source" %}
+                        <td>{{ item.module_url }}</td>
+                        <td>{{ item.credentials }}</td>
+                    {% endif %}
                 </tr>
 
             {% endfor %}

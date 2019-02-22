@@ -65,15 +65,21 @@ def get_current_client_info(client_id):
     queryset = Generation.objects.get(client_id=client_id)
     generation_serializer = GenerationSerializer(queryset, many=False)
     items['op_history'] = generation_serializer.data
+    items['status'] = get_status(client_id)
 
     field = ''
+    product_id = ''
     if client_serializer.data['product']!=0:
         product = Product.objects.get(id=client_serializer.data['product'])
         field = product.name
+        product_id = product.id
     else:
         field = 'Not set'
 
     items['product']=field
+    items['product_id'] = product_id
+
+
 
     return items
 
@@ -105,27 +111,27 @@ def get_status(current_id):
     queryset = Generation.objects.get(client_id=current_id)
     generation_serializer = GenerationSerializer(queryset, many=False)
 
-    source_cnt = 0
-    check_cnt = 0
-    scorint_cnt = 0
-    declined = False
-    accepted = False
-    new = False
+    list_of_actions = generation_serializer.data['actions']
 
-    for act in generation_serializer.data['actions']:
-        if act['action_type'] == 'declined':
-            declined =  True
-        if act['action_type'] == 'accepted':
-            accepted = True
-        if act['action_type'] == 'new':
-            new = True
+    last_action = list_of_actions[-1]['action_type']
 
-    # определить что выше по приоритетам!
-    if declined==True:
+    if last_action == 'scoring_complete_declined':
         return 'Отказано'
-    if accepted==True:
+    if last_action == 'scoring_complete_accepted':
         return 'Одобрено'
-    if new==True:
+    if last_action == 'new':
         return 'Новый'
+    if last_action == 'manual_decline':
+        return 'Отказано до скоринга'
+    if last_action == 'scoring':
+        return 'Скоринг обрабатывается'
+    if last_action == 'scoring_checks_failed':
+        return 'Ошибка на этапе пре-скоринга'
+    return "Неизвестно"
 
-    return 'Неизвестно'
+# op_action = new -> Новый
+# op_action = manual_decline -> Отказано до скоринга
+# op_action = scoring -> Скоринг обрабатывается
+# op_action = scoring_checks_failed -> Ошибка на этапе пре-скоринга
+# op_action = scoring_complete_accepted -> Клиент одобрен
+# op_action = scoring_complete_declined -> Клиенту отказано

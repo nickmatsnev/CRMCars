@@ -15,15 +15,15 @@
         <link rel="stylesheet" href="{% static "layout/style.css" %}">
         <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
     <!-- Magnific Popup core CSS file -->
-    <link rel="stylesheet" href="{% static "jquery.fancybox-1.3.4.css" %}" type="text/css" media="screen"/>
+
 
     <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Magnific Popup core JS file -->
-    <script src="{% static "jquery.fancybox-1.3.4.js" %}"></script>
-    <script src="{% static "expand_image.js" %}"></script>
 
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    <script src="{% static "buttons_handlers.js" %}"></script>
 
     {% block head %}
      <style>
@@ -119,7 +119,7 @@
                                 <li><a href="{% url "parameters_list" %}"> Список параметров из
                                     источников</a></li>
                                            </ul>
-                            <a style="color:black" href=""> Продукты</a>
+                            <a style="color:black" href="{% url "products_list" %}"> Продукты</a>
                         </div>
 
                         <div class="specialBackground" id="ots">

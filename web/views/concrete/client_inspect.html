@@ -21,13 +21,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="container fullHeight" id="hei">
+    <div class="container fullHeight">
+        <script>
+            var individual_id = {{ individual.id }};
+            var product_id = {{ product_id }};
+        </script>
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
     <a href="{% url "client_decline" individual.id %}">
         <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Отказ по заявке</button>
     </a>
-    <div class="panel-heading">
+
+        <button id="scoring-button" class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Отправить
+            на скоринг
+        </button>
+
+        <div class="panel-heading">
         <p><strong>Данные</strong></p>
     </div>
    <div class="grid-container">
@@ -80,7 +89,8 @@
 </table>
 </div>
 
- <div class="item1">Статус: <br> Требует подтверждения <br> Скоринг: <br> Willz: Пройден <br> Стоп-Факторы: <br> Не обнар</div>
+       <div class="item1">Статус:<b> {{ status }}</b><br/>
+           Продукт:<b>{{ product }}</b></div>
 
 </div>
 
@@ -192,8 +202,7 @@
                 <td>{{ item.processor }}</td>
                 <td>{{ item.create_time }}</td>
             <td>
-                <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Просмотр
-                </button>
+                {{ item.payload }}
             </td>
         </tr>
             {% endfor %}

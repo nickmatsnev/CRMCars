@@ -1,11 +1,12 @@
 {% extends "../base.html" %}
-
+{% load static %}
 {% block title %}
     Отказ в заявке
 {% endblock %}
 
 
 {% block content %}
+
 <div class="container" id="">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
 
@@ -50,9 +51,6 @@
 <div class="panel-heading">
     <p><strong>Работа с отказом</strong></p>
   </div>
-
-
-
     <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <thead>
       <tr>
@@ -61,13 +59,15 @@
     </thead>
     <tbody>
   <tr>
-    <td><textarea rows="10" cols="45" name="text"></textarea></td>
-  </tr>>
+      <td><textarea rows="10" cols="45" name="text" id="textform"></textarea></td>
+  </tr>
 </tbody>
 
     </table>
+    <button id="reject-button" class="btn btn-default  reject-button" type="button"><span
+            class="glyphicon glyphicon-plus"></span> Подтвердить отказ
+    </button>
 
-    <a  href="{% url "reject_client" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить отказ </button></a>
     <a  href="{% url "client_inspect" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отмена </button></a>
 </div>
 

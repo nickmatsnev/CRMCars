@@ -19,7 +19,7 @@ from core.lib import modules
 from portal.models import Module
 from rest_framework import status
 
-from core.scoring.scorista import get_scorista, get_scoring, get_checks
+
 
 
 @login_required(login_url="signin")
@@ -48,14 +48,14 @@ def client_decline(request,id):
 
 @login_required(login_url="signin")
 def client_scoring(request,id):
-    res = get_scorista()
+    #   res = get_scorista()
 
-    checks = get_checks('4518334452', '77МА051161', res)['checks']
+    #  checks = get_checks('4518334452', '77МА051161', res)['checks']
 
-    score = get_scoring(json.dumps({'checks': checks}, indent=4, sort_keys=False, ensure_ascii=True))
+    # score = get_scoring(json.dumps({'checks': ''}, indent=4, sort_keys=False, ensure_ascii=True))
 
     return render(request, 'concrete/client_scoring.html',
-                  {'id': id, 'score': score, 'checks': checks, 'raw_data': smart_text(res, "utf-8"),
+                  {'id': id, 'score': '', 'checks': '', 'raw_data': smart_text('', "utf-8"),
                    'disabled': 'disabled'})
 
 @login_required(login_url="signin")
@@ -68,7 +68,8 @@ def client_inspect(request,id):
     raw_data = api_requestor.request('/client/{0}/view/'.format(id))
 
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
-               'history': raw_data['op_history']}
+               'history': raw_data['op_history'], 'status': raw_data['status'], 'product': raw_data['product'],
+               'product_id': raw_data['product_id']}
 
     return render(request, 'concrete/client_inspect.html', context)
 
@@ -80,8 +81,8 @@ def accept_client(request, id):
 
 
 @login_required(login_url="signin")
-def reject_client(request, id, ):
-    action_helper.add_action(id,'declined','user')
+def reject_client(request, id):
+    action_helper.add_action(id, 'declined', 'user')
     return redirect("clients_list")
 
 

@@ -1,16 +1,13 @@
 import sys
 
+from portal.models import Module
+
 sys.path.append('../../')
 sys.path.append('..')
 from rest_framework import status
-from rest_framework.response import Response
-from portal.models import *
-from portal.serializers.module_serializer import *
-from rest_framework import serializers
+from portal.lib.module_serializer_helper import get_read_serializer_by_module_type, get_normal_serializer_by_module_type
 from core.lib import module_save_helper
-
 from core.lib.modules import *
-from core.lib.runtime_logger_helper import log
 
 
 def get_module_by_type(module_type, pk=None):
@@ -88,7 +85,7 @@ def view_all_parameters_from_active_modules(module_type):
         parameters = parser_m.get_available_parameters()
         for parameter in parameters:
             new_item = {}
-            new_item['source'] = parser_m.get_source()
+            new_item['source'] = parser_m.get_module_source()
             new_item['parser'] = parser_m.get_module_name()
             new_item['name'] = parameter['name']
             new_item['description'] = parameter['description']
