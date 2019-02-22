@@ -91,6 +91,7 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path('api/message/', api_message.MainApi.as_view()),
+    path('api/test/', api_message.TestApi.as_view()),
 
     path('api/module/<slug:module_type>/', api_module.GetModuleApi.as_view()),
     path('api/module/<slug:module_type>/view/', api_module.ViewModuleApi.as_view()),

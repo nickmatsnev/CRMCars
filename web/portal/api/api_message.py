@@ -15,7 +15,7 @@ from rest_framework.schemas import ManualSchema
 import coreapi
 import coreschema
 from rest_framework.schemas import AutoSchema
-
+from core.lib import action_helper
 
 class MainApi(APIView):
     @swagger_auto_schema(operation_description='Send message to message bus',
@@ -29,3 +29,11 @@ class MainApi(APIView):
             return Response(status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class TestApi(APIView):
+    @swagger_auto_schema(operation_description='For testing some functions')
+    def get(self, request):
+        action_helper.add_action_individual(1,"qwerty","zh")
+        return Response(status=status.HTTP_200_OK)
+
