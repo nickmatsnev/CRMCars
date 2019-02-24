@@ -1,224 +1,170 @@
 <!DOCTYPE html>
-
 <html>
+
 <head>
+    <title>{% block title %} Willz {% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static " style_fin.css " %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
 
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta name="author" content="Jennifer Bland">
-        <meta name="description" content="Demonstration of layouts using FlexBox">
-        <title>{% block title %} {% endblock %}</title>
-{% load static %}
-    {% load cache_bust %}
-    <link rel="stylesheet" href="{% static "loader.css" %}?{% cache_bust %}">
-    <link rel="stylesheet" href="{% static "layout/normalize.css" %}?{% cache_bust %}">
-    <link rel="stylesheet" href="{% static "layout/style.css" %}?{% cache_bust %}">
-        <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
-    <!-- Magnific Popup core CSS file -->
-
-
-    <!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Magnific Popup core JS file -->
-
-    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
-    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
-
-    {% block head %}
-     <style>
-        table {
-            border: solid 0px black;
-            width: 100%;
-        }
-     td{
-         border: solid 1px white;
-         background: #f0f0f0;
-     }
-     th{
-         border: solid 1px white;
-         background: #f0f0f0;
-     }
-    </style>
-
-{% endblock %}
 </head>
 
-
 <body>
-
-<div class="containermain">
-    <div class="flexContainer flexColumn  whiteBackground">
-    <div id="container" style="padding-bottom: 40px">
-    <div id="header">
-        <!-- Содержимое шапки -->  <nav class="flexContainer blueBackground">
-                <ul class="nav flexItem flexStart">
-                    <li style="margin-left: 10px"><img src="{% static "logo-willz.svg"%}"></li>
-                </ul>
-
-                <ul class="nav flexItem flexCenter">
-                    <li>
-                        <strong>Пользователь:</strong><br> {{ request.user.first_name|add:" "|add:request.user.last_name }}
-                    </li>
-                </ul>
-                <ul class="nav flexContainer flexEnd">
-                    <ul class="nav">
-                   <li></li>
-
-                     <li style="color:black">
-
-
-                          <a style="color:black; border: 1px solid black; margin: 0px 15px 0px 0px; background: white" class="siteButton" id="" href="signout">Выход</a>
-
-                         <br>
-                         <p style="margin: 0px 15px 0px 0px;">
-                        <script language="javascript" type="text/javascript"><!--
+    <header>
+        <div class="grid-container">
+            <div class="item1">
+                <img src="{% static " logo-willz.svg " %}">
+            </div>
+            <div class="item1"></div>
+            <div class="item1"></div>
+            <div class="item1"></div>
+            <div class="item1"></div>
+            <div class="item1"></div>
+            <div class="item1"></div>
+            <div class="item1">
+                <strong>Пользователь:</strong>
+                <br> {{ request.user.first_name|add:" "|add:request.user.last_name }}</div>
+            <div class="item1">
+                <a style="color:black" id="login-logoutbutton" href="#" class="siteButton">Выход</a>
+            </div>
+            <div style="color:black" class="item1">
+                <script language="javascript" type="text/javascript">< !--
                             var d = new Date();
-                                    var month=new Array("янв","февр","мар","апр","мая","июн",
-                                    "июл","авг","сент","окт","ноябр","дек");
+                    var month = new Array("янв", "февр", "мар", "апр", "мая", "июн",
+                        "июл", "авг", "сент", "окт", "ноябр", "дек");
 
-                                document.write(d.getDate()+ " " + month[d.getMonth()]
-                                + " " + d.getFullYear() + " г.");
+                    document.write(d.getDate() + " " + month[d.getMonth()]
+                        + " " + d.getFullYear() + " г.");
                         //--></script>
-                         </p>
-                    </li>
-                    </ul>
-                </ul>
-            </nav>
-    </div>
-    <div id="body">
-        <!-- Содержимое центральной части -->
-        <div   class="flexContainer flexItem ">
-                <div style="width: 100%"class=" flexItem whiteBackground main ">
+            </div>
+        </div>
+    </header>
+    <main>
+        <!-- ����� ���� ����� � ������� ���� - ������� MARGIN 0-->
+        <article style="background: white">
+            <div class="cover-table">
                 {% block content %}{% endblock %}
+            </div>
+        </article>
+        <nav>
+
+            <div class="specialBackground " id="">
+                <a style="color:black" href="{% url " clients_list " %}"> Заявки</a>
+                <ul>
+                    <li> В работе</li>
+                    <li>На согласовании </li>
+                    <li> Отказ</li>
+                </ul>
+            </div>
+            <br>
+            <div class="specialBackground " id="ots">
+                <a style="color:black" href="">Модули</a>
+                <br>
+                <ul>
+                    <li>
+                        <a href="{% url " modules_list " "source " %}">Модули источников</a>
+                    </li>
+                    <li>
+                        <a href="{% url " modules_list " "parser " %}">Модули парсинга</a>
+                    </li>
+                    <li>
+                        <a href="{% url " modules_list " "scoring " %}">Модули скоринга</a>
+                    </li>
+                </ul>
+                <a style="color:black" href=""> Скоринг</a>
+                <ul>
+                    <li>
+                        <a href="{% url " parameters_list " %}"> Список параметров из источников
+                        </a>
+                    </li>
+                </ul>
+                <a style="color:black" href=""> Продукты</a>
+            </div>
+
+            <div class="specialBackground" id="ots">
+                <p style="color:black">
+                    <a style="color:black" href="">Отчёты</a>
+                    <br>
+                </p>
+            </div>
+
+            <div class="specialBackground" id="ots">
+                <a style="color:black" href="{% url " users_list " %}">Пользователи</a>
+            </div>
+
+        </nav>
+    </main>
+    <footer>
+        <center style="color:black; padding-top: 1%">Willz 2019</center>
+    </footer>
+
+    <script src="{% static 'js/zooming.js' %}"></script>
+    <script>
+        const defaultZooming = new Zooming()
+        const customZooming = new Zooming()
+        const config = customZooming.config()
+        const TRANSITION_DURATION_DEFAULT = config.transitionDuration
+        const BG_COLOR_DEFAULT = config.bgColor
+        const SCALE_BASE_DEFAULT = config.scaleBase
+        const ACTIVE_CLASS = 'button-primary'
+
+        document.addEventListener('DOMContentLoaded', function () {
+            defaultZooming.listen('.img-default')
+            customZooming.listen('.img-custom')
+        })
+
+        btnFast.addEventListener('click', function (event) {
+            const transitionDuration = toggleActive(btnFast)
+                ? 0.2
+                : TRANSITION_DURATION_DEFAULT
+
+            customZooming.config({ transitionDuration })
+        })
+
+        btnDark.addEventListener('click', function (event) {
+            const bgColor = toggleActive(btnDark)
+                ? 'black'
+                : BG_COLOR_DEFAULT
+
+            customZooming.config({ bgColor })
+        })
+
+        btnScaleSmall.addEventListener('click', function (event) {
+            const scaleBase = toggleActive(btnScaleSmall)
+                ? 0.7
+                : SCALE_BASE_DEFAULT
+
+            customZooming.config({ scaleBase })
+        })
+
+        function isActive(el) {
+            return el.classList.contains(ACTIVE_CLASS)
+        }
+
+        function activate(el) {
+            el.classList.add(ACTIVE_CLASS)
+        }
+
+        function deactivate(el) {
+            el.classList.remove(ACTIVE_CLASS)
+        }
+
+        function toggleActive(el) {
+            if (isActive(el)) {
+                deactivate(el)
+                return false
+            } else {
+                activate(el)
+                return true
+            }
+        }
 
 
-</div>
+
+    </script>
 
 
-                <aside class="sidebar sidebarLeft container " >
-                        <div class="specialBackground " id="">
-                                        <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
-                                <ul>
-                                        <li> В работе</li>
-                                        <li>На согласовании </li>
-                                        <li> Отказ</li>
-                                        </ul>
-                        </div>
-                            <br>
-                        <div class="specialBackground " id="ots">
-                             <a style="color:black" href="">Модули</a>
-                            <br>
-                            <ul>
-                                <li><a href="{% url "modules_list" "source" %}">Модули источников</a></li>
-                                <li><a href="{% url "modules_list" "parser" %}">Модули парсинга</a></li>
-                                <li><a href="{% url "modules_list" "scoring" %}">Модули скоринга</a></li>
-                            </ul>
-                                    <a style="color:black" href=""> Скоринг</a>
-                            <ul>
-                                <li><a href="{% url "parameters_list" %}"> Список параметров из
-                                    источников</a></li>
-                                           </ul>
-                            <a style="color:black" href="{% url "products_list" %}"> Продукты</a>
-                        </div>
+</body>
 
-                        <div class="specialBackground" id="ots">
-                            <p style="color:black">
-                                <a style="color:black" href="">Отчёты</a>
-                                <br>
-                            </p>
-                        </div>
-
-                        <div class="specialBackground" id="ots">
-                            <a style="color:black" href="{% url "users_list" %}">Пользователи</a>
-                        </div>
-
-                </aside>
-
-                </div>
-
-    </div>
-
-</div>
-
-
-    </div>
-
-
- <footer style="padding-top: 20px; background: #d1d1d1; padding-bottom: 20px;">Willz 2019</footer>
-</div>
-
-<script src="{% static 'js/zooming.js' %}"></script>
-  <script>
-    const defaultZooming = new Zooming()
-    const customZooming = new Zooming()
-    const config = customZooming.config()
-    const TRANSITION_DURATION_DEFAULT = config.transitionDuration
-    const BG_COLOR_DEFAULT = config.bgColor
-    const SCALE_BASE_DEFAULT = config.scaleBase
-    const ACTIVE_CLASS = 'button-primary'
-
-    document.addEventListener('DOMContentLoaded', function () {
-        defaultZooming.listen('.img-default')
-        customZooming.listen('.img-custom')
-    })
-
-    btnFast.addEventListener('click', function (event) {
-      const transitionDuration = toggleActive(btnFast)
-        ? 0.2
-        : TRANSITION_DURATION_DEFAULT
-
-      customZooming.config({ transitionDuration })
-    })
-
-    btnDark.addEventListener('click', function (event) {
-      const bgColor = toggleActive(btnDark)
-        ? 'black'
-        : BG_COLOR_DEFAULT
-
-      customZooming.config({ bgColor })
-    })
-
-    btnScaleSmall.addEventListener('click', function (event) {
-      const scaleBase = toggleActive(btnScaleSmall)
-        ? 0.7
-        : SCALE_BASE_DEFAULT
-
-      customZooming.config({ scaleBase })
-    })
-
-    function isActive(el) {
-      return el.classList.contains(ACTIVE_CLASS)
-    }
-
-    function activate(el) {
-      el.classList.add(ACTIVE_CLASS)
-    }
-
-    function deactivate(el) {
-      el.classList.remove(ACTIVE_CLASS)
-    }
-
-    function toggleActive(el) {
-      if (isActive(el)) {
-        deactivate(el)
-        return false
-      } else {
-        activate(el)
-        return true
-      }
-    }
-
-   
-
-  </script>
-
-<a class="add_palitra" href="">
-       <img title="Modal Window" src="{% static "modal.png" %}" alt="buttons"/>
-        </a>
-
-
-    </body>
 </html>
