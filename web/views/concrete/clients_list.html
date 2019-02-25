@@ -43,14 +43,14 @@
 <table  bgcolor="#FFFFFF">
     <thead>
       <tr>
-        <th>П/П</th>
-          <td>Номер</td>
-          <td>ФИО</td>
-          <td>Дата регистр.</td>
-          <td>Продукт</td>
-          <td>Статус</td>
-          <td> </td>
-          <td> </td>
+
+          <th>Номер</th>
+          <th>ФИО</th>
+          <th>Дата регистр.</th>
+          <th>Продукт</th>
+          <th>Статус</th>
+          <th></th>
+          <th></th>
       </tr>
     </thead>
 
@@ -58,18 +58,18 @@
     <tbody>
 
     {% for item in items %}
-         <tr style="background: #ffff00">
+        <tr style="background: #ffff00;">
 
-            <td>{{ item.num }}</td>
+
             <td>{{ item.id }}</td>
              <td>{{ item.fio }}</td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.product }}</td>
              <td>{{ item.status }}</td>
-             <td><a href="{% url "client_inspect" item.id %}">
+            <td style="border: none;"><a href="{% url "client_inspect" item.id %}">
                  <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Клиент</button>
              </a></td>
-             <td><a href="{% url "client_scoring" item.id %}">
+            <td style="border: none;"><a href="{% url "client_scoring" item.id %}">
                  <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Скоринг</button>
              </a></td>
      </tr>

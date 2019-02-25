@@ -4,9 +4,16 @@
 <head>
     <title>{% block title %} Willz {% endblock %}</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static " style_upd.css " %}">
+    {% load cache_bust %}
+
+    <link rel="stylesheet" href="{% static "style_upd.css" %}?{% cache_bust %}">
+    <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
 
 </head>
 
@@ -14,7 +21,7 @@
     <header>
         <div class="grid-container">
             <div class="item1">
-                <img src="{% static " logo-willz.svg " %}">
+                <img src="{% static "logo-willz.svg" %}">
             </div>
             <div class="item1"></div>
             <div class="item1"></div>
@@ -29,14 +36,14 @@
                 <a style="color:black" id="login-logoutbutton" href="#" class="siteButton">Выход</a>
             </div>
             <div style="color:black" class="item1">
-                <script language="javascript" type="text/javascript">< !--
+                <script language="javascript" type="text/javascript">
                             var d = new Date();
                     var month = new Array("янв", "февр", "мар", "апр", "мая", "июн",
                         "июл", "авг", "сент", "окт", "ноябр", "дек");
 
                     document.write(d.getDate() + " " + month[d.getMonth()]
                         + " " + d.getFullYear() + " г.");
-                        //--></script>
+                </script>
             </div>
         </div>
     </header>
@@ -50,7 +57,7 @@
         <nav>
 
             <div class="specialBackground " id="">
-                <a style="color:black" href="{% url " clients_list " %}"> Заявки</a>
+                <a style="color:black" href="{% url "clients_list" %}"> Заявки</a>
                 <ul>
                     <li> В работе</li>
                     <li>На согласовании </li>
@@ -63,23 +70,23 @@
                 <br>
                 <ul>
                     <li>
-                        <a href="{% url " modules_list " "source " %}">Модули источников</a>
+                        <a href="{% url "modules_list" "source" %}">Модули источников</a>
                     </li>
                     <li>
-                        <a href="{% url " modules_list " "parser " %}">Модули парсинга</a>
+                        <a href="{% url "modules_list" "parser" %}">Модули парсинга</a>
                     </li>
                     <li>
-                        <a href="{% url " modules_list " "scoring " %}">Модули скоринга</a>
+                        <a href="{% url "modules_list" "scoring" %}">Модули скоринга</a>
                     </li>
                 </ul>
                 <a style="color:black" href=""> Скоринг</a>
                 <ul>
                     <li>
-                        <a href="{% url " parameters_list " %}"> Список параметров из источников
+                        <a href="{% url "parameters_list" %}"> Список параметров из источников
                         </a>
                     </li>
                 </ul>
-                <a style="color:black" href=""> Продукты</a>
+                <a style="color:black" href="{% url "products_list" %}"> Продукты</a>
             </div>
 
             <div class="specialBackground" id="ots">
@@ -90,7 +97,7 @@
             </div>
 
             <div class="specialBackground" id="ots">
-                <a style="color:black" href="{% url " users_list " %}">Пользователи</a>
+                <a style="color:black" href="{% url "users_list" %}">Пользователи</a>
             </div>
 
         </nav>
