@@ -136,3 +136,13 @@ li {
                     flex: 1 1 auto;
                 }
             }
+.add_palitra {
+display: block;
+width: 4%;
+height: 2%;
+position: fixed;
+right: 0;
+top: 50%;
+z-index: 99999;
+}
+      
