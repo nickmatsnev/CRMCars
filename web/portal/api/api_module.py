@@ -95,4 +95,25 @@ class DeactivateApi(APIView):
         return Response(set_module_is_active_by_id_type(module_type,id,False))
 
 
+class CredentialsApi(APIView):
+    @swagger_auto_schema(operation_description='Get credentials',
+                         responses={200: CredentialsSerializer,
+                                    204: 'No module with your ID',
+                                    400: 'No source module with your ID'})
+    def get(self, request, id):
+        module_type = 'source'
+        return get_credentials(module_type,id)
+
+    @swagger_auto_schema(operation_description='Set credentials',
+                         request_body=CredentialsSerializer,
+                         responses={200: CredentialsSerializer,
+                                    204: 'No module with your ID',
+                                    400: 'No source module with your ID'})
+    def post(self, request,id):
+        module_type = 'source'
+        return Response(set_credentials(module_type,id,request.data['credentials']))
+
+
+
+
 

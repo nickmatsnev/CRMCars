@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from portal.models import *
 from portal.serializers.client_serializer import *
 from portal.serializers.product_serializer import *
+from portal.lib.status_api_helpers import get_status
+
 
 def get_all_clients_info():
     queryset = Client.objects.all()
@@ -107,33 +109,3 @@ def update_product(data,client_id):
         return ClientGetSerializer(client).data
 
 
-def get_status(current_id):
-    queryset = Generation.objects.get(client_id=current_id)
-    generation_serializer = GenerationSerializer(queryset, many=False)
-
-    list_of_actions = generation_serializer.data['actions']
-
-    last_action = list_of_actions[-1]['action_type']
-
-    if last_action == 'scoring_complete_declined':
-        return 'Отказано'
-    if last_action == 'scoring_complete_accepted':
-        return 'Одобрено'
-    if last_action == 'new':
-        return 'Новый'
-    if last_action == 'manual_decline':
-        return 'Отказано до скоринга'
-    if last_action == 'scoring':
-        return 'Скоринг обрабатывается'
-    if last_action == 'scoring_complete':
-        return 'Ожидает согласования'
-    if last_action == 'scoring_checks_failed':
-        return 'Ошибка на этапе пре-скоринга'
-    return "Неизвестно"
-
-# op_action = new -> Новый
-# op_action = manual_decline -> Отказано до скоринга
-# op_action = scoring -> Скоринг обрабатывается
-# op_action = scoring_checks_failed -> Ошибка на этапе пре-скоринга
-# op_action = scoring_complete_accepted -> Клиент одобрен
-# op_action = scoring_complete_declined -> Клиенту отказано

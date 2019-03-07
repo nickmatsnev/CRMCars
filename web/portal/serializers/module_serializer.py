@@ -66,3 +66,6 @@ class ModuleDataSerializer(serializers.ModelSerializer):
 
 class ModuleUpdateDataSerializer(serializers.Serializer):
     raw_data = serializers.CharField(max_length=20)
+
+class CredentialsSerializer(serializers.Serializer):
+    credentials = serializers.CharField(max_length=200)

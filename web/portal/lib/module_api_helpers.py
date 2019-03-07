@@ -8,6 +8,7 @@ from rest_framework import status
 from portal.lib.module_serializer_helper import get_read_serializer_by_module_type, get_normal_serializer_by_module_type
 from core.lib import module_save_helper
 from core.lib.modules import *
+from rest_framework.response import Response
 
 
 def get_module_by_type(module_type, pk=None):
@@ -102,5 +103,44 @@ def post_test(module_type,request):
         serializer.save()
         return status.HTTP_202_ACCEPTED
     return status.HTTP_400_BAD_REQUEST
+
+
+def get_credentials(module_type, pk):
+    response = {}
+    resp_status = status.HTTP_200_OK
+
+    if Module.objects.filter(id=pk).count()==0:
+        credentials = ""
+        resp_status = status.HTTP_204_NO_CONTENT
+    else:
+        module = Module.objects.get(id=pk)
+        if module.type != get_subtype_by_module_type(module_type):
+            credentials = ""
+            resp_status = status.HTTP_400_BAD_REQUEST
+        else:
+            credentials = module.credentials
+
+    response['credentials'] = credentials
+    return Response(status=resp_status, data=response['credentials'])
+
+
+def set_credentials(module_type, pk, credentials):
+    response = {}
+    resp_status = status.HTTP_200_OK
+
+    if Module.objects.filter(id=pk).count()==0:
+        credentials = ""
+        resp_status = status.HTTP_204_NO_CONTENT
+    else:
+        module = Module.objects.get(id=pk)
+        if module.type != get_subtype_by_module_type(module_type):
+            credentials = ""
+            resp_status = status.HTTP_400_BAD_REQUEST
+        else:
+            module.credentials = credentials
+            module.save()
+
+    response['credentials'] = credentials
+    return Response(status=resp_status, data=response['credentials'])
 
 

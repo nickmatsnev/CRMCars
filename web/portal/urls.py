@@ -22,6 +22,7 @@ from portal.api import api_message
 from portal.api import api_module
 from portal.api import api_product
 from portal.api import api_individual
+from portal.api import api_status
 
 from portal.controllers.views import *
 from .controllers.auth import *
@@ -91,6 +92,7 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path('api/message/', api_message.MainApi.as_view()),
+    path('api/status/', api_status.MainApi.as_view()),
     path('api/test/', api_message.TestApi.as_view()),
 
     path('api/module/<slug:module_type>/', api_module.GetModuleApi.as_view()),
@@ -104,6 +106,8 @@ urlpatterns = [
     path('api/module/<slug:module_type>/<int:id>/parameters/', api_module.GetModuleParametersByIdApi.as_view()),
     path('api/module/<slug:module_type>/<int:id>/activate/', api_module.ActivateApi.as_view()),
     path('api/module/<slug:module_type>/<int:id>/deactivate/', api_module.DeactivateApi.as_view()),
+
+    path('api/module/source/<int:id>/credentials/', api_module.CredentialsApi.as_view()),
 
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
     path('api/individual/<int:pk>/module_data/<slug:module_type>/',api_module.ModuleDataApi.as_view()),
