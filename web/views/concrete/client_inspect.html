@@ -4,47 +4,19 @@
     Данные клиента
 {% endblock %}
 {% block head %}
-  <style>
-        table {
-            border: solid 0px black;
-            width: 100%;
-        }
-     td{
-         border: solid 1px white;
-         background: #f0f0f0;
-     }
-     th{
-         border: solid 1px white;
-         background: #f0f0f0;
-     }
-    </style>
 {% endblock %}
 
 {% block content %}
-    <div class="container fullHeight">
-        <script>
-            var individual_id = {{ individual.id }};
-            var product_id = {{ product_id }};
-        </script>
-    <h1 class="panel-title">Заявка № {{ id }}</h1>
-
-    <a href="{% url "client_decline" individual.id %}">
-        <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Отказ по заявке</button>
-    </a>
-
-        <button id="scoring-button" class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Отправить
-            на скоринг
-        </button>
-
-        <div class="panel-heading">
-        <p><strong>Данные</strong></p>
+    <div class="modal-header">
+    <h1>Заявка № {{ id }}</h1>
     </div>
-   <div class="grid-container">
-       <div class="item1">
-    <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-
-    <tbody>
-
+    <div class="container">
+        <h2><strong>Данные</strong></h2>
+    <a href="{% url "client_decline" individual.id %}">
+        <button class="btn btn-danger" type="button"> Отказ по заявке</button>
+    </a>
+        <p></p>
+    <table class="table">
 
    <tr>
        <td> Имя:</td>
@@ -82,26 +54,37 @@
        <td>Адрес прописки:</td>
        <td> {{ individual.passport.address_registration }}</td>
    </tr>
-
-  </tr>
-
-</tbody>
+            <tr>
+            <td>
+     Статус:
+            </td>
+        </tr>
+           <tr>
+            <td>
+     Требует подтверждения:
+            </td>
+        </tr>   <tr>
+            <td>
+     Скоринг:
+            </td>
+        </tr>
+           <tr>
+            <td>
+     Willz:
+            </td>
+        </tr>
+           <tr>
+            <td>
+     Стоп-Факторы:
+            </td>
+        </tr>
 </table>
-</div>
-
-       <div class="item1">Статус:<b> {{ status }}</b><br/>
-           Продукт:<b>{{ product }}</b></div>
-
-</div>
-
 <div class="panel-heading">
     <p><strong>Сканы документов</strong></p>
   </div>
 
 
- <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <tbody>
-
+ <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring"
     <tr>
     {% for item in individual.passport.images %}
             <td>
@@ -122,35 +105,18 @@
 
         {% endfor %}
     </tr>
-
-  </tr>
-
-</tbody>
 </table>
-    <!--  Имя: Отчество: Фамилия: Пол: Дата рождения: Номер паспорта: Дата выдачи паспорта: кем выдан: Адрес прописки:
-
-сканы документов(таблица, подгрузить пикчи)
-
-Водители
-Фио, номер ВУ, дата выдачи ВУ, стаж, тип
-история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном
--->
-
-    <div class="panel-heading">
-    <p><strong>Водители</strong></p>
-    </div>
-    <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <thead>
-    <th>
-    <th>Фамилия</th>
-    <th>Имя</th>
-    <th>Номер ВУ</th>
-    <th>Дата выдачи ВУ</th>
-    <th></th>
-    <th></th>
-    </th>
-    </thead>
-    <tbody>
+    <p></p>
+        <h4><strong>Водители</strong></h4>
+    <table class="table">
+      <tr>
+          <td>Фамилия</td>
+          <td>Имя</td>
+          <td>Номер ВУ</td>
+          <td>Дата выдачи ВУ</td>
+          <td></td>
+          <td></td>
+      </tr>
     {% for item in drivers %}
     <tr>
         <td>{{ item.name }}</td>
@@ -171,30 +137,23 @@
 
     </tr>
         {% endfor %}
-  </tr>
 
-    </tbody>
     </table>
-
-    <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Добавить</button>
-    <button class="menuButton" type="menuButton"><span class="glyphicon glyphicon-plus"></span> Удалить</button>
+        <button class="btn btn-success" type="menuButton">Добавить</button>
+    <button class="btn btn-danger" type="menuButton">Удалить</button>
 
 
     <div class="panel-heading">
         <p><strong>История операций</strong></p>
     </div>
 
-
-    <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-        <thead>
+    <table class="table">
         <tr>
-            <th>Действие</th>
-            <th>Процессор</th>
-            <th>Дата</th>
-            <th>Информация</th>
+            <td>Действие</td>
+            <td>Процессор</td>
+            <td>Дата</td>
+            <td>Информация</td>
         </tr>
-        </thead>
-        <tbody>
 
         {% for item in history.actions %}
         <tr>
@@ -202,16 +161,31 @@
                 <td>{{ item.processor }}</td>
                 <td>{{ item.create_time }}</td>
             <td>
-                {{ item.payload }}
+                <button class="btn btn-info" type="menuButton">Просмотр
+                </button>
             </td>
         </tr>
             {% endfor %}
 
         </tr>
+    </table>
 
-        </tbody>
-    </table></div>
+    </div>
+
+    <!--  Имя: Отчество: Фамилия: Пол: Дата рождения: Номер паспорта: Дата выдачи паспорта: кем выдан: Адрес прописки:
+
+сканы документов(таблица, подгрузить пикчи)
+
+Водители
+Фио, номер ВУ, дата выдачи ВУ, стаж, тип
+история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном
+-->
+
+
+
+
 
 {% endblock %}
+
 
 
