@@ -1,22 +1,15 @@
 {% extends "../base.html" %}
-{% load static %}
+
 {% block title %}
     Отказ в заявке
 {% endblock %}
 
 
 {% block content %}
-
-<div class="container" id="">
+<div class="container">
     <h1 class="panel-title">Заявка № {{ id }}</h1>
-    <script>
-        var client_id = {{ id }};
 
-    </script>
-
-   <table border="0"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-
-    <tbody>
+   <table class="table">
 <!-- история операций таблица операция-дата и список создана, на проверке скориста, прошла все проверки, ожидает согласования, согласована иваном -->
           <!--  <td>создана</td>
             <td>11/11/2011</td>
@@ -30,49 +23,44 @@
             <td>11/11/2011</td>-->
 
    <tr>
-       <td style="border:none"> Имя:</td>
-       <td style="border:none">{{ individual.first_name }}</td>
+       <td> Имя:</td>
+       <td>{{ individual.first_name }}</td>
    </tr>
    <tr>
-       <td style="border:none">Отчество:</td>
-       <td style="border:none">{{ individual.middle_name }}</td>
+       <td>Отчество:</td>
+       <td>{{ individual.middle_name }}</td>
    </tr>
    <tr>
-       <td style="border:none">Фамилия:</td>
-       <td style="border:none">{{ individual.last_name }}</td>
+       <td>Фамилия:</td>
+       <td>{{ individual.last_name }}</td>
    </tr>
   </tr>
 
-</tbody>
 </table>
 
 
 <div class="panel-heading">
-    <p><strong>Работа с отказом</strong></p>
+    <h4><strong>Работа с отказом</strong></h4>
   </div>
-    <table border="0" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
-    <thead>
+
+
+    <table class="table">
       <tr>
-          <td style="border: none;">Причина отказа</td>
+          <td>Причина отказа</td>
       </tr>
-    </thead>
-    <tbody>
   <tr>
-      <td style="border: none;"><textarea rows="10" cols="45" name="text" id="textform"></textarea></td>
+    <td><textarea rows="10" cols="45" name="text"></textarea></td>
   </tr>
-</tbody>
-
     </table>
-    <button id="reject-button" class="btn btn-default  reject-button" type="button"><span
-            class="glyphicon glyphicon-plus"></span> Подтвердить отказ
-    </button>
 
-    <a  href="{% url "client_inspect" id %}"><button class="btn btn-default  " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отмена </button></a>
+    <a  href="{% url "reject_client" id %}"><button class="btn btn-outline-danger  " type="button">  Подтвердить отказ </button></a>
+    <a  href="{% url "client_inspect" id %}"><button class="btn btn-outline-success  " type="button"> Отмена </button></a>
 </div>
 
 
 
 
 {% endblock %}
+
 
 
