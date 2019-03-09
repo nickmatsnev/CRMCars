@@ -8,83 +8,50 @@
 {% block content %}
 
 
-		<div id="" class="container">
+
             <h1 class="panel-title">Заявки</h1>
 
-            <p></p>
 
-<br>
-
-
-
-<!--
-        <p>
-            <label>Введите имя</label><br>
-            <input type="text" name="name" />
-        </p>
-        <p>
-            <label>Введите id</label><br>
-            <input type="number" name="iduser" />
-        </p>
-        <input type="submit" value="Сохранить" >
-
-    {% if people.count > 0 %}
-    <h2>Список пользователей</h2>
-    <table>
-        <tr><th>Id</th><th>Имя</th><th>Возраст</th></tr>
-        {% for person in people %}
-        <tr><td>{{ person.id }}</td><td>{{ person.name }}</td><td>{{ person.age }}</td></tr>
-        {% endfor %}
-    </table>
-    {% endif %}
-
--->
-
-<table  bgcolor="#FFFFFF">
-    <thead>
+<table class="table">
       <tr>
-
+        <th>П/П</th>
           <th>Номер</th>
           <th>ФИО</th>
           <th>Дата регистр.</th>
           <th>Продукт</th>
           <th>Статус</th>
-          <th></th>
-          <th></th>
+          <th> </th>
+          <th> </th>
       </tr>
-    </thead>
 
-
-    <tbody>
 
     {% for item in items %}
-        <tr style="background: #ffff00;">
+         <tr>
 
-
+            <td>{{ item.num }}</td>
             <td>{{ item.id }}</td>
              <td>{{ item.fio }}</td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.product }}</td>
              <td>{{ item.status }}</td>
-            <td style="border: none;"><a href="{% url "client_inspect" item.id %}">
-                 <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Клиент</button>
+             <td><a href="{% url "client_inspect" item.id %}">
+                 <button class="btn btn-info" type="button">    Клиент</button>
              </a></td>
-            <td style="border: none;"><a href="{% url "client_scoring" item.id %}">
-                 <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Скоринг</button>
+             <td><a href="{% url "client_scoring" item.id %}">
+                 <button class="btn btn-info" type="button">Скоринг</button>
              </a></td>
      </tr>
 
     {% endfor %}
-
-    </tbody>
 </table>
 
-</div>
     <a href="{% url "clients_list" %}">
-        <button class="menuButton" type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>Загрузить
+        <button class="btn btn-outline-dark" type="button" {{ disabled }}>Загрузить
             новые заявки
         </button>
-    </a></td>
+    </a>
 
 {% endblock %}
+
+
 
