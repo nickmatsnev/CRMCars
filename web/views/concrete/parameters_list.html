@@ -16,22 +16,16 @@
         <br>
 
 
-        <table bgcolor="#FFFFFF">
-            <thead>
+        <table class="table">
             <tr>
-                <td>Источник</td>
-                <td>Парсер</td>
-                <td>Имя параметра</td>
-                <td>Описание параметра</td>
-                <td>Тип</td>
+                <th>Источник</th>
+                <th>Парсер</th>
+                <th>Имя параметра</th>
+                <th>Описание параметра</th>
+                <th>Тип</th>
             </tr>
-            </thead>
-
-
-            <tbody>
-
             {% for item in items %}
-                <tr style="background: #ffff00">
+                <tr ">
 
                     <td>{{ item.source }}</td>
                     <td>{{ item.parser }}</td>
@@ -42,10 +36,10 @@
 
             {% endfor %}
 
-            </tbody>
         </table>
 
     </div>
 
 {% endblock %}
+
 
