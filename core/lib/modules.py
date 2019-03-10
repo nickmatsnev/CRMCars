@@ -34,14 +34,14 @@ class ParserModule(BasicModule):
         super(ParserModule, self).__init__(module_path)
 
     def get_available_parameters(self):
-        parameters = self.call_method("get_available_params")['params']
+        parameters = self.call_method("get_available_params")
         return parameters
 
     def get_module_source(self):
         return self.call_method("get_module_source")
 
     def get_values(self, source_json):
-        return self.call_method("get_values", source_json=source_json)['params']
+        return self.call_method("get_values", source_json=source_json)
 
     def validate(self, individual_json, source_json):
         return self.call_method("validate", individual_json=individual_json, source_json=source_json)
@@ -66,7 +66,7 @@ class ScoringModule(BasicModule):
         return self.call_method("get_score", parsers_data=parsers_data)
 
     def get_dependencies(self):
-        return self.call_method("get_dependencies")['params']
+        return self.call_method("get_dependencies")
 
 
 
@@ -95,4 +95,3 @@ def get_path_by_module_type(module_type):
         return PATH_TO_SOURCE_MODULES
     if (module_type == "scoring"):
         return PATH_TO_SCORING_MODULES
-

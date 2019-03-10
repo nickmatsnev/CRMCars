@@ -12,13 +12,11 @@
             <div class="item1"><p>{{ individual.last_name }} <br> Продукт: Willz</p></div>
         </div>
         <a href="{% url "accept_client" id %}">
-            <button class="menuButton" type="button"><span
-                    class="glyphicon glyphicon-plus"></span>Одобрить
+            <button class="btn btn-success" type="button">Одобрить
             </button>
         </a></td>
         <a href="{% url "reject_client" id %}">
-            <button class="menuButton" type="button"><span
-                    class="glyphicon glyphicon-plus"></span>Отказать
+            <button class="btn btn-danger" type="button">Отказать
             </button>
         </a></td>
 

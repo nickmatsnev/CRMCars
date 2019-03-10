@@ -21,7 +21,7 @@ from lib.modules import *
 
 
 class ScoringProcessor(BasicProcess):
-    products_cache = {1: 2}
+    products_cache = {}
     def __init__(self):
         super(ScoringProcessor, self).__init__(constants.SCORING_PROCESSOR_QUEUE,
                                                {
@@ -37,8 +37,8 @@ class ScoringProcessor(BasicProcess):
         self.products_cache[individual_id] = product_id;
         action_helper.add_action_individual(individual_id, "scoring", "scoring_processor",
                                             payload="Начат процесс скоринга")
-        source_deps = scoring_deps_helper.get_sources_deps(product_id)
 
+        source_deps = scoring_deps_helper.get_sources_deps(product_id)
 
         body_sources = {"individual_id": individual_id, "sources": source_deps}
         self._publish_message(constants.INDIVIDUAL_SOURCES_PROCESS_MESSAGE, json.dumps(body_sources))
@@ -63,8 +63,10 @@ class ScoringProcessor(BasicProcess):
             'raw_data']
         parsers_parameters = ast.literal_eval(raw_data)
 
+        res = score_res.get_score(parsers_parameters)
+
         api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "scoring"),
-                           json.dumps(({"raw_data": 100})))
+                           json.dumps(({"raw_data": res})))
 
         print("scoring")
 

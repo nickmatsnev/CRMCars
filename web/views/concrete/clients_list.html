@@ -14,7 +14,7 @@
 
 <table class="table">
       <tr>
-        <th>П/П</th>
+
           <th>Номер</th>
           <th>ФИО</th>
           <th>Дата регистр.</th>
@@ -28,12 +28,12 @@
     {% for item in items %}
          <tr>
 
-            <td>{{ item.num }}</td>
-            <td>{{ item.id }}</td>
+
+             <td>{{ item.id }}</td>
              <td>{{ item.fio }}</td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.product }}</td>
-             <td>{{ item.status }}</td>
+             <td class="font-weight-bold">{{ item.status }}</td>
              <td><a href="{% url "client_inspect" item.id %}">
                  <button class="btn btn-info" type="button">    Клиент</button>
              </a></td>

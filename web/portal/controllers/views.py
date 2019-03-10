@@ -1,3 +1,4 @@
+import ast
 import json
 import sys
 
@@ -60,7 +61,7 @@ def client_scoring(request,id):
     validate = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_validate"))[
         'raw_data']
     val = ast.literal_eval(validate)
-    checks = val['ScoristaParserModule']['errors']
+    checks = json.dumps(val)
     return render(request, 'concrete/client_scoring.html',
                   {'id': id, 'score': scoring, 'checks': checks, 'raw_data': smart_text(parameters, "utf-8"),
                    'disabled': 'disabled'})

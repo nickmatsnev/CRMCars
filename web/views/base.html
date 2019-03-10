@@ -59,21 +59,22 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Модули</a>
+                                <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false">Скоринг</a>
                                         <div class="dropdown-menu navbar-dark bg-primary">
                                               <a class="dropdown-item active" href="{% url "modules_list" "source" %}">Источники</a>
                                               <a class="dropdown-item" href="{% url "modules_list" "parser" %}">Парсинг</a>
                                               <a class="dropdown-item" href="{% url "modules_list" "scoring" %}">Скоринг</a>
+                                            <a class="dropdown-item" href="{% url "parameters_list" %}">Параметры
+                                                парсеров</a>
                                         </div>
                             </li>
 
 
-                            <li class="nav-item">
-                                    <a class="nav-link" href="#">Скоринг</a>
-                            </li>
+
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#">Продукты</a>
+                                <a class="nav-link" href="{% url "products_list" %}">Продукты</a>
                             </li>
 
                             <li class="nav-item">
@@ -117,21 +118,7 @@
             <footer class="footer">
                 <div class="footer-lists">
                     <div class="row">
-                        <div class="col-sm">
-                            <ul>
-                                <li><h4>Модули</h4></li>
-                                <li><a href="#">Источники</a></li>
-                                <li><a href="#">Парсинг</a></li>
-                                <li><a href="#">Скоринг</a></li>
-                            </ul>
-                        </div>
 
-                        <div class="col-sm">
-                            <ul>
-                                <li><h4>Скоринг</h4></li>
-                                <li><a href="#">Список параметров из источников </a></li>
-                            </ul>
-                        </div>
                         <div class="col-sm">
                             <h4>Продукты</h4>
                             <p>Тут можно текста жахнуть</p>
@@ -148,7 +135,7 @@
 
                 <div class="footer-bottom">
                         <p class="text-center"> <a href="https://willz.ru/">Willz&#8482; 2019-2019</a>.</p>
-                        <p class="text-center"><a href="#">Back to top</a></p>
+                    <p class="text-center"><a href="#">Вернуться к началу страницы</a></p>
                 </div>
             </footer>
         </div>

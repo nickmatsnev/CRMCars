@@ -15,7 +15,11 @@
     <a href="{% url "client_decline" individual.id %}">
         <button class="btn btn-danger" type="button"> Отказ по заявке</button>
     </a>
-        <p></p>
+        <p class="text-xl-left">Продукт</p>
+
+        <p class="font-weight-bold">{{ product }}</p>
+        <p class="glyphicon-header">Статус</p>
+        <p class="font-weight-bold">{{ status }}</p>
     <table class="table">
 
    <tr>
@@ -47,38 +51,16 @@
        <td> {{ individual.passport.issued_at }}</td>
    </tr>
    <tr>
-       <td>кем выдан:</td>
+       <td>Кем выдан:</td>
        <td> {{ individual.passport.issued_by }}</td>
    </tr>
    <tr>
        <td>Адрес прописки:</td>
        <td> {{ individual.passport.address_registration }}</td>
    </tr>
-            <tr>
-            <td>
-     Статус:
-            </td>
-        </tr>
-           <tr>
-            <td>
-     Требует подтверждения:
-            </td>
-        </tr>   <tr>
-            <td>
-     Скоринг:
-            </td>
-        </tr>
-           <tr>
-            <td>
-     Willz:
-            </td>
-        </tr>
-           <tr>
-            <td>
-     Стоп-Факторы:
-            </td>
-        </tr>
-</table>
+
+
+    </table>
 <div class="panel-heading">
     <p><strong>Сканы документов</strong></p>
   </div>
@@ -139,11 +121,9 @@
         {% endfor %}
 
     </table>
-        <button class="btn btn-success" type="menuButton">Добавить</button>
-    <button class="btn btn-danger" type="menuButton">Удалить</button>
 
 
-    <div class="panel-heading">
+        <div class="panel-heading">
         <p><strong>История операций</strong></p>
     </div>
 
