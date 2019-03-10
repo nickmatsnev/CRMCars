@@ -9,14 +9,14 @@
 
 
     <div id="" class="container">
-        <h1 class="panel-title">Продукты</h1>
+        <h4>Продукты</h4>
 
         <p></p>
 
         <br>
 
 
-        <table bgcolor="#FFFFFF">
+        <table class="table">
             <thead>
             <tr>
                 <th>Имя</th>
@@ -29,7 +29,7 @@
             <tbody>
 
             {% for item in items %}
-                <tr style="background: #ffff00">
+                <tr>
 
                     <td>{{ item.name }}</td>
                     <td>{{ item.primary }}</td>
@@ -46,7 +46,7 @@
             </tbody>
         </table>
         <a href="{% url "product_new" %}">
-                <button class="menuButton" type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>
+                <button class="btn btn-success" type="button" {{ disabled }}><span class="glyphicon glyphicon-plus"></span>
                     Создать
                 </button>
                 </a>
