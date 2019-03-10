@@ -179,6 +179,7 @@ class ModuleData(models.Model):
         ('parser_validate','ParserValidate'),
         ('parser_parameters', 'ParserParameters'),
         ('scoring', 'Scoring'),
+        ('parser_stopfactors','ParserStop')
     ])
     individual = models.IntegerField()
     raw_data = models.TextField()
