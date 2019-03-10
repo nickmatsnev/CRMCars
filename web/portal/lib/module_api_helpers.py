@@ -9,6 +9,56 @@ from portal.lib.module_serializer_helper import get_read_serializer_by_module_ty
 from core.lib import module_save_helper
 from core.lib.modules import *
 from rest_framework.response import Response
+from portal.serializers.module_serializer import *
+
+
+def get_module_data_by_type_name(pk, module_type, module_name):
+    queryset = ModuleData.objects.filter(individual=pk, type=module_type, name=module_name)
+    if queryset.count() == 0:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    queryset = queryset.get()
+    serializer_class = ModuleDataSerializer(queryset, many=False)
+    return Response(serializer_class.data)
+
+
+def set_module_data_by_type_name(json_data, pk, module_type, module_name):
+    queryset = ModuleData.objects.filter(individual=pk, type=module_type, name=module_name)
+
+    if queryset.count() == 0:
+        queryset = ModuleData.objects.create(type=module_type, individual=pk, raw_data=json_data['raw_data'],
+                                             name=module_name,create_time=datetime.datetime.now())
+        response_status = status.HTTP_201_CREATED
+    else:
+        pk = queryset.get().pk
+        ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'],create_time=datetime.datetime.now())
+        queryset = ModuleData.objects.get(pk=pk)
+        response_status = status.HTTP_200_OK
+
+    serializer_class = ModuleDataSerializer(queryset, many=False)
+    return Response(status=response_status,data=serializer_class.data)
+
+
+def get_module_data_list_by_type(pk, module_type):
+    queryset = ModuleData.objects.filter(individual=pk, type=module_type).order_by('create_time')
+
+    if queryset.count() == 0:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        response_data = {}
+        counter = 1
+
+        for current_module in queryset:
+            json_data = {}
+            try:
+                json_data = json.loads(current_module.raw_data)
+            except:
+                json_data = {'incorrect_json':current_module.raw_data}
+            finally:
+                response_data['{0}_{1}_{2}'.format(module_type,current_module.name,counter)] = json_data
+                counter += 1
+
+    return Response(response_data)
 
 
 def get_module_by_type(module_type, pk=None):
@@ -26,7 +76,7 @@ def get_module_by_type(module_type, pk=None):
     return serializer.data
 
 
-def get_module_by_name(module_type,module_name):
+def get_module_by_name(module_type, module_name):
     module = Module.objects.filter(type=get_subtype_by_module_type(module_type), name=module_name)
 
     serializer = get_read_serializer_by_module_type(module_type)(module, many=True)
@@ -68,17 +118,17 @@ def save_module(request, module_type):
     else:
         response_status = status.HTTP_400_BAD_REQUEST
 
-    return Response(status=response_status,data=response_data)
+    return Response(status=response_status, data=response_data)
 
 
-def get_module_parameters(module_type,pk):
-    module_db = Module.objects.get(id=pk,type=get_subtype_by_module_type(module_type))
+def get_module_parameters(module_type, pk):
+    module_db = Module.objects.get(id=pk, type=get_subtype_by_module_type(module_type))
     module = get_class_by_module_type(module_type)(module_db.path)
     return module.get_available_parameters()
 
 
-def set_module_is_active_by_id_type(module_type,pk,active_or_not):
-    module = Module.objects.get(id=pk,type=get_subtype_by_module_type(module_type))
+def set_module_is_active_by_id_type(module_type, pk, active_or_not):
+    module = Module.objects.get(id=pk, type=get_subtype_by_module_type(module_type))
     module.is_active = active_or_not
     module.save()
     return get_normal_serializer_by_module_type(module_type)(module, many=False).data
@@ -101,7 +151,7 @@ def view_all_parameters_from_active_modules(module_type):
     return modules_parameters
 
 
-def post_test(module_type,request):
+def post_test(module_type, request):
     serializer_class = get_normal_serializer_by_module_type(module_type)
     serializer = serializer_class(data=request.data)
 
@@ -115,7 +165,7 @@ def get_credentials(module_type, pk):
     response = {}
     resp_status = status.HTTP_200_OK
 
-    if Module.objects.filter(id=pk).count()==0:
+    if Module.objects.filter(id=pk).count() == 0:
         credentials = ""
         resp_status = status.HTTP_204_NO_CONTENT
     else:
@@ -134,7 +184,7 @@ def set_credentials(module_type, pk, credentials):
     response = {}
     resp_status = status.HTTP_200_OK
 
-    if Module.objects.filter(id=pk).count()==0:
+    if Module.objects.filter(id=pk).count() == 0:
         credentials = ""
         resp_status = status.HTTP_204_NO_CONTENT
     else:
@@ -148,5 +198,3 @@ def set_credentials(module_type, pk, credentials):
 
     response['credentials'] = credentials
     return Response(status=resp_status, data=response['credentials'])
-
-

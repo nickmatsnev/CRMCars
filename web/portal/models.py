@@ -183,6 +183,8 @@ class ModuleData(models.Model):
     ])
     individual = models.IntegerField()
     raw_data = models.TextField()
+    name = models.TextField()
+    create_time = models.DateTimeField()
 
 
 

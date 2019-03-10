@@ -8,7 +8,6 @@ from drf_yasg import openapi
 from core.lib import message_sender, api_requestor
 from portal.lib.module_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
-from portal.serializers.module_serializer import *
 from portal.models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -17,31 +16,27 @@ import coreapi
 import coreschema
 from rest_framework.schemas import AutoSchema
 from rest_framework.parsers import FormParser,MultiPartParser
+from portal.serializers.module_serializer import *
 
 
 class ModuleDataApi(APIView):
-    @swagger_auto_schema(operation_description='Get module data is it is', responses={200: ModuleDataSerializer})
-    def get(self, request, pk,module_type):
-        queryset = ModuleData.objects.filter(individual=pk,type=module_type).first()
-        serializer_class = ModuleDataSerializer(queryset,many=False)
-        return Response(serializer_class.data)
+    @swagger_auto_schema(operation_description='Get module data is it is', responses={200: ModuleDataSerializer,
+                                                                                      204: "No module"})
+    def get(self, request, pk,module_type,module_name):
+        return get_module_data_by_type_name(pk,module_type,module_name)
 
-#TODO: нет проверки типа модуля при создании!
-    @swagger_auto_schema(operation_description='Update module data', request_body=ModuleUpdateDataSerializer)
-    def post(self, request, pk,module_type):
-        json_data = request.data
-        queryset = ModuleData.objects.filter(type=module_type,individual=pk)
+    @swagger_auto_schema(operation_description='Update module data', request_body=ModuleUpdateDataSerializer,
+                         responses={200: "Module updated",
+                                    201: "Module created"})
+    def post(self, request, pk,module_type,module_name):
+        return set_module_data_by_type_name(request.data, pk, module_type, module_name)
 
-        if queryset.count() == 0:
-            queryset = ModuleData.objects.create(type=module_type,individual=pk,raw_data=json_data['raw_data'])
-        else:
-            pk = queryset.get().pk
-            ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'])
-            queryset = ModuleData.objects.get(pk=pk)
 
-        serializer_class = ModuleDataSerializer(queryset,many=False)
-        return Response(serializer_class.data)
-
+class ModuleDataListApi(APIView):
+    @swagger_auto_schema(operation_description='Get module data is it is', responses={200: ModuleDataListSerializer,
+                                                                                      204: "No data"})
+    def get(self, request, pk, module_type):
+        return get_module_data_list_by_type(pk, module_type)
 
 
 class GetModuleApi(APIView):

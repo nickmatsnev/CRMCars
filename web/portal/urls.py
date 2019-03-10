@@ -110,7 +110,8 @@ urlpatterns = [
     path('api/module/source/<int:id>/credentials/', api_module.CredentialsApi.as_view()),
 
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
-    path('api/individual/<int:pk>/module_data/<slug:module_type>/',api_module.ModuleDataApi.as_view()),
+    path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/',api_module.ModuleDataApi.as_view()),
+    path('api/individual/<int:pk>/data/<slug:module_type>/',api_module.ModuleDataListApi.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
