@@ -9,7 +9,7 @@ def get_sources_deps(product_id):
 
     parser_modules = []
     for dep in deps:
-        parser_modules.append(dep['parser'])
+        parser_modules.append(dep)
     parser_modules_deps = list(set(parser_modules))  # unique list
 
     source_modules = []
@@ -26,7 +26,7 @@ def get_parser_deps(product_id):
     deps = scoring_m.get_dependencies()
     parser_modules = []
     for dep in deps:
-        parser_modules.append(dep['parser'])
+        parser_modules.append(dep)
     return list(set(parser_modules))  # unique list
 
 
