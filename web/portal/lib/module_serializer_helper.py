@@ -18,3 +18,4 @@ def get_normal_serializer_by_module_type(module_type):
         return SourceModuleSerializer
     if (module_type == "scoring"):
         return ScoringModuleSerializer
+

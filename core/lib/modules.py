@@ -95,3 +95,4 @@ def get_path_by_module_type(module_type):
         return PATH_TO_SOURCE_MODULES
     if (module_type == "scoring"):
         return PATH_TO_SCORING_MODULES
+

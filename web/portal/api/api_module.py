@@ -30,7 +30,15 @@ class ModuleDataApi(APIView):
     @swagger_auto_schema(operation_description='Update module data', request_body=ModuleUpdateDataSerializer)
     def post(self, request, pk,module_type):
         json_data = request.data
-        queryset = ModuleData.objects.create(type=module_type,individual=pk,raw_data=json_data['raw_data'])
+        queryset = ModuleData.objects.filter(type=module_type,individual=pk)
+
+        if queryset.count() == 0:
+            queryset = ModuleData.objects.create(type=module_type,individual=pk,raw_data=json_data['raw_data'])
+        else:
+            pk = queryset.get().pk
+            ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'])
+            queryset = ModuleData.objects.get(pk=pk)
+
         serializer_class = ModuleDataSerializer(queryset,many=False)
         return Response(serializer_class.data)
 
@@ -61,10 +69,11 @@ class GetViewParametersApi(APIView):
 class UploadModuleApi(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    @swagger_auto_schema(operation_description='Module upload API')
+    @swagger_auto_schema(operation_description='Module upload API', responses={202: "Module uploaded",
+                                                                               400: "Some error"})
      #                    request_body=openapi.Schema(type=openapi.TYPE_STRING, description='.py file'))
     def post(self, request, module_type):
-       return Response(save_module(request, module_type))
+        return save_module(request, module_type)
 
 class GetModuleByIdApi(APIView):
     @swagger_auto_schema(operation_description='GetModule by name and type')

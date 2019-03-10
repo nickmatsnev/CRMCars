@@ -53,16 +53,22 @@ def view_module_by_type(module_type):
 
 
 def save_module(request, module_type):
+    response_status = status.HTTP_202_ACCEPTED
+    response_data = ""
+
     dest_path = get_path_by_module_type(module_type)
     path = module_save_helper.save_file_from_request(request, dest_path)
     serializer_class = get_normal_serializer_by_module_type(module_type)
     serializer_data = module_save_helper.prepare_module_item(path)
-    serializer = serializer_class(data=serializer_data)
 
+    serializer = serializer_class(data=serializer_data)
     if serializer.is_valid():
         serializer.save()
-        return status.HTTP_202_ACCEPTED
-    return status.HTTP_400_BAD_REQUEST
+        response_data = "Module with type {0} saved successfully".format(module_type)
+    else:
+        response_status = status.HTTP_400_BAD_REQUEST
+
+    return Response(status=response_status,data=response_data)
 
 
 def get_module_parameters(module_type,pk):
