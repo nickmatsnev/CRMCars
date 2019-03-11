@@ -5,19 +5,85 @@
       <title>{% block title %} Willz {% endblock %}</title>
 
 {% load static %}
-    {% load cache_bust %}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 
+    {% load cache_bust %}
 
+    <link rel="stylesheet" href="{% static "style_upd.css" %}?{% cache_bust %}">
+    <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
         <link rel="stylesheet" href="{% static "bootstrap.css" %}">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 
         <!-- Font Awesome -->
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
-    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      
+<script src="{% static 'js/zooming.js' %}"></script>
+  <script>
+    const defaultZooming = new Zooming()
+    const customZooming = new Zooming()
+    const config = customZooming.config()
+    const TRANSITION_DURATION_DEFAULT = config.transitionDuration
+    const BG_COLOR_DEFAULT = config.bgColor
+    const SCALE_BASE_DEFAULT = config.scaleBase
+    const ACTIVE_CLASS = 'button-primary'
 
+    document.addEventListener('DOMContentLoaded', function () {
+        defaultZooming.listen('.img-default')
+        customZooming.listen('.img-custom')
+    })
+
+    btnFast.addEventListener('click', function (event) {
+      const transitionDuration = toggleActive(btnFast)
+        ? 0.2
+        : TRANSITION_DURATION_DEFAULT
+
+      customZooming.config({ transitionDuration })
+    })
+
+    btnDark.addEventListener('click', function (event) {
+      const bgColor = toggleActive(btnDark)
+        ? 'black'
+        : BG_COLOR_DEFAULT
+
+      customZooming.config({ bgColor })
+    })
+
+    btnScaleSmall.addEventListener('click', function (event) {
+      const scaleBase = toggleActive(btnScaleSmall)
+        ? 0.7
+        : SCALE_BASE_DEFAULT
+
+      customZooming.config({ scaleBase })
+    })
+
+    function isActive(el) {
+      return el.classList.contains(ACTIVE_CLASS)
+    }
+
+    function activate(el) {
+      el.classList.add(ACTIVE_CLASS)
+    }
+
+    function deactivate(el) {
+      el.classList.remove(ACTIVE_CLASS)
+    }
+
+    function toggleActive(el) {
+      if (isActive(el)) {
+        deactivate(el)
+        return false
+      } else {
+        activate(el)
+        return true
+      }
+    }
+   </script>
 </head>
     <body>
          <!-- Header -->
@@ -145,73 +211,5 @@
         </div>
 
 
-
-        <!-- Bootcamp JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-
-
-<script src="{% static 'js/zooming.js' %}"></script>
-  <script>
-    const defaultZooming = new Zooming()
-    const customZooming = new Zooming()
-    const config = customZooming.config()
-    const TRANSITION_DURATION_DEFAULT = config.transitionDuration
-    const BG_COLOR_DEFAULT = config.bgColor
-    const SCALE_BASE_DEFAULT = config.scaleBase
-    const ACTIVE_CLASS = 'button-primary'
-
-    document.addEventListener('DOMContentLoaded', function () {
-        defaultZooming.listen('.img-default')
-        customZooming.listen('.img-custom')
-    })
-
-    btnFast.addEventListener('click', function (event) {
-      const transitionDuration = toggleActive(btnFast)
-        ? 0.2
-        : TRANSITION_DURATION_DEFAULT
-
-      customZooming.config({ transitionDuration })
-    })
-
-    btnDark.addEventListener('click', function (event) {
-      const bgColor = toggleActive(btnDark)
-        ? 'black'
-        : BG_COLOR_DEFAULT
-
-      customZooming.config({ bgColor })
-    })
-
-    btnScaleSmall.addEventListener('click', function (event) {
-      const scaleBase = toggleActive(btnScaleSmall)
-        ? 0.7
-        : SCALE_BASE_DEFAULT
-
-      customZooming.config({ scaleBase })
-    })
-
-    function isActive(el) {
-      return el.classList.contains(ACTIVE_CLASS)
-    }
-
-    function activate(el) {
-      el.classList.add(ACTIVE_CLASS)
-    }
-
-    function deactivate(el) {
-      el.classList.remove(ACTIVE_CLASS)
-    }
-
-    function toggleActive(el) {
-      if (isActive(el)) {
-        deactivate(el)
-        return false
-      } else {
-        activate(el)
-        return true
-      }
-    }
-   </script>
     </body>
 </html>
