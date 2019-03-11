@@ -15,6 +15,7 @@
     <a href="{% url "client_decline" individual.id %}">
         <button class="btn btn-danger" type="button"> Отказ по заявке</button>
     </a>
+        <button id="scoring-buttom"class="btn btn-success" type="button"> Отправить на скоринг</button>
         <p class="text-xl-left">Продукт</p>
 
         <p class="font-weight-bold">{{ product }}</p>
@@ -57,7 +58,7 @@
        <td> {{ individual.passport.issued_at }}</td>
    </tr>
    <tr>
-       <td>кем выдан:</td>
+       <td>Кем выдан:</td>
        <td> {{ individual.passport.issued_by }}</td>
    </tr>
    <tr>
