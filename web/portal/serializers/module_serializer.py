@@ -64,6 +64,12 @@ class ModuleDataSerializer(serializers.ModelSerializer):
         fields = ('id','individual','raw_data', 'create_time')
 
 
+class ModuleMetaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModuleData
+        fields = ('id','individual','create_time')
+
+
 class ModuleDataListSerializer(serializers.Serializer):
     type_name_N = serializers.CharField(max_length=20)
 

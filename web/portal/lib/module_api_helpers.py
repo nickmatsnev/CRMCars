@@ -31,6 +31,20 @@ def get_module_data_by_type_name(pk, module_type, module_name):
     list_of_names = get_list_of_names(module_type)
     if queryset.name in list_of_names:
         serializer_class = ModuleDataSerializer(queryset, many=False)
+        return Response(serializer_class.data['raw_data'])
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def get_module_meta_by_type_name(pk, module_type, module_name):
+    queryset = ModuleData.objects.filter(individual=pk, name=module_name)
+    if queryset.count() == 0:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    queryset = queryset.get()
+    list_of_names = get_list_of_names(module_type)
+    if queryset.name in list_of_names:
+        serializer_class = ModuleMetaSerializer(queryset, many=False)
         return Response(serializer_class.data)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
@@ -51,7 +65,7 @@ def set_module_data_by_type_name(json_data, pk, module_type, module_name):
             ModuleData.objects.filter(pk=pk).update(raw_data=json_data,
                                                     create_time=datetime.datetime.now())
             queryset = ModuleData.objects.get(pk=pk)
-            response_status = status.HTTP_200_OK
+            response_status = status.HTTP_202_ACCEPTED
 
         serializer_class = ModuleDataSerializer(queryset, many=False)
         return Response(status=response_status, data=serializer_class.data)
@@ -77,7 +91,7 @@ def get_module_data_list_by_type(pk, module_type):
                 except:
                     json_data = {'incorrect_json': current_module.raw_data}
                 finally:
-                    response_data['{0}_{1}_{2}'.format(module_type, current_module.name, counter)] = json_data
+                    response_data['{0}_{1}'.format(current_module.name, counter)] = json_data
                     counter += 1
 
     return Response(response_data)
@@ -135,12 +149,25 @@ def save_module(request, module_type):
 
     serializer = serializer_class(data=serializer_data)
     if serializer.is_valid():
-        serializer.save()
-        response_data = "Module with type {0} saved successfully".format(module_type)
+        module_name = serializer.data['name']
+        queryset = Module.objects.filter(name=module_name)
+        if queryset.count()==0:
+            serializer.save()
+            response_data = "Module with type {0} saved successfully".format(module_type)
+        else:
+            response_status = status.HTTP_403_FORBIDDEN
     else:
         response_status = status.HTTP_400_BAD_REQUEST
 
     return Response(status=response_status, data=response_data)
+
+
+def delete_module(module_type, module_name):
+    queryset = Module.objects.filter(type=get_subtype_by_module_type(module_type),name=module_name)
+    if queryset.count()==0:
+        return  Response(status=status.HTTP_204_NO_CONTENT)
+    queryset.delete()
+    return Response(status=status.HTTP_200_OK, data="Module {0} deleted successfully".format(module_name))
 
 
 def get_module_parameters(module_type, pk):

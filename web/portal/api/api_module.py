@@ -21,17 +21,25 @@ from portal.serializers.module_serializer import *
 
 class ModuleDataApi(APIView):
     @swagger_auto_schema(operation_description='Get module data is it is',
-                         responses={200: ModuleDataSerializer,
+                         responses={200: "raw data",
                                     204: "No module"})
     def get(self, request, pk, module_type, module_name):
         return get_module_data_by_type_name(pk, module_type, module_name)
 
     @swagger_auto_schema(operation_description='Update/Create module data', request_body=ModuleUpdateDataSerializer,
-                         responses={200: "Module updated",
-                                    201: "Module created",
+                         responses={201: "Module created",
+                                    202: "Module updated",
                                     400: "No module with requested name"})
     def post(self, request, pk, module_type, module_name):
         return set_module_data_by_type_name(request.data, pk, module_type, module_name)
+
+
+class ModuleMetaApi(APIView):
+    @swagger_auto_schema(operation_description='Get module data is it is',
+                         responses={200: ModuleMetaSerializer,
+                                    204: "No module"})
+    def get(self, request, pk, module_type, module_name):
+        return get_module_meta_by_type_name(pk, module_type, module_name)
 
 
 class ModuleDataListApi(APIView):
@@ -68,11 +76,21 @@ class GetViewParametersApi(APIView):
 class UploadModuleApi(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    @swagger_auto_schema(operation_description='Module upload API', responses={202: "Module uploaded",
-                                                                               400: "Some error"})
-    #                    request_body=openapi.Schema(type=openapi.TYPE_STRING, description='.py file'))
+    @swagger_auto_schema(operation_description='Module upload', responses={202: "Module uploaded",
+                                                                           400: "Unknown error",
+                                                                           403: "Module is already uploaded"})
     def post(self, request, module_type):
         return save_module(request, module_type)
+
+
+class DeleteModuleApi(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    @swagger_auto_schema(operation_description='Module delete',
+                         responses={200: "Module <module_name> deleted successfully",
+                                    204: "Not found"})
+    def get(self, request, module_type, module_name):
+        return delete_module(module_type, module_name)
 
 
 class GetModuleByIdApi(APIView):
@@ -165,4 +183,3 @@ class GetScoringAPI(APIView):
                                     400: 'No module name'})
     def get(self, request, pk, module_name):
         return get_info(pk, 'scoring', module_name, 'Score')
-

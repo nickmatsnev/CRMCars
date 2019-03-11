@@ -101,6 +101,7 @@ urlpatterns = [
     path('api/module/<slug:module_type>/view/', api_module.ViewModuleApi.as_view()),
     path('api/module/<slug:module_type>/view/parameters/', api_module.GetViewParametersApi.as_view()),
     path('api/module/<slug:module_type>/upload/', api_module.UploadModuleApi.as_view()),
+    path('api/module/<slug:module_type>/<slug:module_name>/delete/', api_module.DeleteModuleApi.as_view()),
 
     path('api/module/<slug:module_type>/<int:pk>/', api_module.GetModuleByIdApi.as_view()),
     path('api/module/<slug:module_type>/<slug:module_name>/', api_module.GetModuleByNameApi.as_view()),
@@ -113,11 +114,12 @@ urlpatterns = [
 
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/',api_module.ModuleDataApi.as_view()),
+    path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/meta/',api_module.ModuleMetaApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/',api_module.ModuleDataListApi.as_view()),
-    path('api/individual/<int:pk>/data/parser/<slug:module_name>/get_<slug:where>_<slug:what>/',
+    path('api/individual/<int:pk>/data/parser/<slug:module_name>/<slug:where>_<slug:what>/',
          api_module.GetParserAPI.as_view()),
-    path('api/individual/<int:pk>/data/parser/<slug:module_name>/get_values/',api_module.GetParserValuesAPI.as_view()),
-    path('api/individual/<int:pk>/data/scoring/<slug:module_name>/get_score/',api_module.GetScoringAPI.as_view()),
+    path('api/individual/<int:pk>/data/parser/<slug:module_name>/values/',api_module.GetParserValuesAPI.as_view()),
+    path('api/individual/<int:pk>/data/scoring/<slug:module_name>/score/',api_module.GetScoringAPI.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
