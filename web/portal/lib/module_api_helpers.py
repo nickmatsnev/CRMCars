@@ -12,35 +12,55 @@ from rest_framework.response import Response
 from portal.serializers.module_serializer import *
 
 
+def get_list_of_names(module_type):
+    list_of_names = []
+    queryset = Module.objects.filter(type=module_type, is_active=True)
+
+    for item in queryset:
+        list_of_names.append(item.name)
+    return list_of_names
+
+
 def get_module_data_by_type_name(pk, module_type, module_name):
-    queryset = ModuleData.objects.filter(individual=pk, type=module_type, name=module_name)
+    queryset = ModuleData.objects.filter(individual=pk, name=module_name)
     if queryset.count() == 0:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     queryset = queryset.get()
-    serializer_class = ModuleDataSerializer(queryset, many=False)
-    return Response(serializer_class.data)
+    list_of_names = get_list_of_names(module_type)
+    if queryset.name in list_of_names:
+        serializer_class = ModuleDataSerializer(queryset, many=False)
+        return Response(serializer_class.data)
+
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 def set_module_data_by_type_name(json_data, pk, module_type, module_name):
-    queryset = ModuleData.objects.filter(individual=pk, type=module_type, name=module_name)
+    list_of_names = get_list_of_names(module_type)
 
-    if queryset.count() == 0:
-        queryset = ModuleData.objects.create(type=module_type, individual=pk, raw_data=json_data['raw_data'],
-                                             name=module_name,create_time=datetime.datetime.now())
-        response_status = status.HTTP_201_CREATED
+    if module_name in list_of_names:
+        queryset = ModuleData.objects.filter(individual=pk, name=module_name)
+
+        if queryset.count() == 0:
+            queryset = ModuleData.objects.create(individual=pk, raw_data=json_data['raw_data'],
+                                                 name=module_name, create_time=datetime.datetime.now())
+            response_status = status.HTTP_201_CREATED
+        else:
+            pk = queryset.get().pk
+            ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'],
+                                                    create_time=datetime.datetime.now())
+            queryset = ModuleData.objects.get(pk=pk)
+            response_status = status.HTTP_200_OK
+
+        serializer_class = ModuleDataSerializer(queryset, many=False)
+        return Response(status=response_status, data=serializer_class.data)
     else:
-        pk = queryset.get().pk
-        ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'],create_time=datetime.datetime.now())
-        queryset = ModuleData.objects.get(pk=pk)
-        response_status = status.HTTP_200_OK
-
-    serializer_class = ModuleDataSerializer(queryset, many=False)
-    return Response(status=response_status,data=serializer_class.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def get_module_data_list_by_type(pk, module_type):
-    queryset = ModuleData.objects.filter(individual=pk, type=module_type).order_by('create_time')
+    list_of_names = get_list_of_names(module_type)
+    queryset = ModuleData.objects.filter(individual=pk).order_by('create_time')
 
     if queryset.count() == 0:
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -49,14 +69,15 @@ def get_module_data_list_by_type(pk, module_type):
         counter = 1
 
         for current_module in queryset:
-            json_data = {}
-            try:
-                json_data = json.loads(current_module.raw_data)
-            except:
-                json_data = {'incorrect_json':current_module.raw_data}
-            finally:
-                response_data['{0}_{1}_{2}'.format(module_type,current_module.name,counter)] = json_data
-                counter += 1
+            if current_module.name in list_of_names:
+                json_data = {}
+                try:
+                    json_data = json.loads(current_module.raw_data)
+                except:
+                    json_data = {'incorrect_json': current_module.raw_data}
+                finally:
+                    response_data['{0}_{1}_{2}'.format(module_type, current_module.name, counter)] = json_data
+                    counter += 1
 
     return Response(response_data)
 
@@ -198,3 +219,32 @@ def set_credentials(module_type, pk, credentials):
 
     response['credentials'] = credentials
     return Response(status=resp_status, data=response['credentials'])
+
+
+def get_info(individual,module_type,module_name,field_main,field_sub=''):
+    list_of_names = get_list_of_names(module_type)
+
+    if module_name in list_of_names:
+        queryset = ModuleData.objects.filter(individual=individual, name=module_name)
+        if queryset.count() == 0:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        queryset = queryset.get()
+        serializer_class = ModuleDataSerializer(queryset, many=False)
+        my_data = {}
+        try:
+            json_data = json.loads(serializer_class.data['raw_data'])
+            if field_sub == '':
+                my_data = json_data[field_main]
+            else:
+                my_data = json_data[field_main][field_sub]
+        except:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        finally:
+            if my_data != {}:
+                return Response(data=my_data)
+
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+

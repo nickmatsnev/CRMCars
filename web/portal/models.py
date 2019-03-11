@@ -174,13 +174,6 @@ class Product(models.Model):
 
 
 class ModuleData(models.Model):
-    type = models.TextField(choices=[
-        ('source','Source'),
-        ('parser_validate','ParserValidate'),
-        ('parser_parameters', 'ParserParameters'),
-        ('scoring', 'Scoring'),
-        ('parser_stopfactors','ParserStopFactors')
-    ])
     individual = models.IntegerField()
     raw_data = models.TextField()
     name = models.TextField()

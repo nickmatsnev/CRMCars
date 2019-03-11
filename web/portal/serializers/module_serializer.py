@@ -61,7 +61,7 @@ class SourceGetModuleSerializer(serializers.ModelSerializer):
 class ModuleDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModuleData
-        fields = ('id','type','individual','raw_data', 'create_time')
+        fields = ('id','individual','raw_data', 'create_time')
 
 
 class ModuleDataListSerializer(serializers.Serializer):

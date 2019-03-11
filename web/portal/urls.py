@@ -47,6 +47,8 @@ router.register(r'api/client', api_client.MainAPI)
 router.register(r'api/willz', api_willz.MainAPI)
 router.register(r'api/user', api_user.MainAPI)
 router.register(r'api/product', api_product.MainAPI)
+#router.register(r'api/individual/<int:pk>/data/parser/<slug:module_name>',api_module.GetParserInfoAPI)
+#router.register(r'api/individual',api_module.GetScoringInfoAPI)
 
 #reformat:
 
@@ -112,6 +114,10 @@ urlpatterns = [
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/',api_module.ModuleDataApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/',api_module.ModuleDataListApi.as_view()),
+    path('api/individual/<int:pk>/data/parser/<slug:module_name>/get_<slug:where>_<slug:what>/',
+         api_module.GetParserAPI.as_view()),
+    path('api/individual/<int:pk>/data/parser/<slug:module_name>/get_values/',api_module.GetParserValuesAPI.as_view()),
+    path('api/individual/<int:pk>/data/scoring/<slug:module_name>/get_score/',api_module.GetScoringAPI.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),
