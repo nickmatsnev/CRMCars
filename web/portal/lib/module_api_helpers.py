@@ -1,3 +1,4 @@
+import ast
 import sys
 
 from portal.models import Module
@@ -72,7 +73,7 @@ def get_module_data_list_by_type(pk, module_type):
             if current_module.name in list_of_names:
                 json_data = {}
                 try:
-                    json_data = json.loads(current_module.raw_data)
+                    json_data = ast.literal_eval(current_module.raw_data)
                 except:
                     json_data = {'incorrect_json': current_module.raw_data}
                 finally:
