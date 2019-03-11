@@ -98,7 +98,7 @@ def reject_client(request, id):
 def upload_module(request, module_type):
     if request.method == 'POST':
         response = api_requestor.post_file("/module/%s/upload/" % module_type, request)
-        if response.status_code == status.HTTP_200_OK:
+        if response.status_code == status.HTTP_202_ACCEPTED:
             return redirect("modules_list", module_type=module_type)
         else:
             return HttpResponse('Some error :(')

@@ -24,22 +24,20 @@ class SourcesProcessor(BasicProcess):
         def __process_sources(self, body):
             input_message = json.loads(body)
             individual_id = input_message['individual_id']
-            sources = input_message['sources']  # TODO fixxx to sources
+            source_name = input_message['source']  # TODO fixxx to sources
 
-            source_data = {}
-
-            for source_dep in sources:
-                source = api_requestor.request('/module/source/{0}/'.format(source_dep))[0]
-                source_m = SourceModule(source['path'])
-                credential = '{"username":"dmitry@korishchenko.ru","token":"4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"}'
+            source = api_requestor.request('/module/source/{0}/'.format(source_name))[0]
+            source_m = SourceModule(source['path'])
+            credential = '{"username":"dmitry@korishchenko.ru","token":"4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"}'
                 # TODO fix credentials
-                data = source_m.import_data(credential, None)  # got scoring data
-                source_data["{0}".format(source['name'])] = data
-            raw_data = ast.literal_eval(json.dumps(source_data))
-            api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "source"),
-                               json.dumps({"raw_data": raw_data}))
+            data = source_m.import_data(credential, None)  # got scoring data
+
+            raw_data = ast.literal_eval(json.dumps(data))
+            api_requestor.post(
+                '/individual/{0}/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()), raw_data)
+
             action_helper.add_action_individual(individual_id, "scoring", "sources_processor",
-                                                payload="Загружены источники")
+                                                payload="Загружен источник: {0}".format(source_m.get_module_name()))
 
             self._publish_message(constants.INDIVIDUAL_SOURCES_PROCESSED_MESSAGE,
                                   json.dumps({"individual_id": individual_id}))

@@ -81,11 +81,11 @@ def get_class_by_module_type(module_type):
 
 def get_subtype_by_module_type(module_type):
     if (module_type == "parser"):
-        return "Parser"
+        return "parser"
     if (module_type == "source"):
-        return "Source"
+        return "source"
     if (module_type == "scoring"):
-        return "Scoring"
+        return "scoring"
 
 
 def get_path_by_module_type(module_type):

@@ -149,16 +149,16 @@ class Action(models.Model):
     payload = models.TextField(null=True)
 
 class ModuleType(Enum):
-    ImportModule = 'Source'
-    ParserModule = 'Parser'
-    ScoringModule = 'Scoring'
+    ImportModule = 'source'
+    ParserModule = 'parser'
+    ScoringModule = 'scoring'
 
 
 class Module(models.Model):
     type = models.TextField(choices=[
-        (ModuleType.ImportModule,'Source'),
-        (ModuleType.ParserModule,'Parser'),
-        (ModuleType.ScoringModule, 'Scoring'),
+        (ModuleType.ImportModule, 'source'),
+        (ModuleType.ParserModule, 'parser'),
+        (ModuleType.ScoringModule, 'scoring'),
     ])
     name = models.TextField()
     path = models.TextField()

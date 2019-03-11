@@ -13,7 +13,7 @@ class ParserModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path')
 
     def create(self, validated_data):
-        module = Module.objects.create(type='Parser',is_active=True, create_time=datetime.datetime.now(),
+        module = Module.objects.create(type='parser', is_active=True, create_time=datetime.datetime.now(),
                                        **validated_data)
         return module
 
@@ -30,7 +30,7 @@ class ScoringModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path')
 
     def create(self, validated_data):
-        module = Module.objects.create(type='Scoring',is_active=True, create_time=datetime.datetime.now(),
+        module = Module.objects.create(type='scoring', is_active=True, create_time=datetime.datetime.now(),
                                        **validated_data)
         return module
 
@@ -47,7 +47,7 @@ class SourceModuleSerializer(serializers.ModelSerializer):
         fields = ('name','path','credentials')
 
     def create(self, validated_data):
-        module = Module.objects.create(type='Source', is_active=True, create_time=datetime.datetime.now(),
+        module = Module.objects.create(type='source', is_active=True, create_time=datetime.datetime.now(),
                                        **validated_data)
         return module
 

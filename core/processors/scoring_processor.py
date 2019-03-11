@@ -40,7 +40,8 @@ class ScoringProcessor(BasicProcess):
 
         source_deps = scoring_deps_helper.get_sources_deps(product_id)
 
-        body_sources = {"individual_id": individual_id, "sources": source_deps}
+        body_sources = {"individual_id": individual_id, "source": source_deps[0]}
+
         self._publish_message(constants.INDIVIDUAL_SOURCES_PROCESS_MESSAGE, json.dumps(body_sources))
 
     def __process_parsers(self, body):

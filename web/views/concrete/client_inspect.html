@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        var individual_id = {{ individual.id }};
+        var product_id = {{ product_id }};
+    </script>
+
     <div class="modal-header">
     <h1>Заявка № {{ id }}</h1>
     </div>
@@ -14,7 +19,11 @@
         <h2><strong>Данные</strong></h2>
     <a href="{% url "client_decline" individual.id %}">
         <button class="btn btn-danger" type="button"> Отказ по заявке</button>
+
     </a>
+        <button id="scoring-button" class="btn btn-light" type="button">Отправить
+            на скоринг
+        </button>
         <p class="text-xl-left">Продукт</p>
 
         <p class="font-weight-bold">{{ product }}</p>

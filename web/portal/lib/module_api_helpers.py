@@ -42,12 +42,12 @@ def set_module_data_by_type_name(json_data, pk, module_type, module_name):
         queryset = ModuleData.objects.filter(individual=pk, name=module_name)
 
         if queryset.count() == 0:
-            queryset = ModuleData.objects.create(individual=pk, raw_data=json_data['raw_data'],
+            queryset = ModuleData.objects.create(individual=pk, raw_data=json_data,
                                                  name=module_name, create_time=datetime.datetime.now())
             response_status = status.HTTP_201_CREATED
         else:
             pk = queryset.get().pk
-            ModuleData.objects.filter(pk=pk).update(raw_data=json_data['raw_data'],
+            ModuleData.objects.filter(pk=pk).update(raw_data=json_data,
                                                     create_time=datetime.datetime.now())
             queryset = ModuleData.objects.get(pk=pk)
             response_status = status.HTTP_200_OK
