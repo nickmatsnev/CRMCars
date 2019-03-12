@@ -20,14 +20,14 @@ CLIENT_RAW_CREATED_MESSAGE="client_raw_created"
 
 # CLIENT_SCORING_COMPLETE_MESSAGE="client_scoring_complete"
 
-INDIVIDUAL_PARSERS_PROCESS_MESSAGE = "individual_parsers_process"
-INDIVIDUAL_PARSERS_PROCESSED_MESSAGE = "individual_parsers_processed"
+INDIVIDUAL_PARSER_PROCESS_MESSAGE = "individual_parser_process"
+INDIVIDUAL_PARSER_PROCESSED_MESSAGE = "individual_parser_processed"
 
 INDIVIDUAL_SCORING_PROCESS="individual_scoring_process"
 # INDIVIDUAL_SCORING_PROCESSED_MESSAGE="individiual_scoring_processed"
 
-INDIVIDUAL_SOURCES_PROCESS_MESSAGE = "individual_process_sources"
-INDIVIDUAL_SOURCES_PROCESSED_MESSAGE = "individual_sources_processed"
+INDIVIDUAL_SOURCE_PROCESS_MESSAGE = "individual_process_source"
+INDIVIDUAL_SOURCE_PROCESSED_MESSAGE = "individual_source_processed"
 
 
 CLIENT_PROCESSOR_NAME = "New Client Processor"

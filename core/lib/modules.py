@@ -46,6 +46,9 @@ class ParserModule(BasicModule):
     def validate(self, individual_json, source_json):
         return self.call_method("validate", individual_json=individual_json, source_json=source_json)
 
+    def stop_factors(self, individual_json, source_json):
+        return self.call_method("stop_factors", individual_json=individual_json, source_json=source_json)
+
 
 class SourceModule(BasicModule):
     def __init__(self, module_path):

@@ -18,7 +18,7 @@ class SourcesProcessor(BasicProcess):
         def __init__(self):
             super(SourcesProcessor, self).__init__(constants.SOURCES_PROCESSOR_QUEUE,
                                                    {
-                                                       constants.INDIVIDUAL_SOURCES_PROCESS_MESSAGE: self.__process_sources
+                                                       constants.INDIVIDUAL_SOURCE_PROCESS_MESSAGE: self.__process_sources
                                  })
 
         def __process_sources(self, body):
@@ -39,7 +39,7 @@ class SourcesProcessor(BasicProcess):
             action_helper.add_action_individual(individual_id, "scoring", "sources_processor",
                                                 payload="Загружен источник: {0}".format(source_m.get_module_name()))
 
-            self._publish_message(constants.INDIVIDUAL_SOURCES_PROCESSED_MESSAGE,
+            self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
                                   json.dumps({"individual_id": individual_id}))
 
 

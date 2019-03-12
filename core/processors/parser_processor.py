@@ -21,46 +21,39 @@ class ParserProcessor(BasicProcess):
     def __init__(self):
         super(ParserProcessor, self).__init__(constants.PARSERS_PROCESSOR_QUEUE,
                                               {
-                                                  constants.INDIVIDUAL_PARSERS_PROCESS_MESSAGE: self.__process_checks,
+                                                  constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE: self.__process_checks,
                                               })
 
     def __process_checks(self, body):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
+
+        parser = input_message['parser']
+        parser = api_requestor.request('/module/parser/{0}/'.format(parser))[0]
+        parser_m = ParserModule(parser['path'])
+        parser_m_name = parser_m.get_module_name()
+        source_module_name = parser_m.get_module_source()
+
+        source_raw_data = api_requestor.request(
+            '/individual/{0}/data/{1}/{2}'.format(individual_id, "source", source_module_name))
+
         individual_json = api_requestor.request('/individual/{0}'.format(individual_id))
-        try:
-            parsers = input_message['parsers']
-        except:
-            return
-        raw_data = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "source"))['raw_data']
 
-        sources_data = ast.literal_eval(raw_data)
+        validate = parser_m.validate(individual_json, source_raw_data)
+        stop_factors = parser_m.stop_factors(individual_json, source_raw_data)
+        params = parser_m.get_values(source_raw_data)
 
-        params_data = {}
-        validations_data = {}
+        parser_object = {'Values': params, 'Validate': validate, 'StopFactors': stop_factors}
+        parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
-        for parser_dep in parsers:
-            parser = api_requestor.request('/module/parser/{0}/'.format(parser_dep))[0]
-            parser_m = ParserModule(parser['path'])
-            src = parser_m.get_module_source()
-            validate = parser_m.validate(individual_json, sources_data[src])
+        api_requestor.post(
+            '/individual/{0}/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
 
-            validations_data[parser['name']] = validate
+        action_helper.add_action_individual(individual_id, "scoring", "parsers_processor",
+                                            payload="Обработаны данные от источника: {0}".format(parser_m_name))
 
-            params = parser_m.get_values(sources_data[src])
-            new_dict = {item['name']: item['value'] for item in params}
-            params_data[parser['name']] = new_dict
-
-            api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_validate"),
-                               json.dumps(({"raw_data": validations_data})))
-
-            api_requestor.post('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_parameters"),
-                               json.dumps(({"raw_data": params_data}), cls=DatetimeEncoder))
-            action_helper.add_action_individual(individual_id, "scoring", "parsers_processor",
-                                                payload="Обработаны данные от источников")
-
-            self._publish_message(constants.INDIVIDUAL_PARSERS_PROCESSED_MESSAGE,
-                                  json.dumps({"individual_id": individual_id}))
+        self._publish_message(constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE,
+                              json.dumps({"individual_id": individual_id}))
 
 
 proc = ParserProcessor()

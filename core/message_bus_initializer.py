@@ -24,24 +24,24 @@ channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
 
 channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
                    queue=constants.SCORING_PROCESSOR_QUEUE,
-                   routing_key=constants.INDIVIDUAL_SOURCES_PROCESSED_MESSAGE)
+                   routing_key=constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE)
 
 
 channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
                    queue=constants.SCORING_PROCESSOR_QUEUE,
-                   routing_key=constants.INDIVIDUAL_PARSERS_PROCESSED_MESSAGE)
+                   routing_key=constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE)
 
 channel.queue_declare(queue=constants.SOURCES_PROCESSOR_QUEUE, durable=True)
 
 channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
                    queue=constants.SOURCES_PROCESSOR_QUEUE,
-                   routing_key=constants.INDIVIDUAL_SOURCES_PROCESS_MESSAGE)
+                   routing_key=constants.INDIVIDUAL_SOURCE_PROCESS_MESSAGE)
 
 channel.queue_declare(queue=constants.PARSERS_PROCESSOR_QUEUE, durable=True)
 
 channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
                    queue=constants.PARSERS_PROCESSOR_QUEUE,
-                   routing_key=constants.INDIVIDUAL_PARSERS_PROCESS_MESSAGE)
+                   routing_key=constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE)
 
 # channel.queue_declare(queue=constants.WILLZ_STATUS_UPDATER_QUEUE, durable=True)
 
