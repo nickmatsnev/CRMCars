@@ -27,14 +27,14 @@ def get_all_clients_info():
         for individual in client['individuals']:
             if individual['primary'] == True:
                 new_item = {}
-                current_id = client['id']
+                current_id = individual['id']
 
                 new_item['fio'] = individual['first_name'] + ' ' + individual['last_name']
                 cntr += 1
                 new_item['num'] = cntr
-                new_item['id'] = current_id
+                new_item['id'] = individual['id']
+                new_item['willz_external_id'] = individual['willz_external_id']
                 new_item['created_at'] = client['created_at']
-                new_item['status'] = get_status(current_id)
                 new_item['product'] = field_product
 
                 items.append(new_item)
@@ -64,10 +64,10 @@ def get_current_client_info(client_id):
     items['drivers'] = drivers
     history = []
 
-    queryset = Generation.objects.get(client_id=client_id)
-    generation_serializer = GenerationSerializer(queryset, many=False)
-    items['op_history'] = generation_serializer.data
-    items['status'] = get_status(client_id)
+#    queryset = Generation.objects.get(client_id=client_id)
+#    generation_serializer = GenerationSerializer(queryset, many=False)
+ #   items['op_history'] = generation_serializer.data
+#    items['status'] = get_status(client_id)
 
     field = ''
     product_id = ''
@@ -86,15 +86,15 @@ def get_current_client_info(client_id):
     return items
 
 
-def new_action(data,client_id):
+def new_action(data,individual_id, generation_number):
     serializer = NewActionSerializer(data=data)
     if serializer.is_valid():
-        generation = Generation.objects.get(client_id=client_id)
+        generation = Generation.objects.get(individual_id=individual_id,number=generation_number)
         action_model = Action.objects.create(generation=generation, create_time=datetime.datetime.now(),
                                              **serializer.validated_data)
         action_serializer = ActionSerializer(action_model)
-        return action_serializer.data
-    return status.HTTP_400_BAD_REQUEST
+        return Response(status=status.HTTP_201_CREATED,data=action_serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def update_product(data,client_id):
@@ -106,6 +106,7 @@ def update_product(data,client_id):
         client = Client.objects.get(id=client_id)
         client.product = product.id
         client.save()
-        return ClientGetSerializer(client).data
-
+        client_serializer = ClientGetSerializer(client)
+        return Response(status=status.HTTP_202_ACCEPTED,data=client_serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 

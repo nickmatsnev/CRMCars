@@ -148,7 +148,7 @@ class GetParserAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, pk, module_name, where, what):
+    def get(self, request, generation, pk, module_name, where, what):
         value_where = ''
         if where == 'validate':
             value_where = 'Validate'
@@ -164,7 +164,7 @@ class GetParserAPI(APIView):
         if value_where == '' or value_what == '':
             return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-        return get_info(pk, 'parser', module_name, value_where, value_what)
+        return get_info(pk, generation, 'parser', module_name, value_where, value_what)
 
 
 class GetParserValuesAPI(APIView):
@@ -172,22 +172,22 @@ class GetParserValuesAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, pk, module_name):
-        return get_info(pk, 'parser', module_name, 'Values')
+    def get(self, request, generation, pk, module_name):
+        return get_info(pk, generation, 'parser', module_name, 'Values')
 
 
 class GetAllParserValuesAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_values',
                         responses={200: 'Array'})
-    def get(self, request, pk):
-        return get_list_info(pk, 'parser', 'Values')
+    def get(self, request, pk, generation):
+        return get_list_info(pk, generation, 'parser', 'Values')
 
 
 class GetAllParsesErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors where: validate/stopfactor',
                          responses={200: 'Array'})
-    def get(self, request, pk, where):
-        return get_list_info(pk, 'parser', where, 'errors')
+    def get(self, request, generation, pk, where):
+        return get_list_info(pk, generation, 'parser', where, 'errors')
 
 
 class GetScoringAPI(APIView):
@@ -195,5 +195,5 @@ class GetScoringAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, pk, module_name):
-        return get_info(pk, 'scoring', module_name, 'Score')
+    def get(self, request, generation, pk, module_name):
+        return get_info(pk, generation, 'scoring', module_name, 'Score')

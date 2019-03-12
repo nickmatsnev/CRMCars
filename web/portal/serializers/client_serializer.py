@@ -41,8 +41,8 @@ class IndividualSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Individual
-        fields = ('id', 'primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
-                  'birthday', 'passport', 'driver_license')
+        fields = ('id', 'willz_external_id', 'primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone',
+                  'gender', 'birthday', 'passport', 'driver_license')
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -50,21 +50,21 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ('id','willz', 'created_at', 'individuals')
+        fields = ('id','willz_external_id', 'created_at', 'individuals')
 
     def create(self, validated_data):
         individuals_data = validated_data.pop('individuals')
         client = Client.objects.create( **validated_data)
 
         list_of_individuals_id = []
-        Generation.objects.create(client=client, number=1, create_time=datetime.datetime.now())
 
         for individual_data in individuals_data:
             passport_data = individual_data.pop('passport')
             driver_license_data = individual_data.pop('driver_license')
 
             individual = Individual.objects.create(client=client, **individual_data)
-
+            Generation.objects.create(individual=individual, number=0, create_time=datetime.datetime.now(),
+                                      is_archive=False)
 
             passport_images_data = passport_data.pop('images')
             passport = Passport.objects.create(individual=individual, **passport_data)
@@ -87,7 +87,7 @@ class ClientSerializer(serializers.ModelSerializer):
         individuals_data = validated_data.pop('individuals')
         client = Client.objects.create(**validated_data)
         #Product.objects.create(client=client,name='Willz')
-        Generation.objects.create(client=client, number=1, create_time=datetime.datetime.now())
+        Generation.objects.create(client=client, number=0, create_time=datetime.datetime.now(),is_archive=False)
 
         for individual_data in individuals_data:
             passport_data = individual_data.pop('passport')
@@ -118,16 +118,8 @@ class IndividualGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Individual
-        fields = ('id','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone', 'gender',
-                  'birthday', 'passport', 'driver_license')
-
-
-class ClientGetSerializer(serializers.ModelSerializer):
-    individuals = IndividualGetSerializer(many=True)
-
-    class Meta:
-        model = Client
-        fields = ('id', 'willz', 'created_at', 'individuals', 'product')
+        fields = ('id','willz_external_id','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone',
+                  'gender','birthday', 'passport', 'driver_license')
 
 
 class ActionSerializer(serializers.ModelSerializer):
@@ -155,8 +147,15 @@ class GenerationGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Generation
-        fields = ('id','number','create_time','actions')
+        fields = ('id','number','create_time','is_archive','actions')
 
+
+class ClientGetSerializer(serializers.ModelSerializer):
+    individuals = IndividualGetSerializer(many=True)
+
+    class Meta:
+        model = Client
+        fields = ('id', 'willz_external_id', 'created_at', 'individuals', 'product')
 
 class IndividualGetGenerationSerializer(serializers.ModelSerializer):
     generation = GenerationGetSerializer()

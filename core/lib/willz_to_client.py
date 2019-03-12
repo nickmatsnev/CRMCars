@@ -3,7 +3,7 @@ import json
 
 def convert(willz_json_data):
     client = {}
-    client['willz'] = willz_json_data['id']
+    client['willz_external_id'] = willz_json_data['id']
     client['created_at'] = willz_json_data['created_at']
 
     individuals = []
@@ -14,7 +14,7 @@ def convert(willz_json_data):
                 else:
                     primary = False
 
-                individual = {'primary': primary, 'last_name': drvr['lastname']
+                individual = {'primary': primary, 'willz_external_id':drvr['id'],'last_name': drvr['lastname']
                     , 'first_name': drvr['firstname'], 'middle_name': drvr['middlename'],
                               'email': drvr['email']
                     , 'phone': drvr['phone'], 'gender': drvr['gender_id'],
