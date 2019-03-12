@@ -260,7 +260,7 @@ def get_info(individual,module_type,module_name,field_main,field_sub=''):
         serializer_class = ModuleDataSerializer(queryset, many=False)
         my_data = {}
         try:
-            json_data = json.loads(serializer_class.data['raw_data'])
+            json_data = ast.literal_eval(serializer_class.data['raw_data'])
             if field_sub == '':
                 my_data = json_data[field_main]
             else:
@@ -276,7 +276,7 @@ def get_info(individual,module_type,module_name,field_main,field_sub=''):
 
 def get_list_info(individual,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
-    my_list = []
+    my_dictionary = {}
 
     for module_name in list_of_names:
         queryset = ModuleData.objects.filter(individual=individual, name=module_name)
@@ -286,7 +286,7 @@ def get_list_info(individual,module_type,field_main,field_sub=''):
             serializer_class = ModuleDataSerializer(queryset, many=False)
             my_data = {}
             try:
-                json_data = json.loads(serializer_class.data['raw_data'])
+                json_data = ast.literal_eval(serializer_class.data['raw_data'])
                 if field_sub == '':
                     my_data = json_data[field_main]
                 else:
@@ -297,6 +297,6 @@ def get_list_info(individual,module_type,field_main,field_sub=''):
                 if my_data != {}:
                     my_json = {}
                     my_json[module_name] = my_data
-                    my_list.append(my_json)
+                    my_dictionary.update(my_json)
 
-    return Response(data=my_list)
+    return Response(data=my_dictionary)
