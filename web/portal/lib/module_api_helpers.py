@@ -30,8 +30,7 @@ def get_module_data_by_type_name(pk, module_type, module_name):
     queryset = queryset.get()
     list_of_names = get_list_of_names(module_type)
     if queryset.name in list_of_names:
-        serializer_class = ModuleDataSerializer(queryset, many=False)
-        return Response(serializer_class.data['raw_data'])
+        return Response(queryset.raw_data)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -91,7 +90,7 @@ def get_module_data_list_by_type(pk, module_type):
                 except:
                     json_data = {'incorrect_json': current_module.raw_data}
                 finally:
-                    response_data['{0}_{1}'.format(current_module.name, counter)] = json_data
+                    response_data['{0}'.format(current_module.name)] = json_data
                     counter += 1
 
     return Response(response_data)
@@ -275,4 +274,29 @@ def get_info(individual,module_type,module_name,field_main,field_sub=''):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def get_list_info(individual,module_type,field_main,field_sub=''):
+    list_of_names = get_list_of_names(module_type)
+    my_list = []
 
+    for module_name in list_of_names:
+        queryset = ModuleData.objects.filter(individual=individual, name=module_name)
+
+        if queryset.count() != 0:
+            queryset = queryset.get()
+            serializer_class = ModuleDataSerializer(queryset, many=False)
+            my_data = {}
+            try:
+                json_data = json.loads(serializer_class.data['raw_data'])
+                if field_sub == '':
+                    my_data = json_data[field_main]
+                else:
+                    my_data = json_data[field_main][field_sub]
+            except:
+                my_data = {}
+            finally:
+                if my_data != {}:
+                    my_json = {}
+                    my_json[module_name] = my_data
+                    my_list.append(my_json)
+
+    return Response(data=my_list)

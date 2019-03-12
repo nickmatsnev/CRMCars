@@ -176,6 +176,20 @@ class GetParserValuesAPI(APIView):
         return get_info(pk, 'parser', module_name, 'Values')
 
 
+class GetAllParserValuesAPI(APIView):
+    @swagger_auto_schema(operation_description='get_all_values',
+                        responses={200: 'Array'})
+    def get(self, request, pk):
+        return get_list_info(pk, 'parser', 'Values')
+
+
+class GetAllParsesErrorsAPI(APIView):
+    @swagger_auto_schema(operation_description='get_all_errors where: validate/stopfactor',
+                         responses={200: 'Array'})
+    def get(self, request, pk, where):
+        return get_list_info(pk, 'parser', where, 'errors')
+
+
 class GetScoringAPI(APIView):
     @swagger_auto_schema(operation_description='get_score',
                          responses={200: 'String',

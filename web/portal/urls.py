@@ -113,12 +113,17 @@ urlpatterns = [
     path('api/module/source/<int:id>/credentials/', api_module.CredentialsApi.as_view()),
 
     path('api/individual/<int:pk>',api_individual.MainApi.as_view()),
+    path('api/individual/<int:pk>/data/parser/values/',api_module.GetAllParserValuesAPI.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/',api_module.ModuleDataApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/<slug:module_name>/meta/',api_module.ModuleMetaApi.as_view()),
     path('api/individual/<int:pk>/data/<slug:module_type>/',api_module.ModuleDataListApi.as_view()),
+
     path('api/individual/<int:pk>/data/parser/<slug:module_name>/<slug:where>_<slug:what>/',
          api_module.GetParserAPI.as_view()),
     path('api/individual/<int:pk>/data/parser/<slug:module_name>/values/',api_module.GetParserValuesAPI.as_view()),
+
+    path('api/individual/<int:pk>/data/parser/<slug:where>/errors',api_module.GetAllParsesErrorsAPI.as_view()),
+
     path('api/individual/<int:pk>/data/scoring/<slug:module_name>/score/',api_module.GetScoringAPI.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
