@@ -32,12 +32,8 @@ class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveMod
     def view_table(self, request, pk):
         return Response(get_current_client_info(pk))
 
-    @action(methods=['post'], detail=True, url_path='add_action', serializer_class = NewActionSerializer)
-    def add_action(self, request, pk):
-        return Response(new_action(request.data,pk))
-
     @action(methods=['post'], detail=True, url_path='update_product', serializer_class=ProductUpdateSerializer)
     def update_fields(self, request, pk):
-        return Response(update_product(request.data,pk))
+        return update_product(request.data,pk)
 
 

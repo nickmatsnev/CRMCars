@@ -15,18 +15,18 @@
         <form method="post" action="">
             {% csrf_token %}
             <ul>
-                <li>
-                    <h4>Имя продукта</h4>
+                <li style="list-style-type: none;">
+                    <p class="description" for="element_1">Имя продукта</p>
                     <div>
-                        <input id="element_2" name="name" class="element text medium" type="text" maxlength="255"
+                        <input id="element_2" name="name" class="input-lg" type="text" maxlength="255"
                                value="{{ product.name }}"/>
 
                     </div>
                 </li>
-                <li id="li_1">
-                    <h4>Модуль скоринга для основных водителе</h4>
+                <li style="list-style-type: none;" id="li_1">
+                    <label class="description" for="element_1">Модуль скоринга для основных водителей</label>
                     <div>
-                        <select class="element select medium" name="primary_scoring">
+                        <select class="" maxlength="255" name="primary_scoring">
                             <option value="" selected="selected"></option>
                             {% for module in modules %}
                                 <option value="{{ module.id }}">{{ module.name }}</option>
@@ -35,8 +35,8 @@
                     </div>
                 </li>
                 <br/>
-                <li id="li_2">
-                    <h4>Модуль скоринга для дополнтительных водителей</h4>
+                <li style="list-style-type: none;" id="li_2">
+                    <label class="description" for="element_1">Модуль скоринга для дополнтительных водителей</label>
                     <div>
                         <select class="element select medium" id="secondary_scoring" name="other_scoring">
                             <option value="" selected="selected"></option>
@@ -47,10 +47,10 @@
                     </div>
                 </li>
                 <br/>
-                <li class="buttons">
+                <li style="list-style-type: none;" class="buttons">
                     <input type="hidden" name="form_id" value="50538"/>
 
-                     <input class="btn btn-success" type="submit" name="submit" value="Сохранить"/>
+                    <input class="btn btn-success" type="submit" name="submit" value="Сохранить"/>
                 </li>
             </ul>
         </form>

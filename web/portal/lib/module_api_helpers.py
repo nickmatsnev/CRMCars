@@ -248,11 +248,11 @@ def set_credentials(module_type, pk, credentials):
     return Response(status=resp_status, data=response['credentials'])
 
 
-def get_info(individual,module_type,module_name,field_main,field_sub=''):
+def get_info(individual, generation_number,module_type,module_name,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
 
     if module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=individual, name=module_name)
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number)
         if queryset.count() == 0:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -274,12 +274,12 @@ def get_info(individual,module_type,module_name,field_main,field_sub=''):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_list_info(individual,module_type,field_main,field_sub=''):
+def get_list_info(individual,generation_number,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
     my_dictionary = {}
 
     for module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=individual, name=module_name)
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number)
 
         if queryset.count() != 0:
             queryset = queryset.get()

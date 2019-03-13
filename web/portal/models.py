@@ -11,7 +11,7 @@ class RawClientData(models.Model):
 
 class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
-    willz = models.IntegerField(default=0)
+    willz_external_id = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
     created_at = models.TextField(null=True)
     product = models.IntegerField(default=0)
@@ -19,6 +19,7 @@ class Client(models.Model):
 
 class Individual(models.Model):
     client = models.ForeignKey(Client, related_name='individuals', on_delete=models.CASCADE)
+    willz_external_id = models.IntegerField(default=0)
     primary = models.BooleanField(default=False)
     last_name = models.CharField(max_length=100)
     first_name = models.CharField(max_length=100)
@@ -29,6 +30,7 @@ class Individual(models.Model):
     # gender = models.CharField(max_length=100)
     #birthday = models.DateTimeField()
     birthday = models.TextField(null=True)
+
 
 
 class Passport(models.Model):
@@ -133,9 +135,10 @@ class ConcreteScore(models.Model):
 
 
 class Generation(models.Model):
-    client = models.ForeignKey(Client, related_name='generations', on_delete=models.CASCADE)
+    individual = models.ForeignKey(Individual, related_name='generations', on_delete=models.CASCADE)
     number = models.IntegerField(default=0)
     create_time = models.DateTimeField()
+    is_archive = models.BooleanField()
     #scoring_task = models.OneToOneField(Task, on_delete=models.CASCADE, null=True)
     #source_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
     #checks_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
@@ -175,6 +178,7 @@ class Product(models.Model):
 
 class ModuleData(models.Model):
     individual = models.IntegerField()
+    generation = models.IntegerField()
     raw_data = models.TextField()
     name = models.TextField()
     create_time = models.DateTimeField()
