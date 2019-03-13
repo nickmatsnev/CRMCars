@@ -260,7 +260,7 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
         serializer_class = ModuleDataSerializer(queryset, many=False)
         my_data = {}
         try:
-            json_data = ast.literal_eval(serializer_class.data['raw_data'])
+            json_data = json.loads(serializer_class.data['raw_data'])
             if field_sub == '':
                 my_data = json_data[field_main]
             else:
@@ -276,7 +276,7 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
 
 def get_list_info(individual,generation_number,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
-    my_dictionary = {}
+    my_list = []
 
     for module_name in list_of_names:
         queryset = ModuleData.objects.filter(individual=individual, generation=generation_number)
@@ -286,7 +286,7 @@ def get_list_info(individual,generation_number,module_type,field_main,field_sub=
             serializer_class = ModuleDataSerializer(queryset, many=False)
             my_data = {}
             try:
-                json_data = ast.literal_eval(serializer_class.data['raw_data'])
+                json_data = json.loads(serializer_class.data['raw_data'])
                 if field_sub == '':
                     my_data = json_data[field_main]
                 else:
@@ -297,6 +297,20 @@ def get_list_info(individual,generation_number,module_type,field_main,field_sub=
                 if my_data != {}:
                     my_json = {}
                     my_json[module_name] = my_data
-                    my_dictionary.update(my_json)
+                    my_list.append(my_json)
 
-    return Response(data=my_dictionary)
+    return Response(data=my_list)
+
+
+def get_generation_number(individual_id, generation_id_or_current):
+    generation_number = 0
+
+    if generation_id_or_current.isdigit():
+        generation_number = generation_id_or_current
+    elif generation_id_or_current == 'current':
+        generations = Generation.objects.filter(individual_id=individual_id)
+        for gen in generations:
+            if gen.is_archive == False:
+                generation_number = gen.number
+
+    return generation_number

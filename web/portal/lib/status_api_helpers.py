@@ -10,10 +10,11 @@ from core.lib.modules import *
 from rest_framework.response import Response
 from portal.serializers.product_serializer import *
 from portal.serializers.status_serializer import *
+from portal.lib.module_api_helpers import get_generation_number
 
 
-def get_status(current_id):
-    last_action = get_raw_status(current_id)
+def get_status(individual_id):
+    last_action = get_raw_status(individual_id)
 
     if last_action == 'scoring_complete_declined':
         return 'Отказано'
@@ -39,13 +40,16 @@ def get_status(current_id):
 # op_action = scoring_complete_declined -> Клиенту отказано
 
 
-def get_raw_status(current_id):
-    queryset = Generation.objects.get(client_id=current_id)
+def get_raw_status(individual_id):
+    queryset = Generation.objects.get(individual_id=individual_id,number=get_generation_number(individual_id,'current'))
     generation_serializer = GenerationSerializer(queryset, many=False)
 
     list_of_actions = generation_serializer.data['actions']
 
-    last_action = list_of_actions[-1]['action_type']
+    if len(list_of_actions) != 0:
+        last_action = list_of_actions[-1]['action_type']
+    else:
+        last_action = ''
 
     return last_action
 
@@ -53,13 +57,13 @@ def get_raw_status(current_id):
 def get_status_table():
     resp_status = status.HTTP_200_OK
     list_of_status = {}
-    queryset = Client.objects.all()
+    individuals = Individual.objects.all()
 
-    if queryset.count() == 0:
+    if individuals.count() == 0:
         resp_status = status.HTTP_204_NO_CONTENT
     else:
-        for client in queryset:
-            current_status = get_status(client.id)
+        for individual in individuals:
+            current_status = get_status(individual.id)
             if current_status not in list_of_status:
                 list_of_status[current_status] = 1
             else:
