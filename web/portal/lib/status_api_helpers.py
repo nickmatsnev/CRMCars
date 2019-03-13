@@ -42,7 +42,7 @@ def get_status(individual_id):
 
 def get_raw_status(individual_id):
     queryset = Generation.objects.get(individual_id=individual_id,
-                                      number=get_generation_number(individual_id,'current_generation'))
+                                      number=get_generation_number(individual_id,'cur_gen'))
     generation_serializer = GenerationSerializer(queryset, many=False)
 
     list_of_actions = generation_serializer.data['actions']
@@ -87,7 +87,7 @@ def get_clients_by_status(data):
         else:
             for client in queryset:
                 current_status = get_raw_status(client.id)
-                if current_status == data['status']:
+                if current_status == data['cur_gen']:
                     list_of_clients.append(client.id)
 
             if len(list_of_clients) == 0:

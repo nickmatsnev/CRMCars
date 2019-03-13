@@ -34,7 +34,7 @@ class MainApi(APIView):
         generations = Generation.objects.filter(individual_id=individual.id)
         response_data['generations_count'] = generations.count()
 
-        current_generation = generations.filter(number=get_generation_number(individual.id, 'current')).get()
+        current_generation = generations.filter(number=get_generation_number(individual.id, 'cur_gen')).get()
 
         generation_serializer = GenerationGetSerializer(current_generation, many = False)
         response_data['current_generation'] = generation_serializer.data
@@ -62,8 +62,8 @@ class AddActionApi(APIView):
                          request_body=NewActionSerializer,
                          responses={201: NewActionSerializer,
                                     400: 'Bad request'})
-    def post(self, request, pk, generation_id_or_current_generation):
-        return new_action(request.data, pk, get_generation_number(pk, generation_id_or_current_generation))
+    def post(self, request, pk, gen_id_or_cur_gen):
+        return new_action(request.data, pk, get_generation_number(pk, gen_id_or_cur_gen))
 
 
 class CurGenApi(APIView):
@@ -71,7 +71,7 @@ class CurGenApi(APIView):
                          responses={200: 'integer',
                                     204: 'no valid generations'})
     def get(self, request, pk):
-        gen_number = get_generation_number(pk,'current')
+        gen_number = get_generation_number(pk,'cur_gen')
         if gen_number != 0:
             return Response(data=gen_number)
         return Response(status=status.HTTP_204_NO_CONTENT)
