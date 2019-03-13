@@ -41,7 +41,8 @@ def get_status(individual_id):
 
 
 def get_raw_status(individual_id):
-    queryset = Generation.objects.get(individual_id=individual_id,number=get_generation_number(individual_id,'current'))
+    queryset = Generation.objects.get(individual_id=individual_id,
+                                      number=get_generation_number(individual_id,'current_generation'))
     generation_serializer = GenerationSerializer(queryset, many=False)
 
     list_of_actions = generation_serializer.data['actions']

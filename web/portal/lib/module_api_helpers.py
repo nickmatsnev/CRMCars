@@ -302,12 +302,12 @@ def get_list_info(individual,generation_number,module_type,field_main,field_sub=
     return Response(data=my_list)
 
 
-def get_generation_number(individual_id, generation_id_or_current):
+def get_generation_number(individual_id, generation_id_or_current_generation):
     generation_number = 0
 
-    if generation_id_or_current.isdigit():
-        generation_number = generation_id_or_current
-    elif generation_id_or_current == 'current':
+    if generation_id_or_current_generation.isdigit():
+        generation_number = generation_id_or_current_generation
+    elif generation_id_or_current_generation == 'current_generation':
         generations = Generation.objects.filter(individual_id=individual_id)
         for gen in generations:
             if gen.is_archive == False:
