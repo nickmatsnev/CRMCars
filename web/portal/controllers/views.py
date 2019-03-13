@@ -76,11 +76,12 @@ def individual_inspect(request, id):
     print(id)
     raw_data = api_requestor.request('/individual/{0}'.format(id))
 
-    context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
-               'history': raw_data['op_history'], 'status': raw_data['status'], 'product': raw_data['product'],
-               'product_id': raw_data['product_id']}
+    context = {
+        'individual': raw_data, 'id': raw_data['id'],
+        'status': raw_data['status']
+    }
 
-    return render(request, 'concrete/client_inspect.html', context)
+    return render(request, 'concrete/individual_inspect.html', context)
 
 
 @login_required(login_url="signin")

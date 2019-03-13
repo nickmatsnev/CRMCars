@@ -160,13 +160,13 @@ urlpatterns = [
 
     path(r'modules_list/<slug:module_type>/', modules_list, name="modules_list"),
 
-    path(r'client_scoring/<int:id>/', client_scoring, name="client_scoring"),
-    path(r'accept_client/<int:id>/', accept_client, name="accept_client"),
-    path(r'reject_client/<int:id>/', reject_client, name="reject_client"),
+    path(r'individual_scoring/<int:id>/', individual_scoring, name="individual_scoring"),
+    path(r'accept_individual/<int:id>/', accept_individual, name="accept_individual"),
+    path(r'reject_individual/<int:id>/', reject_individual, name="reject_individual"),
 
-
-    path(r'client_inspect/<int:id>/',client_inspect,name="client_inspect"),
-    path(r'client_decline/<int:id>/',client_decline,name="client_decline"),
+    path(r'individual_inspect/<int:id>/', individual_inspect, name="individual_inspect"),
+    path(r'individual_prescoring_decline/<int:id>/', individual_prescoring_decline,
+         name="individual_prescoring_decline"),
 
     path(r'product_edit/<int:id>/', product_edit, name="product_edit"),
     path(r'product_new/', product_new, name="product_new"),
