@@ -53,7 +53,7 @@ class ClientProcessor(BasicProcess):
 
                 json_data = json.dumps(action)
                 for individual in client['individuals']:
-                    response = requests.post(API_ROOT_URL +'/individual/{0}/current_generation/add_action/'.format(individual['id']),
+                    response = requests.post(API_ROOT_URL +'/individual/{0}/cur_gen/add_action/'.format(individual['id']),
                                              json_data, headers = {'Content-Type': 'application/json'})
 
                 print(" client is processed")

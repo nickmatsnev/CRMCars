@@ -307,7 +307,7 @@ def get_generation_number(individual_id, generation_id_or_current_generation):
 
     if generation_id_or_current_generation.isdigit():
         generation_number = generation_id_or_current_generation
-    elif generation_id_or_current_generation == 'current_generation':
+    elif generation_id_or_current_generation == 'cur_gen':
         generations = Generation.objects.filter(individual_id=individual_id)
         for gen in generations:
             if gen.is_archive == False:

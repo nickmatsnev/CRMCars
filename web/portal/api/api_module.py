@@ -148,8 +148,8 @@ class GetParserValidateStatusAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', module_name,
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
                         'Validate', 'Status')
 
 
@@ -159,8 +159,8 @@ class GetParserValidateErrorsAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', module_name,
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
                         'Validate', 'errors')
 
 
@@ -170,8 +170,8 @@ class GetParserStopFactorStatusAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', module_name,
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
                         'StopFactors', 'Status')
 
 
@@ -181,8 +181,8 @@ class GetParserStopFactorErrorsAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', module_name,
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
                         'StopFactors', 'errors')
 
 
@@ -191,22 +191,22 @@ class GetParserValuesAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', module_name, 'Values')
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name, 'Values')
 
 
 class GetAllParserValuesAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_values',
                         responses={200: 'Array'})
-    def get(self, request, pk, generation_id_or_current_generation):
-        return get_list_info(pk, get_generation_number(pk,generation_id_or_current_generation), 'parser', 'Values')
+    def get(self, request, pk, gen_id_or_cur_gen):
+        return get_list_info(pk, get_generation_number(pk,gen_id_or_cur_gen), 'parser', 'Values')
 
 
 class GetAllParsesErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors where: validate/stopfactor',
                          responses={200: 'Array'})
-    def get(self, request, generation_id_or_current_generation, pk, where):
-        return get_list_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'parser', where, 'errors')
+    def get(self, request, gen_id_or_cur_gen, pk, where):
+        return get_list_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', where, 'errors')
 
 
 class GetScoringAPI(APIView):
@@ -214,5 +214,5 @@ class GetScoringAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, generation_id_or_current_generation, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,generation_id_or_current_generation), 'scoring', module_name, 'Score')
+    def get(self, request, gen_id_or_cur_gen, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'scoring', module_name, 'Score')
