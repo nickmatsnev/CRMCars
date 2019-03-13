@@ -148,7 +148,7 @@ def save_module(request, module_type):
 
     serializer = serializer_class(data=serializer_data)
     if serializer.is_valid():
-        module_name = serializer.data['name']
+        module_name = serializer.validated_data['name']
         queryset = Module.objects.filter(name=module_name)
         if queryset.count()==0:
             serializer.save()
