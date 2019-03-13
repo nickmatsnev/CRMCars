@@ -9,45 +9,39 @@
 {% block content %}
     <script>
         var individual_id = {{ individual.id }};
-        var product_id = {{ product_id }};
+        // var product_id = {{ product_id }};
     </script>
     <div class="modal-header">
-    <h1>Заявка № {{ id }}</h1>
+        <h1>Досье физ.лица № {{ id }}</h1>
     </div>
     <div class="container">
-        <h2><strong>Данные</strong></h2>
-    <a href="{% url "client_decline" individual.id %}">
+
+        <a href="{% url "individual_prescoring_decline" individual.id %}">
         <button class="btn btn-danger" type="button"> Отказ по заявке</button>
     </a>
         <button id="scoring-button" class="btn btn-success" type="button"> Отправить на скоринг</button>
         <p class="text-xl-left">Продукт</p>
 
-        <p class="font-weight-bold">{{ product }}</p>
+        <p class="font-weight-bold"></p>
         <p class="glyphicon-header">Статус</p>
-        <p class="font-weight-bold">{{ status }}</p>
+        <p class="font-weight-bold">{{ individual.status }}</p>
       <table class="table">
 
    <tr>
        <td> Имя:</td>
        <td>{{ individual.first_name }}</td>
-       <td>
-     Статус:</td>
+
    </tr>
    <tr>
        <td>Отчество:</td>
-       <td>{{ individual.middle_name }}</td>  <td>
-
-     Требует подтверждения:</td>
-   </tr>
+       <td>{{ individual.middle_name }}</td>
    <tr>
        <td>Фамилия:</td>
-       <td>{{ individual.last_name }}</td>  <td>
-     Скоринг:</td>
+       <td>{{ individual.last_name }}</td>
    </tr>
    <tr>
        <td>Пол:</td>
-       <td> {{ individual.gender }}</td>  <td>
-     Стоп-Факторы:</td>
+       <td> {{ individual.gender }}</td>
    </tr>
    <tr>
        <td>Дата рождения:</td>
@@ -76,7 +70,7 @@
   </div>
 
 
- <table border="1"  bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring"
+        <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <tr>
     {% for item in individual.passport.images %}
             <td>
@@ -113,7 +107,7 @@
             <td>Информация</td>
         </tr>
 
-        {% for item in history.actions %}
+        {% for item in individual.current_generation.actions %}
         <tr>
                 <td>{{ item.action_type }}</td>
                 <td>{{ item.processor }}</td>
