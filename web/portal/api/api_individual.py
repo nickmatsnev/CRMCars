@@ -62,8 +62,8 @@ class AddActionApi(APIView):
                          request_body=NewActionSerializer,
                          responses={201: NewActionSerializer,
                                     400: 'Bad request'})
-    def post(self, request, pk, generation_id_or_current):
-        return new_action(request.data, pk, get_generation_number(pk, generation_id_or_current))
+    def post(self, request, pk, generation_id_or_current_generation):
+        return new_action(request.data, pk, get_generation_number(pk, generation_id_or_current_generation))
 
 
 class CurGenApi(APIView):
