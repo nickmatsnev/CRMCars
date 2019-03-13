@@ -21,7 +21,7 @@ from lib.modules import *
 
 
 class ScoringProcessor(BasicProcess):
-    products_cache = {}
+    products_cache = {1: 2}
     def __init__(self):
         super(ScoringProcessor, self).__init__(constants.SCORING_PROCESSOR_QUEUE,
                                                {
@@ -59,7 +59,7 @@ class ScoringProcessor(BasicProcess):
                                             payload="Завершен процесс скоринга")
         score_res = scoring_deps_helper.get_scoring_module(self.products_cache[individual_id])
 
-        raw_data = api_requestor.request('/individual/{0}/data/parser/'.format(individual_id))
+        raw_data = api_requestor.request('/individual/{0}/data/parser/values/'.format(individual_id))
 
         parsers_parameters = ast.literal_eval(raw_data)
 

@@ -25,7 +25,7 @@ from rest_framework import status
 
 @login_required(login_url="signin")
 def clients_list(request):
-    items = api_requestor.request('/client/view/')
+    items = api_requestor.request('/client/')
 
     return render(request, 'concrete/clients_list.html', {'items': items})
 
@@ -38,7 +38,7 @@ def users_list(request):
 
 
 @login_required(login_url="signin")
-def client_decline(request,id):
+def individual_prescoring_decline(request, id):
     raw_data = api_requestor.request('/client/{0}/view/'.format(id))
 
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
@@ -48,7 +48,7 @@ def client_decline(request,id):
 
 
 @login_required(login_url="signin")
-def client_scoring(request,id):
+def individual_scoring(request, id):
     #   res = get_scorista()
 
     individual_id = api_requestor.request('/client/{0}/view/'.format(id))['individual']['id']
@@ -72,8 +72,9 @@ def source(request):
 
 
 @login_required(login_url="signin")
-def client_inspect(request,id):
-    raw_data = api_requestor.request('/client/{0}/view/'.format(id))
+def individual_inspect(request, id):
+    print(id)
+    raw_data = api_requestor.request('/individual/{0}'.format(id))
 
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
                'history': raw_data['op_history'], 'status': raw_data['status'], 'product': raw_data['product'],
@@ -83,13 +84,13 @@ def client_inspect(request,id):
 
 
 @login_required(login_url="signin")
-def accept_client(request, id):
+def accept_individual(request, id):
     action_helper.add_action(id, 'scoring_complete_accepted', 'user')
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
-def reject_client(request, id):
+def reject_individual(request, id):
     action_helper.add_action(id, 'scoring_complete_declined', 'user')
     return redirect("clients_list")
 

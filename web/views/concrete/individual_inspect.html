@@ -98,39 +98,7 @@
         {% endfor %}
     </tr>
 </table>
-    <p></p>
-        <h4><strong>Водители</strong></h4>
-    <table class="table">
-      <tr>
-          <td>Фамилия</td>
-          <td>Имя</td>
-          <td>Номер ВУ</td>
-          <td>Дата выдачи ВУ</td>
-          <td></td>
-          <td></td>
-      </tr>
-    {% for item in drivers %}
-    <tr>
-        <td>{{ item.name }}</td>
-        <td>{{ item.surname }}</td>
-        <td>{{ item.driver_license_number }}</td>
-        <td>{{ item.driver_license_number }}</td>
 
-        {%  if item.primary == True %}
-            <td>{{ "Основной"}}</td>
-            <td></td>
-            {% else %}
-            <td>{{ "Дополнительный"}}</td>
-            <td>
-                <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span> Выбрать основным
-                </button>
-            </td>
-        {% endif %}
-
-    </tr>
-        {% endfor %}
-
-    </table>
 
 
         <div class="panel-heading">

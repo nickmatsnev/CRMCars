@@ -7,43 +7,80 @@
 {% endblock %}
 {% block content %}
 
-
-
             <h1 class="panel-title">Заявки</h1>
 
-
-<table class="table">
-      <tr>
-
-          <th>Номер</th>
-          <th>ФИО</th>
-          <th>Дата регистр.</th>
-          <th>Продукт</th>
-          <th>Статус</th>
-          <th> </th>
-          <th> </th>
-      </tr>
-
-
+    <br/>
     {% for item in items %}
-         <tr>
+        <article>
+            <h1 class="panel-title">Учётная карта #{{ item.id }}</h1><strong>Создана</strong>
+            <h4>{{ item.created_at }}</h4>
+            <div class="container">
+                <table class="table">
+                    <tr>
+                        <td><strong>ID</strong><h4>Willz</h4></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right"><strong>Продукт</strong><h4>{{ item.product }}</h4></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Основное физ.лицо</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- фор имя_айди ин имя_лист -->
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><big>{{ item.primary_individual.last_name }} {{ item.primary_individual.first_name }}</big>
+                        </td>
+                        <td><big>{{ item.primary_individual.status }}</big></td>
+                        <td style="text-align: right"><a href="{% url "individual_inspect" item.id %}">
+                            <button class="btn btn-success">Карточка клиента</button>
+                        </a></td>
+                        <td style="text-align: right"><a href="{% url "individual_scoring" item.id %}">
+                            <div class="btn btn-danger">Скоринг</div>
+                        </a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Дополнительные водители</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- фор имя_айди ин имя_лист -->
+                    {% for secondary in item.secondary_individuals %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><big>{{ secondary.last_name }} {{ secondary.first_name }}</big></td>
+                            <td><big>{{ secondary.status }}</big></td>
+                            <td style="text-align: right"><a href="{% url "individual_inspect" secondary.id %}">
+                                <button class="btn btn-success">Карточка клиента</button>
+                            </a></td>
+                            <td style="text-align: right"><a href="{% url "individual_scoring" secondary.id %}">
+                                <div class="btn btn-danger">Скоринг</div>
+                            </a></td>
+                        </tr>
+                    {% endfor %}
 
 
-             <td>{{ item.id }}</td>
-             <td>{{ item.fio }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.product }}</td>
-             <td class="font-weight-bold">{{ item.status }}</td>
-             <td><a href="{% url "client_inspect" item.id %}">
-                 <button class="btn btn-info" type="button">    Клиент</button>
-             </a></td>
-             <td><a href="{% url "client_scoring" item.id %}">
-                 <button class="btn btn-info" type="button">Скоринг</button>
-             </a></td>
-     </tr>
+                </table>
+
+            </div>
+        </article>
 
     {% endfor %}
-</table>
+
+
+
+
 
     <a href="{% url "clients_list" %}">
         <button class="btn btn-outline-dark" type="button" {{ disabled }}>Загрузить
