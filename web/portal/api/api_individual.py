@@ -11,6 +11,7 @@ from core.lib.modules import ScoringModule, SourceModule
 from portal.serializers.client_serializer import *
 from portal.serializers.product_serializer import *
 from portal.serializers.module_serializer import  *
+from portal.lib.module_api_helpers import get_generation_number
 from portal.models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -27,11 +28,18 @@ class MainApi(APIView):
         individual = Individual.objects.get(id=pk)
         individual_serializer = IndividualGetSerializer(individual, many=False)
         response_data = individual_serializer.data
-        client = individual.client
-        generation = Generation.objects.filter(individual=pk)
-        generation_serializer = GenerationGetSerializer(generation, many = True)
-        response_data['generations'] = generation_serializer.data
 
+        response_data['status'] = get_status(individual.id)
+
+        generations = Generation.objects.filter(individual_id=individual.id)
+        response_data['generations_count'] = generations.count()
+
+        current_generation = generations.filter(number=get_generation_number(individual.id, 'current')).get()
+
+        generation_serializer = GenerationGetSerializer(current_generation, many = False)
+        response_data['current_generation'] = generation_serializer.data
+
+        client = individual.client
         product = Product.objects.get(id=client.product)
         if individual.primary == True:
             module_id = product.primary_scoring
@@ -54,8 +62,8 @@ class AddActionApi(APIView):
                          request_body=NewActionSerializer,
                          responses={201: NewActionSerializer,
                                     400: 'Bad request'})
-    def post(self, request, pk, generation):
-        return new_action(request.data, pk, generation)
+    def post(self, request, pk, generation_id_or_current):
+        return new_action(request.data, pk, get_generation_number(pk, generation_id_or_current))
 
 
 class CurGenApi(APIView):
@@ -63,10 +71,9 @@ class CurGenApi(APIView):
                          responses={200: 'integer',
                                     204: 'no valid generations'})
     def get(self, request, pk):
-        generations = Generation.objects.filter(individual_id=pk)
-        for gen in generations:
-            if gen.is_archive==False:
-                return Response(gen.number)
+        gen_number = get_generation_number(pk,'current')
+        if gen_number != 0:
+            return Response(data=gen_number)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -86,6 +93,8 @@ class NewGenApi(APIView):
         last += 1
         new_gen = Generation.objects.create(individual=individual, number=last, create_time=datetime.datetime.now(),
                                       is_archive=False)
+        action_model = Action.objects.create(generation=new_gen, create_time=datetime.datetime.now(),
+                                             processor='system',action_type='new')
         return Response(new_gen.number)
 
 

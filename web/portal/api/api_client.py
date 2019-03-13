@@ -19,7 +19,7 @@ import coreschema
 from rest_framework.schemas import AutoSchema
 
 
-class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+class MainAPI(mixins.ListModelMixin,mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin,
               viewsets.GenericViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
@@ -36,4 +36,35 @@ class MainAPI(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveMod
     def update_fields(self, request, pk):
         return update_product(request.data,pk)
 
+
+class ClientApi(APIView):
+    @swagger_auto_schema(operation_description='get all clients',
+                         responses={200: ClientSerializer(many=True),
+                                    404: 'No data'})
+    def get(self, request):
+        return Response(get_all_clients_info())
+
+    @swagger_auto_schema(operation_description='post new client',
+                         request_body=ClientSerializer,
+                         responses={200: ClientSerializer,
+                                    400: 'Format is not valid'})
+    def post(self, request):
+        return post_client(request.data)
+
+
+class ClientWorkApi(APIView):
+    @swagger_auto_schema(operation_description='get client',
+                         responses={200: ClientSerializer,
+                                    404: 'No data'})
+    def get(self, request, id):
+        return Response(get_current_client_info(id))
+
+
+class UpdateProductApi(APIView):
+    @swagger_auto_schema(operation_description='update product',
+                         request_body=ProductUpdateSerializer,
+                         responses={200: ProductUpdateSerializer,
+                                    404: 'No data'})
+    def post(self, request, id):
+        return update_product(request.data, id)
 

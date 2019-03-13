@@ -8,82 +8,49 @@ from portal.models import *
 from portal.serializers.client_serializer import *
 from portal.serializers.product_serializer import *
 from portal.lib.status_api_helpers import get_status
-
+from portal.lib.product_api_helpers import get_product_name
 
 def get_all_clients_info():
     queryset = Client.objects.all()
-    serializer = ClientGetSerializer(queryset, many=True)
-    items = []
-    cntr = 0
-    for client in serializer.data:
-
-        if client['product'] != 0:
-            product = Product.objects.get(id=client['product'])
-            field_product = product.name
-        else:
-            field_product = 'Not set'
-
-
-        for individual in client['individuals']:
-            if individual['primary'] == True:
-                new_item = {}
-                current_id = individual['id']
-
-                new_item['fio'] = individual['first_name'] + ' ' + individual['last_name']
-                cntr += 1
-                new_item['num'] = cntr
-                new_item['id'] = individual['id']
-                new_item['willz_external_id'] = individual['willz_external_id']
-                new_item['created_at'] = client['created_at']
-                new_item['product'] = field_product
-
-                items.append(new_item)
-    return items
+    clients_list = []
+    for client in queryset:
+        clients_list.append(get_current_client_info(client.id))
+    return clients_list
 
 
 def get_current_client_info(client_id):
     queryset = Client.objects.get(id=client_id)
     client_serializer = ClientGetSerializer(queryset, many=False)
-    individual = {}
-    drivers = []
+
+    primary_individual = {}
+    secondary_individuals = []
+    individuals_count = 0
+
     for individual_raw in client_serializer.data['individuals']:
-        driver = {}
-        driver['name'] = individual_raw['first_name']
-        driver['surname'] = individual_raw['last_name']
-        driver['number'] = individual_raw['driver_license']['number']
-        driver['issued_at'] = individual_raw['driver_license']['issued_at']
-        driver['primary'] = individual_raw['primary']
+        individuals_count += 1
+        individual = Individual.objects.get(id=individual_raw['id'])
+        individual_serializer = IndividualGetSerializer(individual,many=False)
+        status = get_status(individual_raw['id'])
+
         if individual_raw['primary'] == True:
-            individual = individual_raw
+            primary_individual = individual_serializer.data
+            primary_individual['status'] = status
+        else:
+            secondary_individual = individual_serializer.data
+            secondary_individual['status'] = status
 
-        drivers.append(driver)
+            secondary_individuals.append(secondary_individual)
 
-    items = {}
-    items['id'] = client_id
-    items['individual'] = individual
-    items['drivers'] = drivers
-    history = []
+    client_view_serializer = ClientViewSerializer(queryset,many=False)
 
-#    queryset = Generation.objects.get(client_id=client_id)
-#    generation_serializer = GenerationSerializer(queryset, many=False)
- #   items['op_history'] = generation_serializer.data
-#    items['status'] = get_status(client_id)
+    response_data = {}
+    response_data = client_view_serializer.data
+    response_data['product'] = get_product_name(queryset.product)
+    response_data['individuals_count'] = individuals_count
+    response_data['primary_individual'] = primary_individual
+    response_data['secondary_individuals'] = secondary_individuals
 
-    field = ''
-    product_id = ''
-    if client_serializer.data['product']!=0:
-        product = Product.objects.get(id=client_serializer.data['product'])
-        field = product.name
-        product_id = product.id
-    else:
-        field = 'Not set'
-
-    items['product']=field
-    items['product_id'] = product_id
-
-
-
-    return items
+    return response_data
 
 
 def new_action(data,individual_id, generation_number):
@@ -108,5 +75,13 @@ def update_product(data,client_id):
         client.save()
         client_serializer = ClientGetSerializer(client)
         return Response(status=status.HTTP_202_ACCEPTED,data=client_serializer.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def post_client(data):
+    client_serializer = ClientSerializer(data=data)
+    if client_serializer.is_valid():
+        client_serializer.save()
+        return Response(data=client_serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 

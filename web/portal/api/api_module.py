@@ -142,29 +142,48 @@ class CredentialsApi(APIView):
         return Response(set_credentials(module_type, id, request.data['credentials']))
 
 
-class GetParserAPI(APIView):
-    @swagger_auto_schema(operation_description='get where: validate/stopfactor what: status/errors',
+class GetParserValidateStatusAPI(APIView):
+    @swagger_auto_schema(operation_description='get where: validate what: status',
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
-    def get(self, request, generation, pk, module_name, where, what):
-        value_where = ''
-        if where == 'validate':
-            value_where = 'Validate'
-        elif where == 'stopfactor':
-            value_where = 'StopFactors'
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', module_name,
+                        'Validate', 'Status')
 
-        value_what = ''
-        if what == 'status':
-            value_what = 'Status'
-        elif what == 'errors':
-            value_what = 'errors'
 
-        if value_where == '' or value_what == '':
-            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+class GetParserValidateErrorsAPI(APIView):
+    @swagger_auto_schema(operation_description='get where: validate what: errors',
+                         responses={200: 'String',
+                                    204: 'No data',
+                                    400: 'No module name',
+                                    405: 'Url is incorrect'})
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', module_name,
+                        'Validate', 'errors')
 
-        return get_info(pk, generation, 'parser', module_name, value_where, value_what)
+
+class GetParserStopFactorStatusAPI(APIView):
+    @swagger_auto_schema(operation_description='get where: stopfactor what: status',
+                         responses={200: 'String',
+                                    204: 'No data',
+                                    400: 'No module name',
+                                    405: 'Url is incorrect'})
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', module_name,
+                        'StopFactors', 'Status')
+
+
+class GetParserStopFactorErrorsAPI(APIView):
+    @swagger_auto_schema(operation_description='get where: stopfactor what: errors',
+                         responses={200: 'String',
+                                    204: 'No data',
+                                    400: 'No module name',
+                                    405: 'Url is incorrect'})
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', module_name,
+                        'StopFactors', 'errors')
 
 
 class GetParserValuesAPI(APIView):
@@ -172,22 +191,22 @@ class GetParserValuesAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, generation, pk, module_name):
-        return get_info(pk, generation, 'parser', module_name, 'Values')
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', module_name, 'Values')
 
 
 class GetAllParserValuesAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_values',
                         responses={200: 'Array'})
-    def get(self, request, pk, generation):
-        return get_list_info(pk, generation, 'parser', 'Values')
+    def get(self, request, pk, generation_id_or_current):
+        return get_list_info(pk, get_generation_number(pk,generation_id_or_current), 'parser', 'Values')
 
 
 class GetAllParsesErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors where: validate/stopfactor',
                          responses={200: 'Array'})
-    def get(self, request, generation, pk, where):
-        return get_list_info(pk, generation, 'parser', where, 'errors')
+    def get(self, request, generation_id_or_current, pk, where):
+        return get_list_info(pk,  get_generation_number(pk,generation_id_or_current), 'parser', where, 'errors')
 
 
 class GetScoringAPI(APIView):
@@ -195,5 +214,5 @@ class GetScoringAPI(APIView):
                          responses={200: 'String',
                                     204: 'No data',
                                     400: 'No module name'})
-    def get(self, request, generation, pk, module_name):
-        return get_info(pk, generation, 'scoring', module_name, 'Score')
+    def get(self, request, generation_id_or_current, pk, module_name):
+        return get_info(pk,  get_generation_number(pk,generation_id_or_current), 'scoring', module_name, 'Score')

@@ -63,7 +63,7 @@ class ClientSerializer(serializers.ModelSerializer):
             driver_license_data = individual_data.pop('driver_license')
 
             individual = Individual.objects.create(client=client, **individual_data)
-            Generation.objects.create(individual=individual, number=0, create_time=datetime.datetime.now(),
+            Generation.objects.create(individual=individual, number=1, create_time=datetime.datetime.now(),
                                       is_archive=False)
 
             passport_images_data = passport_data.pop('images')
@@ -80,6 +80,8 @@ class ClientSerializer(serializers.ModelSerializer):
                                                   **driver_license_image_data)
 
         return client
+
+
 
 
 #TODO дописать обновление с + генерация
@@ -156,6 +158,13 @@ class ClientGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ('id', 'willz_external_id', 'created_at', 'individuals', 'product')
+
+
+class ClientViewSerializer(serializers.ModelSerializer):
+      class Meta:
+        model = Client
+        fields = ('id', 'willz_external_id', 'created_at')
+
 
 class IndividualGetGenerationSerializer(serializers.ModelSerializer):
     generation = GenerationGetSerializer()

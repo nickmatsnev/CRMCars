@@ -43,7 +43,7 @@ schema_view = get_schema_view(
 )
 
 
-router.register(r'api/client', api_client.MainAPI)
+#router.register(r'api/client', api_client.MainAPI)
 router.register(r'api/willz', api_willz.MainAPI)
 router.register(r'api/user', api_user.MainAPI)
 router.register(r'api/product', api_product.MainAPI)
@@ -97,6 +97,10 @@ urlpatterns = [
     path('api/status/', api_status.MainApi.as_view()),
     path('api/test/', api_message.TestApi.as_view()),
 
+    path('api/client/', api_client.ClientApi.as_view()),
+    path('api/client/<int:id>', api_client.ClientWorkApi.as_view()),
+    path('api/client/<int:id>/update_product/', api_client.UpdateProductApi.as_view()),
+
     path('api/module/<slug:module_type>/', api_module.GetModuleApi.as_view()),
     path('api/module/<slug:module_type>/view/', api_module.ViewModuleApi.as_view()),
     path('api/module/<slug:module_type>/view/parameters/', api_module.GetViewParametersApi.as_view()),
@@ -120,24 +124,34 @@ urlpatterns = [
          api_individual.NewGenApi.as_view()),
     path('api/individual/<int:pk>/generations/',
          api_individual.GenApi.as_view()),
-    path('api/individual/<int:pk>/<int:generation>/add_action/',
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/add_action/',
          api_individual.AddActionApi.as_view()),
-    path('api/individual/<int:pk>/<int:generation>/data/parser/values/',
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/values/',
          api_module.GetAllParserValuesAPI.as_view()),
-    path('api/individual/<int:pk>/<int:generation>/data/<slug:module_type>/<slug:module_name>/',
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/<slug:module_type>/<slug:module_name>/',
          api_module.ModuleDataApi.as_view()),
-    path('api/individual/<int:pk>/<int:generation>/data/<slug:module_type>/<slug:module_name>/meta/',
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/<slug:module_type>/<slug:module_name>/meta/',
          api_module.ModuleMetaApi.as_view()),
-    path('api/individual/<int:pk><int:generation>/data/<slug:module_type>/',
+    path('api/individual/<int:pk><slug:generation_id_or_current>/data/<slug:module_type>/',
          api_module.ModuleDataListApi.as_view()),
 
-    path('api/individual/<int:pk>/<int:generation>/data/parser/<slug:module_name>/<slug:where>_<slug:what>/',
-         api_module.GetParserAPI.as_view()),
-    path('api/individual/<int:pk>/<int:generation>/data/parser/<slug:module_name>/values/',api_module.GetParserValuesAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:module_name>/validate_status/',
+         api_module.GetParserValidateStatusAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:module_name>/validate_errors/',
+         api_module.GetParserValidateErrorsAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:module_name>/stopfactor_status/',
+         api_module.GetParserStopFactorStatusAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:module_name>/stopfactor_errors/',
+         api_module.GetParserStopFactorErrorsAPI.as_view()),
 
-    path('api/individual/<int:pk>/<int:generation>/data/parser/<slug:where>/errors',api_module.GetAllParsesErrorsAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:module_name>/values/',
+         api_module.GetParserValuesAPI.as_view()),
 
-    path('api/individual/<int:pk>/<int:generation>/data/scoring/<slug:module_name>/score/',api_module.GetScoringAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/parser/<slug:where>/errors',
+         api_module.GetAllParsesErrorsAPI.as_view()),
+
+    path('api/individual/<int:pk>/<slug:generation_id_or_current>/data/scoring/<slug:module_name>/score/',
+         api_module.GetScoringAPI.as_view()),
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),

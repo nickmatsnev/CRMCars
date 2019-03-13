@@ -27,6 +27,11 @@ def get_all_products_info():
     return items
 
 
+def get_product_name(product_id):
+    queryset = Product.objects.get(id=product_id)
+    return queryset.name
+
+
 def set_module_name(where,name):
     module_id = where[name]
 

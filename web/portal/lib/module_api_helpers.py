@@ -300,3 +300,17 @@ def get_list_info(individual,generation_number,module_type,field_main,field_sub=
                     my_list.append(my_json)
 
     return Response(data=my_list)
+
+
+def get_generation_number(individual_id, generation_id_or_current):
+    generation_number = 0
+
+    if generation_id_or_current.isdigit():
+        generation_number = generation_id_or_current
+    elif generation_id_or_current == 'current':
+        generations = Generation.objects.filter(individual_id=individual_id)
+        for gen in generations:
+            if gen.is_archive == False:
+                generation_number = gen.number
+
+    return generation_number
