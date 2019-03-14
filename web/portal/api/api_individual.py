@@ -13,6 +13,8 @@ from portal.serializers.product_serializer import *
 from portal.serializers.module_serializer import  *
 from portal.lib.module_api_helpers import get_generation_number
 from portal.models import *
+from portal.lib.status_api_helpers import get_list_of_states
+from portal.lib.product_api_helpers import get_product_id_for_individual
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.schemas import ManualSchema
@@ -39,12 +41,7 @@ class MainApi(APIView):
         generation_serializer = GenerationGetSerializer(current_generation, many = False)
         response_data['current_generation'] = generation_serializer.data
 
-        client = individual.client
-        product = Product.objects.get(id=client.product)
-        if individual.primary == True:
-            module_id = product.primary_scoring
-        else:
-            module_id = product.other_scoring
+        module_id = get_product_id_for_individual(pk)
 
         scoring_module = Module.objects.filter(pk=module_id)
         if scoring_module.count() != 0:
@@ -75,6 +72,13 @@ class CurGenApi(APIView):
         if gen_number != 0:
             return Response(data=gen_number)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CurGenStateApi(APIView):
+    @swagger_auto_schema(operation_description='Current generation state',
+                         responses={200: 'list of booleans'})
+    def get(self, request, pk):
+        return Response(data=get_list_of_states(pk))
 
 
 class NewGenApi(APIView):

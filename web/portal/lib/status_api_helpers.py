@@ -95,3 +95,34 @@ def get_clients_by_status(data):
 
     return Response(status=resp_status, data=list_of_clients)
 
+
+def get_list_of_states(individual_id):
+    last_action = get_raw_status(individual_id)
+    list_of_states = {}
+    list_of_states['scoring'] = False
+    list_of_states['prescoring_decline'] = False
+    list_of_states['postscoring_reject'] = False
+    list_of_states['postscoring_accept'] = False
+    list_of_states['generation_next'] = False
+
+    if last_action == 'new':
+        list_of_states['scoring'] = True
+        list_of_states['prescoring_decline'] = True
+
+    elif last_action == 'scoring':
+        #скипаем вообще все
+        return list_of_states
+
+    elif last_action == 'scoring_complete':
+        list_of_states['postscoring_reject'] = True
+        list_of_states['postscoring_accept'] = True
+
+    else:
+        #во всех иных случаях - разрешаем новую генерацию
+        list_of_states['generation_next'] = True
+#           scoring_complete_declined
+#            manual_decline
+#            scoring_complete_accepted
+#            scoring_checks_failed
+
+    return list_of_states

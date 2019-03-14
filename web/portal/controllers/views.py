@@ -86,13 +86,25 @@ def individual_inspect(request, id):
 
 @login_required(login_url="signin")
 def accept_individual(request, id):
-    action_helper.add_action(id, 'scoring_complete_accepted', 'user')
+    response = api_requestor.get("/individual/%s/ops/postscoring_accept/" % id)
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
 def reject_individual(request, id):
-    action_helper.add_action(id, 'scoring_complete_declined', 'user')
+    response = api_requestor.get("/individual/%s/ops/postscoring_reject/" % id)
+    return redirect("clients_list")
+
+
+@login_required(login_url="signin")
+def reject_individual_no_chance(request, id):
+    response = api_requestor.get("/individual/%s/ops/prescoring_reject/" % id)
+    return redirect("clients_list")
+
+
+@login_required(login_url="signin")
+def start_individual(request, id):
+    response = api_requestor.get("/individual/%s/ops/scoring_start/" % id)
     return redirect("clients_list")
 
 

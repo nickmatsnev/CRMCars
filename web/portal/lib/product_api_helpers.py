@@ -32,6 +32,21 @@ def get_product_name(product_id):
     return queryset.name
 
 
+def get_product_id_for_individual(individual_id):
+    module_id = 0
+    individual = Individual.objects.filter(id=individual_id)
+    if individual.count()!=0:
+        individual = Individual.objects.get(id=individual_id)
+        client = individual.client
+        product = Product.objects.get(id=client.id)
+
+        if individual.primary == True:
+            module_id = product.primary_scoring
+        else:
+            module_id = product.other_scoring
+    return module_id
+
+
 def set_module_name(where,name):
     module_id = where[name]
 
