@@ -22,8 +22,8 @@ def get_list_of_names(module_type):
     return list_of_names
 
 
-def get_module_data_by_type_name(pk, module_type, module_name):
-    queryset = ModuleData.objects.filter(individual=pk, name=module_name)
+def get_module_data_by_type_name(pk, module_type, module_name, gen_id_or_cur_gen):
+    queryset = ModuleData.objects.filter(individual=pk, name=module_name, generation=gen_id_or_cur_gen)
     if queryset.count() == 0:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -35,8 +35,8 @@ def get_module_data_by_type_name(pk, module_type, module_name):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def get_module_meta_by_type_name(pk, module_type, module_name):
-    queryset = ModuleData.objects.filter(individual=pk, name=module_name)
+def get_module_meta_by_type_name(pk, module_type, module_name, gen_id_or_cur_gen):
+    queryset = ModuleData.objects.filter(individual=pk, name=module_name, generation=gen_id_or_cur_gen)
     if queryset.count() == 0:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -49,15 +49,16 @@ def get_module_meta_by_type_name(pk, module_type, module_name):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def set_module_data_by_type_name(json_data, pk, module_type, module_name):
+def set_module_data_by_type_name(json_data, pk, module_type, module_name, gen_id_or_cur_gen):
     list_of_names = get_list_of_names(module_type)
 
     if module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=pk, name=module_name)
+        queryset = ModuleData.objects.filter(individual=pk, name=module_name, generation=gen_id_or_cur_gen)
 
         if queryset.count() == 0:
             queryset = ModuleData.objects.create(individual=pk, raw_data=json_data,
-                                                 name=module_name, create_time=datetime.datetime.now())
+                                                 name=module_name, generation=gen_id_or_cur_gen,
+                                                 create_time=datetime.datetime.now())
             response_status = status.HTTP_201_CREATED
         else:
             pk = queryset.get().pk
@@ -72,9 +73,9 @@ def set_module_data_by_type_name(json_data, pk, module_type, module_name):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_module_data_list_by_type(pk, module_type):
+def get_module_data_list_by_type(pk, module_type, gen_id_or_cur_gen):
     list_of_names = get_list_of_names(module_type)
-    queryset = ModuleData.objects.filter(individual=pk).order_by('create_time')
+    queryset = ModuleData.objects.filter(individual=pk, generation=gen_id_or_cur_gen).order_by('create_time')
 
     if queryset.count() == 0:
         return Response(status=status.HTTP_204_NO_CONTENT)

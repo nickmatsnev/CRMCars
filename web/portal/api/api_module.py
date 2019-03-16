@@ -23,31 +23,32 @@ class ModuleDataApi(APIView):
     @swagger_auto_schema(operation_description='Get module data is it is',
                          responses={200: "raw data",
                                     204: "No module"})
-    def get(self, request, pk, module_type, module_name):
-        return get_module_data_by_type_name(pk, module_type, module_name)
+    def get(self, request, pk, module_type, module_name, gen_id_or_cur_gen):
+        return get_module_data_by_type_name(pk, module_type, module_name, get_generation_number(pk, gen_id_or_cur_gen))
 
     @swagger_auto_schema(operation_description='Update/Create module data', request_body=ModuleUpdateDataSerializer,
                          responses={201: "Module created",
                                     202: "Module updated",
                                     400: "No module with requested name"})
-    def post(self, request, pk, module_type, module_name):
-        return set_module_data_by_type_name(request.data, pk, module_type, module_name)
+    def post(self, request, pk, module_type, module_name, gen_id_or_cur_gen):
+        return set_module_data_by_type_name(request.data, pk, module_type, module_name,
+                                            get_generation_number(pk, gen_id_or_cur_gen))
 
 
 class ModuleMetaApi(APIView):
     @swagger_auto_schema(operation_description='Get module data is it is',
                          responses={200: ModuleMetaSerializer,
                                     204: "No module"})
-    def get(self, request, pk, module_type, module_name):
-        return get_module_meta_by_type_name(pk, module_type, module_name)
+    def get(self, request, pk, module_type, module_name, gen_id_or_cur_gen):
+        return get_module_meta_by_type_name(pk, module_type, module_name, get_generation_number(pk, gen_id_or_cur_gen))
 
 
 class ModuleDataListApi(APIView):
     @swagger_auto_schema(operation_description='Get module data is it is',
                          responses={200: ModuleDataListSerializer,
                                     204: "No data"})
-    def get(self, request, pk, module_type):
-        return get_module_data_list_by_type(pk, module_type)
+    def get(self, request, pk, module_type, gen_id_or_cur_gen):
+        return get_module_data_list_by_type(pk, module_type, get_generation_number(pk, gen_id_or_cur_gen))
 
 
 class GetModuleApi(APIView):
