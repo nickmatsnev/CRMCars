@@ -17,10 +17,12 @@
     <div class="container">
 
         <a href="{% url "individual_prescoring_decline" individual.id %}">
-        <button class="btn btn-danger" type="button"> Отказ по заявке</button>
-    </a>
-        <button id="scoring-button" class="btn btn-success" type="button"> Отправить на скоринг</button>
+            <button class="btn btn-primary" type="button" id="prescoring-decline"> Отказ по заявке</button>
+        </a>
+        <button id="scoring-button" class="btn btn-primary" type="button"> Отправить на скоринг</button>
+        <button id="new-generation" class="btn btn-primary" type="button">Новое поколение данных</button>
         <p class="text-xl-left">Продукт</p>
+
 
         <p class="font-weight-bold"></p>
         <p class="glyphicon-header">Статус</p>
@@ -96,8 +98,8 @@
 
 
         <div class="panel-heading">
-        <p><strong>История операций</strong></p>
-    </div>
+            <p><strong>История операций (текущее поколение данных)</strong></p>
+        </div>
 
     <table class="table">
         <tr>
@@ -122,6 +124,29 @@
 
         </tr>
     </table>
+        <div class="panel-heading">
+            <p><strong>Поколения данных</strong></p>
+        </div>
+        <table class="table">
+            <tr>
+                <td>Номер</td>
+                <td>Дата</td>
+                <td>В архиве</td>
+            </tr>
+
+            {% for item in individual.generations %}
+                <tr>
+                    <td>{{ item.number }}</td>
+                    <td>{{ item.create_time }}</td>
+                    <td>{{ item.is_archive }}</td>
+                    <td>
+                        {{ item.payload }}
+                        <!--<button class="btn btn-info" type="menuButton">Просмотр
+                        </button>-->
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
 
     </div>
 

@@ -36,6 +36,9 @@ class MainApi(APIView):
         generations = Generation.objects.filter(individual_id=individual.id)
         response_data['generations_count'] = generations.count()
 
+        generations_serializer = GenerationGetSerializer(generations, many=True)
+        response_data['generations'] = generations_serializer.data
+
         current_generation = generations.filter(number=get_generation_number(individual.id, 'cur_gen')).get()
 
         generation_serializer = GenerationGetSerializer(current_generation, many = False)
@@ -46,11 +49,11 @@ class MainApi(APIView):
         scoring_module = Module.objects.filter(pk=module_id)
         if scoring_module.count() != 0:
             scoring_module = Module.objects.get(pk=module_id)
-            response_data['scoring_model'] = scoring_module.name
-            response_data['scoring_model_id'] = scoring_module.id
+            response_data['scoring_module'] = scoring_module.name
+            response_data['scoring_module_id'] = scoring_module.id
         else:
-            response_data['scoring_model'] = "Not set"
-            response_data['scoring_model_id'] = 0
+            response_data['scoring_module'] = "Not set"
+            response_data['scoring_module_id'] = 0
         return Response(response_data)
 
 

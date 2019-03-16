@@ -52,12 +52,33 @@
                     <article >
     <form method="POST">
         {% csrf_token %}
-    <table >
-        {{ form }}
-    </table>
-  
-    <input type="submit" class="btn btn-primary"     value="Submit" >
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">
+                <h4>Логин пользователя</h4>
+            </label>
+            <input class="form-control" type="text" name="username" maxlength="150" autofocus required id="id_username"
+                   placeholder="Введите логин">
+            <small id="emailHelp" class="form-text text-muted">Необходимо. 150 символов или меньше. Только буквы, цифры
+                и @/./+/-/_.
+            </small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">
+                <h4>Пароль</h4>
+            </label>
+            <input class="form-control" type="password" name="password" required id="id_password" placeholder="Пароль">
+        </div>
+
+
+        <input type="submit" class="btn btn-primary" value="Войти">
+
     </form>
+                        <a href="{% url "signup" %}">
+                            <button class="btn btn-primary">Зарегистрировать пользователя</button>
+                        </a>
 
                         </article>
                         </div>

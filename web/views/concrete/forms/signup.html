@@ -47,11 +47,50 @@
 
                                <form method="POST">
                               {% csrf_token %}
-                       <table>
-                        {{ form }}
-                         </table>
-  
-                              <input type="submit" class="btn btn-primary"  value="Submit" >
+                                   <div class="form-group">
+                                       <label for="exampleInputEmail1"><h4>Логин пользователя</h4></label>
+                                       <input class="form-control" type="text" name="username" maxlength="150" autofocus
+                                              required id="id_username" placeholder="Введите логин">
+                                       <small id="emailHelp" class="form-text text-muted">Необходимо. 150 символов или
+                                           меньше. Только буквы, цифры и @/./+/-/_.
+                                       </small>
+                                   </div>
+
+                                   <div class="form-group">
+                                       <label for="exampleInputEmail1"><h4>Имя</h4></label>
+                                       <input class="form-control" type="text" name="first_name" maxlength="30"
+                                              id="id_first_name" placeholder="Введите имя">
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="exampleInputEmail1"><h4>Фамилия</h4></label>
+                                       <input class="form-control" type="text" name="last_name" maxlength="30"
+                                              id="id_last_name" placeholder="Введите фамилию">
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="exampleInputEmail1"><h4>Почтовый адрес</h4></label>
+                                       <input class="form-control" type="email" name="email" maxlength="254" required
+                                              id="id_email" placeholder="Введите адрес электронной почты">
+
+                                       <small id="emailHelp" class="form-text text-muted">Мы используем вашу почту
+                                           только для верификации.
+                                       </small>
+                                   </div>
+
+                                   <div class="form-group">
+                                       <label for="exampleInputPassword1"><h4>Пароль</h4></label>
+                                       <input class="form-control" type="password" name="password1" required
+                                              id="id_password1" placeholder="Пароль">
+                                   </div>
+                                   <div class="form-group">
+                                       <label for="exampleInputPassword1"><h4>Подтверждение пароля</h4></label>
+                                       <input class="form-control" type="password" name="password2" required
+                                              id="id_password2" placeholder="Подтверждение пароля">
+                                       <small id="emailHelp" class="form-text text-muted">Введите тот же пароль для
+                                           верификации.
+                                       </small>
+                                   </div>
+
+                                   <input type="submit" class="btn btn-primary" value="Зарегистрировать">
                          </form>
 
                         </article>

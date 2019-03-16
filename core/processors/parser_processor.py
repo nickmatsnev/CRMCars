@@ -35,7 +35,7 @@ class ParserProcessor(BasicProcess):
         source_module_name = parser_m.get_module_source()
 
         source_raw_data = api_requestor.request(
-            '/individual/{0}/data/{1}/{2}'.format(individual_id, "source", source_module_name))
+            '/individual/{0}/cur_gen/data/{1}/{2}'.format(individual_id, "source", source_module_name))
 
         individual_json = api_requestor.request('/individual/{0}'.format(individual_id))
 
@@ -47,7 +47,7 @@ class ParserProcessor(BasicProcess):
         parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
         api_requestor.post(
-            '/individual/{0}/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
+            '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
 
         action_helper.add_action_individual(individual_id, "scoring", "parsers_processor",
                                             payload="Обработаны данные от источника: {0}".format(parser_m_name))

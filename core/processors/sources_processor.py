@@ -34,9 +34,10 @@ class SourcesProcessor(BasicProcess):
 
             raw_data = ast.literal_eval(json.dumps(data))
             api_requestor.post(
-                '/individual/{0}/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()), raw_data)
+                '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()),
+                raw_data)
 
-            action_helper.add_action_individual(individual_id, "scoring", "sources_processor",
+            action_helper.add_action(individual_id, "scoring", "sources_processor",
                                                 payload="Загружен источник: {0}".format(source_m.get_module_name()))
 
             self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,

@@ -126,7 +126,7 @@ urlpatterns = [
          api_status.PreReject.as_view()),
     path('api/individual/<int:pk>/ops/scoring_start/',
          api_status.ScoringStart.as_view()),
-    path('api/individual/<int:pk>/ops/generation_next /',
+    path('api/individual/<int:pk>/ops/generation_next/',
          api_individual.NewGenApi.as_view()),
     path('api/individual/<int:pk>/current_generation/',
          api_individual.CurGenApi.as_view()),
@@ -142,7 +142,7 @@ urlpatterns = [
          api_module.ModuleDataApi.as_view()),
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/meta/',
          api_module.ModuleMetaApi.as_view()),
-    path('api/individual/<int:pk><slug:gen_id_or_cur_gen>/data/<slug:module_type>/',
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/',
          api_module.ModuleDataListApi.as_view()),
 
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/<slug:module_name>/validate_status/',

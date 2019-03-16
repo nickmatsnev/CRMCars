@@ -27,18 +27,27 @@ $(document).ready(function () {
     });
 
     $("#scoring-button").click(function () {
-
-
-        $.ajax("/api/message/", {
-            data: JSON.stringify({
-                "message_type": "individual_scoring_process",
-                "body": JSON.stringify({"individual_id": individual_id, "product_id": product_id})
-            }),
-            contentType: 'application/json',
-            type: 'POST'
+        $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {
         });
-
         alert('Клиент отправлен на скоринг.');
     });
+
+    if (typeof individual_id != "undefined") {
+        $.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {
+            if (data['scoring'] == false)
+                $("#scoring-button").addClass("disabled");
+            if (data['prescoring_decline'] == false)
+                $("#prescoring-decline").addClass("disabled");
+            if (data['generation_next'] == false)
+                $("#new-generation").addClass("disabled");
+
+
+            var items = [];
+            //$.each(data, function(key, val) {
+            //  items.push('<li id="' + key + '">' + val + '</li>');
+            //});
+        });
+    }
+
 
 });

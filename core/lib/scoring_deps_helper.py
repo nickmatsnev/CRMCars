@@ -2,8 +2,8 @@ from lib import api_requestor
 from lib.modules import ScoringModule, ParserModule, SourceModule
 
 
-def get_sources_deps(product_id):
-    scoring_m = get_scoring_module(product_id)
+def get_sources_deps(scoring_module_id):
+    scoring_m = get_scoring_module(scoring_module_id)
 
     deps = scoring_m.get_dependencies()
 
@@ -30,8 +30,6 @@ def get_parser_deps(product_id):
     return list(set(parser_modules))  # unique list
 
 
-def get_scoring_module(product_id):
-    product = api_requestor.request('/product/{0}/'.format(product_id))
-    primary_scoring_module_id = product['primary_scoring']
+def get_scoring_module(primary_scoring_module_id):
     primary_scoring = api_requestor.request('/module/scoring/{0}/'.format(primary_scoring_module_id))
     return ScoringModule(primary_scoring['path'])
