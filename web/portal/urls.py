@@ -157,8 +157,10 @@ urlpatterns = [
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/<slug:module_name>/values/',
          api_module.GetParserValuesAPI.as_view()),
 
-    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/<slug:where>/errors',
-         api_module.GetAllParsesErrorsAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/validate/errors/',
+         api_module.GetParserValidateAllErrorsAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/stopfactor/errors/',
+         api_module.GetParserStopFactorAllErrorsAPI.as_view()),
 
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/scoring/<slug:module_name>/score/',
          api_module.GetScoringAPI.as_view()),
