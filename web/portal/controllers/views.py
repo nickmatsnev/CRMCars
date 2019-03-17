@@ -31,6 +31,13 @@ def clients_list(request):
 
 
 @login_required(login_url="signin")
+def clients_list_filtered(request, status_filter):
+    items = api_requestor.request('/client/{0}/'.format(status_filter))
+
+    return render(request, 'concrete/clients_list.html', {'items': items})
+
+
+@login_required(login_url="signin")
 def users_list(request):
   users = api_requestor.request('/user/')
 
@@ -53,15 +60,15 @@ def individual_scoring(request, id):
 
     individual_id = api_requestor.request('/individual/{0}'.format(id))
 
-    scoring = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "scoring"))['raw_data']
+    # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
+    parser_values = api_requestor.request(
+        '/individual/{0}/cur_gen/data/parser/values'.format(id))
+    parser_validate_errors = api_requestor.request(
+        '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
+    parser_stopfactor_errors = api_requestor.request(
+        '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
 
-    parameters = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_parameters"))[
-        'raw_data']
 
-    validate = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "parser_validate"))[
-        'raw_data']
-    val = ast.literal_eval(validate)
-    checks = json.dumps(val)
     return render(request, 'concrete/client_scoring.html',
                   {'id': id, 'score': scoring, 'checks': checks, 'raw_data': smart_text(parameters, "utf-8"),
                    'disabled': 'disabled'})
