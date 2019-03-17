@@ -32,6 +32,7 @@ def get_all_clients_info(filter_status=''):
 def get_all_clients_status():
     my_list = {}
     names_dic = get_dictionary_of_status()
+    counter = 0
 
     for key_el in  names_dic.keys():
         element = {}
@@ -44,6 +45,7 @@ def get_all_clients_status():
     for client in queryset:
         client_info = get_current_client_info(client.id)
         status_name = client_info['primary_individual']['status']
+        counter += 1
 
         key_in_list = False
         for key_el in names_dic.keys():
@@ -55,7 +57,10 @@ def get_all_clients_status():
         if key_in_list == False:
             my_list['unknown']['count'] += 1
 
-    return my_list
+    final_list = {}
+    final_list['total'] = counter
+    final_list['data'] = my_list
+    return final_list
 
 
 def get_current_client_info(client_id):
