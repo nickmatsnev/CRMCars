@@ -9,12 +9,22 @@ from portal.serializers.client_serializer import *
 from portal.serializers.product_serializer import *
 from portal.lib.status_api_helpers import get_status
 from portal.lib.product_api_helpers import get_product_name
+from portal.lib.status_api_helpers import get_status_name
 
-def get_all_clients_info():
+
+def get_all_clients_info(filter_status=''):
     queryset = Client.objects.all()
     clients_list = []
     for client in queryset:
-        clients_list.append(get_current_client_info(client.id))
+        if filter_status == '':
+            clients_list.append(get_current_client_info(client.id))
+        else:
+            client_info = get_current_client_info(client.id)
+            renamed_status = get_status_name(filter_status)
+
+            if client_info['primary_individual']['status'] == renamed_status:
+                clients_list.append(get_current_client_info(client.id))
+
     return clients_list
 
 

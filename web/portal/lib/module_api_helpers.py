@@ -5,6 +5,7 @@ from portal.models import Module
 
 sys.path.append('../../')
 sys.path.append('..')
+import os
 from rest_framework import status
 from portal.lib.module_serializer_helper import get_read_serializer_by_module_type, get_normal_serializer_by_module_type
 from core.lib import module_save_helper
@@ -142,7 +143,7 @@ def save_module(request, module_type):
     response_status = status.HTTP_202_ACCEPTED
     response_data = ""
 
-    dest_path = get_path_by_module_type(module_type)
+    dest_path = os.path.normpath(get_path_by_module_type(module_type))
     path = module_save_helper.save_file_from_request(request, dest_path)
     serializer_class = get_normal_serializer_by_module_type(module_type)
     serializer_data = module_save_helper.prepare_module_item(path)

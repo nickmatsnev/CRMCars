@@ -98,6 +98,7 @@ urlpatterns = [
     path('api/test/', api_message.TestApi.as_view()),
 
     path('api/client/', api_client.ClientApi.as_view()),
+    path('api/client/<slug:filter_status>/', api_client.ClientFilterApi.as_view()),
     path('api/client/<int:id>', api_client.ClientWorkApi.as_view()),
     path('api/client/<int:id>/update_product/', api_client.UpdateProductApi.as_view()),
 

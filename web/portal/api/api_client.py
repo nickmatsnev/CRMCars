@@ -52,6 +52,14 @@ class ClientApi(APIView):
         return post_client(request.data)
 
 
+class ClientFilterApi(APIView):
+    @swagger_auto_schema(operation_description='get all clients with filter',
+                         responses={200: ClientSerializer(many=True),
+                                    404: 'No data'})
+    def get(self, request, filter_status):
+        return Response(get_all_clients_info(filter_status))
+
+
 class ClientWorkApi(APIView):
     @swagger_auto_schema(operation_description='get client',
                          responses={200: ClientSerializer,

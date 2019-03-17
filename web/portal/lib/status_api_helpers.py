@@ -13,24 +13,28 @@ from portal.serializers.status_serializer import *
 from portal.lib.module_api_helpers import get_generation_number
 
 
-def get_status(individual_id):
-    last_action = get_raw_status(individual_id)
-
-    if last_action == 'scoring_complete_declined':
+def get_status_name(status_name_internal):
+    if status_name_internal == 'scoring_complete_declined':
         return 'Отказано'
-    if last_action == 'scoring_complete_accepted':
+    if status_name_internal == 'scoring_complete_accepted':
         return 'Одобрено'
-    if last_action == 'new':
+    if status_name_internal == 'new':
         return 'Новый'
-    if last_action == 'manual_decline':
+    if status_name_internal == 'manual_decline':
         return 'Отказано до скоринга'
-    if last_action == 'scoring':
+    if status_name_internal == 'scoring':
         return 'Скоринг обрабатывается'
-    if last_action == 'scoring_complete':
+    if status_name_internal == 'scoring_complete':
         return 'Ожидает согласования'
-    if last_action == 'scoring_checks_failed':
+    if status_name_internal == 'scoring_checks_failed':
         return 'Ошибка на этапе пре-скоринга'
     return "Неизвестно"
+
+
+def get_status(individual_id):
+    last_action = get_raw_status(individual_id)
+    return get_status_name(last_action)
+
 
 # op_action = new -> Новый
 # op_action = manual_decline -> Отказано до скоринга
