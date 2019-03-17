@@ -10,6 +10,7 @@ from portal.serializers.product_serializer import *
 from portal.lib.status_api_helpers import get_status
 from portal.lib.product_api_helpers import get_product_name
 from portal.lib.status_api_helpers import get_status_name
+from portal.lib.status_api_helpers import get_dictionary_of_status
 
 
 def get_all_clients_info(filter_status=''):
@@ -29,18 +30,32 @@ def get_all_clients_info(filter_status=''):
 
 
 def get_all_clients_status():
-    list_of_status = {}
+    my_list = {}
+    names_dic = get_dictionary_of_status()
+
+    for key_el in  names_dic.keys():
+        element = {}
+        element['name'] = names_dic.get(key_el)
+        element['count'] = 0
+        my_list[key_el] = element
+
     queryset = Client.objects.all()
 
     for client in queryset:
         client_info = get_current_client_info(client.id)
         status_name = client_info['primary_individual']['status']
-        if status_name in list_of_status:
-            list_of_status[status_name] += 1
-        else:
-            list_of_status[status_name] = 1
 
-    return list_of_status
+        key_in_list = False
+        for key_el in names_dic.keys():
+            if names_dic.get(key_el) == status_name:
+                my_list[key_el]['count'] += 1
+                key_in_list = True
+                break
+
+        if key_in_list == False:
+            my_list['unknown']['count'] += 1
+
+    return my_list
 
 
 def get_current_client_info(client_id):

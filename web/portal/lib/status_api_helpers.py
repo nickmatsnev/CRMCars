@@ -12,23 +12,27 @@ from portal.serializers.product_serializer import *
 from portal.serializers.status_serializer import *
 from portal.lib.module_api_helpers import get_generation_number
 
+def get_dictionary_of_status():
+    my_dic = {}
+    my_dic['scoring_complete_declined']='Отказано'
+    my_dic['scoring_complete_accepted']='Одобрено'
+    my_dic['new']='Новый'
+    my_dic['manual_decline']='Отказано до скоринга'
+    my_dic['scoring']='Скоринг обрабатывается'
+    my_dic['scoring_complete']= 'Ожидает согласования'
+    my_dic['scoring_checks_failed']= 'Ошибка на этапе пре-скоринга'
+    my_dic['unknown']= 'Неизвестно'
+
+    return my_dic
+
 
 def get_status_name(status_name_internal):
-    if status_name_internal == 'scoring_complete_declined':
-        return 'Отказано'
-    if status_name_internal == 'scoring_complete_accepted':
-        return 'Одобрено'
-    if status_name_internal == 'new':
-        return 'Новый'
-    if status_name_internal == 'manual_decline':
-        return 'Отказано до скоринга'
-    if status_name_internal == 'scoring':
-        return 'Скоринг обрабатывается'
-    if status_name_internal == 'scoring_complete':
-        return 'Ожидает согласования'
-    if status_name_internal == 'scoring_checks_failed':
-        return 'Ошибка на этапе пре-скоринга'
-    return "Неизвестно"
+    my_dic = get_dictionary_of_status()
+
+    if status_name_internal in my_dic.keys():
+        return my_dic.get(status_name_internal)
+    else:
+        return my_dic.get('unknown')
 
 
 def get_status(individual_id):
