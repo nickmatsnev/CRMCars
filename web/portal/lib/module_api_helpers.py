@@ -253,7 +253,7 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
     list_of_names = get_list_of_names(module_type)
 
     if module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number)
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number, name=module_name)
         if queryset.count() == 0:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -261,7 +261,7 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
         serializer_class = ModuleDataSerializer(queryset, many=False)
         my_data = {}
         try:
-            json_data = json.loads(serializer_class.data['raw_data'])
+            json_data = ast.literal_eval(serializer_class.data['raw_data'])
             if field_sub == '':
                 my_data = json_data[field_main]
             else:
@@ -277,17 +277,17 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
 
 def get_list_info(individual,generation_number,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
-    my_list = []
-
+    my_list = {}
+    # TODO Леша тут не было модуль тайп
     for module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number)
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number, name=module_name)
 
         if queryset.count() != 0:
             queryset = queryset.get()
             serializer_class = ModuleDataSerializer(queryset, many=False)
             my_data = {}
             try:
-                json_data = json.loads(serializer_class.data['raw_data'])
+                json_data = ast.literal_eval((serializer_class.data['raw_data']))
                 if field_sub == '':
                     my_data = json_data[field_main]
                 else:
@@ -296,10 +296,7 @@ def get_list_info(individual,generation_number,module_type,field_main,field_sub=
                 my_data = {}
             finally:
                 if my_data != {}:
-                    my_json = {}
-                    my_json[module_name] = my_data
-                    my_list.append(my_json)
-
+                    my_list[module_name] = my_data
     return Response(data=my_list)
 
 

@@ -38,7 +38,7 @@ def get_product_id_for_individual(individual_id):
     if individual.count()!=0:
         individual = Individual.objects.get(id=individual_id)
         client = individual.client
-        product = Product.objects.get(id=client.id)
+        product = Product.objects.get(id=client.product)
 
         if individual.primary == True:
             module_id = product.primary_scoring

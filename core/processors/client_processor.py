@@ -47,14 +47,10 @@ class ClientProcessor(BasicProcess):
                 response = requests.post(API_ROOT_URL + '/client/{0}/update_product/'.format(client_id), data=json_data,
                                          headers={'Content-Type': 'application/json'})
 
-                action = {}
-                action['processor'] = self.get_name()
-                action['action_type'] = 'new'
-
-                json_data = json.dumps(action)
                 for individual in client['individuals']:
-                    response = requests.post(API_ROOT_URL +'/individual/{0}/cur_gen/add_action/'.format(individual['id']),
-                                             json_data, headers = {'Content-Type': 'application/json'})
+                    action_helper.add_action(individual['id'], 'new', self.get_name(),
+                                             payload="Клиент загружен из системы WillZ")
+
 
                 print(" client is processed")
 

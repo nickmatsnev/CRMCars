@@ -51,7 +51,7 @@ def individual_prescoring_decline(request, id):
 def individual_scoring(request, id):
     #   res = get_scorista()
 
-    individual_id = api_requestor.request('/client/{0}/view/'.format(id))['individual']['id']
+    individual_id = api_requestor.request('/individual/{0}'.format(id))
 
     scoring = api_requestor.request('/individual/{0}/module_data/{1}/'.format(individual_id, "scoring"))['raw_data']
 

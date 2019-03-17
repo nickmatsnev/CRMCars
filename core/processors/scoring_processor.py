@@ -13,6 +13,8 @@ sys.path.append('../../')
 from lib import api_requestor, scoring_deps_helper, action_helper
 import pandas
 
+from lib.scoring_value_converter import convert
+
 from lib.process import *
 from lib.constants import *
 from lib.modules import *
@@ -45,25 +47,27 @@ class ScoringProcessor(BasicProcess):
 
         body_parsers = {"individual_id": individual_id, "parser": parsers_deps[0]}
 
-        action_helper.add_action(individual_id, "scoring", "parsers_processor")
+        action_helper.add_action(individual_id, "scoring", "parsers_processor",
+                                 payload="Начат процесс парсинга источника")
         self._publish_message(constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE, json.dumps(body_parsers))
 
     def __finalize_scoring(self, body):
         individual_data, individual_id = self.get_individual_data_for_message(body)
 
-        action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
-                                            payload="Завершен процесс скоринга")
 
         score_res = scoring_deps_helper.get_scoring_module(individual_data['scoring_module_id'])
 
         raw_data = api_requestor.request('/individual/{0}/cur_gen/data/parser/values/'.format(individual_id))
 
-        parsers_parameters = ast.literal_eval(raw_data)
+        parsers_parameters = convert(raw_data)
 
         res = score_res.get_score(parsers_parameters)
 
-        api_requestor.post('/individual/{0}/cur_gen/data/{1}/'.format(individual_id, "scoring"),
-                           json.dumps(({"score": res})))
+        api_requestor.post(
+            '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "scoring", score_res.get_module_name()),
+            json.dumps(({"Score": res})))
+        action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
+                                 payload="Завершен процесс скоринга")
 
         print("scoring")
 

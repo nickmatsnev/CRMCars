@@ -29,7 +29,13 @@ $(document).ready(function () {
     $("#scoring-button").click(function () {
         $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {
         });
-        alert('Клиент отправлен на скоринг.');
+        //$.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {
+        //  if (data['scoring'] == true)
+        //     $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {
+        //  });
+        //alert('Клиент отправлен на скоринг.');
+        //});
+
     });
 
     if (typeof individual_id != "undefined") {
@@ -40,6 +46,8 @@ $(document).ready(function () {
                 $("#prescoring-decline").addClass("disabled");
             if (data['generation_next'] == false)
                 $("#new-generation").addClass("disabled");
+            if (data['postscoring_accept'] == false)
+                $("#scoring-results").addClass("disabled");
 
 
             var items = [];

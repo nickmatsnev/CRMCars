@@ -39,10 +39,12 @@
                         <td><big>{{ item.primary_individual.last_name }} {{ item.primary_individual.first_name }}</big>
                         </td>
                         <td><big>{{ item.primary_individual.status }}</big></td>
-                        <td style="text-align: right"><a href="{% url "individual_inspect" item.id %}">
+                        <td style="text-align: right"><a
+                                href="{% url "individual_inspect" item.primary_individual.id %}">
                             <button class="btn btn-success">Карточка клиента</button>
                         </a></td>
-                        <td style="text-align: right"><a href="{% url "individual_scoring" item.id %}">
+                        <td style="text-align: right"><a
+                                href="{% url "individual_scoring" item.primary_individual.id %}">
                             <div class="btn btn-danger">Скоринг</div>
                         </a></td>
                     </tr>

@@ -52,7 +52,7 @@ class ScoringStart(APIView):
     @swagger_auto_schema(operation_description='Send command ScoringStart', responses={201: NewActionSerializer,
                                                                                      400: 'Bad request'})
     def get(self, request, pk):
-        action = action_helper.add_action(pk, 'scoring', 'user')
+        action = action_helper.add_action(pk, 'scoring', 'user', payload="Пользователь запустил процесс скоринга")
 
         resp = json.dumps({'message_type': "individual_scoring_process",
                            'body': json.dumps({"individual_id": pk, "product_id": get_product_id_for_individual(pk)})})

@@ -49,8 +49,8 @@ class ParserProcessor(BasicProcess):
         api_requestor.post(
             '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
 
-        action_helper.add_action_individual(individual_id, "scoring", "parsers_processor",
-                                            payload="Обработаны данные от источника: {0}".format(parser_m_name))
+        action_helper.add_action(individual_id, "scoring", "parsers_processor",
+                                 payload="Обработаны данные от источника: {0}".format(parser_m_name))
 
         self._publish_message(constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE,
                               json.dumps({"individual_id": individual_id}))
