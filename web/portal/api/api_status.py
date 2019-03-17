@@ -11,6 +11,8 @@ from core.lib.modules import ScoringModule, SourceModule
 from portal.models import *
 from core.lib import action_helper
 from portal.lib.product_api_helpers import get_product_id_for_individual
+from django.contrib.auth.models import User
+
 
 class MainApi(APIView):
     @swagger_auto_schema(operation_description='Get table of statuses', responses={200: StatusSerializer,
@@ -28,16 +30,18 @@ class MainApi(APIView):
 
 
 class PostReject(APIView):
-        @swagger_auto_schema(operation_description='Send command PostReject',responses={201: NewActionSerializer,
-                                    400: 'Bad request'})
+        @swagger_auto_schema(operation_description='Send command PostReject',#request_body=GetUserSerializer,
+                             responses={201: NewActionSerializer, 400: 'Bad request'})
         def get(self, request,pk):
+            #my_json = request.data
             return Response(action_helper.add_action(pk, 'scoring_complete_declined', 'user'))
 
 
 class PostAccept(APIView):
-        @swagger_auto_schema(operation_description='Send command PostAccept', responses={201: NewActionSerializer,
-                                    400: 'Bad request'})
+        @swagger_auto_schema(operation_description='Send command PostAccept', #request_body=GetUserSerializer,
+                             responses={201: NewActionSerializer, 400: 'Bad request'})
         def get(self, request, pk):
+            #my_json = request.data
             return Response(action_helper.add_action(pk, 'scoring_complete_accepted', 'user'))
 
 
@@ -46,6 +50,7 @@ class PreReject(APIView):
                          responses={201: NewActionSerializer, 400: 'Bad request'})
     def post(self, request, pk):
         my_json = request.data
+        #User.objects.get(my_json['user_id'])
         return Response(action_helper.add_action(pk, 'manual_decline', 'user', my_json['payload']))
 
 

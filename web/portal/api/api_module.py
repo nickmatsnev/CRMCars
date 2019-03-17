@@ -77,9 +77,9 @@ class GetViewParametersApi(APIView):
 class UploadModuleApi(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    @swagger_auto_schema(operation_description='Module upload', responses={202: "Module uploaded",
+    @swagger_auto_schema(operation_description='Module upload', responses={201: "Module uploaded",
                                                                            400: "Unknown error",
-                                                                           403: "Module is already uploaded"})
+                                                                           202: "Module updated"})
     def post(self, request, module_type):
         return save_module(request, module_type)
 
