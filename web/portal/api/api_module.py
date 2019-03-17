@@ -224,3 +224,12 @@ class GetScoringAPI(APIView):
                                     400: 'No module name'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
         return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'scoring', module_name, 'Score')
+
+
+class GetAllScoringAPI(APIView):
+    @swagger_auto_schema(operation_description='get all score',
+                         responses={200: 'Array',
+                                    204: 'No data'})
+    def get(self, request, gen_id_or_cur_gen, pk):
+        return get_all_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'scoring', 'Score')
+

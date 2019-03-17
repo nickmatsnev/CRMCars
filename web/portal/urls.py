@@ -98,6 +98,7 @@ urlpatterns = [
     path('api/test/', api_message.TestApi.as_view()),
 
     path('api/client/', api_client.ClientApi.as_view()),
+    path('api/client/status/', api_client.ClientGetStatusApi.as_view()),
     path('api/client/<slug:filter_status>/', api_client.ClientFilterApi.as_view()),
     path('api/client/<int:id>', api_client.ClientWorkApi.as_view()),
     path('api/client/<int:id>/update_product/', api_client.UpdateProductApi.as_view()),
@@ -139,12 +140,11 @@ urlpatterns = [
          api_individual.AddActionApi.as_view()),
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/values/',
          api_module.GetAllParserValuesAPI.as_view()),
-    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/',
-         api_module.ModuleDataApi.as_view()),
-    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/meta/',
-         api_module.ModuleMetaApi.as_view()),
-    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/',
-         api_module.ModuleDataListApi.as_view()),
+
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/scoring/<slug:module_name>/score/',
+         api_module.GetScoringAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/scoring/score/',
+         api_module.GetAllScoringAPI.as_view()),
 
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/<slug:module_name>/validate_status/',
          api_module.GetParserValidateStatusAPI.as_view()),
@@ -163,8 +163,14 @@ urlpatterns = [
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/stopfactor/errors/',
          api_module.GetParserStopFactorAllErrorsAPI.as_view()),
 
-    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/scoring/<slug:module_name>/score/',
-         api_module.GetScoringAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/',
+         api_module.ModuleDataApi.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/meta/',
+         api_module.ModuleMetaApi.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/',
+         api_module.ModuleDataListApi.as_view()),
+
+
 
     url(r'clients_list', clients_list,name="clients_list"),
     url(r'users_list', users_list, name="users_list"),

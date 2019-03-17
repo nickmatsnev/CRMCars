@@ -276,6 +276,32 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def get_all_info(individual, generation_number,module_type,field_main,field_sub=''):
+    list_of_info = []
+    list_of_names = get_list_of_names(module_type)
+
+    for module_name in list_of_names:
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number, name=module_name)
+        if queryset.count() != 0:
+            queryset = queryset.get()
+            serializer_class = ModuleDataSerializer(queryset, many=False)
+
+            my_data = {}
+            try:
+                json_data = ast.literal_eval(serializer_class.data['raw_data'])
+                if field_sub == '':
+                    my_data = json_data[field_main]
+                else:
+                    my_data = json_data[field_main][field_sub]
+            except:
+                my_data = {}
+            finally:
+                if my_data != {}:
+                    list_of_info.append(my_data)
+
+    return Response(list_of_info)
+
+
 def get_list_info(individual,generation_number,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
     my_list = {}
