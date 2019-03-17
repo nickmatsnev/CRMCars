@@ -61,7 +61,11 @@ def individual_scoring(request, id):
     #   res = get_scorista()
 
     individual_id = api_requestor.request('/individual/{0}'.format(id))
-
+    sources_done = api_requestor.request("/individual/{0}/cur_gen/data/source/".format(id))
+    source_names = []
+    for item in sources_done:
+        source_names.append(item)
+    score = api_requestor.request("/individual/{0}/cur_gen/data/scoring/score/".format(id))
     # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
     parser_values = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/values'.format(id))
@@ -70,10 +74,9 @@ def individual_scoring(request, id):
     parser_stopfactor_errors = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
 
-
-    return render(request, 'concrete/client_scoring.html',
-                  {'id': id, 'score': scoring, 'checks': checks, 'raw_data': smart_text(parameters, "utf-8"),
-                   'disabled': 'disabled'})
+    return render(request, 'concrete/individual_scoring.html',
+                  {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
+                   'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score});
 
 @login_required(login_url="signin")
 def source(request):

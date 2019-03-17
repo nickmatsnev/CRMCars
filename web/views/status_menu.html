@@ -1,6 +1,9 @@
+<a href="{% url "clients_list" %}">
+    <button class="btn btn-success">Все ({{ status_list.total }})</button>
+</a>
 
 
-{% for key,value in status_list.items %}
+{% for key,value in status_list.data.items %}
 
     <a href="{% url "clients_list_filtered" key %}">
         <button class="btn btn-success">{{ value.name }} ({{ value.count }})</button>

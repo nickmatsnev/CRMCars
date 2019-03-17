@@ -11,11 +11,11 @@
             <div class="item1"><h1>Оценка заявки № {{ id }}</h1></div>
             <div class="item1"><p>{{ individual.last_name }} <br> Продукт: Willz</p></div>
         </div>
-        <a href="{% url "accept_client" id %}">
+        <a href="{% url "accept_individual" id %}">
             <button class="btn btn-success" type="button">Одобрить
             </button>
         </a></td>
-        <a href="{% url "reject_client" id %}">
+        <a href="{% url "reject_individual" id %}">
             <button class="btn btn-danger" type="button">Отказать
             </button>
         </a></td>
@@ -23,9 +23,9 @@
 
         <div style=" border:1px solid lightgray;" id="" class="container">
             <big>Данные</big>
-
-            <p>Скориста <strong style="color:green">Успешно </strong></p>
-
+            {% for item in sources %}
+                <p>{{ item }} <strong style="color:green">Успешно </strong></p>
+            {% endfor %}
         </div>
 
         <div style=" border:1px solid lightgray;" id="" class="container">
@@ -39,31 +39,39 @@
         </div>
 
         <div style=" border:1px solid lightgray;" class="container">
-            <big style="color:red">Стоп-Факторы</big>
+            <big style="color:red">Валидации</big>
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
                 <p>
-                    {% for check in checks %}
-                        <p>{{ check.decription }}</p>
+                    {% for stopfactor in stopfactors.items %}
+                        <p>{{ stopfactor }}</p>
                     {% endfor %}
                 </p>
                 </tbody>
 
             </table>
-            {#                <p>#}
-            {#                    Оценка клиента: <strong style="color:green">80 баллов </strong></p>#}
-            {#                <p>Задолженность по ФССП в размере 1000 рублей. Штрафы ГИБДД в размере 2000 рублей.</p>#}
-            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Подтвердить </button>#}
-            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  Отказать </button>#}
-            {#            </div>#}
 
+        </div>
+        <div style=" border:1px solid lightgray;" class="container">
+            <big style="color:red">Стоп-Факторы</big>
+            <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
+
+                <tbody>
+                <p>
+                    {% for check in validate.items %}
+                        <p>{{ check }}</p>
+                    {% endfor %}
+                </p>
+                </tbody>
+
+            </table>
 
         </div>
         <div style=" border:1px solid lightgray;" id="" class="container">
             <big style="color:red">Сырые данные</big>
             <div style="height:200px; width:570px;border:2px solid #5e5e5e;font:16px/26px Georgia, Garamond, Serif;overflow-y: scroll;">
-                {{ raw_data }}</div>
+                {{ values }}</div>
 
         </div>
     </div>

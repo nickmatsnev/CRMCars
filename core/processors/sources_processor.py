@@ -24,7 +24,7 @@ class SourcesProcessor(BasicProcess):
         def __process_sources(self, body):
             input_message = json.loads(body)
             individual_id = input_message['individual_id']
-            source_name = input_message['source']  # TODO fixxx to sources
+            source_name = input_message['source']
 
             source = api_requestor.request('/module/source/{0}/'.format(source_name))[0]
             source_m = SourceModule(source['path'])

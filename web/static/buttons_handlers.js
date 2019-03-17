@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
     function csrfSafeMethod(method) {
@@ -24,6 +25,13 @@ $(document).ready(function () {
         });
 
         alert('Отказ по клиенту сохранен.');
+    });
+
+    $(".show_payload").click(function () {
+        var data = jQuery(this).attr("custom_tag");
+        $("#modal-content-main").html(data);
+        $('#myModal').modal('show');
+
     });
 
     $("#scoring-button").click(function () {

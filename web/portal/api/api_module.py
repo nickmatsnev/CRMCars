@@ -207,14 +207,14 @@ class GetParserValidateAllErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors validate',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', 'validate', 'errors')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'Validate', 'errors')
 
 
 class GetParserStopFactorAllErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors stopfactor',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', 'stopfactor', 'errors')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'StopFactor', 'errors')
 
 
 class GetScoringAPI(APIView):
