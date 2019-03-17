@@ -1,87 +1,59 @@
 {% extends "../base.html" %}
 
 
+{% block head %}
 
+{% endblock %}
 {% block title %}
    Список заявок
 {% endblock %}
 {% block content %}
+
     {% load status_menu %}
     {% status_menu statuses %}
-            <h1 class="panel-title">Заявки</h1>
+    <div class="grid-container">
+        <div class="item1"><h4>Все заявки: 5 {{ status_list.total }}</h4></div>
+    <div class="item1">
+        {% for key,value in status_list.data.items %}
+    <a href="{% url "clients_list_filtered" key %}">
+        <button style="margin: 3px; padding: 3px; width: 226px;" class="btn btn-success">{{ value.name }} ({{ value.count }})</button>
+    </a>
+{% endfor %}
+    </div>
+    </div>
 
-    <br/>
     {% for item in items %}
-        <article>
             <h1 class="panel-title">Учётная карточка #{{ item.id }}</h1><strong>Создана</strong>
-            <h4>{{ item.created_at }}</h4>
+            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>
             <div class="container">
-                <table class="table">
-                    <tr>
-                        <td><strong>ID</strong><h4>Willz</h4></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align: right"><strong>Продукт</strong><h4>{{ item.product }}</h4></td>
-                    </tr>
+                <table style="border: solid 2px black" class="table table-bordered">
+
                     <tr>
                         <td><strong>Основное физ.лицо</strong></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <!-- фор имя_айди ин имя_лист -->
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><big>{{ item.primary_individual.last_name }} {{ item.primary_individual.first_name }}</big>
-                        </td>
-                        <td><big>{{ item.primary_individual.status }}</big></td>
-                        <td style="text-align: right"><a
+
+                        <td><big>Клиент: {{ item.primary_individual.last_name }} {{ item.primary_individual.first_name }}</big></td>
+                        <td><big>Статус: {{ item.primary_individual.status }}</big></td>      <td style="text-align: right"><a
                                 href="{% url "individual_inspect" item.primary_individual.id %}">
 
                             <button class="btn btn-success">Карточка клиента</button>
                         </a></td>
-                        <td style="text-align: right"><a
-                                href="{% url "individual_scoring" item.primary_individual.id %}">
-                            <div class="btn btn-danger {% if not item.primary_individual.status_buttons.results %} disabled {% endif %}">
-                                Скоринг
-                            </div>
-                        </a></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Дополнительные водители</strong></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <!-- фор имя_айди ин имя_лист -->
+
                     {% for secondary in item.secondary_individuals %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td><big>{{ secondary.last_name }} {{ secondary.first_name }}</big></td>
-                            <td><big>{{ secondary.status }}</big></td>
+                    <tr>
+                        <td><strong>Дополнительные водители</strong></td>    <td><big>Клиент: {{ secondary.last_name }} {{ secondary.first_name }}</big></td>
+                            <td><big>Статус: {{ secondary.status }}</big></td>
                             <td style="text-align: right"><a href="{% url "individual_inspect" secondary.id %}">
                                 <button class="btn btn-success">Карточка клиента</button>
                             </a></td>
-                            <td style="text-align: right"><a href="{% url "individual_scoring" secondary.id %}">
-                                <div class="btn btn-danger">Скоринг</div>
-                            </a></td>
-                        </tr>
+                    </tr>
                     {% endfor %}
 
 
                 </table>
 
             </div>
-        </article>
-
     {% endfor %}
 
 

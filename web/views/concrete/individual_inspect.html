@@ -11,21 +11,22 @@
         var individual_id = {{ individual.id }};
     </script>
     <div class="modal-header">
-        <h1>Досье физ.лица № {{ id }}</h1>
+        <h1>Досье физ.лица № {{ id }} (Версия № {{ x }} )</h1>
         <h2>{{ individual.status }}</h2>
     </div>
     <div class="container">
 
         <div class="panel-heading" style="padding: 10px;">
 
-            <button id="prescoring-decline" class="btn btn-primary" custom_tag="{{ id }}">
-                Отказ по заявке
+            <button id="prescoring-decline" class="btn btn-success" custom_tag="{{ id }}">
+                1. Отказ по заявке
             </button>
-            <button id="scoring-button" class="btn btn-primary" type="button">Отправить на скоринг</button>
-        <button id="new-generation" class="btn btn-primary" type="button">Новое поколение данных</button>
-            <a id="scoring_results" class="btn btn-primary" href="{% url "individual_scoring" individual.id %}">
-                Результаты скоринга</button>
+            <button id="scoring-button" class="btn btn-success" type="button">2. Отправить на скоринг</button>
+             <a id="scoring_results" class="btn btn-success" href="{% url "individual_scoring" individual.id %}">
+                3. Решение скоринга</button>
             </a>
+        <button id="new-generation" class="btn btn-success" type="button">4. В архив</button>
+
         </div>
 
         <br/>

@@ -128,24 +128,8 @@
                                     <a class="nav-link" href="{% url "clients_list" %}">Заявки <span class="sr-only">(current)</span></a>
                             </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button"
-                                   aria-haspopup="true" aria-expanded="false">Скоринг</a>
-                                        <div class="dropdown-menu navbar-dark bg-primary">
-                                              <a class="dropdown-item active" href="{% url "modules_list" "source" %}">Источники</a>
-                                              <a class="dropdown-item" href="{% url "modules_list" "parser" %}">Парсинг</a>
-                                              <a class="dropdown-item" href="{% url "modules_list" "scoring" %}">Скоринг</a>
-                                            <a class="dropdown-item" href="{% url "parameters_list" %}">Параметры
-                                                парсеров</a>
-                                        </div>
-                            </li>
 
 
-
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url "products_list" %}">Продукты</a>
-                            </li>
 
                             <li class="nav-item">
                                     <a class="nav-link" href="#">Отчеты</a>
@@ -154,8 +138,21 @@
                            <li class="nav-item">
                                     <a class="nav-link" href="{% url "users_list" %}">Пользователи</a>
                             </li>
-                            <li class="nav-item">
+                        <!--    <li class="nav-item">
                                     <a class="nav-link" href="#">Администрирование</a>
+                            </li>-->
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false">Настройки</a>
+                                        <div class="dropdown-menu navbar-dark bg-primary">
+                                              <a class="dropdown-item active" href="{% url "modules_list" "source" %}">Источники</a>
+                                              <a class="dropdown-item" href="{% url "modules_list" "parser" %}">Парсинг</a>
+                                              <a class="dropdown-item" href="{% url "modules_list" "scoring" %}">Скоринг</a>
+                                              <a class="dropdown-item" href="{% url "products_list" %}">Продукты</a>
+                                            <a class="dropdown-item" href="{% url "parameters_list" %}">Справочник
+                                                парсеров</a>
+                                        </div>
                             </li>
 
                         </ul>

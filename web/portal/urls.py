@@ -172,6 +172,7 @@ urlpatterns = [
 
     path(r'clients_list/<slug:status_filter>/', clients_list_filtered, name="clients_list_filtered"),
     url(r'clients_list', clients_list, name="clients_list"),
+    url(r'index', index, name="index"),
 
 
     url(r'users_list', users_list, name="users_list"),

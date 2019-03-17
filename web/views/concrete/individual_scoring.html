@@ -10,39 +10,89 @@
     </script>
     <div id="" class="container">
 
-        <div class="grid-container">
-            <div class="item1"><h1>Оценка заявки № {{ id }}</h1></div>
-            <div class="item1"><p>{{ individual.last_name }} <br> Продукт: Willz</p></div>
-        </div>
+            <div class="item1"><h1>Оценка заявки № {{ id }}</h1> <strong>Создана</strong>
+            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>  </div>
         <a href="{% url "accept_individual" id %}" class="btn btn-success" id="accept-individual">
             Одобрить
 
-        </a></td>
+        </a>
         <a href="{% url "reject_individual" id %}" class="btn btn-danger" id="reject-individual">
             Отказать
 
-        </a></td>
+        </a>
+    <br><p></p>
+
+   <div style=" border:1px solid lightgray;" id="" class="container">
+            <h4>Скоринг</h4>
 
 
-        <div style=" border:1px solid lightgray;" id="" class="container">
-            <big>Данные</big>
-            {% for item in sources %}
-                <p>{{ item }} <strong style="color:green">Успешно </strong></p>
-            {% endfor %}
-        </div>
-
-        <div style=" border:1px solid lightgray;" id="" class="container">
-            <big>Скоринг</big>
-
-
-            <p>
-                Оценка клиента: <strong style="color:green">{{ score }} </strong></p>
+            <h4>
+                Оценка клиента: <strong style="color:green">{{ score }} </strong></h4>
             {#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
             {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
         </div>
 
+        <div style=" border:1px solid lightgray;" id="" class="container">
+            <h4>Данные</h4><br>
+            {% for item in sources %}
+    <input type="checkbox" id="hd-1" class="hide"/>
+                <label for="hd-1" ><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
+    <div>
+
+            {% for key,value in values.items %}
+                <p>{{ key }}</p>
+                <table>
+                {% for element in value %}
+                    <tr>
+                        <td>{{ element.name }}</td>
+                        <td>{{ element.value }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endfor %}
+            </table> </div>
+    <br/>
+    <input type="checkbox" id="hd-2" class="hide"/>
+                <label for="hd-2"><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
+    <div>
+
+            {% for key,value in values.items %}
+                <p>{{ key }}</p>
+                <table>
+                {% for element in value %}
+                    <tr>
+                        <td>{{ element.name }}</td>
+                        <td>{{ element.value }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endfor %}
+            </table> </div>
+    <br/>
+    <input type="checkbox" id="hd-3" class="hide"/>
+                <label for="hd-3" ><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
+    <div>
+
+            {% for key,value in values.items %}
+                <p>{{ key }}</p>
+                <table>
+                {% for element in value %}
+                    <tr>
+                        <td>{{ element.name }}</td>
+                        <td>{{ element.value }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endfor %}
+            </table> </div>   {% endfor %}
+                </div>
+
+
         <div style=" border:1px solid lightgray;" class="container">
-            <big style="color:red">Валидации</big>
+         <input type="checkbox" id="hd-4" class="hide"/>
+    <label for="hd-4" ><h4 style="">Валидации  <strong style="color:green">Успешно</strong> <button class="btn-sm">+</button></h4></label>
+    <div>
+            <big >Валидации</big>
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
@@ -58,10 +108,12 @@
                 </tbody>
 
             </table>
-
+    </div>
         </div>
         <div style=" border:1px solid lightgray;" class="container">
-            <big style="color:red">Стоп-Факторы</big>
+        <input type="checkbox" id="hd-5" class="hide"/>
+    <label for="hd-5" ><h4 style="">Стоп-Факторы <strong style="color:green">Успешно</strong> <button class="btn-sm">+</button></h4></label>
+    <div>
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
@@ -77,25 +129,9 @@
                 </tbody>
 
             </table>
-
+    </div>
         </div>
-        <div style=" border:1px solid lightgray;" id="" class="container">
-            <big style="color:red">Сырые данные</big>
 
-
-            {% for key,value in values.items %}
-                <p>{{ key }}</p>
-                <table>
-                {% for element in value %}
-                    <tr>
-                        <td>{{ element.name }}</td>
-                        <td>{{ element.value }}</td>
-                    </tr>
-                {% endfor %}
-
-            {% endfor %}
-            </table>
-        </div>
 
         </div>
     </div>

@@ -47,6 +47,12 @@ def users_list(request):
 
 
 @login_required(login_url="signin")
+def index(request):
+
+  return render(request, 'index.html')
+
+
+@login_required(login_url="signin")
 def individual_prescoring_decline(request, id):
     raw_data = api_requestor.request('/client/{0}/view/'.format(id))
 
