@@ -44,8 +44,12 @@
 
                 <tbody>
                 <p>
-                    {% for stopfactor in stopfactors.items %}
-                        <p>{{ stopfactor }}</p>
+                    {% for key,value in stopfactors.items %}
+                        <p>{{ key }}</p>
+
+                        {% for element in value %}
+                            <p>{{ element.decription }}</p>
+                        {% endfor %}
                     {% endfor %}
                 </p>
                 </tbody>
@@ -59,8 +63,12 @@
 
                 <tbody>
                 <p>
-                    {% for check in validate.items %}
-                        <p>{{ check }}</p>
+                    {% for key,value in validate.items %}
+                        <p>{{ key }}</p>
+
+                        {% for element in value %}
+                            <p>{{ element.decription }}</p>
+                        {% endfor %}
                     {% endfor %}
                 </p>
                 </tbody>
@@ -70,8 +78,21 @@
         </div>
         <div style=" border:1px solid lightgray;" id="" class="container">
             <big style="color:red">Сырые данные</big>
-            <div style="height:200px; width:570px;border:2px solid #5e5e5e;font:16px/26px Georgia, Garamond, Serif;overflow-y: scroll;">
-                {{ values }}</div>
+
+
+            {% for key,value in values.items %}
+                <p>{{ key }}</p>
+                <table>
+                {% for element in value %}
+                    <tr>
+                        <td>{{ element.name }}</td>
+                        <td>{{ element.value }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endfor %}
+            </table>
+        </div>
 
         </div>
     </div>

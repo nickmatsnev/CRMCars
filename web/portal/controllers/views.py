@@ -72,7 +72,7 @@ def individual_scoring(request, id):
     parser_validate_errors = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
     parser_stopfactor_errors = api_requestor.request(
-        '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
+        '/individual/{0}/cur_gen/data/parser/stopfactor/errors'.format(id))
 
     return render(request, 'concrete/individual_scoring.html',
                   {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
