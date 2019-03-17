@@ -11,6 +11,7 @@ headers = {'Content-type': 'application/json'}
 def request(relative_url):
     print("API_requestor:{0}".format(relative_url))
     response = requests.get(API_ROOT_URL + relative_url)
+    print("API_result:{0}".format(response.status_code))
     return json.loads(response.content.decode('utf-8'))
 
 
@@ -18,12 +19,14 @@ def request_no_recode(relative_url):
     print("API_requestor:{0}".format(relative_url))
 
     response = requests.get(API_ROOT_URL + relative_url)
+    print("API_result:{0}".format(response.status_code))
     return json.loads(response.content)
 
 
 def post(relative_url,body):
     print("API_requestor:{0}".format(relative_url))
     response = requests.post(API_ROOT_URL + relative_url, data=body, headers=headers)
+    print("API_result:{0}".format(response.status_code))
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
@@ -31,12 +34,16 @@ def post(relative_url,body):
 def post_json(relative_url, body):
     print("API_requestor:{0}".format(relative_url))
     response = requests.post(API_ROOT_URL + relative_url, json=body)
+    print("API_result:{0}".format(response.status_code))
+
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
 def patch(relative_url, body):
     print("API_requestor:{0}".format(relative_url))
     response = requests.patch(API_ROOT_URL + relative_url, data=body, headers=headers)
+    print("API_result:{0}".format(response.status_code))
+
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
@@ -45,6 +52,8 @@ def post_file(relative_url, request):
     file = request.FILES['file']
     files = {'file': file.open()}
     response = requests.post(API_ROOT_URL + relative_url,files=files)
+    print("API_result:{0}".format(response.status_code))
+
     # TODO HERE ADD CAPTURING BAD REQUEST AND SUCH SHIT TO THROW EXCEPTION !! IF NOT SUCCESS - ...
     return response
 
@@ -52,10 +61,13 @@ def post_file(relative_url, request):
 def post_decode(relative_url,body):
     print("API_requestor:{0}".format(relative_url))
     response = requests.post(API_ROOT_URL + relative_url, data=body)
+    print("API_result:{0}".format(response.status_code))
+
     return json.loads(response.content.decode('utf-8'))
 
 
 def get(relative_url):
     print("API_requestor:{0}".format(relative_url))
     response = requests.get(API_ROOT_URL + relative_url)
+    print("API_result:{0}".format(response.status_code))
     return response
