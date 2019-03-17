@@ -43,6 +43,15 @@ channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
                    queue=constants.PARSERS_PROCESSOR_QUEUE,
                    routing_key=constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE)
 
+######################################################################
+channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
+                   queue=constants.SCORING_PROCESSOR_QUEUE,
+                   routing_key=constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE)
+
+channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
+                   queue=constants.SCORING_PROCESSOR_QUEUE,
+                   routing_key=constants.INDIVIDUAL_PARSER_ERROR_MESSAGE)
+
 # channel.queue_declare(queue=constants.WILLZ_STATUS_UPDATER_QUEUE, durable=True)
 
 # channel.queue_bind(exchange=constants.MAIN_EXCHANGE_NAME,
