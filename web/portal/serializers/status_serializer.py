@@ -13,3 +13,6 @@ class StatusSerializer(serializers.Serializer):
 class GetStatusSerializer(serializers.Serializer):
     status = serializers.CharField(max_length=20)
 
+class RejectSerializer(serializers.Serializer):
+    payload = serializers.CharField(max_length=250)
+

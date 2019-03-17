@@ -7,24 +7,23 @@ from rest_framework.response import Response
 from portal.models import *
 from portal.serializers.client_serializer import *
 from portal.serializers.product_serializer import *
-from portal.lib.status_api_helpers import get_status
+from portal.lib.status_api_helpers import *
 from portal.lib.product_api_helpers import get_product_name
-from portal.lib.status_api_helpers import get_status_name
-from portal.lib.status_api_helpers import get_dictionary_of_status
 
 
 def get_all_clients_info(filter_status=''):
     queryset = Client.objects.all()
     clients_list = []
     for client in queryset:
+        client_info = get_current_client_info(client.id)
+
         if filter_status == '':
-            clients_list.append(get_current_client_info(client.id))
+            clients_list.append(client_info)
         else:
-            client_info = get_current_client_info(client.id)
             renamed_status = get_status_name(filter_status)
 
             if client_info['primary_individual']['status'] == renamed_status:
-                clients_list.append(get_current_client_info(client.id))
+                clients_list.append(client_info)
 
     return clients_list
 
@@ -80,9 +79,11 @@ def get_current_client_info(client_id):
         if individual_raw['primary'] == True:
             primary_individual = individual_serializer.data
             primary_individual['status'] = status
+            primary_individual['status_buttons'] = get_list_of_states(individual_raw['id'])
         else:
             secondary_individual = individual_serializer.data
             secondary_individual['status'] = status
+            secondary_individual['status_buttons'] = get_list_of_states(individual_raw['id'])
 
             secondary_individuals.append(secondary_individual)
 

@@ -42,10 +42,11 @@ class PostAccept(APIView):
 
 
 class PreReject(APIView):
-    @swagger_auto_schema(operation_description='Send command PreReject', responses={201: NewActionSerializer,
-                                                                                     400: 'Bad request'})
-    def get(self, request, pk):
-        return Response(action_helper.add_action(pk, 'manual_decline', 'user'))
+    @swagger_auto_schema(operation_description='Send command PreReject', request_body=RejectSerializer,
+                         responses={201: NewActionSerializer, 400: 'Bad request'})
+    def post(self, request, pk):
+        my_json = request.data
+        return Response(action_helper.add_action(pk, 'manual_decline', 'user', my_json['payload']))
 
 
 class ScoringStart(APIView):

@@ -20,7 +20,8 @@ def get_dictionary_of_status():
     my_dic['manual_decline']='Отказано до скоринга'
     my_dic['scoring']='Скоринг обрабатывается'
     my_dic['scoring_complete']= 'Ожидает согласования'
-    my_dic['scoring_checks_failed'] = 'Ошибка в документах'
+    my_dic['scoring_checks_failed'] = 'Техническая ошибка'
+    my_dic['scoring_validate_failed'] = 'Ошибка в документах'
     my_dic['scoring_stopfactors_failed'] = 'Обнаружены стоп-факторы'
     my_dic['unknown']= 'Неизвестно'
 
@@ -47,6 +48,7 @@ def get_status(individual_id):
 # op_action = scoring_checks_failed -> Ошибка на этапе пре-скоринга
 # op_action = scoring_complete_accepted -> Клиент одобрен
 # op_action = scoring_complete_declined -> Клиенту отказано
+
 
 
 def get_raw_status(individual_id):
@@ -108,30 +110,36 @@ def get_clients_by_status(data):
 def get_list_of_states(individual_id):
     last_action = get_raw_status(individual_id)
     list_of_states = {}
-    list_of_states['scoring'] = False
+    list_of_states['scoring_start'] = False
     list_of_states['prescoring_decline'] = False
     list_of_states['postscoring_reject'] = False
     list_of_states['postscoring_accept'] = False
     list_of_states['generation_next'] = False
+    list_of_states['results'] = False
 
     if last_action == 'new':
-        list_of_states['scoring'] = True
+        list_of_states['scoring_start'] = True
         list_of_states['prescoring_decline'] = True
 
-    elif last_action == 'scoring':
+    elif last_action == 'scoring_start':
         #скипаем вообще все
         return list_of_states
 
     elif last_action == 'scoring_complete':
         list_of_states['postscoring_reject'] = True
         list_of_states['postscoring_accept'] = True
+        list_of_states['results'] = True
+
+    elif last_action == 'scoring_complete_accepted' or last_action == 'scoring_complete_declined' \
+            or last_action=='scoring_stopfactors_failed':
+        list_of_states['generation_next'] = True
+        list_of_states['results'] = True
 
     else:
         #во всех иных случаях - разрешаем новую генерацию
         list_of_states['generation_next'] = True
-#           scoring_complete_declined
 #            manual_decline
-#            scoring_complete_accepted
 #            scoring_checks_failed
+#            scoring_validate_failed
 
     return list_of_states
