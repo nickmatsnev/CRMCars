@@ -9,7 +9,6 @@
 {% block content %}
     <script>
         var individual_id = {{ individual.id }};
-        // var product_id = {{ product_id }};
     </script>
     <div class="modal-header">
         <h1>Досье физ.лица № {{ id }}</h1>
@@ -19,7 +18,7 @@
 
         <div class="panel-heading" style="padding: 10px;">
 
-            <button id="prescoring_decline" class="btn btn-primary" custom_tag="{{ id }}">
+            <button id="prescoring-decline" class="btn btn-primary" custom_tag="{{ id }}">
                 Отказ по заявке
             </button>
             <button id="scoring-button" class="btn btn-primary" type="button">Отправить на скоринг</button>

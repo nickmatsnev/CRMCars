@@ -1,23 +1,26 @@
-{% extends "../index.html" %}
+{% extends "../base.html" %}
 
 
 {% block title %}
     Скоринг клиента
 {% endblock %}
 {% block content %}
-
+    <script>
+        var individual_id = {{ id }};
+    </script>
     <div id="" class="container">
+
         <div class="grid-container">
             <div class="item1"><h1>Оценка заявки № {{ id }}</h1></div>
             <div class="item1"><p>{{ individual.last_name }} <br> Продукт: Willz</p></div>
         </div>
-        <a href="{% url "accept_individual" id %}">
-            <button class="btn btn-success" type="button">Одобрить
-            </button>
+        <a href="{% url "accept_individual" id %}" class="btn btn-success" id="accept-individual">
+            Одобрить
+
         </a></td>
-        <a href="{% url "reject_individual" id %}">
-            <button class="btn btn-danger" type="button">Отказать
-            </button>
+        <a href="{% url "reject_individual" id %}" class="btn btn-danger" id="reject-individual">
+            Отказать
+
         </a></td>
 
 

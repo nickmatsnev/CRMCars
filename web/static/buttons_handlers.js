@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     });
 
-    $("#prescoring_decline").click(function () {
+    $("#prescoring-decline").click(function () {
         alert("click!!");
         var data = jQuery(this).attr("custom_tag");
         $("#rejectModal #modal-content-main").html(data);
@@ -59,14 +59,18 @@ $(document).ready(function () {
 
     if (typeof individual_id != "undefined") {
         $.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {
-            if (data['scoring'] == false)
+            if (data['scoring_start'] == false)
                 $("#scoring-button").addClass("disabled");
             if (data['prescoring_decline'] == false)
                 $("#prescoring-decline").addClass("disabled");
             if (data['generation_next'] == false)
                 $("#new-generation").addClass("disabled");
             if (data['postscoring_accept'] == false)
-                $("#scoring-results").addClass("disabled");
+                $("#accept-individual").addClass("disabled");
+            if (data['postscoring_reject'] == false)
+                $("#reject-individual").addClass("disabled");
+            if (data['results'] == false)
+                $("#scoring_results").addClass("disabled");
 
 
             var items = [];
