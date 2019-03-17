@@ -1,0 +1,9 @@
+
+
+{% for key,value in status_list.items %}
+
+    <a href="{% url "clients_list_filtered" key %}">
+        <button class="btn btn-success">{{ value.name }} ({{ value.count }})</button>
+    </a>
+
+{% endfor %}

@@ -26,15 +26,17 @@ from rest_framework import status
 @login_required(login_url="signin")
 def clients_list(request):
     items = api_requestor.request('/client/')
+    statuses = api_requestor.request('/client/status/')
 
-    return render(request, 'concrete/clients_list.html', {'items': items})
+    return render(request, 'concrete/clients_list.html', {'items': items, 'statuses': statuses})
 
 
 @login_required(login_url="signin")
 def clients_list_filtered(request, status_filter):
     items = api_requestor.request('/client/{0}/'.format(status_filter))
+    statuses = api_requestor.request('/client/status/')
 
-    return render(request, 'concrete/clients_list.html', {'items': items})
+    return render(request, 'concrete/clients_list.html', {'items': items, 'statuses': statuses})
 
 
 @login_required(login_url="signin")

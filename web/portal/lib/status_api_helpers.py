@@ -20,7 +20,8 @@ def get_dictionary_of_status():
     my_dic['manual_decline']='Отказано до скоринга'
     my_dic['scoring']='Скоринг обрабатывается'
     my_dic['scoring_complete']= 'Ожидает согласования'
-    my_dic['scoring_checks_failed']= 'Ошибка на этапе пре-скоринга'
+    my_dic['scoring_checks_failed'] = 'Ошибка в документах'
+    my_dic['scoring_stopfactors_failed'] = 'Обнаружены стоп-факторы'
     my_dic['unknown']= 'Неизвестно'
 
     return my_dic

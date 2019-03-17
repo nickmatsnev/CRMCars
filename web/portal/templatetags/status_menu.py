@@ -6,6 +6,6 @@ from django.conf import settings
 register = template.Library()
 
 
-@register.inclusion_tag(name='menu.html')
-def status_menu():
-    return {}
+@register.inclusion_tag(filename='status_menu.html')
+def status_menu(statuses):
+    return {'status_list': statuses}

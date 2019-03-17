@@ -6,7 +6,8 @@
    Список заявок
 {% endblock %}
 {% block content %}
-    {% status_menu %}
+    {% load status_menu %}
+    {% status_menu statuses %}
             <h1 class="panel-title">Заявки</h1>
 
     <br/>

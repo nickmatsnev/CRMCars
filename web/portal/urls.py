@@ -170,10 +170,9 @@ urlpatterns = [
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/',
          api_module.ModuleDataListApi.as_view()),
 
-
-
-    url(r'clients_list', clients_list,name="clients_list"),
     path(r'clients_list/<slug:status_filter>/', clients_list_filtered, name="clients_list_filtered"),
+    url(r'clients_list', clients_list, name="clients_list"),
+
 
     url(r'users_list', users_list, name="users_list"),
     url(r'parameters_list', parameters_list, name="parameters_list"),
