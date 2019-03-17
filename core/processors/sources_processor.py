@@ -24,24 +24,37 @@ class SourcesProcessor(BasicProcess):
         def __process_sources(self, body):
             input_message = json.loads(body)
             individual_id = input_message['individual_id']
-            source_name = input_message['source']
+            source_name = input_message['source']  # TODO fixxx to sources
+            no_module_name = True
 
-            source = api_requestor.request('/module/source/{0}/'.format(source_name))[0]
-            source_m = SourceModule(source['path'])
-            credential = '{"username":"dmitry@korishchenko.ru","token":"4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"}'
+            try:
+                source = api_requestor.request('/module/source/{0}/'.format(source_name))[0]
+                source_m = SourceModule(source['path'])
+                no_module_name = False
+
+                credential = '{"username":"dmitry@korishchenko.ru","token":"4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"}'
                 # TODO fix credentials
-            data = source_m.import_data(credential, None)  # got scoring data
+                data = source_m.import_data(credential, None)  # got scoring data
 
-            raw_data = ast.literal_eval(json.dumps(data))
-            api_requestor.post(
+                raw_data = ast.literal_eval(json.dumps(data))
+                api_requestor.post(
                 '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()),
-                raw_data)
+                    raw_data)
 
-            action_helper.add_action(individual_id, "scoring", "sources_processor",
+                action_helper.add_action(individual_id, "scoring", "sources_processor",
                                                 payload="Загружен источник: {0}".format(source_m.get_module_name()))
 
-            self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
+                self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
                                   json.dumps({"individual_id": individual_id}))
+
+            except Exception as e:
+                if no_module_name==True:
+                    payload = 'Error: no module with requested name ' + str(e)
+                else:
+                    payload = 'Error: module has problem with structure ' + str(e)
+
+                self._publish_message(constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE,
+                                      json.dumps({"individual_id": individual_id,"payload": payload}))
 
 
 proc = SourcesProcessor()

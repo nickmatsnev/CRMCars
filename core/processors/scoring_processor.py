@@ -29,7 +29,9 @@ class ScoringProcessor(BasicProcess):
                                                {
                                                    constants.INDIVIDUAL_SCORING_PROCESS: self.__process_scoring,
                                                    constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE: self.__process_parsers,
-                                                   constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE: self.__finalize_scoring
+                                                   constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE: self.__finalize_scoring,
+                                                   constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE: self.__error_source,
+                                                   constants.INDIVIDUAL_PARSER_ERROR_MESSAGE: self.__error_parser,
                                                })
 
     def __process_scoring(self, body):
@@ -76,6 +78,22 @@ class ScoringProcessor(BasicProcess):
         individual_id = input_message['individual_id']
         individual_data = api_requestor.request('/individual/{0}'.format(individual_id))
         return individual_data, individual_id
+
+
+    def __error_source(self, body):
+        input_message = json.loads(body)
+        individual_id = input_message['individual_id']
+        payload = input_message['payload']
+        action_helper.add_action(individual_id, "scoring_checks_failed", "sources_processor",
+                                 payload=payload)
+
+
+    def __error_parser(self, body):
+        input_message = json.loads(body)
+        individual_id = input_message['individual_id']
+        payload = input_message['payload']
+        action_helper.add_action(individual_id, "scoring_checks_failed", "parsers_processor",
+                                 payload=payload)
 
 proc = ScoringProcessor()
 proc.start()
