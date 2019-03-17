@@ -121,7 +121,7 @@ def get_list_of_states(individual_id):
         list_of_states['scoring_start'] = True
         list_of_states['prescoring_decline'] = True
 
-    elif last_action == 'scoring_start':
+    elif last_action == 'scoring':
         #скипаем вообще все
         return list_of_states
 
