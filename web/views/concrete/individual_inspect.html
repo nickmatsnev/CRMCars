@@ -19,10 +19,9 @@
 
         <div class="panel-heading" style="padding: 10px;">
 
-            <a id="prescoring_decline" class="btn btn-primary"
-               href="{% url "individual_prescoring_decline" individual.id %}">
+            <button id="prescoring_decline" class="btn btn-primary" custom_tag="{{ id }}">
                 Отказ по заявке
-        </a>
+            </button>
             <button id="scoring-button" class="btn btn-primary" type="button">Отправить на скоринг</button>
         <button id="new-generation" class="btn btn-primary" type="button">Новое поколение данных</button>
             <a id="scoring_results" class="btn btn-primary" href="{% url "individual_scoring" individual.id %}">

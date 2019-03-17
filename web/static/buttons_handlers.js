@@ -17,22 +17,33 @@ $(document).ready(function () {
     });
     $("#reject-button").click(function () {
 
-        var text = $('textarea#textform').val();
-        $.ajax("/api/client/" + client_id + "/add_action/", {
-            data: JSON.stringify({"processor": "User", "action_type": "manual_decline", "payload": text}),
-            contentType: 'application/json',
-            type: 'POST'
-        });
+        var text = $('#reject-reason').val();
+        // $.ajax("/api/client/" + client_id + "/ops/prescoring_reject/", {
+        //     data: JSON.stringify({"payload": text}),
+        //     contentType: 'application/json',
+        //     type: 'POST'
+        // });
 
-        alert('Отказ по клиенту сохранен.');
+
+        $('#rejectModal').modal('hide');
+        location.reload()
     });
 
     $(".show_payload").click(function () {
         var data = jQuery(this).attr("custom_tag");
-        $("#modal-content-main").html(data);
+        $("#myModal #modal-content-main").html(data);
         $('#myModal').modal('show');
 
     });
+
+    $("#prescoring_decline").click(function () {
+        alert("click!!");
+        var data = jQuery(this).attr("custom_tag");
+        $("#rejectModal #modal-content-main").html(data);
+        $('#rejectModal').modal('show');
+
+    });
+
 
     $("#scoring-button").click(function () {
         $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {

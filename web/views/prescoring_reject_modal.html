@@ -1,0 +1,33 @@
+<div id="rejectModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                {#        <h5 class="modal-title">Modal title</h5>#}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4><strong>Работа с отказом</strong></h4>
+
+
+                <table class="table">
+                    <tr>
+                        <td>Причина отказа</td>
+                    </tr>
+                    <tr>
+                        <td><textarea id="reject_reason" rows="10" cols="45" name="text"></textarea></td>
+                    </tr>
+                </table>
+
+
+                <p id="modal-content-main"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="reject-button" type="button" class="btn btn-primary">Отказать</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>
