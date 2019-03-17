@@ -140,7 +140,7 @@ def view_module_by_type(module_type):
 
 
 def save_module(request, module_type):
-    response_status = status.HTTP_202_ACCEPTED
+    response_status = status.HTTP_201_CREATED
     response_data = ""
 
     dest_path = os.path.normpath(get_path_by_module_type(module_type))
@@ -152,13 +152,16 @@ def save_module(request, module_type):
     if serializer.is_valid():
         module_name = serializer.validated_data['name']
         queryset = Module.objects.filter(name=module_name)
+
         if queryset.count()==0:
             serializer.save()
-            response_data = "Module with type {0} saved successfully".format(module_type)
+            response_data = "Module with name {0} saved successfully".format(module_name)
         else:
-            response_status = status.HTTP_403_FORBIDDEN
+            queryset.update(path=serializer.validated_data['path'],create_time=datetime.datetime.now())
+            response_data = "Module with name {0} updated successfully".format(module_name)
+            response_status = status.HTTP_202_ACCEPTED
     else:
-        response_status = status.HTTP_400_BAD_REQUEST
+        response_status = status.HTTP_204_NO_CONTENT
 
     return Response(status=response_status, data=response_data)
 

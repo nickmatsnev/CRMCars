@@ -14,5 +14,10 @@ class GetStatusSerializer(serializers.Serializer):
     status = serializers.CharField(max_length=20)
 
 class RejectSerializer(serializers.Serializer):
+    #user_id = serializers.IntegerField()
     payload = serializers.CharField(max_length=250)
+
+
+class GetUserSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
 
