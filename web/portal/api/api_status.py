@@ -34,7 +34,8 @@ class PostReject(APIView):
                              responses={201: NewActionSerializer, 400: 'Bad request'})
         def get(self, request,pk):
             #my_json = request.data
-            return Response(action_helper.add_action(pk, 'scoring_complete_declined', 'user'))
+            return Response(
+                action_helper.add_action(pk, 'scoring_complete_declined', 'user', payload="Отказано после скоринга"))
 
 
 class PostAccept(APIView):
@@ -42,7 +43,8 @@ class PostAccept(APIView):
                              responses={201: NewActionSerializer, 400: 'Bad request'})
         def get(self, request, pk):
             #my_json = request.data
-            return Response(action_helper.add_action(pk, 'scoring_complete_accepted', 'user'))
+            return Response(
+                action_helper.add_action(pk, 'scoring_complete_accepted', 'user', payload="Одобрено после скоринга"))
 
 
 class PreReject(APIView):

@@ -20,7 +20,7 @@
         <table class="table">
             <tr>
                 <td>Действие</td>
-                <td>Процессор</td>
+                <td>Автор</td>
                 <td>Дата</td>
                 <td>Информация</td>
             </tr>
@@ -31,9 +31,10 @@
                     <td>{{ item.processor }}</td>
                     <td>{{ item.create_time }}</td>
                     <td>
-                        <button class="show_payload btn btn-primary" type="button" custom_tag="{{ item.payload }}">
-                            Просмотр
-                        </button>
+                        {{ item.payload }}
+                        {#                        <button class="show_payload btn btn-primary" type="button" custom_tag="{{ item.payload }}">#}
+                        {#                            Просмотр#}
+                        {#                        </button>#}
 
                         <!--<button class="btn btn-info" type="menuButton">Просмотр
                         </button>-->

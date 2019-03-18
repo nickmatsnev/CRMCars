@@ -25,7 +25,7 @@
 
 
             <h4>
-                Оценка клиента: <strong style="color:green">{{ score }} </strong></h4>
+                <strong style="color:green">{{ score }} </strong></h4>
             {#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
             {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
         </div>
@@ -33,8 +33,7 @@
         <div style=" border:1px solid lightgray;" id="" class="container" data-toggle="collapse" data-target="#demo">
 
 
-
-            <p ><strong>Данные</strong><strong  style="color:green" class="float-lg-right">Успешно</strong></p>
+            <p><strong>Данные</strong><strong style="color:green" class="float-lg-right">OK</strong></p>
 
         <div id="demo" class="collapse">
 
@@ -52,51 +51,57 @@
             </table>
             </div>
         </div>
-
+            {% for key,value in validate_status.items %}
             <div style=" border:1px solid lightgray;" class="container" data-toggle="collapse" data-target="#demo1">
 
 
-  <p><strong>Валидации</strong> <strong  style="color:green" class="float-lg-right">Успешно</strong></p>
+                <p><strong>Валидации</strong> <strong
+                        style="color:{% ifnotequal value "Failed" %}green{% else %}red{% endifnotequal %}"
+                        class="float-lg-right">{{ value }}</strong></p>
             <div id="demo1" class="collapse">
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
-
+                {% for kk,vv in validate.items %}{% ifequal kk key %}
                 <tbody>
                 <p>
-                    {% for key,value in stopfactors.items %}
-                        <p><b>Модуль: </b>{{ key }}</p>
+
+                <p><b>Модуль: </b>{{ kk }}</p>
                         <p><b>Проверки:</b></p>
-                        {% for element in value %}
+                {% for element in vv %}
                             <p>{{ element.decription }}</p>
                         {% endfor %}
-                    {% endfor %}
+
                 </p>
                 </tbody>
-
+                {% endifequal %} {% endfor %}
             </table>
                 </div>
         </div>
+            {% endfor %}
+            {% for key,value in stopfactor_status.items %}
         <div style=" border:1px solid lightgray;" class="container"  data-toggle="collapse" data-target="#demo2">
-                <p><strong>Стоп-Факторы</strong> <strong style="color:green" class="float-lg-right">Успешно</strong></p>
+                <p><strong>Стоп-Факторы</strong> <strong
+                        style="color:{% ifnotequal value "Failed" %}green{% else %}red{% endifnotequal %}"
+                        class="float-lg-right">{{ value }}</strong></p>
         
     <div id="demo2" class="collapse">
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
-
+                {% for kk,vv in stopfactors.items %}{% ifequal kk key %}
                 <tbody>
                 <p>
-                    {% for key,value in validate.items %}
-                        <p><b>Модуль: </b>{{ key }}</p>
+
+                <p><b>Модуль: </b>{{ kk }}</p>
                         <p><b>Проверки:</b></p>
-                        {% for element in value %}
+                {% for element in vv %}
                             <p>{{ element.decription }}</p>
                         {% endfor %}
-                    {% endfor %}
+
                 </p>
                 </tbody>
-
+                {% endifequal %} {% endfor %}
             </table>
 
         </div>
-
+            {% endfor %}
 
         </div>
     </div>
