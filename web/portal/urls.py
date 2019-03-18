@@ -178,16 +178,22 @@ urlpatterns = [
     url(r'users_list', users_list, name="users_list"),
     url(r'parameters_list', parameters_list, name="parameters_list"),
     url(r'products_list', products_list, name="products_list"),
+    url(r'reports', reports, name="reports"),
 
     path(r'modules_list/<slug:module_type>/', modules_list, name="modules_list"),
 
     path(r'individual_scoring/<int:id>/', individual_scoring, name="individual_scoring"),
     path(r'accept_individual/<int:id>/', accept_individual, name="accept_individual"),
     path(r'reject_individual/<int:id>/', reject_individual, name="reject_individual"),
+    path(r'start_individual_scoring/<int:id>/', start_individual_scoring, name="start_individual_scoring"),
 
     path(r'individual_inspect/<int:id>/', individual_inspect, name="individual_inspect"),
     path(r'individual_prescoring_decline/<int:id>/', individual_prescoring_decline,
          name="individual_prescoring_decline"),
+    path(r'individual_new_generation/<int:id>/', individual_new_generation,
+         name="individual_new_generation"),
+    path(r'individual_operations/<int:id>/', individual_operations,
+         name="individual_operations"),
 
     path(r'product_edit/<int:id>/', product_edit, name="product_edit"),
     path(r'product_new/', product_new, name="product_new"),

@@ -3,7 +3,10 @@ from django.contrib.auth import login, logout
 from portal.controllers.forms import *
 
 
+
 def sign_in(request):
+    if request.user.is_authenticated:
+        return redirect('clients_list');
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():

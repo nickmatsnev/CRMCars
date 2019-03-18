@@ -1,0 +1,46 @@
+{% extends "../base.html" %}
+
+
+
+{% block title %}
+    История операций физ.лица №{{ id }}
+{% endblock %}
+{% block content %}
+
+
+    <div class="container ">
+        <h1 class="panel-title">История операций физ.лица №{{ id }}</h1>
+
+        <table class="table">
+            <tr>
+                <td>Действие</td>
+                <td>Процессор</td>
+                <td>Дата</td>
+                <td>Информация</td>
+            </tr>
+
+            {% for item in individual.current_generation.actions %}
+                <tr>
+                    <td>{{ item.action_type }}</td>
+                    <td>{{ item.processor }}</td>
+                    <td>{{ item.create_time }}</td>
+                    <td>
+                        <button class="show_payload btn btn-primary" type="button" custom_tag="{{ item.payload }}">
+                            Просмотр
+                        </button>
+
+                        <!--<button class="btn btn-info" type="menuButton">Просмотр
+                        </button>-->
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tr>
+        </table>
+
+    </div>
+
+{% endblock %}
+
+
+

@@ -16,17 +16,18 @@ $(document).ready(function () {
         }
     });
     $("#reject-button").click(function () {
-
-        var text = $('#reject-reason').val();
-        // $.ajax("/api/client/" + client_id + "/ops/prescoring_reject/", {
-        //     data: JSON.stringify({"payload": text}),
-        //     contentType: 'application/json',
-        //     type: 'POST'
-        // });
-
-
+        var txt = $("#reject-reason").val();
+        if (txt == "") {
+            alert("Пожалуйста, введите причину отказа");
+            return;
+        }
+        $.ajax("/api/individual/" + individual_id + "/ops/prescoring_reject/", {
+            data: JSON.stringify({"payload": txt}),
+            contentType: 'application/json',
+            type: 'POST'
+        });
         $('#rejectModal').modal('hide');
-        location.reload()
+        location.reload();
     });
 
     $(".show_payload").click(function () {
@@ -37,25 +38,12 @@ $(document).ready(function () {
     });
 
     $("#prescoring-decline").click(function () {
-        alert("click!!");
         var data = jQuery(this).attr("custom_tag");
         $("#rejectModal #modal-content-main").html(data);
         $('#rejectModal').modal('show');
 
     });
 
-
-    $("#scoring-button").click(function () {
-        $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {
-        });
-        //$.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {
-        //  if (data['scoring'] == true)
-        //     $.getJSON('/api/individual/' + individual_id + "/ops/scoring_start/", function (data) {
-        //  });
-        //alert('Клиент отправлен на скоринг.');
-        //});
-
-    });
 
     if (typeof individual_id != "undefined") {
         $.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {

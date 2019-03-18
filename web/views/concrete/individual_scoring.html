@@ -10,15 +10,13 @@
     </script>
     <div id="" class="container">
 
-            <div class="item1"><h1>Оценка заявки № {{ id }}</h1> <strong>Создана</strong>
+        <div class="item1"><h1>Оценка физ.лица № {{ id }}</h1> <strong>Создана</strong>
             <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>  </div>
         <a href="{% url "accept_individual" id %}" class="btn btn-success" id="accept-individual">
             Одобрить
-
         </a>
         <a href="{% url "reject_individual" id %}" class="btn btn-danger" id="reject-individual">
             Отказать
-
         </a>
     <br><p></p>
 

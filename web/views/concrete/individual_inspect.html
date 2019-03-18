@@ -11,7 +11,7 @@
         var individual_id = {{ individual.id }};
     </script>
     <div class="modal-header">
-        <h1>Досье физ.лица № {{ id }} (Версия № {{ x }} )</h1>
+        <h1>Досье физ.лица № {{ id }} (Версия №{{ individual.current_generation.number }})</h1>
         <h2>{{ individual.status }}</h2>
     </div>
     <div class="container">
@@ -21,12 +21,16 @@
             <button id="prescoring-decline" class="btn btn-success" custom_tag="{{ id }}">
                 1. Отказ по заявке
             </button>
-            <button id="scoring-button" class="btn btn-success" type="button">2. Отправить на скоринг</button>
+            <a id="scoring-button" class="btn btn-success" href="{% url "start_individual_scoring" individual.id %}">2.
+                Отправить на скоринг</a>
              <a id="scoring_results" class="btn btn-success" href="{% url "individual_scoring" individual.id %}">
-                3. Решение скоринга</button>
+                 3. Решение скоринга</a>
             </a>
-        <button id="new-generation" class="btn btn-success" type="button">4. В архив</button>
+            <a id="new-generation" class="btn btn-success" href="{% url "individual_new_generation" individual.id %}">4.
+                В архив</a>
 
+            <a class="btn btn-primary float-lg-right" href="{% url "individual_operations" individual.id %}">История
+                операций</a>
         </div>
 
         <br/>
@@ -99,37 +103,8 @@
     </tr>
 </table>
 
+        <br/>
 
-
-        <div class="panel-heading">
-            <p><strong>История операций (текущее поколение данных)</strong></p>
-        </div>
-
-    <table class="table">
-        <tr>
-            <td>Действие</td>
-            <td>Процессор</td>
-            <td>Дата</td>
-            <td>Информация</td>
-        </tr>
-
-        {% for item in individual.current_generation.actions %}
-        <tr>
-                <td>{{ item.action_type }}</td>
-                <td>{{ item.processor }}</td>
-                <td>{{ item.create_time }}</td>
-            <td>
-                <button class="show_payload btn btn-primary" type="button" custom_tag="{{ item.payload }}">Просмотр
-                </button>
-
-                <!--<button class="btn btn-info" type="menuButton">Просмотр
-                </button>-->
-            </td>
-        </tr>
-            {% endfor %}
-
-        </tr>
-    </table>
         <div class="panel-heading">
             <p><strong>Поколения данных</strong></p>
         </div>
@@ -154,8 +129,8 @@
             {% endfor %}
         </table>
 
-    </div>
 
+    </div>
     <!--  Имя: Отчество: Фамилия: Пол: Дата рождения: Номер паспорта: Дата выдачи паспорта: кем выдан: Адрес прописки:
 
 сканы документов(таблица, подгрузить пикчи)

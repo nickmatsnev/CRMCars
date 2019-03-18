@@ -12,7 +12,7 @@
     {% load status_menu %}
     {% status_menu statuses %}
     <div class="grid-container">
-        <div class="item1"><h4>Все заявки: 5 {{ status_list.total }}</h4></div>
+        {#        <div class="item1"><h4>Все заявки: 5 {{ status_list.total }}</h4></div>#}
     <div class="item1">
         {% for key,value in status_list.data.items %}
     <a href="{% url "clients_list_filtered" key %}">
@@ -24,7 +24,7 @@
 
     {% for item in items %}
             <h1 class="panel-title">Учётная карточка #{{ item.id }}</h1><strong>Создана</strong>
-            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>
+        <h4>{{ item.created_at }}, ID: {{ item.willz_external_id }}, Продукт: {{ item.product }}</h4>
             <div class="container">
                 <table style="border: solid 2px black" class="table table-bordered">
 
@@ -60,11 +60,11 @@
 
 
 
-    <a href="{% url "clients_list" %}">
-        <button class="btn btn-outline-dark" type="button" {{ disabled }}>Загрузить
-            новые заявки
-        </button>
-    </a>
+    {#    <a href="{% url "clients_list" %}">#}
+    {#        <button class="btn btn-outline-dark" type="button" {{ disabled }}>Загрузить#}
+    {#            новые заявки#}
+    {#        </button>#}
+    {#    </a>#}
 
 {% endblock %}
 

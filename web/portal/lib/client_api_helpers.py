@@ -57,6 +57,7 @@ def get_all_clients_status():
             my_list['unknown']['count'] += 1
 
     final_list = {}
+    if my_list.get('unknown'): my_list.pop('unknown')
     final_list['total'] = counter
     final_list['data'] = my_list
     return final_list

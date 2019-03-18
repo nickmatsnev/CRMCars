@@ -95,15 +95,6 @@
                             <h1><span>W</span>illz <span>Soft</span>Scoring</h1>
                         </header>
 
-                        <!-- Right header box -->
-                       <!-- <div class="col-6 text-right">
-                            <p class="header-social-icons social-icons">
-                                <a href="#"><i class="fa fa-facebook fa-2x"></i></a>
-                                <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
-                                <a href="#"><i class="fa fa-youtube fa-2x"></i></a>
-                                <a href="#"><i class="fa fa-instagram fa-2x"></i></a>
-                            </p>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -114,7 +105,7 @@
                 <nav class="navbar navbar-expand-md navbar-light">
 
                     <!-- Company name shown on mobile -->
-                    <a class="navbar-brand d-md-none d-lg-none d-xl-none" href="#"><span>mono</span>tone</a>
+                    <a class="navbar-brand d-md-none d-lg-none d-xl-none" href="#">WillZ</a>
 
                     <!-- Mobile menu toggle -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,28 +116,29 @@
                     <div class="collapse navbar-collapse" id="mainNavbar">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                    <a class="nav-link" href="{% url "clients_list" %}">Заявки <span class="sr-only">(current)</span></a>
+                                <a class="nav-link {% if "clients_list" in request.path or "individual" in request.path %}active{% endif %}"
+                                   href="{% url "clients_list" %}">Заявки <span class="sr-only">(current)</span></a>
                             </li>
 
 
 
 
                             <li class="nav-item">
-                                    <a class="nav-link" href="#">Отчеты</a>
+                                <a class="nav-link {% if "reports" in request.path %}active{% endif %}"
+                                   href="{% url "reports" %}">Отчеты</a>
                             </li>
 
                            <li class="nav-item">
-                                    <a class="nav-link" href="{% url "users_list" %}">Пользователи</a>
+                               <a class="nav-link {% if "users_list" in request.path %}active{% endif %}"
+                                  href="{% url "users_list" %}">Пользователи</a>
                             </li>
-                        <!--    <li class="nav-item">
-                                    <a class="nav-link" href="#">Администрирование</a>
-                            </li>-->
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button"
+                                <a class="nav-link dropdown-toggle {% if "modules_list" in request.path or "products_list" in request.path or "parameters_list" in request.path %}active{% endif %}"
+                                   data-toggle="dropdown" href="#" role="button"
                                    aria-haspopup="true" aria-expanded="false">Настройки</a>
-                                        <div class="dropdown-menu navbar-dark bg-primary">
-                                              <a class="dropdown-item active" href="{% url "modules_list" "source" %}">Источники</a>
+                                <div class="dropdown-menu bg-primary">
+                                    <a class="dropdown-item" href="{% url "modules_list" "source" %}">Источники</a>
                                               <a class="dropdown-item" href="{% url "modules_list" "parser" %}">Парсинг</a>
                                               <a class="dropdown-item" href="{% url "modules_list" "scoring" %}">Скоринг</a>
                                               <a class="dropdown-item" href="{% url "products_list" %}">Продукты</a>
@@ -157,10 +149,6 @@
 
                         </ul>
 
-                   <!--     <form class="form-inline header-search-form my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" size="10"  placeholder="Search" aria-label="Search">
-                            <button class="btn my-2 my-sm-0 btn-primary" type="submit">Search</button>
-                        </form> -->
 
                     </div>
                 </nav>

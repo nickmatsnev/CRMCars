@@ -1,7 +1,9 @@
 import ast
 import json
 import sys
+import io
 
+from xlsxwriter.workbook import Workbook
 import os
 
 from django.views.decorators.csrf import csrf_exempt
@@ -90,8 +92,52 @@ def source(request):
 
 
 @login_required(login_url="signin")
+def reports(request):
+    if request.method == 'POST':
+        items = api_requestor.request('/client/{0}/'.format(request.POST['status']))
+        output = io.BytesIO()
+
+        workbook = Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet()
+        # Start from the first cell. Rows and columns are zero indexed.
+        row = 0
+        col = 0
+
+        # Iterate over the data and write it out row by row.
+        for key in items:
+            for element in key.keys():
+                if row == 0:
+                    worksheet.write(0, col, element)
+                col += 1;
+
+        col = 0
+        row = 1
+        for key in items:
+            for element in key.values():
+                try:
+                    worksheet.write(row, col, element)
+                except:
+                    col
+                col += 1
+            row += 1
+        workbook.close()
+
+        output.seek(0)
+
+        response = HttpResponse(output.read(),
+                                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response['Content-Disposition'] = "attachment; filename=test.xlsx"
+
+        output.close()
+
+        return response
+    statuses = api_requestor.request('/client/status/')
+    return render(request, 'concrete/reports.html', {'statuses': statuses})
+
+
+
+@login_required(login_url="signin")
 def individual_inspect(request, id):
-    print(id)
     raw_data = api_requestor.request('/individual/{0}'.format(id))
 
     context = {
@@ -103,15 +149,26 @@ def individual_inspect(request, id):
 
 
 @login_required(login_url="signin")
+def individual_operations(request, id):
+    raw_data = api_requestor.request('/individual/{0}'.format(id))
+
+    context = {
+        'individual': raw_data, 'id': raw_data['id']
+    }
+
+    return render(request, 'concrete/individual_operations.html', context)
+
+
+@login_required(login_url="signin")
 def accept_individual(request, id):
     response = api_requestor.get("/individual/%s/ops/postscoring_accept/" % id)
-    return redirect("clients_list")
+    return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
 def reject_individual(request, id):
     response = api_requestor.get("/individual/%s/ops/postscoring_reject/" % id)
-    return redirect("clients_list")
+    return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
@@ -121,9 +178,15 @@ def reject_individual_no_chance(request, id):
 
 
 @login_required(login_url="signin")
-def start_individual(request, id):
+def start_individual_scoring(request, id):
     response = api_requestor.get("/individual/%s/ops/scoring_start/" % id)
-    return redirect("clients_list")
+    return redirect("individual_inspect", id=id);
+
+
+@login_required(login_url="signin")
+def individual_new_generation(request, id):
+    response = api_requestor.get("/individual/%s/ops/generation_next/" % id)
+    return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
