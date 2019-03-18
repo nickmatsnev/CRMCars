@@ -61,39 +61,7 @@ or change rounded corners from Bootstrap default values
   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-family-monospace: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 /* скрываем чекбоксы и блоки с содержанием */
-.hide {
-    display: none;
-}
-.hide + label ~ div{
-    display: none;
-}
-/* оформляем текст label */
-.hide + label {
-    border-bottom: 0px dotted green;
-    padding: 0;
-    color: black;
-    cursor: pointer;
-    display: inline-block;
-}
-/* вид текста label при активном переключателе */
-.hide:checked + label {
-    color: black;
-    border-bottom: 0;
-}
-/* когда чекбокс активен показываем блоки с содержанием  */
-.hide:checked + label + div {
-    display: block;
-    background: #FFFFFF;
-    -moz-box-shadow: inset 3px 3px 10px #7d8e8f;
-    -webkit-box-shadow: inset 3px 3px 10px #7d8e8f;
-    box-shadow: inset 3px 3px 10px #7d8e8f;
-    padding: 10px;
-}
 
-/* demo контейнер */
-.demo {
-    margin: 5% 10%;
-}
 @media print {
   *,
   *::before,
