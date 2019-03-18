@@ -25,7 +25,6 @@
     {% for item in items %}
             <h1 class="panel-title">Учётная карточка #{{ item.id }}</h1><strong>Создана</strong>
         <h4>{{ item.created_at }}, ID: {{ item.willz_external_id }}, Продукт: {{ item.product }}</h4>
-            <div class="container">
                 <table style="border: solid 2px black" class="table table-bordered">
 
                     <tr>
@@ -53,7 +52,6 @@
 
                 </table>
 
-            </div>
     {% endfor %}
 
 

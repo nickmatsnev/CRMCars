@@ -30,16 +30,13 @@
             {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
         </div>
 
-        <div style=" border:1px solid lightgray;" id="" class="container">
+        <div style=" border:1px solid lightgray;" id="" class="container" data-toggle="collapse" data-target="#demo">
 
 
-            <input type="checkbox" id="hd-1" class="hide"/>
-            <label for="hd-1">
-                <h4>Данные <strong style="color:green">Успешно </strong>
-                    <button for="hd-1" class="btn-sm">+</button>
-                </h4>
-            </label>
-    <div>
+
+            <p ><strong>Данные</strong><strong  style="color:green" class="float-lg-right">Успешно</strong></p>
+
+        <div id="demo" class="collapse">
 
             {% for key,value in values.items %}
                 <p>{{ key }}</p>
@@ -52,18 +49,15 @@
                 {% endfor %}
 
             {% endfor %}
-            </table> </div>
+            </table>
+            </div>
         </div>
 
-            <div style=" border:1px solid lightgray;" class="container">
-                <input type="checkbox" id="hd-2" class="hide"/>
-                <label for="hd-2">
-                    <h4 style="">Валидации <strong style="color:green">Успешно</strong>
-                        <button class="btn-sm">+</button>
-                    </h4>
-                </label>
+            <div style=" border:1px solid lightgray;" class="container" data-toggle="collapse" data-target="#demo1">
 
-                <div>
+
+  <p><strong>Валидации</strong> <strong  style="color:green" class="float-lg-right">Успешно</strong></p>
+            <div id="demo1" class="collapse">
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
@@ -80,12 +74,11 @@
 
             </table>
                 </div>
-    </div>
         </div>
-        <div style=" border:1px solid lightgray;" class="container">
-        <input type="checkbox" id="hd-5" class="hide"/>
-    <label for="hd-5" ><h4 style="">Стоп-Факторы <strong style="color:green">Успешно</strong> <button class="btn-sm">+</button></h4></label>
-    <div>
+        <div style=" border:1px solid lightgray;" class="container"  data-toggle="collapse" data-target="#demo2">
+                <p><strong>Стоп-Факторы</strong> <strong style="color:green" class="float-lg-right">Успешно</strong></p>
+        
+    <div id="demo2" class="collapse">
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
@@ -101,7 +94,7 @@
                 </tbody>
 
             </table>
-    </div>
+
         </div>
 
 
