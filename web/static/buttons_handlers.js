@@ -37,6 +37,13 @@ $(document).ready(function () {
 
     });
 
+    $(".img-custom").click(function () {
+        var data = jQuery(this).attr('src');
+        $("#myModal #modal-content-main").html("<img src=\"" + data + "\"class='img-modal'/>");
+        $('#myModal').modal('show');
+
+    });
+
     $("#prescoring-decline").click(function () {
         var data = jQuery(this).attr("custom_tag");
         $("#rejectModal #modal-content-main").html(data);
@@ -59,12 +66,6 @@ $(document).ready(function () {
                 $("#reject-individual").addClass("disabled");
             if (data['results'] == false)
                 $("#scoring_results").addClass("disabled");
-
-
-            var items = [];
-            //$.each(data, function(key, val) {
-            //  items.push('<li id="' + key + '">' + val + '</li>');
-            //});
         });
     }
 

@@ -4,8 +4,7 @@
     Данные клиента
 {% endblock %}
 {% block head %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="{% static jquery.zoomooz.min.js %}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -86,8 +85,8 @@
     <tr>
     {% for item in individual.passport.images %}
             <td>
-                <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
-                                                                src="{{ item.url }}" alt=""/></a>
+                <img class="zoomTarget img-custom" style="height: 100px; width: 100px"
+                     src="{{ item.url }}" alt=""/>
 
             </td>
 
@@ -96,8 +95,8 @@
 
         {% for item in individual.driver_license.images %}
             <td>
-            <a id="single_image" href="{{ item.url }}"><img class="img-custom" style="height: 100px; width: 100px"
-                                                            src="{{ item.url }}" alt=""/></a>
+                <img class="img-custom" style="height: 100px; width: 100px"
+                     src="{{ item.url }}" alt=""/>
             </td>
 
 

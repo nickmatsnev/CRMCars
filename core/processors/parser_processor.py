@@ -68,13 +68,13 @@ class ParserProcessor(BasicProcess):
 
         except Exception as e:
             if no_module_name == True:
-                payload = 'Error: no module with requested name '
+                payload = 'Error: no module with requested name: '
             elif no_validation == True:
-                payload = 'Error: module has problem with validation '
+                payload = 'Error: module has problem with validation:'
             elif no_stopfactors == True:
-                payload = 'Error: module has problem with stopfactors '
+                payload = 'Error: module has problem with stopfactors: '
             elif no_params == True:
-                payload = 'Error: module has problem with parameters '
+                payload = 'Error: module has problem with parameters: '
             else:
                 payload = 'Error: unknown '
 

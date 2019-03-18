@@ -95,31 +95,29 @@ def source(request):
 def reports(request):
     if request.method == 'POST':
         items = api_requestor.request('/client/{0}/'.format(request.POST['status']))
+        if items == []:
+            return redirect("reports");
         output = io.BytesIO()
 
         workbook = Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet()
-        # Start from the first cell. Rows and columns are zero indexed.
+
         row = 0
         col = 0
-
-        # Iterate over the data and write it out row by row.
-        for key in items:
-            for element in key.keys():
-                if row == 0:
-                    worksheet.write(0, col, element)
+        # row_headers
+        for element in items[0].keys():
+            worksheet.write(0, col, element)
                 col += 1;
-
-        col = 0
+        col = 0;
         row = 1
-        for key in items:
-            for element in key.values():
-                try:
-                    worksheet.write(row, col, element)
-                except:
-                    col
+        # row_values
+        for client in items:
+            for value in client.values():
+                worksheet.write(row, col, str(value))
                 col += 1
             row += 1
+            col = 0;
+
         workbook.close()
 
         output.seek(0)

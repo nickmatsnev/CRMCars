@@ -10,8 +10,8 @@
     </script>
     <div id="" class="container">
 
-        <div class="item1"><h1>Оценка физ.лица № {{ id }}</h1> <strong>Создана</strong>
-            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>  </div>
+        <div class="item1"><h1>Оценка физ.лица № {{ id }}</h1>
+            {#            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>  </div>#}
         <a href="{% url "accept_individual" id %}" class="btn btn-success" id="accept-individual">
             Одобрить
         </a>
@@ -32,8 +32,8 @@
 
         <div style=" border:1px solid lightgray;" id="" class="container">
             <h4>Данные</h4><br>
-            {% for item in sources %}
-    <input type="checkbox" id="hd-1" class="hide"/>
+
+            <input type="checkbox" id="hd-1" class="hide"/>
                 <label for="hd-1" ><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
     <div>
 
@@ -50,44 +50,7 @@
             {% endfor %}
             </table> </div>
     <br/>
-    <input type="checkbox" id="hd-2" class="hide"/>
-                <label for="hd-2"><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
-    <div>
 
-            {% for key,value in values.items %}
-                <p>{{ key }}</p>
-                <table>
-                {% for element in value %}
-                    <tr>
-                        <td>{{ element.name }}</td>
-                        <td>{{ element.value }}</td>
-                    </tr>
-                {% endfor %}
-
-            {% endfor %}
-            </table> </div>
-    <br/>
-    <input type="checkbox" id="hd-3" class="hide"/>
-                <label for="hd-3" ><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
-    <div>
-
-            {% for key,value in values.items %}
-                <p>{{ key }}</p>
-                <table>
-                {% for element in value %}
-                    <tr>
-                        <td>{{ element.name }}</td>
-                        <td>{{ element.value }}</td>
-                    </tr>
-                {% endfor %}
-
-            {% endfor %}
-            </table> </div>   {% endfor %}
-                </div>
-
-
-        <div style=" border:1px solid lightgray;" class="container">
-         <input type="checkbox" id="hd-4" class="hide"/>
     <label for="hd-4" ><h4 style="">Валидации  <strong style="color:green">Успешно</strong> <button class="btn-sm">+</button></h4></label>
     <div>
             <big >Валидации</big>

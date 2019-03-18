@@ -49,9 +49,9 @@ class SourcesProcessor(BasicProcess):
 
             except Exception as e:
                 if no_module_name==True:
-                    payload = 'Error: no module with requested name ' + str(e)
+                    payload = 'Error: no module with requested name: ' + str(e)
                 else:
-                    payload = 'Error: module has problem with structure ' + str(e)
+                    payload = 'Error: module has problem with structure: ' + str(e)
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE,
                                       json.dumps({"individual_id": individual_id,"payload": payload}))
