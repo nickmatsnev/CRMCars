@@ -162,6 +162,10 @@ urlpatterns = [
          api_module.GetParserValidateAllErrorsAPI.as_view()),
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/stopfactor/errors/',
          api_module.GetParserStopFactorAllErrorsAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/validate/status/',
+         api_module.GetParserValidateAllStatusAPI.as_view()),
+    path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/parser/stopfactor/status/',
+         api_module.GetParserStopFactorAllStatusAPI.as_view()),
 
     path('api/individual/<int:pk>/<slug:gen_id_or_cur_gen>/data/<slug:module_type>/<slug:module_name>/',
          api_module.ModuleDataApi.as_view()),

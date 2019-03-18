@@ -151,7 +151,7 @@ class GetParserValidateStatusAPI(APIView):
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
         return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
-                        'Validate', 'Status')
+                        'Validate', 'status')
 
 
 class GetParserValidateErrorsAPI(APIView):
@@ -173,7 +173,7 @@ class GetParserStopFactorStatusAPI(APIView):
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
         return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
-                        'StopFactors', 'Status')
+                        'StopFactors', 'status')
 
 
 class GetParserStopFactorErrorsAPI(APIView):
@@ -215,6 +215,20 @@ class GetParserStopFactorAllErrorsAPI(APIView):
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
         return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'StopFactors', 'errors')
+
+
+class GetParserValidateAllStatusAPI(APIView):
+    @swagger_auto_schema(operation_description='get_all_errors validate',
+                         responses={200: 'Array'})
+    def get(self, request, gen_id_or_cur_gen, pk):
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'Validate', 'status')
+
+
+class GetParserStopFactorAllStatusAPI(APIView):
+    @swagger_auto_schema(operation_description='get_all_errors stopfactor',
+                         responses={200: 'Array'})
+    def get(self, request, gen_id_or_cur_gen, pk):
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'StopFactors', 'status')
 
 
 class GetScoringAPI(APIView):
