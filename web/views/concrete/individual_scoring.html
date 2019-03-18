@@ -31,10 +31,14 @@
         </div>
 
         <div style=" border:1px solid lightgray;" id="" class="container">
-            <h4>Данные</h4><br>
+
 
             <input type="checkbox" id="hd-1" class="hide"/>
-                <label for="hd-1" ><h4>{{ item }} <strong style="color:green">Успешно </strong><button  for="hd-1" class="btn-sm">+</button></h4></label>
+            <label for="hd-1">
+                <h4>Данные <strong style="color:green">Успешно </strong>
+                    <button for="hd-1" class="btn-sm">+</button>
+                </h4>
+            </label>
     <div>
 
             {% for key,value in values.items %}
@@ -49,18 +53,24 @@
 
             {% endfor %}
             </table> </div>
-    <br/>
+        </div>
 
-    <label for="hd-4" ><h4 style="">Валидации  <strong style="color:green">Успешно</strong> <button class="btn-sm">+</button></h4></label>
-    <div>
-            <big >Валидации</big>
+            <div style=" border:1px solid lightgray;" class="container">
+                <input type="checkbox" id="hd-2" class="hide"/>
+                <label for="hd-2">
+                    <h4 style="">Валидации <strong style="color:green">Успешно</strong>
+                        <button class="btn-sm">+</button>
+                    </h4>
+                </label>
+
+                <div>
             <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring" width="30px">
 
                 <tbody>
                 <p>
                     {% for key,value in stopfactors.items %}
-                        <p>{{ key }}</p>
-
+                        <p><b>Модуль: </b>{{ key }}</p>
+                        <p><b>Проверки:</b></p>
                         {% for element in value %}
                             <p>{{ element.decription }}</p>
                         {% endfor %}
@@ -69,6 +79,7 @@
                 </tbody>
 
             </table>
+                </div>
     </div>
         </div>
         <div style=" border:1px solid lightgray;" class="container">
@@ -80,8 +91,8 @@
                 <tbody>
                 <p>
                     {% for key,value in validate.items %}
-                        <p>{{ key }}</p>
-
+                        <p><b>Модуль: </b>{{ key }}</p>
+                        <p><b>Проверки:</b></p>
                         {% for element in value %}
                             <p>{{ element.decription }}</p>
                         {% endfor %}

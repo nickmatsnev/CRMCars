@@ -23,8 +23,6 @@ from portal.models import Module
 from rest_framework import status
 
 
-
-
 @login_required(login_url="signin")
 def clients_list(request):
     items = api_requestor.request('/client/')
@@ -43,15 +41,14 @@ def clients_list_filtered(request, status_filter):
 
 @login_required(login_url="signin")
 def users_list(request):
-  users = api_requestor.request('/user/')
+    users = api_requestor.request('/user/')
 
-  return render(request, 'concrete/users_list.html', {'items':users})
+    return render(request, 'concrete/users_list.html', {'items': users})
 
 
 @login_required(login_url="signin")
 def index(request):
-
-  return render(request, 'index.html')
+    return render(request, 'index.html')
 
 
 @login_required(login_url="signin")
@@ -61,7 +58,7 @@ def individual_prescoring_decline(request, id):
     context = {'individual': raw_data['individual'], 'id': raw_data['id'], 'drivers': raw_data['drivers'],
                'history': raw_data['op_history']}
 
-    return render(request, 'concrete/client_decline.html',context)
+    return render(request, 'concrete/client_decline.html', context)
 
 
 @login_required(login_url="signin")
@@ -79,6 +76,7 @@ def individual_scoring(request, id):
         '/individual/{0}/cur_gen/data/parser/values'.format(id))
     parser_validate_errors = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/validate/errors'.format(id))
+
     parser_stopfactor_errors = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/stopfactor/errors'.format(id))
 
@@ -86,9 +84,10 @@ def individual_scoring(request, id):
                   {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
                    'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score});
 
+
 @login_required(login_url="signin")
 def source(request):
-  return render(request, 'concrete/source.html')
+    return render(request, 'concrete/source.html')
 
 
 @login_required(login_url="signin")
@@ -107,7 +106,7 @@ def reports(request):
         # row_headers
         for element in items[0].keys():
             worksheet.write(0, col, element)
-                col += 1;
+            col += 1;
         col = 0;
         row = 1
         # row_values
@@ -116,22 +115,17 @@ def reports(request):
                 worksheet.write(row, col, str(value))
                 col += 1
             row += 1
-            col = 0;
-
+            col = 0
         workbook.close()
-
         output.seek(0)
-
         response = HttpResponse(output.read(),
                                 content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response['Content-Disposition'] = "attachment; filename=test.xlsx"
-
         output.close()
-
         return response
+
     statuses = api_requestor.request('/client/status/')
     return render(request, 'concrete/reports.html', {'statuses': statuses})
-
 
 
 @login_required(login_url="signin")
@@ -243,7 +237,6 @@ def product_edit(request, id):
 
 @login_required(login_url="signin")
 def product_new(request):
-
     if request.method == 'POST':
         name = request.POST['name']
         primary_scoring = request.POST['primary_scoring']

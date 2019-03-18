@@ -22,6 +22,7 @@
                 <th>Имя</th>
                 <th>Основной</th>
                 <th>Дополнительный</th>
+                <th>Операции</th>
             </tr>
             </thead>
 
@@ -35,7 +36,7 @@
                     <td>{{ item.primary }}</td>
                     <td>{{ item.other }}</td>
                     <td><a href="{% url "product_edit" item.id %}">
-                        <button class="menuButton" type="button"><span class="glyphicon glyphicon-plus"></span>Редактировать
+                        <button class="btn btn-success" type="button"><span class="glyphicon glyphicon-plus"></span>Редактировать
                         </button>
                     </a>
                     </td>

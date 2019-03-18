@@ -11,6 +11,12 @@
     <div class="container ">
         <h1 class="panel-title">История операций физ.лица №{{ id }}</h1>
 
+        <a href="{% url "individual_inspect" id %}" class="btn btn-success">
+            Вернуться на карточку клиента
+        </a>
+        <br/>
+        <br/>
+
         <table class="table">
             <tr>
                 <td>Действие</td>
