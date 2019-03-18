@@ -21,7 +21,7 @@
     <br><p></p>
 
    <div style=" border:1px solid lightgray;" id="" class="container">
-            <h4>Скоринг</h4>
+       <p><strong>Скоринг</strong></p>
 
 
             <h4>
@@ -38,11 +38,17 @@
         <div id="demo" class="collapse">
 
             {% for key,value in values.items %}
-                <p>{{ key }}</p>
-                <table>
+                <p><b>Модуль: </b>{{ key }}</p>
+                <table class="table" style="padding: 5px;">
+                <tr>
+                    <th style="width:300px;">Параметр</th>
+                    <th>Значение</th>
+                </tr>
                 {% for element in value %}
                     <tr>
-                        <td>{{ element.name }}</td>
+                        <td>{% for pp,pvv in parameters_dict.items %}{% ifequal pp element.name %}{{ pvv }}
+                        {% endifequal %}{% endfor %}</td>
+
                         <td>{{ element.value }}</td>
                     </tr>
                 {% endfor %}

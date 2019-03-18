@@ -2,6 +2,7 @@ import ast
 import json
 import sys
 import io
+from time import sleep
 
 from xlsxwriter.workbook import Workbook
 import os
@@ -80,14 +81,18 @@ def individual_scoring(request, id):
         '/individual/{0}/cur_gen/data/parser/validate/status'.format(id))
     parser_stopfactor_status = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/stopfactor/status'.format(id))
-
+    parser_parameters = api_requestor.request('/module/parser/view/parameters/')
+    parameters_dict = {}
+    for item in parser_parameters:
+        parameters_dict[item['name']] = item['description']
     parser_stopfactor_errors = api_requestor.request(
         '/individual/{0}/cur_gen/data/parser/stopfactor/errors'.format(id))
 
     return render(request, 'concrete/individual_scoring.html',
                   {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
                    'validate_status': parser_validate_status, 'stopfactor_status': parser_stopfactor_status,
-                   'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score});
+                   'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score,
+                   'parameters_dict': parameters_dict});
 
 
 @login_required(login_url="signin")
@@ -159,30 +164,35 @@ def individual_operations(request, id):
 @login_required(login_url="signin")
 def accept_individual(request, id):
     response = api_requestor.get("/individual/%s/ops/postscoring_accept/" % id)
+    sleep(0.9);
     return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
 def reject_individual(request, id):
     response = api_requestor.get("/individual/%s/ops/postscoring_reject/" % id)
+    sleep(0.9);
     return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
 def reject_individual_no_chance(request, id):
     response = api_requestor.get("/individual/%s/ops/prescoring_reject/" % id)
+    sleep(0.5);
     return redirect("clients_list")
 
 
 @login_required(login_url="signin")
 def start_individual_scoring(request, id):
     response = api_requestor.get("/individual/%s/ops/scoring_start/" % id)
+    sleep(0.5);
     return redirect("individual_inspect", id=id);
 
 
 @login_required(login_url="signin")
 def individual_new_generation(request, id):
     response = api_requestor.get("/individual/%s/ops/generation_next/" % id)
+    sleep(0.5);
     return redirect("individual_inspect", id=id);
 
 

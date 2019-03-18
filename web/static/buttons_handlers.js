@@ -66,6 +66,19 @@ $(document).ready(function () {
                 $("#reject-individual").addClass("disabled");
             if (data['results'] == false)
                 $("#scoring_results").addClass("disabled");
+
+            var timeout;
+            if (window.location.pathname.includes("individual_inspect")) {
+                if (data['scoring_start'] == false && data['prescoring_decline'] == false && data['generation_next'] == false && data['postscoring_accept'] == false && data['postscoring_reject'] == false && data['results'] == false) {
+                    timeout = setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+                else {
+                    if (timeout != "undefined")
+                        clearTimeout(timeout);
+                }
+            }
         });
     }
 
