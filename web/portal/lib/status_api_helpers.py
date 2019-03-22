@@ -16,7 +16,7 @@ def get_dictionary_of_status():
     my_dic = {}
     my_dic['scoring_complete_declined']='Отказано'
     my_dic['scoring_complete_accepted']='Одобрено'
-    my_dic['new']='Новый'
+    my_dic['new'] = 'Новая'
     my_dic['manual_decline']='Отказано до скоринга'
     my_dic['scoring']='Скоринг обрабатывается'
     my_dic['scoring_complete']= 'Ожидает согласования'
