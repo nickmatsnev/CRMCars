@@ -5,7 +5,7 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_yasg import openapi
-from core.lib import message_sender, api_requestor
+from core.lib import message_sender, basic_api_requestor
 from portal.lib.module_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
 from portal.models import *

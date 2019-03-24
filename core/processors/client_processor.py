@@ -8,7 +8,7 @@ from django.http.response import HttpResponse
 sys.path.append('../')
 
 from lib.global_settings import API_ROOT_URL
-from lib import api_requestor, action_helper, willz_to_client
+from lib import basic_api_requestor, action_helper, willz_to_client
 from lib.process import *
 from lib.constants import *
 
@@ -29,7 +29,7 @@ class ClientProcessor(BasicProcess):
             # дергаем сырок
             input_message = json.loads(body)
             raw_client_id = input_message['raw_client_id']
-            raw_data = api_requestor.request('/willz/{0}/'.format(raw_client_id))
+            raw_data = basic_api_requestor.request('/willz/{0}/'.format(raw_client_id))
             # парсим payload виллзовский
             raw_json = json.loads(raw_data['payload'])
 

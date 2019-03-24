@@ -25,9 +25,12 @@ from portal.api import api_individual
 from portal.api import api_status
 
 from portal.controllers.views import *
+from portal.controllers.individual_view import *
+from portal.controllers.module_view import *
 from .controllers.auth import *
 
 router = routers.DefaultRouter()
+view_router = routers.APIRootView()
 
 schema_view = get_schema_view(
    openapi.Info(

@@ -10,7 +10,7 @@ sys.path.append('../')
 
 sys.path.append('../../')
 
-from lib import api_requestor, scoring_deps_helper, action_helper
+from lib import basic_api_requestor, scoring_deps_helper, action_helper
 import pandas
 
 from lib.scoring_value_converter import convert
@@ -59,13 +59,13 @@ class ScoringProcessor(BasicProcess):
 
         score_res = scoring_deps_helper.get_scoring_module(individual_data['scoring_module_id'])
 
-        raw_data = api_requestor.request('/individual/{0}/cur_gen/data/parser/values/'.format(individual_id))
+        raw_data = basic_api_requestor.request('/individual/{0}/cur_gen/data/parser/values/'.format(individual_id))
 
         parsers_parameters = convert(raw_data)
 
         res = score_res.get_score(parsers_parameters)
 
-        api_requestor.post(
+        basic_api_requestor.post(
             '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "scoring", score_res.get_module_name()),
             json.dumps(({"Score": res})))
         action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
@@ -76,7 +76,7 @@ class ScoringProcessor(BasicProcess):
     def get_individual_data_for_message(self, body):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
-        individual_data = api_requestor.request('/individual/{0}'.format(individual_id))
+        individual_data = basic_api_requestor.request('/individual/{0}'.format(individual_id))
         return individual_data, individual_id
 
 

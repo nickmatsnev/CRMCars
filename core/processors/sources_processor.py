@@ -8,7 +8,7 @@ from django.utils.baseconv import base64
 sys.path.append('../')
 
 sys.path.append('../../')
-from lib import constants, api_requestor, action_helper
+from lib import constants, basic_api_requestor, action_helper
 from lib.process import *
 from lib.modules import SourceModule
 
@@ -28,7 +28,7 @@ class SourcesProcessor(BasicProcess):
             no_module_name = True
 
             try:
-                source = api_requestor.request('/module/source/{0}/'.format(source_name))[0]
+                source = basic_api_requestor.request('/module/source/{0}/'.format(source_name))[0]
                 source_m = SourceModule(source['path'])
                 no_module_name = False
 
@@ -37,7 +37,7 @@ class SourcesProcessor(BasicProcess):
                 data = source_m.import_data(credential, None)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
-                api_requestor.post(
+                basic_api_requestor.post(
                 '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()),
                     raw_data)
 

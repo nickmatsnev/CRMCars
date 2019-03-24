@@ -5,7 +5,7 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_yasg import openapi
-from core.lib import message_sender, api_requestor
+from core.lib import message_sender, basic_api_requestor
 from portal.lib.status_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
 from portal.models import *
@@ -65,7 +65,7 @@ class ScoringStart(APIView):
         resp = json.dumps({'message_type': "individual_scoring_process",
                            'body': json.dumps({"individual_id": pk, "product_id": get_product_id_for_individual(pk)})})
 
-        raw_data = api_requestor.post('/message/', resp)
+        raw_data = basic_api_requestor.post('/message/', resp)
 
         return Response(action)
 

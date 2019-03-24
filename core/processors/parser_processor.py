@@ -10,7 +10,7 @@ from django.utils.baseconv import base64
 sys.path.append('../')
 
 from lib.modules import ParserModule
-from lib import constants, api_requestor, action_helper
+from lib import constants, basic_api_requestor, action_helper
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
 
@@ -35,17 +35,17 @@ class ParserProcessor(BasicProcess):
         no_params = True
 
         try:
-            parser = api_requestor.request('/module/parser/{0}/'.format(parser))[0]
+            parser = basic_api_requestor.request('/module/parser/{0}/'.format(parser))[0]
             parser_m = ParserModule(parser['path'])
             no_module_name = False
 
             parser_m_name = parser_m.get_module_name()
             source_module_name = parser_m.get_module_source()
 
-            source_raw_data = api_requestor.request(
+            source_raw_data = basic_api_requestor.request(
             '/individual/{0}/cur_gen/data/{1}/{2}'.format(individual_id, "source", source_module_name))
 
-            individual_json = api_requestor.request('/individual/{0}'.format(individual_id))
+            individual_json = basic_api_requestor.request('/individual/{0}'.format(individual_id))
 
             validate = parser_m.validate(individual_json, source_raw_data)
             no_validation = False
@@ -57,7 +57,7 @@ class ParserProcessor(BasicProcess):
             parser_object = {'Values': params, 'Validate': validate, 'StopFactors': stop_factors}
             parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
-            api_requestor.post(
+            basic_api_requestor.post(
             '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
 
             action_helper.add_action(individual_id, "scoring", "parsers_processor",
