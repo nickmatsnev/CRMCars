@@ -18,7 +18,8 @@ from lib.scoring_value_converter import convert
 from lib.process import *
 from lib.constants import *
 from lib.modules import *
-
+from lib.constants import *
+from portal.lib.constants import *
 
 
 
@@ -40,7 +41,7 @@ class ScoringProcessor(BasicProcess):
         body_sources = {"individual_id": individual_id, "source": source_deps[0]}
 
         action_helper.add_action(individual_id, "scoring", "scoring_processor",
-                                 payload="Начат процесс скоринга")
+                                 payload=SCORING_PROCESSOR_SCORING_START)
         self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESS_MESSAGE, json.dumps(body_sources))
 
     def __process_parsers(self, body):
@@ -50,7 +51,7 @@ class ScoringProcessor(BasicProcess):
         body_parsers = {"individual_id": individual_id, "parser": parsers_deps[0]}
 
         action_helper.add_action(individual_id, "scoring", "parsers_processor",
-                                 payload="Начат процесс парсинга источника")
+                                 payload=SCORING_PROCESSOR_PARSING_START)
         self._publish_message(constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE, json.dumps(body_parsers))
 
     def __finalize_scoring(self, body):
@@ -59,24 +60,26 @@ class ScoringProcessor(BasicProcess):
 
         score_res = scoring_deps_helper.get_scoring_module(individual_data['scoring_module_id'])
 
-        raw_data = basic_api_requestor.request('/individual/{0}/cur_gen/data/parser/values/'.format(individual_id))
+        raw_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA + '/'
+                                               +URL_MODULE_PARSER+URL_INDIVIDUAL_METHOD_VALUES)
 
         parsers_parameters = convert(raw_data)
 
         res = score_res.get_score(parsers_parameters)
 
         basic_api_requestor.post(
-            '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "scoring", score_res.get_module_name()),
+            URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA + '/'
+            +URL_MODULE_SCORING+f'{score_res.get_module_name()}',
             json.dumps(({"Score": res})))
         action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
-                                 payload="Завершен процесс скоринга")
+                                 payload=SCORING_PROCESSOR_SCORING_STOP)
 
         print("scoring")
 
     def get_individual_data_for_message(self, body):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
-        individual_data = basic_api_requestor.request('/individual/{0}'.format(individual_id))
+        individual_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + '/{0}'.format(individual_id))
         return individual_data, individual_id
 
 

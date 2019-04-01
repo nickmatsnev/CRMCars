@@ -13,7 +13,8 @@ from lib.modules import ParserModule
 from lib import constants, basic_api_requestor, action_helper
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
-
+from lib.constants import *
+from portal.lib.constants import *
 
 class ParserProcessor(BasicProcess):
 
@@ -35,7 +36,7 @@ class ParserProcessor(BasicProcess):
         no_params = True
 
         try:
-            parser = basic_api_requestor.request('/module/parser/{0}/'.format(parser))[0]
+            parser = basic_api_requestor.request(URL_MAIN_MODULE+URL_MODULE_PARSER+f'{parser}/')[0]
             parser_m = ParserModule(parser['path'])
             no_module_name = False
 
@@ -43,9 +44,10 @@ class ParserProcessor(BasicProcess):
             source_module_name = parser_m.get_module_source()
 
             source_raw_data = basic_api_requestor.request(
-            '/individual/{0}/cur_gen/data/{1}/{2}'.format(individual_id, "source", source_module_name))
+            URL_MAIN_INDIVIDUAL + f'/{individual_id}' + URL_MAIN_SUB_CUR_DATA + '/' +
+            URL_MODULE_SOURCE +f'{source_module_name}')
 
-            individual_json = basic_api_requestor.request('/individual/{0}'.format(individual_id))
+            individual_json = basic_api_requestor.request(URL_MAIN_INDIVIDUAL+f'/{individual_id}')
 
             validate = parser_m.validate(individual_json, source_raw_data)
             no_validation = False
@@ -58,25 +60,26 @@ class ParserProcessor(BasicProcess):
             parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
             basic_api_requestor.post(
-            '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "parser", parser_m_name), parser_raw_data)
+            URL_MAIN_INDIVIDUAL+f'/{individual_id}'+URL_MAIN_SUB_CUR_DATA+'/'+URL_MODULE_PARSER+f'{parser_m_name}/',
+            parser_raw_data)
 
             action_helper.add_action(individual_id, "scoring", "parsers_processor",
-                                 payload="Обработаны данные от источника: {0}".format(parser_m_name))
+                                 payload=PARSER_PROCESSOR_SUCCESS + f'{parser_m_name}')
 
             self._publish_message(constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE,
                               json.dumps({"individual_id": individual_id}))
 
         except Exception as e:
             if no_module_name == True:
-                payload = 'Error: no module with requested name: '
+                payload = PARSER_PROCESSOR_ERR_MODULE_NAME
             elif no_validation == True:
-                payload = 'Error: module has problem with validation:'
+                payload = PARSER_PROCESSOR_ERR_VALIDATION
             elif no_stopfactors == True:
-                payload = 'Error: module has problem with stopfactors: '
+                payload = PARSER_PROCESSOR_ERR_STOP_FACTORS
             elif no_params == True:
-                payload = 'Error: module has problem with parameters: '
+                payload = PARSER_PROCESSOR_ERR_PARAMS
             else:
-                payload = 'Error: unknown '
+                payload = PARSER_PROCESSOR_UNKNOWN
 
             self._publish_message(constants.INDIVIDUAL_PARSER_ERROR_MESSAGE,
                                     json.dumps({"individual_id": individual_id, "payload": payload+str(e)}))

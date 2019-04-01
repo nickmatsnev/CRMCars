@@ -11,6 +11,8 @@ sys.path.append('../../')
 from lib import constants, basic_api_requestor, action_helper
 from lib.process import *
 from lib.modules import SourceModule
+from lib.constants import *
+from portal.lib.constants import *
 
 
 class SourcesProcessor(BasicProcess):
@@ -28,30 +30,32 @@ class SourcesProcessor(BasicProcess):
             no_module_name = True
 
             try:
-                source = basic_api_requestor.request('/module/source/{0}/'.format(source_name))[0]
+                source = basic_api_requestor.request(URL_MAIN_MODULE+'/' + URL_MODULE_SOURCE +f'{source_name}/')[0]
                 source_m = SourceModule(source['path'])
                 no_module_name = False
 
-                credential = '{"username":"dmitry@korishchenko.ru","token":"4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"}'
+                base_credential = {"username":SOURCE_PROCESSOR_USERNAME,"token":SOURCE_PROCESSOR_TOKEN}
+                credential = json.dumps(base_credential)
                 # TODO fix credentials
                 data = source_m.import_data(credential, None)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
                 basic_api_requestor.post(
-                '/individual/{0}/cur_gen/data/{1}/{2}/'.format(individual_id, "source", source_m.get_module_name()),
+                URL_MAIN_INDIVIDUAL + f'/{individual_id}' + URL_MAIN_SUB_CUR_DATA + '/'
+                + URL_MODULE_SOURCE + f'{source_m.get_module_name()}/',
                     raw_data)
 
                 action_helper.add_action(individual_id, "scoring", "sources_processor",
-                                                payload="Загружен источник: {0}".format(source_m.get_module_name()))
+                                                payload=SOURCE_PROCESSOR_SOURCE_LOADED + f'{source_m.get_module_name()}')
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
                                   json.dumps({"individual_id": individual_id}))
 
             except Exception as e:
                 if no_module_name==True:
-                    payload = 'Error: no module with requested name: ' + str(e)
+                    payload = SOURCE_PROCESSOR_ERR_MODULE_NAME + str(e)
                 else:
-                    payload = 'Error: module has problem with structure: ' + str(e)
+                    payload = SOURCE_PROCESSOR_ERR_STRUCTURE + str(e)
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE,
                                       json.dumps({"individual_id": individual_id,"payload": payload}))

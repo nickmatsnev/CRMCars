@@ -37,10 +37,15 @@ URL_MAIN_CLIENT='/client'
 URL_CLIENT_METHOD_VIEW='view/'
 URL_CLIENT_METHOD_STATUS='status/'
 
+URL_CLIENT_UPDATE_PRODUCT ='update_product/'
 
 #work with PRODUCT
 URL_MAIN_PRODUCT='/product'
 URL_PRODUCT_METHOD_VIEW='view/'
+
+
+#work with willz
+URL_MAIN_WILLZ = '/willz'
 
 
 #work with VIEW

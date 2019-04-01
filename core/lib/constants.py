@@ -36,3 +36,28 @@ CLIENT_PROCESSOR_NAME = "New Client Processor"
 PATH_TO_SCORING_MODULES = "../../core/scoring/"
 PATH_TO_PARSER_MODULES = "../../core/parsers/"
 PATH_TO_SOURCE_MODULES = "../../core/sources/"
+
+
+CLIENT_PROCESSOR_SUCCESS = " client is processed"
+CLIENT_PROCESSOR_NOT_SUCCESS = " client is not processed"
+CLIENT_PROCESSOR_WILLZ_SUCCESS = "Клиент загружен из системы WillZ"
+
+
+PARSER_PROCESSOR_SUCCESS  = "Обработаны данные от источника: "
+PARSER_PROCESSOR_ERR_MODULE_NAME  = 'Error: no module with requested name: '
+PARSER_PROCESSOR_ERR_VALIDATION  = 'Error: module has problem with validation: '
+PARSER_PROCESSOR_ERR_STOP_FACTORS  = 'Error: module has problem with stopfactors: '
+PARSER_PROCESSOR_ERR_PARAMS  = 'Error: module has problem with parameters: '
+PARSER_PROCESSOR_UNKNOWN = 'Error: unknown '
+
+
+SCORING_PROCESSOR_SCORING_START = "Начат процесс скоринга"
+SCORING_PROCESSOR_SCORING_STOP = "Завершен процесс скоринга"
+SCORING_PROCESSOR_PARSING_START = "Начат процесс парсинга источника"
+
+SOURCE_PROCESSOR_USERNAME = "dmitry@korishchenko.ru"
+SOURCE_PROCESSOR_TOKEN = "4def557c4fa35791f07cc8d4faf7c3a5f7ae7c93"
+SOURCE_PROCESSOR_SOURCE_LOADED = "Загружен источник: "
+
+SOURCE_PROCESSOR_ERR_MODULE_NAME  = 'Error: no module with requested name: '
+SOURCE_PROCESSOR_ERR_STRUCTURE  = 'Error: module has problem with structure: '

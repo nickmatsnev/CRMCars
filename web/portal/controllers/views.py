@@ -28,15 +28,15 @@ from portal.lib.api_requestor import *
 
 @login_required(login_url="signin")
 def clients_list(request):
-    items = get_client()
-    statuses = get_client(URL_CLIENT_METHOD_STATUS)
+    items = get_client_all()
+    statuses = get_client_all_status()
     return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
 
 
 @login_required(login_url="signin")
 def clients_list_filtered(request, status_filter):
-    items = get_client_info(status_filter)
-    statuses = get_client(URL_CLIENT_METHOD_STATUS)
+    items = get_client_by_status(status_filter)
+    statuses = get_client_all_status()
     return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
 
 
@@ -59,7 +59,7 @@ def source(request):
 @login_required(login_url="signin")
 def reports(request):
     if request.method == 'POST':
-        items = get_client_info(request.POST['status'])
+        items = get_client_by_status(request.POST['status'])
         if items == []:
             return redirect(URL_REPORTS)
         output = io.BytesIO()
@@ -90,6 +90,6 @@ def reports(request):
         output.close()
         return response
 
-    statuses = get_client(URL_CLIENT_METHOD_STATUS)
+    statuses = get_client_all_status()
     return render(request, URL_LINK_REPORTS, {'statuses': statuses})
 

@@ -40,21 +40,20 @@ def upload_module(request, module_type):
 
 @login_required(login_url="signin")
 def parameters_list(request):
-    items = get_module_info(URL_MODULE_PARSER,URL_MODULE_METHOD_VIEW_PARAMETERS)
+    items = get_module_parser_parameters()
     return render(request, URL_LINK_PARAMETERS_LIST, {'items': items})
 
 
 @login_required(login_url="signin")
 def products_list(request):
-    items = get_product_info
+    items = get_product_info()
 
     return render(request, URL_LINK_PRODUCTS_LIST, {'items': items})
 
 
 @login_required(login_url="signin")
 def modules_list(request, module_type):
-    items = get_module_info(module_type,URL_MODULE_METHOD_VIEW)
-
+    items = get_module_view(module_type)
     return render(request, URL_LINK_MODULES_LIST, {'module': module_type, 'items': items})
 
 
@@ -72,7 +71,7 @@ def product_edit(request, id):
         else:
             return HttpResponse(RESPONSE_ERROR)
 
-    modules = get_module_info(URL_MODULE_SCORING,URL_MODULE_METHOD_VIEW)
+    modules = get_scoring_view()
     context = {'modules': modules, 'product': product}
 
     return render(request, URL_LINK_PRODUCT_EDIT, context)
@@ -101,7 +100,7 @@ def product_new(request):
         else:
             return HttpResponse(RESPONSE_ERROR)
 
-    modules = get_module_info(URL_MODULE_SCORING,URL_MODULE_METHOD_VIEW)
+    modules = get_scoring_view()
     context = {'modules': modules, 'product': ''}
 
     return render(request, URL_LINK_PRODUCT_EDIT, context)
