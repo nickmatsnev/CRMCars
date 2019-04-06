@@ -36,7 +36,7 @@ class ParserProcessor(BasicProcess):
         no_params = True
 
         try:
-            parser = basic_api_requestor.request(URL_MAIN_MODULE+URL_MODULE_PARSER+f'{parser}/')[0]
+            parser = basic_api_requestor.request(URL_MAIN_MODULE + '/' + URL_MODULE_PARSER + f'{parser}/')[0]
             parser_m = ParserModule(parser['path'])
             no_module_name = False
 

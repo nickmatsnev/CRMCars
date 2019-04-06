@@ -68,8 +68,8 @@ class ScoringProcessor(BasicProcess):
         res = score_res.get_score(parsers_parameters)
 
         basic_api_requestor.post(
-            URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA + '/'
-            +URL_MODULE_SCORING+f'{score_res.get_module_name()}',
+            URL_MAIN_INDIVIDUAL + f'/{individual_id}' + URL_MAIN_SUB_CUR_DATA + '/'
+            + URL_MODULE_SCORING + f'{score_res.get_module_name()}' + "/",
             json.dumps(({"Score": res})))
         action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
                                  payload=SCORING_PROCESSOR_SCORING_STOP)

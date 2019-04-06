@@ -57,7 +57,7 @@ def do_individual_next(id):
 
 ###     MODULES     ###
 def get_module_view(module_name):
-    path = URL_MAIN_MODULE + f'/{module_name}' + URL_MODULE_METHOD_VIEW
+    path = URL_MAIN_MODULE + f'/{module_name}/' + URL_MODULE_METHOD_VIEW
     return basic_api_requestor.request(path)
 
 def get_scoring_view():
@@ -65,7 +65,7 @@ def get_scoring_view():
     return basic_api_requestor.request(path)
 
 def do_module_upload(module_name,request):
-    path = URL_MAIN_MODULE + f'/{module_name}'+URL_MODULE_METHOD_UPLOAD
+    path = URL_MAIN_MODULE + f'/{module_name}/' + URL_MODULE_METHOD_UPLOAD
     return basic_api_requestor.post_file(path, request)
 
 def get_module_parser_parameters():
@@ -98,11 +98,11 @@ def get_client_by_status(status):
 ###     PRODUCTS     ###
 def post_product(data):
     path = URL_MAIN_PRODUCT+'/'
-    return basic_api_requestor.post(URL_MAIN_PRODUCT + '/', data)
+    return basic_api_requestor.post(path, data)
 
 def patch_product(id,data):
     path = URL_MAIN_PRODUCT+f'/{id}/'
-    return basic_api_requestor.patch(URL_MAIN_PRODUCT + '/', data)
+    return basic_api_requestor.patch(path, data)
 
 def get_product(id):
     path = URL_MAIN_PRODUCT + f'/{id}'
