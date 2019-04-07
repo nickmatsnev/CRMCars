@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 import json
 import sys
-import ast
-
-from django.utils.baseconv import base64
-
-
 
 sys.path.append('../')
 
 from lib.modules import ParserModule
-from lib import constants, basic_api_requestor, action_helper
+from lib import basic_api_requestor, action_helper
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
 from lib.constants import *
-from portal.lib.constants import *
+
 
 class ParserProcessor(BasicProcess):
 

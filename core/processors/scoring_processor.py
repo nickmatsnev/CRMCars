@@ -1,25 +1,18 @@
 #!/usr/bin/env python3
-import ast
 import sys
 import json
-from collections import ChainMap
-
-from django.http.response import HttpResponse
 
 sys.path.append('../')
 
 sys.path.append('../../')
 
 from lib import basic_api_requestor, scoring_deps_helper, action_helper
-import pandas
 
 from lib.scoring_value_converter import convert
 
 from lib.process import *
 from lib.constants import *
-from lib.modules import *
-from lib.constants import *
-from portal.lib.constants import *
+
 
 
 

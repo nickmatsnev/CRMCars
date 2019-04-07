@@ -1,5 +1,10 @@
+import sys
+
+sys.path.append('../')
+
 from core.lib import basic_api_requestor
-from portal.lib.constants import *
+from core.lib.constants import *
+
 
 ###     INDIVIDUALS     ###
 def get_individual_info(id):

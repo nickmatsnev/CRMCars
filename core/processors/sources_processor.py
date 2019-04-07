@@ -3,16 +3,14 @@ import ast
 import json
 import sys
 
-from django.utils.baseconv import base64
-
 sys.path.append('../')
 
 sys.path.append('../../')
-from lib import constants, basic_api_requestor, action_helper
+from lib import basic_api_requestor, action_helper
 from lib.process import *
 from lib.modules import SourceModule
 from lib.constants import *
-from portal.lib.constants import *
+
 
 
 class SourcesProcessor(BasicProcess):

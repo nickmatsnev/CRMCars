@@ -3,15 +3,12 @@ import sys
 import json
 import requests
 
-from django.http.response import HttpResponse
-
 sys.path.append('../')
 
 from lib.global_settings import API_ROOT_URL
 from lib import basic_api_requestor, action_helper, willz_to_client
 from lib.process import *
 from lib.constants import *
-from portal.lib.constants import *
 
 
 class ClientProcessor(BasicProcess):
