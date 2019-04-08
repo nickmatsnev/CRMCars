@@ -53,7 +53,7 @@ class ScoringProcessor(BasicProcess):
 
         score_res = scoring_deps_helper.get_scoring_module(individual_data['scoring_module_id'])
 
-        raw_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA + '/'
+        raw_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA
                                                +URL_MODULE_PARSER+URL_INDIVIDUAL_METHOD_VALUES)
 
         parsers_parameters = convert(raw_data)
@@ -61,7 +61,7 @@ class ScoringProcessor(BasicProcess):
         res = score_res.get_score(parsers_parameters)
 
         basic_api_requestor.post(
-            URL_MAIN_INDIVIDUAL + f'/{individual_id}' + URL_MAIN_SUB_CUR_DATA + '/'
+            URL_MAIN_INDIVIDUAL + f'{individual_id}' + URL_MAIN_SUB_CUR_DATA
             + URL_MODULE_SCORING + f'{score_res.get_module_name()}' + "/",
             json.dumps(({"Score": res})))
         action_helper.add_action(individual_id, "scoring_complete", "scoring_processor",
@@ -72,7 +72,7 @@ class ScoringProcessor(BasicProcess):
     def get_individual_data_for_message(self, body):
         input_message = json.loads(body)
         individual_id = input_message['individual_id']
-        individual_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + '/{0}'.format(individual_id))
+        individual_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'{individual_id}')
         return individual_data, individual_id
 
 

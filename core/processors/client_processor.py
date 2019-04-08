@@ -27,7 +27,7 @@ class ClientProcessor(BasicProcess):
             # дергаем сырок
             input_message = json.loads(body)
             raw_client_id = input_message['raw_client_id']
-            raw_data = basic_api_requestor.request(URL_MAIN_WILLZ+'/{0}/'.format(raw_client_id))
+            raw_data = basic_api_requestor.request(URL_MAIN_WILLZ+f'{raw_client_id}/')
             # парсим payload виллзовский
             raw_json = json.loads(raw_data['payload'])
 
@@ -35,14 +35,14 @@ class ClientProcessor(BasicProcess):
             json_data = json.dumps(new_client)
 
             try:
-                response = requests.post(API_ROOT_URL + URL_MAIN_CLIENT + '/', data=json_data,
+                response = requests.post(API_ROOT_URL + URL_MAIN_CLIENT, data=json_data,
                                          headers = {'Content-Type': 'application/json'})
                 client = json.loads(response.content.decode('utf-8'))
 
                 client_id = client['id']
 
                 json_data = json.dumps({"product":"Willz"})
-                response = requests.post(API_ROOT_URL + URL_MAIN_CLIENT+f'/{client_id}/'
+                response = requests.post(API_ROOT_URL + URL_MAIN_CLIENT+f'{client_id}/'
                                          + URL_CLIENT_UPDATE_PRODUCT, data=json_data,
                                          headers={'Content-Type': 'application/json'})
 

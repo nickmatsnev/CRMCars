@@ -28,7 +28,7 @@ class SourcesProcessor(BasicProcess):
             no_module_name = True
 
             try:
-                source = basic_api_requestor.request(URL_MAIN_MODULE+'/' + URL_MODULE_SOURCE +f'{source_name}/')[0]
+                source = basic_api_requestor.request(URL_MAIN_MODULE + URL_MODULE_SOURCE +f'{source_name}/')[0]
                 source_m = SourceModule(source['path'])
                 no_module_name = False
 
@@ -39,7 +39,7 @@ class SourcesProcessor(BasicProcess):
 
                 raw_data = ast.literal_eval(json.dumps(data))
                 basic_api_requestor.post(
-                URL_MAIN_INDIVIDUAL + f'/{individual_id}' + URL_MAIN_SUB_CUR_DATA + '/'
+                URL_MAIN_INDIVIDUAL + f'{individual_id}' + URL_MAIN_SUB_CUR_DATA
                 + URL_MODULE_SOURCE + f'{source_m.get_module_name()}/',
                     raw_data)
 
