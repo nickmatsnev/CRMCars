@@ -44,5 +44,5 @@ urlpatterns = [
     path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/' + f'{NAME_ACTIVATE}/', api_module.ActivateApi.as_view()),
     path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/' + f'{NAME_DEACTIVATE}/', api_module.DeactivateApi.as_view()),
 
-    path(f'/{NAME_SOURCE}/'+r'<int:id>/' + f'{NAME_CREDENTIALS}/', api_module.CredentialsApi.as_view())
+    path(f'{NAME_SOURCE}/'+r'<int:id>/' + f'{NAME_CREDENTIALS}/', api_module.CredentialsApi.as_view())
 ]

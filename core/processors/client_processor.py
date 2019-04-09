@@ -41,7 +41,7 @@ class ClientProcessor(BasicProcess):
                 client_id = client['id']
 
                 json_data = json.dumps({"product":"Willz"})
-                response = update_client_product(client_id,json_data)
+                response = update_client_product(client_id, json_data)
 
                 for individual in client['individuals']:
                     action_helper.add_action(individual['id'], NAME_NEW, self.get_name(),

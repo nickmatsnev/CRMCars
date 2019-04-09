@@ -29,7 +29,7 @@ from portal.lib.api_requestor import *
 def upload_module(request, module_type):
     if request.method == 'POST':
         response = do_module_upload(module_type,request)
-        if response.status_code == status.HTTP_202_ACCEPTED:
+        if response.status_code == status.HTTP_202_ACCEPTED or response.status_code == status.HTTP_201_CREATED:
             return redirect(NAME_MODULES_LIST, module_type=module_type)
         else:
             return HttpResponse(RESPONSE_ERROR)

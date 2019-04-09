@@ -136,7 +136,7 @@ def get_client_from_raw_willz(json_data):
 
 
 def update_client_product(client_id,json_data):
-    path = URL_MAIN_CLIENT + f'{id}/' + URL_CLIENT_UPDATE_PRODUCT
+    path = URL_MAIN_CLIENT + f'{client_id}/' + URL_CLIENT_UPDATE_PRODUCT
     return basic_api_requestor.post(path,json_data)
 
 
