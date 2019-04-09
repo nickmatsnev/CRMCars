@@ -30,7 +30,7 @@ def upload_module(request, module_type):
     if request.method == 'POST':
         response = do_module_upload(module_type,request)
         if response.status_code == status.HTTP_202_ACCEPTED:
-            return redirect(URL_MODULES_LIST, module_type=module_type)
+            return redirect(NAME_MODULES_LIST, module_type=module_type)
         else:
             return HttpResponse(RESPONSE_ERROR)
     else:
@@ -67,7 +67,7 @@ def product_edit(request, id):
 
         response = patch_product(id,patch_data)
         if response.status_code == status.HTTP_200_OK:
-            return redirect(URL_PRODUCTS_LIST)
+            return redirect(NAME_PRODUCTS_LIST)
         else:
             return HttpResponse(RESPONSE_ERROR)
 
@@ -96,7 +96,7 @@ def product_new(request):
 
         response = post_product(post_data)
         if response.status_code == status.HTTP_201_CREATED:
-            return redirect(URL_PRODUCTS_LIST)
+            return redirect(NAME_PRODUCTS_LIST)
         else:
             return HttpResponse(RESPONSE_ERROR)
 

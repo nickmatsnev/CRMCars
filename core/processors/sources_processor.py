@@ -10,7 +10,7 @@ from lib import basic_api_requestor, action_helper
 from lib.process import *
 from lib.modules import SourceModule
 from lib.constants import *
-
+from portal.lib.api_requestor import *
 
 
 class SourcesProcessor(BasicProcess):
@@ -28,7 +28,7 @@ class SourcesProcessor(BasicProcess):
             no_module_name = True
 
             try:
-                source = basic_api_requestor.request(URL_MAIN_MODULE + URL_MODULE_SOURCE +f'{source_name}/')[0]
+                source = get_source(source_name)
                 source_m = SourceModule(source['path'])
                 no_module_name = False
 
@@ -38,12 +38,10 @@ class SourcesProcessor(BasicProcess):
                 data = source_m.import_data(credential, None)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
-                basic_api_requestor.post(
-                URL_MAIN_INDIVIDUAL + f'{individual_id}' + URL_MAIN_SUB_CUR_DATA
-                + URL_MODULE_SOURCE + f'{source_m.get_module_name()}/',
-                    raw_data)
 
-                action_helper.add_action(individual_id, "scoring", "sources_processor",
+                update_source(individual_id,source_m.get_module_name(),raw_data)
+
+                action_helper.add_action(individual_id, NAME_SCORING, NAME_SOURCES_PROCESSOR,
                                                 payload=SOURCE_PROCESSOR_SOURCE_LOADED + f'{source_m.get_module_name()}')
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,

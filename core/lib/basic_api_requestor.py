@@ -60,7 +60,7 @@ def post_file(relative_url, request):
 
 def post_decode(relative_url,body):
     print("API_requestor:{0}".format(relative_url))
-    response = requests.post(API_ROOT_URL + relative_url, data=body)
+    response = requests.post(API_ROOT_URL + relative_url, data=body, headers=headers)
     print("API_result:{0}".format(response.status_code))
 
     return json.loads(response.content.decode('utf-8'))

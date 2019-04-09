@@ -45,7 +45,7 @@ def reports(request):
     if request.method == 'POST':
         items = get_client_by_status(request.POST['status'])
         if items == []:
-            return redirect(URL_REPORTS)
+            return redirect(NAME_REPORTS)
         output = io.BytesIO()
 
         workbook = Workbook(output, {'in_memory': True})

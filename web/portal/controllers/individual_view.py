@@ -76,32 +76,32 @@ def individual_operations(request, id):
 def accept_individual(request, id):
     response = do_individual_accept(id)
     sleep(0.9)
-    return redirect(URL_INDIVIDUAL_INSPECT, id=id)
+    return redirect(NAME_INDIVIDUAL_INSPECT, id=id)
 
 
 @login_required(login_url="signin")
 def reject_individual(request, id):
     response = do_individual_reject(id)
     sleep(0.9)
-    return redirect(URL_INDIVIDUAL_INSPECT, id=id)
+    return redirect(NAME_INDIVIDUAL_INSPECT, id=id)
 
 
 @login_required(login_url="signin")
 def reject_individual_no_chance(request, id):
     response = do_individual_pre_reject(id)
     sleep(0.5)
-    return redirect(URL_CLIENTS_LIST)
+    return redirect(NAME_CLIENTS_LIST)
 
 
 @login_required(login_url="signin")
 def start_individual_scoring(request, id):
     response = do_individual_start(id)
     sleep(0.5)
-    return redirect(URL_INDIVIDUAL_INSPECT, id=id)
+    return redirect(NAME_INDIVIDUAL_INSPECT, id=id)
 
 
 @login_required(login_url="signin")
 def individual_new_generation(request, id):
     response = do_individual_next(id)
     sleep(0.5)
-    return redirect(URL_INDIVIDUAL_INSPECT, id=id)
+    return redirect(NAME_INDIVIDUAL_INSPECT, id=id)
