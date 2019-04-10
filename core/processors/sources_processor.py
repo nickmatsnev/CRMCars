@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 import ast
-import json
 import sys
 
 sys.path.append('../')
 
 sys.path.append('../../')
-from lib import basic_api_requestor, action_helper
+from lib import action_helper
 from lib.process import *
 from lib.modules import SourceModule
-from lib.constants import *
-from portal.lib.api_requestor import *
+from lib.api_requestor import *
 
 
 class SourcesProcessor(BasicProcess):
@@ -34,8 +32,9 @@ class SourcesProcessor(BasicProcess):
 
                 base_credential = {"username":SOURCE_PROCESSOR_USERNAME,"token":SOURCE_PROCESSOR_TOKEN}
                 credential = json.dumps(base_credential)
-                # TODO fix credentials
-                data = source_m.import_data(credential, None)  # got scoring data
+
+                individual_json = get_individual_json(individual_id)
+                data = source_m.import_data(credential, individual_json)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
 

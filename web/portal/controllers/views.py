@@ -7,7 +7,7 @@ sys.path.append('../')
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
-from portal.lib.api_requestor import *
+from core.lib.api_requestor import *
 
 
 @login_required(login_url="signin")

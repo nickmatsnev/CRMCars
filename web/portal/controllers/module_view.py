@@ -1,28 +1,13 @@
-import ast
-import json
 import sys
-import io
-from time import sleep
-
-from xlsxwriter.workbook import Workbook
-import os
-
-from django.views.decorators.csrf import csrf_exempt
 
 sys.path.append('../')
 
 from portal.controllers.forms import UploadFileForm
 
-from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
-from django.utils.encoding import smart_text
-from core.lib import basic_api_requestor
-from core.lib import action_helper
-from core.lib import modules
-from portal.models import Module
 from rest_framework import status
-from portal.lib.api_requestor import *
+from core.lib.api_requestor import *
 
 
 @login_required(login_url="signin")

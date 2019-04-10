@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 import sys
-import json
-import requests
 
 sys.path.append('../')
 
-from lib.global_settings import API_ROOT_URL
-from lib import basic_api_requestor, action_helper, willz_to_client
+from lib import action_helper, willz_to_client
 from lib.process import *
-from lib.constants import *
-from portal.lib.api_requestor import *
+from lib.api_requestor import *
 
 
 class ClientProcessor(BasicProcess):

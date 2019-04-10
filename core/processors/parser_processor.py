@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-import json
 import sys
 
 sys.path.append('../')
 
 from lib.modules import ParserModule
-from lib import basic_api_requestor, action_helper
+from lib import action_helper
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
-from lib.constants import *
-from portal.lib.api_requestor import *
+from lib.api_requestor import *
 
 
 class ParserProcessor(BasicProcess):

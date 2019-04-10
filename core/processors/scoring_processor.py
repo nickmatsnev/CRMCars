@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 import sys
-import json
 
 sys.path.append('../')
 
 sys.path.append('../../')
 
-from lib import basic_api_requestor, scoring_deps_helper, action_helper
+from lib import scoring_deps_helper, action_helper
 
 from lib.scoring_value_converter import convert
 
 from lib.process import *
-from lib.constants import *
-from portal.lib.api_requestor import *
+from lib.api_requestor import *
 
 
 
