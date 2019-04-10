@@ -168,7 +168,7 @@ def update_parser(individual_id,parser_m_name,parser_raw_data):
 ### SCORING PROCESSOR ###
 
 def get_parser_method_values(individual_id):
-    raw_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'/{individual_id}'+ URL_MAIN_SUB_CUR_DATA
+    raw_data = basic_api_requestor.request(URL_MAIN_INDIVIDUAL + f'{individual_id}'+ URL_MAIN_SUB_CUR_DATA
                                                +URL_MODULE_PARSER+URL_INDIVIDUAL_METHOD_VALUES)
     return raw_data
 
