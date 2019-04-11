@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-import sys
 import json
-import requests
+import sys
+
+from lib.constants import *
 
 sys.path.append('../')
 
-from lib.global_settings import API_ROOT_URL
-from lib import basic_api_requestor, action_helper, willz_to_client
+from lib import willz_to_client
 from lib.process import *
-from lib.constants import *
-from portal.lib.api_requestor import *
 
 
 class ClientProcessor(BasicProcess):
@@ -28,7 +26,8 @@ class ClientProcessor(BasicProcess):
             # дергаем сырок
             input_message = json.loads(body)
             raw_client_id = input_message['raw_client_id']
-            raw_data = get_raw_willz(raw_client_id)
+
+            raw_data = self._apiRequestor.get_raw_willz(raw_client_id)
             # парсим payload виллзовский
             raw_json = json.loads(raw_data['payload'])
 
@@ -36,16 +35,16 @@ class ClientProcessor(BasicProcess):
             json_data = json.dumps(new_client)
 
             try:
-                client = get_client_from_raw_willz(json_data)
+                client = self._apiRequestor.get_client_from_raw_willz(json_data)
 
                 client_id = client['id']
 
                 json_data = json.dumps({"product":"Willz"})
-                response = update_client_product(client_id, json_data)
+                response = self._apiRequestor.update_client_product(client_id, json_data)
 
                 for individual in client['individuals']:
-                    action_helper.add_action(individual['id'], NAME_NEW, self.get_name(),
-                                             payload=CLIENT_PROCESSOR_WILLZ_SUCCESS)
+                    self._apiRequestor.add_action(individual['id'], NAME_NEW, self.get_name(),
+                                                  payload=CLIENT_PROCESSOR_WILLZ_SUCCESS)
 
 
                 print(CLIENT_PROCESSOR_SUCCESS)

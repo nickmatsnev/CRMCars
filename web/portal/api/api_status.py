@@ -5,11 +5,11 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_yasg import openapi
-from core.lib import message_sender, basic_api_requestor
+from core.lib import message_sender
 from portal.lib.status_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
 from portal.models import *
-from core.lib import action_helper
+from core.lib.api import ApiRequestor
 from portal.lib.product_api_helpers import get_product_id_for_individual
 from django.contrib.auth.models import User
 
@@ -35,16 +35,18 @@ class PostReject(APIView):
         def get(self, request,pk):
             #my_json = request.data
             return Response(
-                action_helper.add_action(pk, 'scoring_complete_declined', 'user', payload="Отказано после скоринга"))
+                ApiRequestor(request).add_action(pk, 'scoring_complete_declined', 'user',
+                                                 payload="Отказано после скоринга"))
 
 
 class PostAccept(APIView):
         @swagger_auto_schema(operation_description='Send command PostAccept', #request_body=GetUserSerializer,
                              responses={201: NewActionSerializer, 400: 'Bad request'})
         def get(self, request, pk):
-            #my_json = request.data
+            # my_json = request.data#TODO ЛОКАЛИЗОВАТЬ ВСЕ СТРИНГИ С ЭКШЕНАМИ
             return Response(
-                action_helper.add_action(pk, 'scoring_complete_accepted', 'user', payload="Одобрено после скоринга"))
+                ApiRequestor(request).add_action(pk, 'scoring_complete_accepted', 'user',
+                                                 payload="Одобрено после скоринга"))
 
 
 class PreReject(APIView):
@@ -53,19 +55,19 @@ class PreReject(APIView):
     def post(self, request, pk):
         my_json = request.data
         #User.objects.get(my_json['user_id'])
-        return Response(action_helper.add_action(pk, 'manual_decline', 'user', my_json['payload']))
+        return Response(ApiRequestor(request).add_action(pk, 'manual_decline', 'user', my_json['payload']))
 
 
 class ScoringStart(APIView):
     @swagger_auto_schema(operation_description='Send command ScoringStart', responses={201: NewActionSerializer,
                                                                                      400: 'Bad request'})
     def get(self, request, pk):
-        action = action_helper.add_action(pk, 'scoring', 'user', payload="Пользователь запустил процесс скоринга")
+        action = ApiRequestor(request).add_action(pk, 'scoring', 'user',
+                                                  payload="Пользователь запустил процесс скоринга")
 
         resp = json.dumps({'message_type': "individual_scoring_process",
                            'body': json.dumps({"individual_id": pk, "product_id": get_product_id_for_individual(pk)})})
-
-        raw_data = basic_api_requestor.post('/message/', resp)
+        ApiRequestor(request).send_message(resp)
 
         return Response(action)
 

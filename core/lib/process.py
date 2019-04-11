@@ -5,11 +5,14 @@ import pika
 
 from core.lib import constants
 from core.lib.global_settings import BUS_HOST
+from lib.api import ApiRequestor
+
 from django.core.files import File
 
 
 class BasicProcess:
     __host = BUS_HOST
+    _apiRequestor = ApiRequestor()
 
     def __init__(self,queue_name="",callbacks=None
                  ):

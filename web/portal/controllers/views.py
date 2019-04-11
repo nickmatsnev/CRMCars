@@ -3,30 +3,32 @@ import io
 
 from xlsxwriter.workbook import Workbook
 
+from core.lib.constants import *
+
 sys.path.append('../')
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
-from portal.lib.api_requestor import *
+from core.lib.api import ApiRequestor
 
 
 @login_required(login_url="signin")
 def clients_list(request):
-    items = get_client_all()
-    statuses = get_client_all_status()
+    items = ApiRequestor(request).get_client_all()
+    statuses = ApiRequestor(request).get_client_all_status()
     return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
 
 
 @login_required(login_url="signin")
 def clients_list_filtered(request, status_filter):
-    items = get_client_by_status(status_filter)
-    statuses = get_client_all_status()
+    items = ApiRequestor(request).get_client_by_status(status_filter)
+    statuses = ApiRequestor(request).get_client_all_status()
     return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
 
 
 @login_required(login_url="signin")
 def users_list(request):
-    users = basic_api_requestor.request('/user/')
+    users = ApiRequestor(request).get_users()
     return render(request, URL_LINK_USERS_LIST, {'items': users})
 
 
@@ -43,7 +45,7 @@ def source(request):
 @login_required(login_url="signin")
 def reports(request):
     if request.method == 'POST':
-        items = get_client_by_status(request.POST['status'])
+        items = ApiRequestor(request).get_client_by_status(request.POST['status'])
         if items == []:
             return redirect(NAME_REPORTS)
         output = io.BytesIO()
@@ -74,6 +76,6 @@ def reports(request):
         output.close()
         return response
 
-    statuses = get_client_all_status()
+    statuses = ApiRequestor(request).get_client_all_status()
     return render(request, URL_LINK_REPORTS, {'statuses': statuses})
 

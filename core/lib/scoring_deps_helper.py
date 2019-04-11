@@ -1,9 +1,9 @@
-from lib import basic_api_requestor
+
 from lib.modules import ScoringModule, ParserModule, SourceModule
 
 
-def get_sources_deps(scoring_module_id):
-    scoring_m = get_scoring_module(scoring_module_id)
+def get_sources_deps(api_requestor, scoring_module_id):
+    scoring_m = get_scoring_module(api_requestor, scoring_module_id)
 
     deps = scoring_m.get_dependencies()
 
@@ -14,14 +14,14 @@ def get_sources_deps(scoring_module_id):
 
     source_modules = []
     for parser in parser_modules_deps:
-        parser = basic_api_requestor.request('/module/parser/{0}/'.format(parser))[0]
+        parser = api_requestor.get_parser_module_by_name(parser)
         parser_m = ParserModule(parser['path'])
         source_modules.append(parser_m.get_module_source())
     return source_modules
 
 
-def get_parser_deps(product_id):
-    scoring_m = get_scoring_module(product_id)
+def get_parser_deps(api_requestor, scoring_module_id):
+    scoring_m = get_scoring_module(api_requestor, scoring_module_id)
 
     deps = scoring_m.get_dependencies()
     parser_modules = []
@@ -30,6 +30,6 @@ def get_parser_deps(product_id):
     return list(set(parser_modules))  # unique list
 
 
-def get_scoring_module(primary_scoring_module_id):
-    primary_scoring = basic_api_requestor.request('/module/scoring/{0}/'.format(primary_scoring_module_id))
+def get_scoring_module(api_requestor, primary_scoring_module_id):
+    primary_scoring = api_requestor.get_scoring_module_by_name(primary_scoring_module_id)
     return ScoringModule(primary_scoring['path'])

@@ -4,7 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins
 from rest_framework.views import APIView
 from drf_yasg import openapi
-from core.lib import message_sender, basic_api_requestor
+from core.lib import message_sender
 from portal.lib.willz_api_helpers import *
 from core.lib.modules import ScoringModule, SourceModule
 from portal.serializers.willz_serializer import *
@@ -22,7 +22,7 @@ class MainAPI(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Generic
 
     @action(methods=['post'], detail=False, url_path='new')
     def new_data(self, request, pk=None):
-        return Response(new_willz_client(request.data))
+        return Response(new_willz_client(request))
 
 
     @action(methods=['post'], detail=False, url_path='update')

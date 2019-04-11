@@ -2,14 +2,15 @@
 import json
 import sys
 
+from lib.constants import *
+
 sys.path.append('../')
 
 from lib.modules import ParserModule
-from lib import basic_api_requestor, action_helper
+
 from lib.process import *
 from lib.json_encoders import DatetimeEncoder
-from lib.constants import *
-from portal.lib.api_requestor import *
+
 
 
 class ParserProcessor(BasicProcess):
@@ -32,16 +33,16 @@ class ParserProcessor(BasicProcess):
         no_params = True
 
         try:
-            parser = get_parser_body(parser)
+            parser = self._apiRequestor.get_parser_body(parser)
             parser_m = ParserModule(parser['path'])
             no_module_name = False
 
             parser_m_name = parser_m.get_module_name()
             source_module_name = parser_m.get_module_source()
 
-            source_raw_data = get_source_raw_data(individual_id,source_module_name)
+            source_raw_data = self._apiRequestor.get_source_raw_data(individual_id, source_module_name)
 
-            individual_json = get_individual_json(individual_id)
+            individual_json = self._apiRequestor.get_individual_json(individual_id)
 
             validate = parser_m.validate(individual_json, source_raw_data)
             no_validation = False
@@ -53,9 +54,9 @@ class ParserProcessor(BasicProcess):
             parser_object = {'Values': params, 'Validate': validate, 'StopFactors': stop_factors}
             parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
-            update_parser(individual_id, parser_m_name, parser_raw_data)
+            self._apiRequestor.update_parser(individual_id, parser_m_name, parser_raw_data)
 
-            action_helper.add_action(individual_id, NAME_SCORING, NAME_PARSERS_PROCESSOR,
+            self._apiRequestor.add_action(individual_id, NAME_SCORING, NAME_PARSERS_PROCESSOR,
                                  payload=PARSER_PROCESSOR_SUCCESS + f'{parser_m_name}')
 
             self._publish_message(constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE,

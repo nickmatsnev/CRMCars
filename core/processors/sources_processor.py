@@ -3,14 +3,15 @@ import ast
 import json
 import sys
 
+from lib.constants import *
+
 sys.path.append('../')
 
 sys.path.append('../../')
-from lib import basic_api_requestor, action_helper
+
 from lib.process import *
-from lib.modules import SourceModule
-from lib.constants import *
-from portal.lib.api_requestor import *
+from lib.modules import SourceModule, SOURCE_PROCESSOR_USERNAME
+
 
 
 class SourcesProcessor(BasicProcess):
@@ -28,7 +29,7 @@ class SourcesProcessor(BasicProcess):
             no_module_name = True
 
             try:
-                source = get_source(source_name)
+                source = self._apiRequestor.get_source(source_name)
                 source_m = SourceModule(source['path'])
                 no_module_name = False
 
@@ -39,9 +40,9 @@ class SourcesProcessor(BasicProcess):
 
                 raw_data = ast.literal_eval(json.dumps(data))
 
-                update_source(individual_id,source_m.get_module_name(),raw_data)
+                self._apiRequestor.update_source(individual_id, source_m.get_module_name(), raw_data)
 
-                action_helper.add_action(individual_id, NAME_SCORING, NAME_SOURCES_PROCESSOR,
+                self._apiRequestor.add_action(individual_id, NAME_SCORING, NAME_SOURCES_PROCESSOR,
                                                 payload=SOURCE_PROCESSOR_SOURCE_LOADED + f'{source_m.get_module_name()}')
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
