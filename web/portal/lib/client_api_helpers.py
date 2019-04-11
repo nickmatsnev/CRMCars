@@ -131,3 +131,46 @@ def post_client(data):
         client_serializer.save()
         return Response(data=client_serializer.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def post_existing_client(data,id):
+    client_serializer = ClientSerializer(data=data)
+    if client_serializer.is_valid():
+
+        queryset = Client.objects.filter(id=id)
+        validated_data = client_serializer.validated_data
+        individuals_data = validated_data.pop('individuals')
+        client = queryset.update(**validated_data)
+
+
+        for individual_data in individuals_data:
+            passport_data = individual_data.pop('passport')
+            driver_license_data = individual_data.pop('driver_license')
+
+            queryset = Individual.objects.filter(client=client)
+            individual = queryset.update(**individual_data)
+            #Generation.objects.create(individual=individual, number=1, create_time=datetime.datetime.now(),
+             #                         is_archive=False)
+
+            passport_images_data = passport_data.pop('images')
+            queryset = Passport.objects.filter(individual=individual)
+            passport = queryset.update(**passport_data)
+
+            for passport_image_data in passport_images_data:
+                queryset = PassportImage.objects.filter(passport=passport)
+                queryset.update(**passport_image_data)
+
+            driver_license_images_data = driver_license_data.pop('images')
+            queryset = DriverLicense.objects.filter(individual=individual)
+            driver_license = queryset.update(**driver_license_data)
+
+            for driver_license_image_data in driver_license_images_data:
+                queryset = DriverLicenseImage.objects.filter(driver_license=driver_license)
+                queryset.update(**driver_license_image_data)
+
+        queryset = Client.objects.get(id=id)
+        cur_client = ClientSerializer(queryset)
+        return Response(data=cur_client.data)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+

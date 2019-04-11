@@ -35,5 +35,6 @@ urlpatterns = [
     path(f'{NAME_STATUS}/', api_client.ClientGetStatusApi.as_view()),
     path(r'<slug:filter_status>/', api_client.ClientFilterApi.as_view()),
     path(r'<int:id>/', api_client.ClientWorkApi.as_view()),
+    path(r'<int:id>/' + f'{NAME_UPDATE}/', api_client.UpdateClientWorkApi.as_view()),
     path(r'<int:id>/' + f'{NAME_UPDATE_PRODUCT}/', api_client.UpdateProductApi.as_view())
     ]

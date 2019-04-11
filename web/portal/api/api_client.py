@@ -76,6 +76,15 @@ class ClientWorkApi(APIView):
         return Response(get_current_client_info(id))
 
 
+class UpdateClientWorkApi(APIView):
+    @swagger_auto_schema(operation_description='post new client',
+                         request_body=ClientSerializer,
+                         responses={200: ClientSerializer,
+                                    400: 'Format is not valid'})
+    def post(self, request,id):
+        return post_existing_client(request.data,id)
+
+
 class UpdateProductApi(APIView):
     @swagger_auto_schema(operation_description='update product',
                          request_body=ProductUpdateSerializer,
