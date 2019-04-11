@@ -31,7 +31,7 @@ class ScoringProcessor(BasicProcess):
     def __process_scoring(self, body):
         individual_data, individual_id = self.get_individual_data_for_message(body)
         source_deps = scoring_deps_helper.get_sources_deps(self._apiRequestor, individual_data['scoring_module_id'])
-        body_sources = {"individual_id": individual_id, "source": source_deps[0]}
+        body_sources = {"individual_id": individual_id, "sources": source_deps[0]}
 
         self._apiRequestor.add_action(individual_id, NAME_SCORING, NAME_SCORING_PROCESSOR,
                                       payload=SCORING_PROCESSOR_SCORING_START)

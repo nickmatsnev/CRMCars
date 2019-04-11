@@ -150,8 +150,8 @@ class GetParserValidateStatusAPI(APIView):
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
-                        'Validate', 'status')
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER, module_name,
+                        constants.NAME_VALIDATE, constants.NAME_STATUS)
 
 
 class GetParserValidateErrorsAPI(APIView):
@@ -161,7 +161,7 @@ class GetParserValidateErrorsAPI(APIView):
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER, module_name,
                         'Validate', 'errors')
 
 
@@ -172,8 +172,8 @@ class GetParserStopFactorStatusAPI(APIView):
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
-                        'StopFactors', 'status')
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER, module_name,
+                        constants.NAME_SSTOPFFACTORS, constants.NAME_STATUS)
 
 
 class GetParserStopFactorErrorsAPI(APIView):
@@ -183,7 +183,7 @@ class GetParserStopFactorErrorsAPI(APIView):
                                     400: 'No module name',
                                     405: 'Url is incorrect'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name,
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER, module_name,
                         'StopFactors', 'errors')
 
 
@@ -193,42 +193,42 @@ class GetParserValuesAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'parser', module_name, 'Values')
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER, module_name, constants.NAME_VVALUES)
 
 
 class GetAllParserValuesAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_values',
                         responses={200: 'Array'})
     def get(self, request, pk, gen_id_or_cur_gen):
-        return get_list_info(pk, get_generation_number(pk,gen_id_or_cur_gen), 'parser', 'Values')
+        return get_list_info(pk, get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_PARSER,  constants.NAME_VVALUES)
 
 
 class GetParserValidateAllErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors validate',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'Validate', 'errors')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER, constants.NAME_VALIDATE, constants.NAME_ERRORS)
 
 
 class GetParserStopFactorAllErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors stopfactor',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'StopFactors', 'errors')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER,constants.NAME_SSTOPFFACTORS, constants.NAME_ERRORS)
 
 
 class GetParserValidateAllStatusAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors validate',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'Validate', 'status')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER, constants.NAME_VALIDATE, constants.NAME_STATUS)
 
 
 class GetParserStopFactorAllStatusAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors stopfactor',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), 'parser', 'StopFactors', 'status')
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen),constants.NAME_PARSER, constants.NAME_SSTOPFFACTORS,constants.NAME_STATUS)
 
 
 class GetScoringAPI(APIView):
@@ -237,7 +237,7 @@ class GetScoringAPI(APIView):
                                     204: 'No data',
                                     400: 'No module name'})
     def get(self, request, gen_id_or_cur_gen, pk, module_name):
-        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'scoring', module_name, 'Score')
+        return get_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_SCORING, module_name, constants.NAME_SSCORE)
 
 
 class GetAllScoringAPI(APIView):
@@ -245,5 +245,5 @@ class GetAllScoringAPI(APIView):
                          responses={200: 'Array',
                                     204: 'No data'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_all_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), 'scoring', 'Score')
+        return get_all_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_SCORING, constants.NAME_SSCORE)
 

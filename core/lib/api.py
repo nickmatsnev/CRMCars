@@ -190,12 +190,12 @@ class ApiRequestor:
 
     ###     USERS     ###
     def get_users(self):
-        path = "/user/"
+        path = "/"+NAME_USER+"/"
         return self.__get(path)
 
     ### MESSAGE ####
     def send_message(self, message):
-        path = "/message/"
+        path = "/"+NAME_MESSAGE+"/"
         return self.__post(path, message)
 
     ### ACTIONS ###

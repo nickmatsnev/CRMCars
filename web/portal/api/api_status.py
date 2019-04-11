@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 
 class MainApi(APIView):
     @swagger_auto_schema(operation_description='Get table of statuses', responses={200: StatusSerializer,
-                                                                                   204: 'No content'})
+                                                                                   204: constants.NAME_NO_CONTENT})
     def get(self, request,):
         return get_status_table()
 
@@ -31,42 +31,42 @@ class MainApi(APIView):
 
 class PostReject(APIView):
         @swagger_auto_schema(operation_description='Send command PostReject',#request_body=GetUserSerializer,
-                             responses={201: NewActionSerializer, 400: 'Bad request'})
+                             responses={201: NewActionSerializer, 400: constants.NAME_BAD_REQUEST})
         def get(self, request,pk):
             #my_json = request.data
             return Response(
-                ApiRequestor(request).add_action(pk, 'scoring_complete_declined', 'user',
-                                                 payload="Отказано после скоринга"))
+                ApiRequestor(request).add_action(pk, constants.NAME_SCORING_COMPLETE_DECLINED,constants.NAME_USER,
+                                                 payload=constants.NAME_SCORING_COMPLETE_DECLINED_RU))
 
 
 class PostAccept(APIView):
         @swagger_auto_schema(operation_description='Send command PostAccept', #request_body=GetUserSerializer,
-                             responses={201: NewActionSerializer, 400: 'Bad request'})
+                             responses={201: NewActionSerializer, 400: constants.NAME_BAD_REQUEST})
         def get(self, request, pk):
-            # my_json = request.data#TODO ЛОКАЛИЗОВАТЬ ВСЕ СТРИНГИ С ЭКШЕНАМИ
+            # my_json = request.data
             return Response(
-                ApiRequestor(request).add_action(pk, 'scoring_complete_accepted', 'user',
-                                                 payload="Одобрено после скоринга"))
+                ApiRequestor(request).add_action(pk, NAME_SCORING_COMPLETE_ACCEPTED, constants.NAME_USER,
+                                                 payload=constants.NAME_SCORING_COMPLETE_ACCEPTED_RU))
 
 
 class PreReject(APIView):
     @swagger_auto_schema(operation_description='Send command PreReject', request_body=RejectSerializer,
-                         responses={201: NewActionSerializer, 400: 'Bad request'})
+                         responses={201: NewActionSerializer, 400: constants.NAME_BAD_REQUEST})
     def post(self, request, pk):
         my_json = request.data
         #User.objects.get(my_json['user_id'])
-        return Response(ApiRequestor(request).add_action(pk, 'manual_decline', 'user', my_json['payload']))
+        return Response(ApiRequestor(request).add_action(pk, constants.NAME_MANUAL_DECLINE, constants.NAME_USER, my_json['payload']))
 
 
 class ScoringStart(APIView):
     @swagger_auto_schema(operation_description='Send command ScoringStart', responses={201: NewActionSerializer,
-                                                                                     400: 'Bad request'})
+                                                                                     400: constants.NAME_BAD_REQUEST})
     def get(self, request, pk):
-        action = ApiRequestor(request).add_action(pk, 'scoring', 'user',
-                                                  payload="Пользователь запустил процесс скоринга")
+        action = ApiRequestor(request).add_action(pk, constants.NAME_SCORING, constants.NAME_USER,
+                                                  payload=constants.NAME_SCORING_RU)
 
-        resp = json.dumps({'message_type': "individual_scoring_process",
-                           'body': json.dumps({"individual_id": pk, "product_id": get_product_id_for_individual(pk)})})
+        resp = json.dumps({constants.NAME_MESSAGE_TYPE: constants.NAME_INDIVIDUAL_SCORING_PROCESS,
+                           constants.NAME_BODY: json.dumps({"individual_id": pk, "product_id": get_product_id_for_individual(pk)})})
         ApiRequestor(request).send_message(resp)
 
         return Response(action)

@@ -11,7 +11,7 @@ sys.path.append('../../')
 
 from lib.process import *
 from lib.modules import SourceModule, SOURCE_PROCESSOR_USERNAME
-
+from lib.api import *
 
 
 class SourcesProcessor(BasicProcess):
@@ -25,7 +25,7 @@ class SourcesProcessor(BasicProcess):
         def __process_sources(self, body):
             input_message = json.loads(body)
             individual_id = input_message['individual_id']
-            source_name = input_message['source']  # TODO fixxx to sources
+            source_name = input_message['sources']
             no_module_name = True
 
             try:
@@ -35,8 +35,9 @@ class SourcesProcessor(BasicProcess):
 
                 base_credential = {"username":SOURCE_PROCESSOR_USERNAME,"token":SOURCE_PROCESSOR_TOKEN}
                 credential = json.dumps(base_credential)
-                # TODO fix credentials
-                data = source_m.import_data(credential, None)  # got scoring data
+
+                individual_json = ApiRequestor.get_individual_json(individual_id)
+                data = source_m.import_data(credential, individual_json)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
 

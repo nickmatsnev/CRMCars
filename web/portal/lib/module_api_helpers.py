@@ -308,7 +308,7 @@ def get_all_info(individual, generation_number,module_type,field_main,field_sub=
 def get_list_info(individual,generation_number,module_type,field_main,field_sub=''):
     list_of_names = get_list_of_names(module_type)
     my_list = {}
-    # TODO Леша тут не было модуль тайп
+
     for module_name in list_of_names:
         queryset = ModuleData.objects.filter(individual=individual, generation=generation_number, name=module_name)
 
