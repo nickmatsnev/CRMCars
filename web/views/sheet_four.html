@@ -1,41 +1,5 @@
-<html>
-<head>
-<meta charset="utf-8" />
-      <title>{% block title %} Willz {% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
-
-        <link rel="stylesheet" href="../web/static/bootstrap.css">
-
-        <!-- Font Awesome -->
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-</head>
-    <body>
-         <!-- Header -->
-        <div class="container">
-                <div class="header-wrap d-none d-md-block">
-                    <div class="row">
-                        <!-- Left header box -->
-                        <header class="col-6 text-cemter">
-                            <h1><span>W</span>illz Scoring</h1>
-                        </header>
-
-                    </div>
-                </div>
-            </div>
-
-
-         
-      <!-- Main content area -->
-        <main class="container">
-            <div class="row">
-
-                <!-- Main content -->
-                <div class="col-md-12">
-                    <article>
+{% extends "../base.html" %}
+{% block content %}
     <div class="container" xmlns="http://www.w3.org/1999/html">
          <a class="btn btn-success" href="https://www.sejda.com/html-to-pdf?save-link=ссылка_на_наш_репорт">Сохранить в PDF</a>
              <table style="table-layout: fixed"class="table table-bordered">
@@ -291,9 +255,4 @@ Skype, WhatsApp, Viber и др.)
          </tr>
      </table>
     </div>
-    </article>
-                </div>
-            </div>
-        </main>
-    </body>
-</html>
+{% endblock %}
