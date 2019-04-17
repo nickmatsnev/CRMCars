@@ -1,0 +1,107 @@
+<html>
+<head>
+
+<meta charset="utf-8" />
+      <title>{% block title %} Willz {% endblock %}</title>
+
+{% load static %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    {% load cache_bust %}
+
+
+    <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+        <link rel="stylesheet" href="{% static "bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "style_override.css" %}?{% cache_bust %}">
+<link rel="stylesheet" href="{% static "hide.css" %}">
+    <!-- Font Awesome -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+
+</head>
+    <body>
+         <!-- Header -->
+        <div class="container">
+                <div class="header-wrap d-none d-md-block">
+                    <div class="row">
+                        <!-- Left header box -->
+                        <header class="col-6 text-cemter">
+                            <h1><span>W</span>illz Scoring</h1>
+                        </header>
+
+                    </div>
+                </div>
+            </div>
+
+
+         
+      <!-- Main content area -->
+        <main class="container">
+            <div class="row">
+
+                <!-- Main content -->
+                <div class="col-md-12">
+                    <article>  <a class="btn btn-success" href="https://www.sejda.com/html-to-pdf?save-link=ссылка_на_наш_репорт">Сохранить в PDF</a>
+                    <h2>Общий отчёт по скорингу</h2>
+             <table style="table-layout: fixed"class="table table-bordered">
+                        <tr>
+                            <td>
+                                п/п №
+                            </td>
+                             <td>
+                                Дата заявки
+                            </td>
+                             <td>
+                                Дата завершения
+                            </td>
+                               <td>
+                                № заявки
+                            </td>
+                            <td>
+                                ФИО клиента
+                            </td>
+                            <td>
+                                ФИО основного клиента
+                            </td>
+                            <td>
+                                Статус обработки (не корректные док-ты; в работе, ошибка систем, на соглас., заявка закрыта)
+                            </td>
+                            <td>
+                                Результат проверки (одобрен, отказ, одобрен с коммент.)
+                            </td>
+                           
+                                    <td>
+                                       Наименование компании
+                                    </td>
+                                        <td>
+                                           Название продукта
+                                        </td>
+                                            <td>
+                                                Оператор (ФИО)
+                                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+
+                            </td>
+
+                                        </tr>
+                    </table>
+    </article>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
+       
+{% endblock %}  
