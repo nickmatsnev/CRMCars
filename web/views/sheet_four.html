@@ -1,7 +1,9 @@
 {% extends "../base.html" %}
 {% block content %}
     <div class="container" xmlns="http://www.w3.org/1999/html">
-         <a class="btn btn-success" href="https://www.sejda.com/html-to-pdf?save-link=ссылка_на_наш_репорт">Сохранить в PDF</a>
+        <form>
+            <input type="button" value="Сохранить в PDF" class="btn btn-success"onclick="printpage()" />
+        </form>
              <table style="table-layout: fixed"class="table table-bordered">
                  <tr>
                      <td colspan="3">
