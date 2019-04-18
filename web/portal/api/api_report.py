@@ -14,7 +14,7 @@ from core.lib.api import ApiRequestor
 from portal.lib.product_api_helpers import get_product_id_for_individual
 from django.contrib.auth.models import User
 from portal.lib.report_api_helpers import get_base_report
-
+from portal.lib.report_api_helpers import get_advanced_report
 
 #AdvancedReport
 class GeneralReport(APIView):
@@ -29,6 +29,6 @@ class AdvancedReport(APIView):
     @swagger_auto_schema(operation_description='Get table of values', responses={200: GetAdvancedReportSerializer,
                                                                              })
     def get(self, request, ):
-        return Response('Not implemented')
+        return Response(get_advanced_report(request))
 
 
