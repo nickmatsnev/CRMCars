@@ -101,6 +101,7 @@ urlpatterns = [
 
     path(f'{NAME_API}/{NAME_CLIENT}/', include('portal.client_urls')),
     path(f'{NAME_API}/{NAME_MODULE}/', include('portal.module_urls')),
+    path(f'{NAME_API}/{NAME_REPORT}/', include('portal.report_urls')),
 
     path(f'{NAME_API}/{NAME_INDIVIDUAL}/' + r'<int:pk>', include('portal.individual_urls')),
 

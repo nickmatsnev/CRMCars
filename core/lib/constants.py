@@ -112,6 +112,8 @@ NAME_PROCESS = "process"
 NAME_PROCESSOR = "processor"
 NAME_BODY = "body"
 NAME_UPDATE = "update"
+NAME_GENERAL = "general"
+NAME_ADVANCED = "advanced"
 
 
 # specific names

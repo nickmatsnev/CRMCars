@@ -38,9 +38,46 @@ def get_status_name(status_name_internal):
 
 
 def get_status(individual_id):
-    last_action = get_raw_status(individual_id)
-    return get_status_name(last_action)
+    raw_status = get_raw_status(individual_id)
+    return get_status_name(raw_status)
 
+
+def get_report_info(individual_id):
+    resp = {}
+
+    queryset = Generation.objects.get(individual_id=individual_id,
+                                      number=get_generation_number(individual_id, NAME_CUR_GEN))
+    generation_serializer = GenerationSerializer(queryset, many=False)
+
+    list_of_actions = generation_serializer.data['actions']
+
+    complete_date=''
+    for action in list_of_actions:
+        if action['action_type'] =='scoring_complete':
+            complete_date =  action['create_time']
+
+    resp['complete_date'] = complete_date
+
+    if len(list_of_actions) != 0:
+        last_action = list_of_actions[-1]['action_type']
+    else:
+        last_action = ''
+
+    check_status = ''
+    processing_status = ''
+
+    #TODO: Вот тут присваиваются значения и приятгиваются комменты, если нужно
+    if last_action=='scoring_complete_declined' or last_action=='scoring_complete_accepted' or  \
+        last_action=='manual_decline':
+        check_status = get_status_name(last_action)
+        if last_action=='maual_decline':
+            check_status+=" " + list_of_actions[-1]['payload']
+    else:
+        processing_status = get_status_name(last_action)
+
+    resp['check_status'] = check_status
+    resp['processing_status'] = processing_status
+    return resp
 
 # op_action = new -> Новый
 # op_action = manual_decline -> Отказано до скоринга
@@ -53,7 +90,7 @@ def get_status(individual_id):
 
 def get_raw_status(individual_id):
     queryset = Generation.objects.get(individual_id=individual_id,
-                                      number=get_generation_number(individual_id,'cur_gen'))
+                                      number=get_generation_number(individual_id,NAME_CUR_GEN))
     generation_serializer = GenerationSerializer(queryset, many=False)
 
     list_of_actions = generation_serializer.data['actions']
