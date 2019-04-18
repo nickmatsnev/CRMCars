@@ -1,4 +1,4 @@
-def convert(parsers_values):
+def get_parser_values(parsers_values):
     parsers_list = {}
     for parser_name in parsers_values:
         items_list = {}

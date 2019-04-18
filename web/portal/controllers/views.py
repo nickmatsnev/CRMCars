@@ -63,6 +63,10 @@ def reports(request):
         row = 1
         # row_values
         for client in items:
+            prepare_item = {}
+            prepare_item['id'] = client['id']
+            prepare_item['date_create'] = client['created_at']
+
             for value in client.values():
                 worksheet.write(row, col, str(value))
                 col += 1

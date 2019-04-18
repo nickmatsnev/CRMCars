@@ -12,9 +12,7 @@ from lib.process import *
 from lib.json_encoders import DatetimeEncoder
 
 
-
 class ParserProcessor(BasicProcess):
-
 
     def __init__(self):
         super(ParserProcessor, self).__init__(constants.PARSERS_PROCESSOR_QUEUE,
@@ -27,6 +25,7 @@ class ParserProcessor(BasicProcess):
         individual_id = input_message['individual_id']
 
         parser = input_message['parser']
+
         no_module_name = True
         no_validation = True
         no_stopfactors = True
@@ -57,11 +56,9 @@ class ParserProcessor(BasicProcess):
             self._apiRequestor.update_parser(individual_id, parser_m_name, parser_raw_data)
 
             self._apiRequestor.add_action(individual_id, NAME_SCORING, NAME_PARSERS_PROCESSOR,
-                                 payload=PARSER_PROCESSOR_SUCCESS + f'{parser_m_name}')
-
+                                          payload=PARSER_PROCESSOR_SUCCESS + f'{parser_m_name}')
             self._publish_message(constants.INDIVIDUAL_PARSER_PROCESSED_MESSAGE,
-                              json.dumps({"individual_id": individual_id}))
-
+                                  json.dumps({"individual_id": individual_id}))
         except Exception as e:
             if no_module_name == True:
                 payload = PARSER_PROCESSOR_ERR_MODULE_NAME
@@ -75,7 +72,10 @@ class ParserProcessor(BasicProcess):
                 payload = PARSER_PROCESSOR_UNKNOWN
 
             self._publish_message(constants.INDIVIDUAL_PARSER_ERROR_MESSAGE,
-                                    json.dumps({"individual_id": individual_id, "payload": payload+str(e)}))
+                                  json.dumps({"individual_id": individual_id, "payload": payload + str(e)}))
+
+
+
 
 proc = ParserProcessor()
 

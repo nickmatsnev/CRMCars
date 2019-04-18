@@ -9,14 +9,14 @@ def get_sources_deps(api_requestor, scoring_module_id):
 
     parser_modules = []
     for dep in deps:
-        parser_modules.append(dep)
+        parser_modules.insert(0, dep)
     parser_modules_deps = list(set(parser_modules))  # unique list
 
     source_modules = []
     for parser in parser_modules_deps:
-        parser = api_requestor.get_parser_module_by_name(parser)
-        parser_m = ParserModule(parser['path'])
-        source_modules.append(parser_m.get_module_source())
+        parser_res = api_requestor.get_parser_module_by_name(parser)
+        parser_m = ParserModule(parser_res['path'])
+        source_modules.append({'source': parser_m.get_module_source(), 'parser': parser})
     return source_modules
 
 

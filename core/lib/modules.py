@@ -57,8 +57,9 @@ class SourceModule(BasicModule):
     def get_module_url(self):
         return self.call_method("get_module_url")
 
-    def import_data(self, credentials_json, individual_json):
-        return self.call_method("import_data", credentials_json=credentials_json, individual_json=individual_json)
+    def import_data(self, credentials_json, individual_json, parsers_data):
+        return self.call_method("import_data", credentials_json=credentials_json, individual_json=individual_json,
+                                parsers_data=parsers_data)
 
 
 class ScoringModule(BasicModule):

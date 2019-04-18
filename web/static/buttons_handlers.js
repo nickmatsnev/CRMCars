@@ -64,8 +64,10 @@ $(document).ready(function () {
                 $("#accept-individual").addClass("disabled");
             if (data['postscoring_reject'] == false)
                 $("#reject-individual").addClass("disabled");
-            if (data['results'] == false)
+            if (data['results'] == false) {
                 $("#scoring_results").addClass("disabled");
+                $("#scoring_report").addClass("disabled");
+            }
 
             var timeout;
             if (window.location.pathname.includes("individual_inspect")) {

@@ -117,6 +117,7 @@ urlpatterns = [
     path(f'{NAME_MODULES_LIST}' + r'/<slug:module_type>/', modules_list, name=NAME_MODULES_LIST),
 
     path(f'{NAME_INDIVIDUAL_SCORING}/' + r'<int:id>/', individual_scoring, name=NAME_INDIVIDUAL_SCORING),
+    path(f'{NAME_INDIVIDUAL_REPORT}/' + r'<int:id>/', individual_report, name=NAME_INDIVIDUAL_REPORT),
     path(f'{NAME_ACCEPT_INDIVIDUAL}/' + r'<int:id>/', accept_individual, name=NAME_ACCEPT_INDIVIDUAL),
     path(f'{NAME_REJECT_INDIVIDUAL}/' + r'<int:id>/', reject_individual, name=NAME_REJECT_INDIVIDUAL),
     path(f'{NAME_START_INDIVIDUAL_SCORING}/' + r'<int:id>/', start_individual_scoring,

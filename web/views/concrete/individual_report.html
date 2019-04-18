@@ -1,0 +1,312 @@
+<html>
+<head>
+
+    <meta charset="utf-8"/>
+    <title>{% block title %} Willz {% endblock %}</title>
+
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    {% load cache_bust %}
+
+
+    <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
+    <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+    <link rel="stylesheet" href="{% static "bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "style_override.css" %}?{% cache_bust %}">
+    <link rel="stylesheet" href="{% static "hide.css" %}">
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+<!-- Header -->
+<div class="container">
+    <div class="header-wrap d-none d-md-block">
+        <div class="row">
+            <!-- Left header box -->
+            <header class="col-6 text-cemter">
+                <h1><span>W</span>illz Scoring</h1>
+            </header>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Main content area -->
+<main class="container">
+    <div class="row">
+
+        <!-- Main content -->
+        <div class="col-md-12">
+            <article>
+                <div class="container" xmlns="http://www.w3.org/1999/html">
+                    {#         <a class="btn btn-success" onclick="window.print()">Сохранить в PDF</a>#}
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td colspan="3">
+                                <h1> {{ individual.first_name }}
+                                    <br> {{ individual.last_name }} {{ individual.middle_name }}</h1>
+                            </td>
+                            <td>
+                                <strong>Дата проверки: </strong> 18.04.2019 <br>
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Основные данные</h2>
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>
+                                <strong>Дата рождения</strong>
+                            </td>
+                            <td>
+                                {{ individual.birthday }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Паспортные данные</strong>
+                            </td>
+                            <td>
+                                <strong> Серия номер:</strong> {{ individual.passport.number }} <br>
+                                <strong>Дата выдачи: </strong>{{ individual.passport.issued_at }}<br>
+                                <strong>Кем выдан:</strong> {{ individual.passport.issued_by }}<br>
+                                <strong>Код подразделения:</strong> {{ individual.passport.division_code }} <br>
+                                <strong>Место рождения:</strong> {{ individual.passport.birth_place }}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>ИНН</strong>
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.INN }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Водительское удостоверение</strong>
+                            </td>
+                            <td>
+                                {{ individual.driver_license.number }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <h4><strong>Контактная информация</strong></h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Сотовый телефон
+                            </td>
+                            <td>
+                                {{ individual.phone }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Электронный адрес
+                            </td>
+                            <td>
+                                {{ individual.email }}
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <h1>Результат проверки</h1>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <h2>Стоп-факторы</h2></td>
+                            <td style="text-align: right">
+                                <h2></h2>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- Проверка паспорта:	Паспорт действителен
+                    На момент проверки не найден в массиве утраченных и  недействительных паспортов
+                    Проверка водительского удостоверения	Не проверялось
+                    Проверка на присутствие в списке  Росфинмониторинга (экстремизм/терроризм)	Не найдено
+                    Проверка физлиц на банкротство	Не найдено
+                    На момент проверки в массиве данных никаких признаков банкротства не найдено
+                    Сведения об исполнительном производстве в отношении физлица	Не найдено
+                    -->
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>
+                                Проверка паспорта:
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.FIO }}
+                                {{ parser_values.ScoristaParserModule.Passport }}
+                                {{ parser_values.ScoristaParserModule.BirthDate }}
+                                {{ parser_values.ScoristaParserModule.BirthPlace }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Проверка водительского удостоверения
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.License }}
+                                {{ parser_values.ScoristaParserModule.LicenseExpDate }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Проверка на присутствие в списке Росфинмониторинга (экстремизм/терроризм)
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.Terrorism | my_lookup }}
+                                {{ parser_values.ScoristaParserModule.StopWordIndicator }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Проверка физлиц на банкротство
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.StopWordIndicator | my_lookup }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Сведения об исполнительном производстве в отношении физлица
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.LatePaymentInfo | my_lookup }}
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Финансовая история</h2>
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>
+                                БКИ<br>
+                                Действующая сумма долга (руб.)<br>
+                                Просрочки по действующим кредитам (дн.)
+
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.currentDebts | my_lookup }}
+                                {{ parser_values.ScoristaParserModule.latePaymentInClosedCredits }}
+                                {{ parser_values.ScoristaParserModule.latePaymentInCurrentCredits }}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                База должников и «стоп-листов» банка
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.StopWordIndicator | my_lookup }}
+
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Проверка правонарушений</h2>
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>
+                                Проверка в федеральном и местном розыске
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.Terrorism| my_lookup }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Административные правонарушения
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.RoadPoliceFinesNumber| my_lookup }}
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Уголовные правонарушения
+                            </td>
+                            <td>
+                                {{ parser_values.ScoristaParserModule.StopWordIndicator| my_lookup }}
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Проверка бенефициаров</h2>
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>
+                                Владение ООО и/или ИП <br>
+
+                                Замещение руководящих должностей<br>
+                                Признаки долговых обязательств компании где замещались руководящие должности<br>
+                                Признаки выявления приостановления деятельности компании где замещались руководящие
+                                должности
+
+                            </td>
+                            <td>
+                                {{ parser_values.ConturFocusParserModule.OGRN }}
+                                {{ parser_values.ConturFocusParserModule.adrCity }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Признаки банкротства/ликвидации/реорганизации/изменение уставного капитала компании где
+                                замещались руководящие должности
+                            </td>
+                            <td>
+                                {{ parser_values.ConturFocusParserModule.StopWordIndicators | my_lookup }}
+
+                            </td>
+                        </tr>
+                    </table>
+                    <h2>Дополнительная информация</h2>
+                    <table style="table-layout: fixed" class="table table-bordered">
+                        <tr>
+                            <td>Возможные профили в соцсетях и мессенджеры
+                                (Facebook, ВКонтакте, Одноклассники)
+                                Skype, WhatsApp, Viber и др.)
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Упоминание на площадках мосмаркета
+                                (Avito, Youla, Auto.ru)
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -4,6 +4,7 @@ import json
 import sys
 
 from lib.constants import *
+from lib import parser_values_converter
 
 sys.path.append('../')
 
@@ -25,7 +26,7 @@ class SourcesProcessor(BasicProcess):
         def __process_sources(self, body):
             input_message = json.loads(body)
             individual_id = input_message['individual_id']
-            source_name = input_message['sources']
+            source_name = input_message['source']
             no_module_name = True
 
             try:
@@ -36,8 +37,11 @@ class SourcesProcessor(BasicProcess):
                 base_credential = {"username":SOURCE_PROCESSOR_USERNAME,"token":SOURCE_PROCESSOR_TOKEN}
                 credential = json.dumps(base_credential)
 
-                individual_json = ApiRequestor.get_individual_json(individual_id)
-                data = source_m.import_data(credential, individual_json)  # got scoring data
+                individual_json = self._apiRequestor.get_individual_json(individual_id)
+                parsers_data = self._apiRequestor.get_parser_method_values(individual_id)
+
+                parsers_parameters = parser_values_converter.get_parser_values(parsers_data)
+                data = source_m.import_data(credential, individual_json, parsers_parameters)  # got scoring data
 
                 raw_data = ast.literal_eval(json.dumps(data))
 
@@ -47,7 +51,7 @@ class SourcesProcessor(BasicProcess):
                                                 payload=SOURCE_PROCESSOR_SOURCE_LOADED + f'{source_m.get_module_name()}')
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_PROCESSED_MESSAGE,
-                                  json.dumps({"individual_id": individual_id}))
+                                      json.dumps({"individual_id": individual_id, "parser": input_message['parser']}))
 
             except Exception as e:
                 if no_module_name==True:

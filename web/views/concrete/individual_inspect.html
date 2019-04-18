@@ -30,8 +30,12 @@
             <a id="new-generation" class="btn btn-success" href="{% url "individual_new_generation" individual.id %}">4.
                 В архив</a>
 
-            <a class="btn btn-success float-lg-right" href="{% url "individual_operations" individual.id %}">История
+            <div class="float-lg-right">
+                <a class="btn btn-success" id="scoring_report" style="margin-right: 5px;"
+                   href="{% url "individual_report" individual.id %}">Отчет по клиенту</a>
+                <a class="btn btn-success" href="{% url "individual_operations" individual.id %}">История
                 операций</a>
+            </div>
         </div>
 
         <br/>

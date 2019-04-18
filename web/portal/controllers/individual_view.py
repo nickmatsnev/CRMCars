@@ -1,6 +1,8 @@
 import sys
 from time import sleep
 
+from core.lib import parser_values_converter
+
 sys.path.append('../')
 
 from django.contrib.auth.decorators import login_required
@@ -39,6 +41,37 @@ def individual_scoring(request, id):
                    'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score,
                    'parameters_dict': parameters_dict})
 
+
+@login_required(login_url="signin")
+def individual_report(request, id):
+    #   res = get_scorista()
+    apiRequestor = ApiRequestor(request)
+    individual = apiRequestor.get_individual_info(id)
+    sources_done = apiRequestor.get_individual_cur_data_source(id)
+    source_names = []
+    for item in sources_done:
+        source_names.append(item)
+    score = apiRequestor.get_individual_cur_data_score(id)
+    # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
+    parser_values = apiRequestor.get_individual_cur_data_parser_values(id)
+    parser_values_dictionary = parser_values_converter.get_parser_values(parser_values)
+    parser_validate_errors = apiRequestor.get_individual_cur_data_parser_validate_errors(id)
+    parser_validate_status = apiRequestor.get_individual_cur_data_parser_validate_status(id)
+    parser_stopfactor_status = apiRequestor.get_individual_cur_data_parser_stopfactor_status(id)
+
+    parser_parameters = apiRequestor.get_module_parser_parameters()
+    parameters_dict = {}
+    for item in parser_parameters:
+        parameters_dict[item['name']] = item['description']
+
+    parser_stopfactor_errors = apiRequestor.get_individual_cur_data_parser_stopfactor_errors(id)
+
+    return render(request, URL_LINK_INDIVIDUAL_REPORT,
+                  {'id': id, 'parser_values': parser_values_dictionary, 'validate': parser_validate_errors,
+                   'validate_status': parser_validate_status, 'stopfactor_status': parser_stopfactor_status,
+                   'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score,
+                   'individual': individual,
+                   'parameters_dict': parameters_dict})
 
 @login_required(login_url="signin")
 def individual_prescoring_decline(request, id):
