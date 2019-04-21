@@ -154,6 +154,12 @@ class ApiRequestor:
     def get_scoring_module_by_name(self, name):
         return self.__get('/module/scoring/{0}/'.format(name))
 
+    def get_report_basic(self):
+        return self.__get('/report/general')
+
+    def get_report_advanced(self):
+        return self.__get('/report/advanced')
+
     ###     CLIENTS     ###
     def get_client_view(self, id):
         path = URL_MAIN_CLIENT + f'{id}' + URL_CLIENT_METHOD_VIEW

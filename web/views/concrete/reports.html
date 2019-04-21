@@ -20,12 +20,13 @@
                 <input id="datepicker1" name="end_date" required/>
             </div>
             <div class="form-group">
-                <label class="description" for="element_1"><h4>Выбор статуса</h4></label>
-                <select class="form-control" id="exampleFormControlSelect1" maxlength="250" name="status">
+                <label class="description" for="element_1"><h4>Тип отчета</h4></label>
+                <select class="form-control" id="exampleFormControlSelect1" maxlength="250" name="type">
 
-                    <{% for key,value in statuses.data.items %}
-                    <option value="{{ key }}">{{ value.name }}</option>
-                {% endfor %}
+
+                    <option value="general">Общий</option>
+                    <option value="advanced">Расширеннный</option>
+
                 </select>
             </div>
 
