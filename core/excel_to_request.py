@@ -1,6 +1,8 @@
 import xlrd
 import json
 from lib.global_settings import *
+from lib.api import ApiRequestor
+
 
 # Номера столбцов
 COL_ID = 1
@@ -70,11 +72,12 @@ for rownum in range(1,sheet.nrows):
     willz_client['firstname'] = row[COL_FIRSTNAME - 1]
     willz_client['middlename'] = row[COL_MIDDLENAME - 1]
     willz_client['email'] = row[COL_EMAIL - 1]
-    willz_client['gender_id'] = 1
-    willz_client['gender'] = row[COL_GENDER - 1]
+    gender = int(row[COL_GENDER - 1]) if row[COL_GENDER-1]!='' else 0
+    willz_client['gender_id'] = gender
+    willz_client['gender'] = gender
     willz_client['birthday'] = row[COL_BIRTHDAY - 1]
-    willz_client['communication'] = row[COL_COMMUNICATION - 1]
-    willz_client['phone_confirm'] = row[COL_PHONE_CONFIRM - 1]
+    willz_client['communication'] = str(row[COL_COMMUNICATION - 1])
+    willz_client['phone_confirm'] = str(row[COL_PHONE_CONFIRM - 1])
     willz_client['welcome'] = int(row[COL_WELCOME - 1])
     willz_client['amocrm_deal_id'] = int(row[COL_AMORCRM_DEAL_ID - 1])
     willz_client['ga_client_id'] = ''
@@ -86,68 +89,68 @@ for rownum in range(1,sheet.nrows):
     my_passport['id'] = int(row[COL_PASSPORT_DRIVER_ID-1])
     my_passport['image1'] = "Первый разворот"
     my_passport['image1_confirm_id'] = ""
-    my_passport['image1_confirm'] = row[COL_PASSPORT_IMAGE1_CONFIRM-1]
+    my_passport['image1_confirm'] = str(row[COL_PASSPORT_IMAGE1_CONFIRM-1])
     my_passport['image1_url'] = EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE1_URL - 1]
     my_passport['image2'] = "Разворот с регистрацией"
     my_passport['image2_confirm_id'] = ""
-    my_passport['image2_confirm'] = row[COL_PASSPORT_IMAGE2_CONFIRM-1]
+    my_passport['image2_confirm'] = str(row[COL_PASSPORT_IMAGE2_CONFIRM-1])
     my_passport['image2_url'] =  EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE2_URL - 1]
     my_passport['image3'] = "Селфи с паспортом"
     my_passport['image3_confirm_id'] = ""
-    my_passport['image3_confirm'] = row[COL_PASSPORT_IMAGE3_CONFIRM-1]
+    my_passport['image3_confirm'] = str(row[COL_PASSPORT_IMAGE3_CONFIRM-1])
     my_passport['image3_url'] =  EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE3_URL - 1]
     my_passport['image4'] = "Подтверждение дохода"
     my_passport['image4_confirm_id'] = ""
-    my_passport['image4_confirm'] = row[COL_PASSPORT_IMAGE4_CONFIRM-1]
+    my_passport['image4_confirm'] = str(row[COL_PASSPORT_IMAGE4_CONFIRM-1])
     my_passport['image4_url'] =  EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE4_URL - 1]
-    my_passport['number'] = ""
-    my_passport['issued_at'] = ""
-    my_passport['issued_by'] = ""
-    my_passport['address_registration'] = ""
-    my_passport['division_code'] = ""
-    my_passport['birthplace'] = ""
-    my_passport['created_at'] = ""
+    my_passport['number'] = row[COL_PASSPORT_NUMBER-1]
+    my_passport['issued_at'] = row[COL_PASSPORT_ISSUED_AT-1]
+    my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY-1]
+    my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION-1]
+    my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE-1]
+    my_passport['birthplace'] = row[COL_PASSPORT_BIRTHPLACE-1]
+    my_passport['created_at'] = row[COL_DRIVER_LICENSE_CREATED_AT-1]
     willz_client['passport'] = my_passport
 
-    willz_client['driver_id'] = row[COL_DRIVER_ID - 1]
+    willz_client['driver_id'] = int(row[COL_DRIVER_ID - 1])
 
     drivers = []
     driver={}
-    driver['id'] = row[COL_DRIVER_ID - 1]
-    driver['lastname'] = row[COL_DRIVER_ID - 1]
-    driver['firstname'] = row[COL_DRIVER_ID - 1]
-    driver['middlename'] = row[COL_DRIVER_ID - 1]
-    driver['email'] = row[COL_DRIVER_ID - 1]
-    driver['phone'] = row[COL_DRIVER_ID - 1]
-    driver['gender_id'] = 1
-    driver['gender'] = row[COL_DRIVER_ID - 1]
-    driver['birthday'] = row[COL_DRIVER_ID - 1]
+    driver['id'] = int(row[COL_DRIVER_ID - 1])
+    driver['lastname'] = row[COL_LASTNAME - 1]
+    driver['firstname'] = row[COL_FIRSTNAME - 1]
+    driver['middlename'] = row[COL_MIDDLENAME - 1]
+    driver['email'] = row[COL_EMAIL - 1]
+    driver['phone'] = row[COL_PHONE - 1]
+    driver['gender_id'] = gender
+    driver['gender'] = gender
+    driver['birthday'] = row[COL_BIRTHDAY - 1]
 
     my_passport = {}
     my_passport['id'] = int(row[COL_PASSPORT_DRIVER_ID-1])
     my_passport['image1'] = "Первый разворот"
     my_passport['image1_confirm_id'] = ""
     my_passport['image1_confirm'] = row[COL_PASSPORT_IMAGE1_CONFIRM-1]
-    my_passport['image1_url'] = row[COL_PASSPORT_IMAGE1_URL - 1]
+    my_passport['image1_url'] = EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE1_URL - 1]
     my_passport['image2'] = "Разворот с регистрацией"
     my_passport['image2_confirm_id'] = ""
     my_passport['image2_confirm'] = row[COL_PASSPORT_IMAGE2_CONFIRM-1]
-    my_passport['image2_url'] = row[COL_PASSPORT_IMAGE2_URL - 1]
+    my_passport['image2_url'] = EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE2_URL - 1]
     my_passport['image3'] = "Селфи с паспортом"
     my_passport['image3_confirm_id'] = ""
     my_passport['image3_confirm'] = row[COL_PASSPORT_IMAGE3_CONFIRM-1]
-    my_passport['image3_url'] = row[COL_PASSPORT_IMAGE3_URL - 1]
+    my_passport['image3_url'] = EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE3_URL - 1]
     my_passport['image4'] = "Подтверждение дохода"
     my_passport['image4_confirm_id'] = ""
     my_passport['image4_confirm'] = row[COL_PASSPORT_IMAGE4_CONFIRM-1]
-    my_passport['image4_url'] = row[COL_PASSPORT_IMAGE4_URL - 1]
-    my_passport['number'] = ""
-    my_passport['issued_at'] = ""
-    my_passport['issued_by'] = ""
-    my_passport['address_registration'] = ""
-    my_passport['division_code'] = ""
-    my_passport['birthplace'] = ""
-    my_passport['created_at'] = ""
+    my_passport['image4_url'] = EXCEL_TO_READ_PASSPORT_PATH+row[COL_PASSPORT_IMAGE4_URL - 1]
+    my_passport['number'] = row[COL_PASSPORT_NUMBER - 1]
+    my_passport['issued_at'] = row[COL_PASSPORT_ISSUED_AT - 1]
+    my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY - 1]
+    my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
+    my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
+    my_passport['birthplace'] = row[COL_PASSPORT_BIRTHPLACE - 1]
+    my_passport['created_at'] = row[COL_DRIVER_LICENSE_CREATED_AT - 1]
     driver['passport'] = my_passport
 
     driver_license = {}
@@ -170,3 +173,6 @@ for rownum in range(1,sheet.nrows):
     willz_client['drivers'] = drivers
 
     print(json.dumps(willz_client))
+    apiRequestor = ApiRequestor()
+    response = apiRequestor.post_new_client(json.dumps(willz_client))
+

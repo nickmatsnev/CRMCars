@@ -13,7 +13,7 @@ class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz_external_id = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
-    created_at = models.TextField(null=True)
+    created_at = models.TextField(null=True,blank=True)
     product = models.IntegerField(default=0)
 
 
@@ -29,7 +29,7 @@ class Individual(models.Model):
     gender = models.IntegerField(default=0)
     # gender = models.CharField(max_length=100)
     #birthday = models.DateTimeField()
-    birthday = models.TextField(null=True)
+    birthday = models.TextField(null=True,blank=True)
 
 
 
@@ -41,8 +41,8 @@ class Passport(models.Model):
     issued_at = models.TextField()
     issued_by = models.TextField()
     address_registration = models.CharField(max_length=100)
-    division_code = models.CharField(max_length=100)
-    birthplace = models.CharField(max_length=100)
+    division_code = models.CharField(max_length=100, null=True,blank=True)
+    birthplace = models.CharField(max_length=100, null=True,blank=True)
 
 
 class DriverLicense(models.Model):
@@ -50,19 +50,19 @@ class DriverLicense(models.Model):
 
     number = models.CharField(max_length=100, default="")
     #issued_at = models.DateField(null=True)
-    issued_at = models.TextField(null=True)
+    issued_at = models.TextField(null=True,blank=True)
 
 
 class PassportImage(models.Model):
     passport = models.ForeignKey(Passport,  related_name='images', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100, null=True)
+    url = models.CharField(max_length=100,null=True,blank=True)
 
 
 class DriverLicenseImage(models.Model):
     driver_license = models.ForeignKey(DriverLicense,  related_name='images', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    url = models.CharField(max_length=100, null=True)
+    url = models.CharField(max_length=100,null=True,blank=True)
 
 
 #class ClientTask(models.Model):

@@ -263,3 +263,8 @@ class ApiRequestor:
             URL_MAIN_INDIVIDUAL + f'{individual_id}' + URL_MAIN_SUB_CUR_DATA
             + URL_MODULE_SOURCE + f'{module_name}/',
             raw_data)
+
+    ### WILLZ EXCEL CONVERTER ###
+    def post_new_client(self, client_json):
+        return self.__post(URL_MAIN_WILLZ+NAME_NEW+'/', client_json)
+
