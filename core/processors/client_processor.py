@@ -2,9 +2,11 @@
 import json
 import sys
 
-from lib.constants import *
 
 sys.path.append('../')
+sys.path.append('../../')
+
+from lib.constants import *
 
 from lib import willz_to_client
 from lib.process import *
