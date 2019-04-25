@@ -1,4 +1,10 @@
 import requests
+import sys
+
+#TODO:
+sys.path.append('../')
+sys.path.append('../../')
+#from core.lib import requests_with_cache
 
 
 # Получение урла модуля
@@ -44,6 +50,8 @@ def import_data(credentials_json, individual_json, parsers_data):
                individual_json["passport"]["number"][0:4],
                individual_json["passport"]["issued_at"])
 
+    # TODO:
+    #r = requests_with_cache.post(url, data=request.encode('utf-8'))
     r = requests.post(url, data=request.encode('utf-8'))
     sphere_res = {'result': r.text}
     return sphere_res

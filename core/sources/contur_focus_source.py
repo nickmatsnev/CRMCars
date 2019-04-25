@@ -1,7 +1,11 @@
 import hashlib
 import requests
 import json
+import sys
 
+sys.path.append('../')
+sys.path.append('../../')
+#from core.lib import requests_with_cache
 
 # Получение урла модуля
 def get_module_url():
@@ -17,7 +21,8 @@ def import_data(credentials_json, individual_json, parsers_data):
     url = get_module_url()
 
     request = url + req_key + search_by + inn + '&JSON'
-
+    #TODO:
+    #r = requests_with_cache.get(request)
     r = requests.get(request)
     scorista_res = json.loads(r.text)
     return json.dumps(scorista_res, indent=4, ensure_ascii=True)

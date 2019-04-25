@@ -61,7 +61,7 @@ COL_DRIVER_LICENSE_CREATED_AT= 60
 
 rb = xlrd.open_workbook(EXCEL_TO_READ_PATH)
 sheet = rb.sheet_by_index(0)
-for rownum in range(1,sheet.nrows):
+for rownum in range(sheet.nrows-10,sheet.nrows):
     row = sheet.row_values(rownum)
     willz_client = {}
     willz_client['id']=int(row[COL_ID-1])

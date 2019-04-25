@@ -184,5 +184,15 @@ class ModuleData(models.Model):
     create_time = models.DateTimeField()
 
 
-
+class CacheData(models.Model):
+    url = models.TextField()
+    individual_json = models.TextField(null=True,blank=True)
+    parsers_data = models.TextField(null=True,blank=True)
+    crc = models.TextField()
+    type_of_request = models.TextField(choices=[
+        ('GET', 'GET'),
+        ('POST', 'POST')])
+    body = models.TextField(null=True,blank=True)
+    create_time = models.DateTimeField()
+    is_active = models.BooleanField()
 
