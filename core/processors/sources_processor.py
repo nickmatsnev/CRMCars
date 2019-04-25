@@ -43,8 +43,8 @@ class SourcesProcessor(BasicProcess):
                 parsers_parameters = parser_values_converter.get_parser_values(parsers_data)
                 data = source_m.import_data(credential, individual_json, parsers_parameters)  # got scoring data
 
-                raw_data = ast.literal_eval(json.dumps(data))
-
+                # raw_data = ast.literal_eval(json.dumps(data))
+                raw_data = json.dumps(data)
                 self._apiRequestor.update_source(individual_id, source_m.get_module_name(), raw_data)
 
                 self._apiRequestor.add_action(individual_id, NAME_SCORING, NAME_SOURCES_PROCESSOR,

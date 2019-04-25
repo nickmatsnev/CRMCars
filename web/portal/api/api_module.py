@@ -207,7 +207,8 @@ class GetParserValidateAllErrorsAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors validate',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER, constants.NAME_VALIDATE, constants.NAME_ERRORS)
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER,
+                             constants.NAME_VVALIDATE, constants.NAME_ERRORS)
 
 
 class GetParserStopFactorAllErrorsAPI(APIView):
@@ -221,7 +222,8 @@ class GetParserValidateAllStatusAPI(APIView):
     @swagger_auto_schema(operation_description='get_all_errors validate',
                          responses={200: 'Array'})
     def get(self, request, gen_id_or_cur_gen, pk):
-        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER, constants.NAME_VALIDATE, constants.NAME_STATUS)
+        return get_list_info(pk, get_generation_number(pk, gen_id_or_cur_gen), constants.NAME_PARSER,
+                             constants.NAME_VVALIDATE, constants.NAME_STATUS)
 
 
 class GetParserStopFactorAllStatusAPI(APIView):

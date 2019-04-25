@@ -7,13 +7,13 @@ def get_sources_deps(api_requestor, scoring_module_id):
 
     deps = scoring_m.get_dependencies()
 
-    parser_modules = []
-    for dep in deps:
-        parser_modules.insert(0, dep)
-    parser_modules_deps = list(set(parser_modules))  # unique list
+    #    parser_modules = []
+    #   for dep in deps:
+    #      parser_modules.extend(dep)
+    parser_modules_deps = deps  # unique list
 
     source_modules = []
-    for parser in parser_modules_deps:
+    for parser in deps:
         parser_res = api_requestor.get_parser_module_by_name(parser)
         parser_m = ParserModule(parser_res['path'])
         source_modules.append({'source': parser_m.get_module_source(), 'parser': parser})

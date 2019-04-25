@@ -50,7 +50,8 @@ class ParserProcessor(BasicProcess):
             params = parser_m.get_values(source_raw_data)
             no_params = False
 
-            parser_object = {'Values': params, 'Validate': validate, 'StopFactors': stop_factors}
+            parser_object = {constants.NAME_VVALUES: params, constants.NAME_VVALIDATE: validate,
+                             constants.NAME_SSTOPFFACTORS: stop_factors}
             parser_raw_data = json.dumps(parser_object, cls=DatetimeEncoder)
 
             self._apiRequestor.update_parser(individual_id, parser_m_name, parser_raw_data)

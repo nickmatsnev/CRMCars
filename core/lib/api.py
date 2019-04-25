@@ -21,7 +21,7 @@ class ApiRequestor:
             url_login = "http://127.0.0.1:8002/signin/"
             client.get(url_login)
             csrftoken = client.cookies['csrftoken']
-            login_data = {'username': 'admin', 'password': 'admin', 'csrfmiddlewaretoken': csrftoken}
+            login_data = {'username': 'justkru', 'password': '9mkdsb3f', 'csrfmiddlewaretoken': csrftoken}
             r1 = client.post(url_login, data=login_data)
 
             self.__session = client.cookies['sessionid']
