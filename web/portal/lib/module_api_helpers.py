@@ -12,6 +12,7 @@ from core.lib import module_save_helper
 from core.lib.modules import *
 from rest_framework.response import Response
 from portal.serializers.module_serializer import *
+from core.lib import requests_with_cache
 
 
 def get_list_of_names(module_type):
@@ -342,3 +343,22 @@ def get_generation_number(individual_id, generation_id_or_current_generation):
                 generation_number = gen.number
 
     return generation_number
+
+
+def post_cache_data(request_data):
+    request_json = request_data
+    type_of_request = request_json['type_of_request']
+    url = json.loads( request_json['url'])
+    data = json.loads(request_json['data'])
+    headers = json.loads(request_json['headers'])
+
+    if type_of_request== 'GET':
+        return  Response(requests_with_cache.get_data(url))
+    elif type_of_request == 'POST':
+        if headers == '':
+            return Response(requests_with_cache.post_data(url,data))
+        else:
+            return Response(requests_with_cache.post_data_headers(url,data,headers))
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+

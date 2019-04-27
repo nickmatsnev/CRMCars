@@ -1,11 +1,8 @@
 import requests
 import sys
+import json
 
-#TODO:
-sys.path.append('../')
-sys.path.append('../../')
-#from core.lib import requests_with_cache
-
+PATH_TO_CACHE = "http://127.0.0.1:8002/api/module/source/external/"
 
 # Получение урла модуля
 def get_module_url():
@@ -50,10 +47,16 @@ def import_data(credentials_json, individual_json, parsers_data):
                individual_json["passport"]["number"][0:4],
                individual_json["passport"]["issued_at"])
 
-    # TODO:
-    #r = requests_with_cache.post(url, data=request.encode('utf-8'))
-    r = requests.post(url, data=request.encode('utf-8'))
+
+    json_req = {}
+    json_req['type_of_request'] = "POST"
+    json_req['url'] = json.dumps(url)
+    json_req['data'] = json.dumps(request.encode('utf-8'))
+    json_req['headers'] = json.dumps('')
+
+    r = requests.post(PATH_TO_CACHE,json.dumps(json_req), headers={'Content-type': 'application/json'})
     sphere_res = {'result': r.text}
+    #sphere_res = {'result': r.text}
     return sphere_res
 
 

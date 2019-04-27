@@ -186,8 +186,8 @@ class ModuleData(models.Model):
 
 class CacheData(models.Model):
     url = models.TextField()
-    individual_json = models.TextField(null=True,blank=True)
-    parsers_data = models.TextField(null=True,blank=True)
+    data = models.TextField(null=True,blank=True)
+    headers = models.TextField(null=True,blank=True)
     crc = models.TextField()
     type_of_request = models.TextField(choices=[
         ('GET', 'GET'),

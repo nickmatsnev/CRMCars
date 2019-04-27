@@ -78,6 +78,14 @@ class ModuleUpdateDataSerializer(serializers.Serializer):
     raw_data = serializers.CharField(max_length=20)
 
 
-class CredentialsSerializer(serializers.Serializer):
-    credentials = serializers.CharField(max_length=200)
+class CredentialsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModuleData
+        fields = ('id','individual','raw_data', 'create_time')
+
+
+class CacheDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CacheData
+        fields = ('type_of_request', 'url', 'data', 'headers')
 

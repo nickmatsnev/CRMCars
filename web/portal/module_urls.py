@@ -33,8 +33,13 @@ from .controllers.auth import *
 urlpatterns = [
     path(r'<slug:module_type>/', api_module.GetModuleApi.as_view()),
     path(r'<slug:module_type>/' + f'{NAME_VIEW}/', api_module.ViewModuleApi.as_view()),
-    path(r'<slug:module_type>/' + f'{NAME_VIEW}/{NAME_PARAMETERS}/', api_module.GetViewParametersApi.as_view()),
+
     path(r'<slug:module_type>/' + f'{NAME_UPLOAD}/', api_module.UploadModuleApi.as_view()),
+    path(f'{NAME_SOURCE}/{NAME_EXTERNAL}/', api_module.ExternalDataApi.as_view()),
+    path(f'{NAME_SOURCE}/' + r'<int:id>/' + f'{NAME_CREDENTIALS}/', api_module.CredentialsApi.as_view()),
+
+    path(r'<slug:module_type>/' + f'{NAME_VIEW}/{NAME_PARAMETERS}/', api_module.GetViewParametersApi.as_view()),
+
     path(r'<slug:module_type>/' + r'<slug:module_name>/' +f'{NAME_DELETE}/', api_module.DeleteModuleApi.as_view()),
 
     path(r'<slug:module_type>/' + r'<int:pk>/', api_module.GetModuleByIdApi.as_view()),
@@ -42,7 +47,6 @@ urlpatterns = [
 
     path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/', api_module.GetModuleParametersByIdApi.as_view()),
     path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/' + f'{NAME_ACTIVATE}/', api_module.ActivateApi.as_view()),
-    path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/' + f'{NAME_DEACTIVATE}/', api_module.DeactivateApi.as_view()),
+    path(r'<slug:module_type>/' + r'<int:id>/' + f'{NAME_PARAMETERS}/' + f'{NAME_DEACTIVATE}/', api_module.DeactivateApi.as_view())
 
-    path(f'{NAME_SOURCE}/'+r'<int:id>/' + f'{NAME_CREDENTIALS}/', api_module.CredentialsApi.as_view())
 ]

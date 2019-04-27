@@ -249,3 +249,12 @@ class GetAllScoringAPI(APIView):
     def get(self, request, gen_id_or_cur_gen, pk):
         return get_all_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_SCORING, constants.NAME_SSCORE)
 
+
+class ExternalDataApi(APIView):
+    @swagger_auto_schema(operation_description='Check data for cache or ask external source',
+                         request_body=CacheDataSerializer,
+                         responses={200: "raw data",
+                                    400: "Bad request"})
+    def post(self, request):
+        return post_cache_data(request.data)
+

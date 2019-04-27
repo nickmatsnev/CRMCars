@@ -6,25 +6,28 @@ import requests
 from core.lib.constants import *
 from portal.models import CacheData
 
-
+#Тут запрашиваем информацию с улицы
 def __do_post(url, data, headers):
-    return requests.post(url, data=data, headers=headers)
+    resp = requests.post(url, data=data, headers=headers)
+    return json.loads(resp.text)
 
 def __do_post_wo_headers(url, data):
-    return requests.post(url, data=data)
+    resp = requests.post(url, data=data)
+    return json.loads(resp.text)
 
 def __do_get(url):
-    return requests.get(url)
+    resp = requests.get(url)
+    return json.loads(resp.text)
 
 
+#Тут обрабатываем  запросы
+def post_data(url, data):
+    return __do_post_wo_headers(url,data)
 
-def post(url, data, headers=''):
-    if headers=='':
-        return __do_post_wo_headers(url,data)
-    else:
-        return __do_post(url, data, headers)
+def post_data_headers(url, data, headers):
+    return __do_post(url, data, headers)
 
-def get(url):
+def get_data(url):
     return __do_get(url)
 
 

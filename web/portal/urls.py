@@ -67,19 +67,19 @@ router.register(f'{NAME_API}/{NAME_PRODUCT}', api_product.MainAPI)
 
 # POST api/willz/   - отправляем любое г от виллза
 # POST api/willz/update   - отправляем любое обновление для г от виллза, айди берем вилзовское изнутри и ищем совпадение
-# GET  api/willz/<id> - получаем обратно любое г от виллза
-
-
-# POST api/message/ - отправляем новое сообщение
-# GET  api/message/ - получаем все сообщения со статусом доставки !!!под вопросом - нужо ли??? !!!!
-
-
-# GET  api/module/<type>/ 	- получить модули со всеми типами
-# POST api/module/<type>/upload   - загрузить новый модуль
-# GET  api/module/parser/parameters 	- получить все активные параметры парсера
-
-# GET  api/module/<type>/<id> 	- получить конкретный модуль
-# GET  api/module/<type>/<id>/activate 	- включить
+# # GET  api/willz/<id> - получаем обратно любое г от виллза
+#
+#
+# # POST api/message/ - отправляем новое сообщение
+# # GET  api/message/ - получаем все сообщения со статусом доставки !!!под вопросом - нужо ли??? !!!!
+#
+#
+# # GET  api/module/<type>/ 	- получить модули со всеми типами
+# # POST api/module/<type>/upload   - загрузить новый модуль
+# # GET  api/module/parser/parameters 	- получить все активные параметры парсера
+#
+# # GET  api/module/<type>/<id> 	- получить конкретный модуль
+# # GET  api/module/<type>/<id>/activate 	- включить
 # GET  api/module/<type>/<id>/deactivate 	- выключить
 
 urlpatterns = [

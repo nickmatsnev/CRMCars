@@ -3,9 +3,7 @@ import requests
 import json
 import sys
 
-#TODO:
-sys.path.append('../../')
-#from core.lib import requests_with_cache
+PATH_TO_CACHE = "http://127.0.0.1:8002/api/module/source/external/"
 
 # Получение урла модуля
 def get_module_url():
@@ -29,9 +27,14 @@ def import_data(credentials_json, individual_json, parsers_data):
 
     request = {"requestID": "agrid5c41aad42dbed"}
 
-    # TODO:
- #   r = requests_with_cache.post(url, data=json.dumps(request), headers=headers)
-    r = requests.post(url, data=json.dumps(request), headers=headers)
+    json_req = {}
+    json_req['type_of_request'] = "POST"
+    json_req['url'] = json.dumps(url)
+    json_req['data'] = json.dumps(json.dumps(request))
+    json_req['headers'] = json.dumps(headers)
+
+    r = requests.post(PATH_TO_CACHE, data=json.dumps(json_req), headers={'Content-Type': 'application/json'})
+     #r = requests.post(url, data=json.dumps(request), headers=headers)
     scorista_res = json.loads(r.text)
     return json.dumps(scorista_res, indent=4, ensure_ascii=True)
 
