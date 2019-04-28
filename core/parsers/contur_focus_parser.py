@@ -17,16 +17,20 @@ def get_values(source_json):
     stopWords = ["банкротство", "ликвидация"]
 
     stopWordIndicators = []
+    stopWordWords = []
     for wrd in stopWords:
         smth = re.findall(wrd, json1_str.lower())
         stopWordIndicators.append(len(smth))
+        stopWordWords.append(wrd)
 
     riskWords = ["рекомендована дополнительная проверка"]
 
     riskWordIndicators = []
+    riskWordWords = []
     for wrd in riskWords:
         smth = re.findall(wrd, json1_str.lower())
         riskWordIndicators.append(len(smth))
+        riskWordWords.append(wrd)
 
     inn = json1_data[0]['inn']
     ogrn = json1_data[0]['ogrn']
@@ -52,7 +56,9 @@ def get_values(source_json):
     return [{'name': 'INN', 'value': inn},
             {'name': 'fioHead', 'value': fioHead},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
+            {'name': 'StopWordWords', 'value': stopWordWords},
             {'name': 'RiskWordIndicators', 'value': riskWordIndicators},
+            {'name': 'RiskWordWords', 'value': riskWordWords},
             {'name': 'OGRN', 'value': ogrn},
             {'name': 'adrCity', 'value': adrCity},
             {'name': 'adrStreet', 'value': adrStreet},
@@ -67,7 +73,7 @@ def stop_factors(individual_json, source_json):
     errors = []
 
     if sum(scorista_res.loc['StopWordIndicators'].value) > 0:
-        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента'})
+        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента по данным Контур-Фокус'})
 
     '''
     Для поиска данных по ФИО руководителей и адресу необходимы дополнительные списки
@@ -94,8 +100,12 @@ def get_available_params():
             {'name': 'fioHead', 'description': 'ФИО руководителя компании', 'type': 'string'},
             {'name': 'StopWordIndicators', 'description': 'Вектор индикаторов на наличие стоп-слов',
              'type': 'vector, int'},
+            {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
+             'type': 'vector, string'},
             {'name': 'RiskWordIndicators',
              'description': 'Вектор индикаторов на наличие подозрительных слов в описании', 'type': 'vector, int'},
+            {'name': 'RiskWordWords', 'description': 'Вектор обнаруженных подозрительных слов',
+             'type': 'vector, string'},
             {'name': 'OGRN', 'description': 'ОГРН компании', 'type': 'int'},
             {'name': 'adrCity', 'description': 'Адрес компании (город)', 'type': 'string'},
             {'name': 'adrStreet', 'description': 'Адрес компании (улица)', 'type': 'string'},
