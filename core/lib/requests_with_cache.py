@@ -12,15 +12,15 @@ from portal.models import CacheData
 #Тут запрашиваем информацию с улицы
 def __do_post(url, data, headers):
     resp = requests.post(url, data=data, headers=headers)
-    return json.loads(resp.text)
+    return resp.text
 
 def __do_post_wo_headers(url, data):
     resp = requests.post(url, data=data)
-    return json.loads(resp.text)
+    return resp.text
 
 def __do_get(url):
     resp = requests.get(url)
-    return json.loads(resp.text)
+    return resp.text
 
 
 #тут работаем с БД
@@ -59,6 +59,11 @@ def __get_queryset(type_of_request, url, data='', headers=''):
 
             queryset = __set_new_record(type_of_request, crc, url, data, headers)
 
+        if CACHE_ALLWAYS_EXTERNAL == True:
+            queryset.is_active = False
+            queryset.save(update_fields=['is_active'])
+            return __set_new_record(type_of_request, crc, url, data, headers).body
+        
         return queryset.body
     else:
         queryset = __set_new_record(type_of_request, crc, url, data, headers)
@@ -67,12 +72,12 @@ def __get_queryset(type_of_request, url, data='', headers=''):
 
 #Тут обрабатываем  запросы
 def post_data(url, data):
-    return __get_queryset('POST', url, data=data)
+    return json.loads(__get_queryset('POST', url, data=data))
 
 def post_data_headers(url, data, headers):
-    return __get_queryset('POST', url, data=data, headers=headers)
+    return json.loads(__get_queryset('POST', url, data=data, headers=headers))
 
 def get_data(url):
-    return __get_queryset('GET', url)
+    return json.loads(__get_queryset('GET', url))
 
 

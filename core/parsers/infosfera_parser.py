@@ -64,8 +64,8 @@ def get_values(source_json):
 
     try:
         for aa in soup.findAll('fieldtitle'):
-        if aa.text == "Место рождения":
-            birth_place = aa.parent.find('fieldvalue').text
+            if aa.text == "Место рождения":
+                birth_place = aa.parent.find('fieldvalue').text
     except:
         birth_place = "NA"
 
