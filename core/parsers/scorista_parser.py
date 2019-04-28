@@ -109,11 +109,15 @@ def get_values(source_json):
     numberPassportChanges = (len(smth))
 
     stopWords = ["банкротство", "страховое мошенничество", "уголовное дело",
-                 "уголовное нарушение", "ответчик", "нетрезвом", "невозвратный", "безнадежный", 'стоплист']
+                 "уголовное нарушение", "ответчик", "нетрезвом", "невозвратный", "безнадежный", 'стоплист',
+                 'наркотик']
+    
     stopWordIndicators = []
+    stopWordWords = []
     for wrd in stopWords:
         smth = re.findall(wrd, fileall.lower())
         stopWordIndicators.append(len(smth))
+        stopWordWords.append(wrd)
 
     drunk_drive = False if fileall.find('нетрезвом') == -1 else True
     bank_stoplist = False if fileall.find('СТОПЛИСТ') == -1 else True
@@ -126,11 +130,10 @@ def get_values(source_json):
     except:
         birth_date = "NA"
 
-    terrorism = True if dictall['data']['rosFinMonitoring']['result'] == 0 else False
-    fms_invalid_passport = True if dictall['data']['fms']['result'] == 0 else False
-    invalid_inn = True if dictall['data']['inn']['result'] == 0 else False
+    terrorism = False if dictall['data']['rosFinMonitoring']['result'] == 0 else True
+    fms_invalid_passport = False if dictall['data']['fms']['result'] == 0 else True
+    invalid_inn = False if dictall['data']['inn']['result'] == 0 else True
 
-    passport_origin = True if len(passport_sc) == 10 else False
     try:
         license_origin = True if len(license_sc) == 10 else False
     except:
@@ -238,7 +241,8 @@ def get_values(source_json):
             {'name': 'NumberPassportChanges', 'value': numberPassportChanges},
             {'name': 'License', 'value': license_sc},
             {'name': 'LicenseExpDate', 'value': license_exp_date},
-            {'name': 'StopWordIndicators', 'value': stopWordIndicators},
+            {'name': 'StopWordIndicators', 'value': stopWordIndicators}, 
+            {'name': 'StopWordWords', 'value': stopWordWords},
             {'name': 'BankStopList', 'value': bank_stoplist},
             {'name': 'DrunkDrive', 'value': drunk_drive},
             {'name': 'TotalDebt', 'value': tot_debt},
@@ -268,22 +272,22 @@ def validate(individual_json, source_json):
     errors = []
 
     if scorista_res.loc['FIO'].value.lower().find(individual_json['last_name'].lower()) < 0:
-        errors.append({'decription': 'Фамилия не совпадает'})
+        errors.append({'decription': 'Фамилия не совпадает с источником (Скориста)'})
     if scorista_res.loc['FIO'].value.lower().find(individual_json['first_name'].lower()) < 0:
-        errors.append({'decription': 'Имя не совпадает'})
+        errors.append({'decription': 'Имя не совпадает с источником (Скориста)'})
     if scorista_res.loc['FIO'].value.lower().find(individual_json['middle_name'].lower()) < 0:
-        errors.append({'decription': 'Отчество не совпадает'})
+        errors.append({'decription': 'Отчество не совпадает с источником (Скориста)'})
 
     if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
-        errors.append({'decription': 'Серия и номер паспорта не совпадают'})
+        errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (Скориста)'})
     if individual_json['driver_license']['number'] != scorista_res.loc['License'].value:
-        errors.append({'decription': 'Серия и номер ВУ не совпадают'})
+        errors.append({'decription': 'Серия и номер ВУ не совпадают с источником (Скориста)'})
 
     if scorista_res.loc['BirthDate'].value > datetime.now().date():
         errors.append({'decription': 'Некорректная дата рождения'})
 
     if individual_json['birthday'] != scorista_res.loc['BirthDate'].value:
-        errors.append({'decription': 'Не совпадает дата рождения'})
+        errors.append({'decription': 'Не совпадает дата рождения с источником (Скориста)'})
 
     '''
     Мне не нравится эта проверка, потому что сложно написать её так, чтобы она корректно учла все возможные различия в написании
@@ -293,9 +297,9 @@ def validate(individual_json, source_json):
     '''
 
     if not scorista_res.loc['FMSInvalidPassport'].value:
-        errors.append({'decription': 'Недействительность паспорта в базе ФМС'})
+        errors.append({'decription': 'Недействительность паспорта в базе ФМС по данным Скористы'})
     if not scorista_res.loc['InvalidINN'].value:
-        errors.append({'decription': 'У клиента недействительный ИНН'})
+        errors.append({'decription': 'У клиента недействительный ИНН по данным Скористы'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -315,10 +319,10 @@ def stop_factors(individual_json, source_json):
         errors.append({'decription': 'Истёк срок действия водительского удостоверения'})
 
     if sum(scorista_res.loc['StopWordIndicators'].value) > 0:
-        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента'})
+        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента по описанию Скористы'})
 
     if scorista_res.loc['RoadPoliceFinesNumber'].value > 25:
-        errors.append({'decription': 'Критически большое количество штрафов за нарушение ПДД'})
+        errors.append({'decription': 'Критически большое количество штрафов за нарушение ПДД по данным Скористы'})
 
     '''
     Пока непонятно, в каком формате будут поступать данные по тому, какую машину человек хочет взять.
@@ -341,22 +345,22 @@ def stop_factors(individual_json, source_json):
     nDCurrent = scorista_res.loc['latePaymentInCurrentCredits']
 
     if nDelays > 1:
-        errors.append({'decription': 'Наличие двух и более просрочек в течение последних двух лет'})
+        errors.append({'decription': 'Наличие двух и более просрочек в течение последних двух лет по данным Скористы'})
     if nDClosed.size > 2:
-        errors.append({'decription': 'Наличие трёх и более просрочек по кредитам'})
+        errors.append({'decription': 'Наличие трёх и более просрочек по кредитам по данным Скористы'})
     if nDCurrent.size > 0:
-        errors.append({'decription': 'В настоящий момент есть просрочка по кредиту'})
+        errors.append({'decription': 'В настоящий момент есть просрочка по кредиту по данным Скористы'})
 
     if not scorista_res.loc['BankStopList'].value:
-        errors.append({'decription': 'Клиент присутствует в стоп-листах банков'})
+        errors.append({'decription': 'Клиент присутствует в стоп-листах банков по данным Скористы'})
     if not scorista_res.loc['DrunkDrive'].value:
-        errors.append({'decription': 'Судопроизводства за нетрезвое вождение'})
+        errors.append({'decription': 'Судопроизводства за нетрезвое вождение по данным Скористы'})
 
     if scorista_res.loc['TotalDebt'].value > 150000:
-        errors.append({'decription': 'Задолженность по судопроизводствам более 150000'})
+        errors.append({'decription': 'Задолженность по судопроизводствам более 150000 по данным Скористы'})
 
     if scorista_res.loc['currentDebts'].value > 150000:
-        errors.append({'decription': 'Задолженность по судопроизводствам более 150000'})
+        errors.append({'decription': 'Задолженность по судопроизводствам более 150000 по данным Скористы'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -375,6 +379,8 @@ def get_available_params():
             {'name': 'NumberPassportChanges', 'description': 'Число замен паспорта', 'type': 'int'},
             {'name': 'StopWordIndicators', 'description': 'Вектор индикаторов на наличие стоп-слов',
              'type': 'vector, int'},
+            {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
+             'type': 'vector, string'},
             {'name': 'RoadPoliceFinesNumber', 'description': 'Количество штрафов ГИБДД', 'type': 'int'},
             {'name': 'CarsList', 'description': 'Вектор автомобилей (марка, модель)', 'type': 'vector, string'},
             {'name': 'LatePaymentInfo', 'description': 'Вектор (дата проверки, результат по наличию просрочек)',

@@ -49,15 +49,25 @@ def get_values(source_json):
 
     stopWords = ["банкротство", "страховое мошенничество", "уголовное дело",
                  "уголовное нарушение", "ответчик", "нетрезвом", "невозвратный", "безнадежный", 'стоплист']
+
     stopWordIndicators = []
+    stopWordWords = []
     for wrd in stopWords:
         smth = re.findall(wrd, file_xml.lower())
         stopWordIndicators.append(len(smth))
+        stopWordWords.append(wrd)
 
     try:
         birth_date = soup.find('birthdt').text
     except:
         birth_date = "NA"
+
+    try:
+        for aa in soup.findAll('fieldtitle'):
+        if aa.text == "Место рождения":
+            birth_place = aa.parent.find('fieldvalue').text
+    except:
+        birth_place = "NA"
 
     passport_origin = True if len(passport_sc) == 10 else False
 
@@ -142,7 +152,7 @@ def get_values(source_json):
             tmp = re.findall(rr, smth)
             nRisky2 += (len(tmp))
     except:
-        print("ERORR")
+        print("ERROR")
 
     risk_regions = True if nRisky1 > 0 else False
     risk_regions2 = True if nRisky2 > 0 else False
@@ -157,8 +167,9 @@ def get_values(source_json):
             {'name': 'PassportDate', 'value': passportDate},
             {'name': 'INN', 'value': inn},
             {'name': 'FIO', 'value': fio},
-            {'name': 'BirthPlace', 'value': birth_date},
+            {'name': 'BirthPlace', 'value': birth_place},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
+            {'name': 'StopWordWords', 'value': stopWordWords},
             {'name': 'BirthDate', 'value': birth_date},
             {'name': 'RiskRegion', 'value': risk_regions},
             {'name': 'RiskRegion2', 'value': risk_regions2},
@@ -175,20 +186,20 @@ def validate(individual_json, source_json):
     errors = []
 
     if scorista_res.loc['FIO'].value.lower().find(individual_json['last_name'].lower()) < 0:
-        errors.append({'decription': 'Фамилия не совпадает'})
+        errors.append({'decription': 'Фамилия не совпадает с источником (Инфосфера)'})
     if scorista_res.loc['FIO'].value.lower().find(individual_json['first_name'].lower()) < 0:
-        errors.append({'decription': 'Имя не совпадает'})
+        errors.append({'decription': 'Имя не совпадает с источником (Инфосфера)'})
     if scorista_res.loc['FIO'].value.lower().find(individual_json['middle_name'].lower()) < 0:
-        errors.append({'decription': 'Отчество не совпадает'})
+        errors.append({'decription': 'Отчество не совпадает с источником (Инфосфера)'})
 
     if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
-        errors.append({'decription': 'Серия и номер паспорта не совпадают'})
+        errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (Инфосфера)'})
     brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%Y-%m-%d').date()
     if brth > datetime.now().date():
         errors.append({'decription': 'Некорректная дата рождения'})
 
     if individual_json['birthday'] != scorista_res.loc['BirthDate'].value:
-        errors.append({'decription': 'Не совпадает дата рождения'})
+        errors.append({'decription': 'Не совпадает дата рождения с источником (Инфосфера)'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -204,7 +215,7 @@ def stop_factors(individual_json, source_json):
         errors.append({'decription': 'Заявителю нет 18 лет'})
 
     if sum(scorista_res.loc['StopWordIndicators'].value) > 0:
-        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента'})
+        errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента по данным Инфосферы'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -220,6 +231,8 @@ def get_available_params():
             {'name': 'BirthPlace', 'description': 'Место рождения', 'type': 'string'},
             {'name': 'StopWordIndicators', 'description': 'Вектор индикаторов на наличие стоп-слов',
              'type': 'vector, int'},
+            {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
+             'type': 'vector, string'},
             {'name': 'Jobs', 'description': 'Вектор (место работы, доход, год, ИНН работодателя)',
              'type': 'vector, string'},
             {'name': 'BirthDate', 'description': 'Дата рождения', 'type': 'date'},
