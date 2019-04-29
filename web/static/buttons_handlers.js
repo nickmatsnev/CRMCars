@@ -51,6 +51,22 @@ $(document).ready(function () {
 
     });
 
+    $("#show-raw-data").click(function () {
+        var dt = "";
+        $.getJSON('/api/individual/' + individual_id + "/cur_gen/data/source", function (data) {
+            dt = JSON.stringify(data);
+            //  $("").html(dt);
+            $('#showRawDataModal #modal-content-main').jsonViewer(data, {
+                collapsed: true,
+                withQuotes: true,
+                withLinks: false
+            });
+            $('#showRawDataModal').modal('show');
+        });
+
+
+    });
+
 
     if (typeof individual_id != "undefined") {
         $.getJSON('/api/individual/' + individual_id + "/current_generation/state/", function (data) {

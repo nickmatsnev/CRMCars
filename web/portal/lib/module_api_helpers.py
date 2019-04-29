@@ -91,7 +91,7 @@ def get_module_data_list_by_type(pk, module_type, gen_id_or_cur_gen):
                 try:
                     json_data = ast.literal_eval(current_module.raw_data)
                 except:
-                    json_data = {'incorrect_json': current_module.raw_data}
+                    json_data = json.loads(current_module.raw_data)
                 finally:
                     response_data['{0}'.format(current_module.name)] = json_data
                     counter += 1
@@ -191,17 +191,20 @@ def set_module_is_active_by_id_type(module_type, pk, active_or_not):
 def view_all_parameters_from_active_modules(module_type):
     modules_parameters = []
     modules = Module.objects.filter(type=get_subtype_by_module_type(module_type), is_active=True)
+    index = 1
     for parsing_module in modules:
         parser_m = get_class_by_module_type(module_type)(parsing_module.path)
         parameters = parser_m.get_available_parameters()
         for parameter in parameters:
             new_item = {}
+            new_item['index'] = index
             new_item['source'] = parser_m.get_module_source()
             new_item['parser'] = parser_m.get_module_name()
             new_item['name'] = parameter['name']
             new_item['description'] = parameter['description']
             new_item['type'] = parameter['type']
             modules_parameters.append(new_item)
+            index += 1
     return modules_parameters
 
 

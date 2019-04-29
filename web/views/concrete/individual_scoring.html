@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 
-
+{% load color_filter %}
 {% block title %}
     Скоринг клиента
 {% endblock %}
@@ -20,50 +20,29 @@
         </a>
     <br><p></p>
 
-   <div style=" border:1px solid lightgray;" id="" class="container">
-       <p><strong>Скоринг</strong></p>
+
+            <div class="card">
+
+                <div class="card-header h2">Скоринг</div>
+                <div class="card-body">
 
 
-            <h4>
-                <strong style="color:green">{{ score }} </strong></h4>
-            {#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
-            {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
+                    <span class="h4"><b>Балл:</b></span> <b class="h3" style="color:green;">{{ score }} </b></h4>
+                    {#                <p>Данный клиент требует дополнительного согласования. Обратите внимание на стоп-факторы. </p>#}
+                    {#               <button class="btn btn-default scoring-delete-button " type="button"> <span class="glyphicon glyphicon-plus"></span>  подробности </button>#}
+                </div>
         </div>
 
-        <div style=" border:1px solid lightgray;" id="" class="container" data-toggle="collapse" data-target="#demo">
 
+            <div class="card">
 
-            <p><strong>Данные</strong><strong style="color:green" class="float-lg-right">OK</strong></p>
-
-        <div id="demo" class="collapse">
-
-            {% for key,value in values.items %}
-                <p class="center-m"><b>Модуль: </b>{{ key }}</p>
-                <table class="table" style="padding: 5px;">
-                <tr>
-                    <th style="width:300px;">Параметр</th>
-                    <th>Значение</th>
-                </tr>
-                {% for element in value %}
-                    <tr>
-                        <td>{% for pp,pvv in parameters_dict.items %}{% ifequal pp element.name %}{{ pvv }}
-                        {% endifequal %}{% endfor %}</td>
-
-                        <td>{{ element.value }}</td>
-                    </tr>
-                {% endfor %}
-                </table>
-            {% endfor %}
-
-            </div>
-        </div>
-
-            <p><strong>Валидации</strong> <strong
-                    style="color:{% ifnotequal value "Failed" %}green{% else %}red{% endifnotequal %}"
-                    class="float-lg-right">{{ value }}</strong></p>
-
-
-            {% for key,value in validate_status.items %}
+                <div class="card-header h2">Валидации</div>
+                <div class="card-body">
+                    {% for key,value in validate_status.items %}
+                        <p class="float-lg-right font-weight-bold">Статус: <span class="glyphicon glyphicon-ok"
+                                                                                 style="color:{{ value|color_filter }}">{{ value }}</span>
+                        </p>
+                        <p><b>Модуль: </b>{{ key }}</p>
 
 
 
@@ -74,8 +53,8 @@
                 <tbody>
                 <p>
 
-                <p><b>Модуль: </b>{{ kk }}</p>
-                        <p><b>Проверки:</b></p>
+
+                <p class=""><b>Проверки:</b></p>
                 {% for element in vv %}
                             <p>{{ element.decription }}</p>
                         {% endfor %}
@@ -83,17 +62,23 @@
                 </p>
                 </tbody>
                 {% endifequal %} {% endfor %}
+
             </table>
 
-
             {% endfor %}
+
+                </div>
         </div>
 
-        <p><strong>Стоп-Факторы</strong> <strong
-                style="color:{% ifnotequal value "Failed" %}green{% else %}red{% endifnotequal %}"
-                class="float-lg-right">{{ value }}</strong></p>
-            {% for key,value in stopfactor_status.items %}
+            <div class="card">
 
+                <div class="card-header h2">Стоп-факторы</div>
+                <div class="card-body">
+                    {% for key,value in stopfactor_status.items %}
+                        <p class="float-lg-right font-weight-bold">Статус: <span class="glyphicon glyphicon-ok"
+                                                                                 style="color:{{ value|color_filter }}">{{ value }}</span>
+                        </p>
+                        <p><b>Модуль: </b>{{ key }}</p>
 
 
 
@@ -102,7 +87,7 @@
                 <tbody>
                 <p>
 
-                <p><b>Модуль: </b>{{ kk }}</p>
+
                         <p><b>Проверки:</b></p>
                 {% for element in vv %}
                             <p>{{ element.decription }}</p>
@@ -113,10 +98,42 @@
                 {% endifequal %} {% endfor %}
             </table>
 
-        </div>
-            {% endfor %}
+
+                    {% endfor %}
+
+                </div>
+            </div>
 
         </div>
+    <div class="card">
+
+        <div class="card-header h2">Данные
+            <button type="button" class="btn btn-info float-lg-right" data-toggle="collapse" data-target="#demo111">+
+            </button>
+        </div>
+
+        <div class="card-body collapse" id="demo111">
+            {% for key,value in values.items %}
+
+                <p class="h5"><b>Модуль: </b>{{ key }}</p>
+
+                <table class="table" style="padding: 5px;">
+
+                    {% for element in value %}
+                        <tr>
+                            <td>{% for pp,pvv in parameters_dict.items %}{% ifequal pp element.name %}{{ pvv }}
+                            {% endifequal %}{% endfor %}</td>
+
+                            <td>{{ element.value }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+            <button class="btn btn-success" style="margin: 5px;" id="show-raw-data" custom_tag="{{ key }}">Посмотреть
+                сырые данные из источников
+            </button>
+        </div>
     </div>
+
 {% endblock %}
 

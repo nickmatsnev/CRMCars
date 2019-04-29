@@ -3,13 +3,13 @@
 
 
 {% block title %}
-    Список параметров
+    Справочник полей
 {% endblock %}
 {% block content %}
 
 
     <div id="" class="container">
-        <h1 class="panel-title">Параметры</h1>
+        <h1 class="panel-title">Справочник полей</h1>
 
         <p></p>
 
@@ -18,6 +18,7 @@
 
         <table class="table">
             <tr>
+                <th>#</th>
                 <th>Источник</th>
                 <th>Парсер</th>
                 <th>Имя параметра</th>
@@ -25,8 +26,8 @@
                 <th>Тип</th>
             </tr>
             {% for item in items %}
-                <tr ">
-
+                <tr>
+                    <td>{{ item.index }}</td>
                     <td>{{ item.source }}</td>
                     <td>{{ item.parser }}</td>
                     <td>{{ item.description }}</td>

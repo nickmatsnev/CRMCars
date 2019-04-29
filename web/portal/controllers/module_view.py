@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from rest_framework import status
 from core.lib.api import ApiRequestor
+from core.lib import constants
 
 @login_required(login_url="signin")
 def upload_module(request, module_type):
@@ -41,7 +42,8 @@ def products_list(request):
 @login_required(login_url="signin")
 def modules_list(request, module_type):
     items = ApiRequestor(request).get_module_view(module_type)
-    return render(request, URL_LINK_MODULES_LIST, {'module': module_type, 'items': items})
+    return render(request, URL_LINK_MODULES_LIST,
+                  {'module': module_type, 'module_name': constants.MODULE_DICTIONARY[module_type], 'items': items})
 
 
 @login_required(login_url="signin")

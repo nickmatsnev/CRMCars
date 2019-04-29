@@ -18,9 +18,12 @@
 
     <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script src="{% static "buttons_handlers.js" %}?{% cache_bust %}"></script>
     <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
         <link rel="stylesheet" href="{% static "bootstrap.css" %}">
+
+
     <link rel="stylesheet" href="{% static "style_override.css" %}?{% cache_bust %}">
 <link rel="stylesheet" href="{% static "hide.css" %}">
     <!-- Font Awesome -->
@@ -31,7 +34,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-
+    <script src="https://rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.js"></script>
+    <link href="https://rawgit.com/abodelot/jquery.json-viewer/master/json-viewer/jquery.json-viewer.css"
+          type="text/css" rel="stylesheet"/>
 </head>
     <body>
          <!-- Header -->
@@ -144,5 +149,6 @@
 
          {% include "modal.html" %}
          {% include "prescoring_reject_modal.html" %}
+         {% include "show_raw_data_modal.html" %}
     </body>
 </html>

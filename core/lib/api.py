@@ -21,7 +21,7 @@ class ApiRequestor:
             url_login = "http://127.0.0.1:8002/signin/"
             client.get(url_login)
             csrftoken = client.cookies['csrftoken']
-            login_data = {'username': 'admin', 'password': 'admin', 'csrfmiddlewaretoken': csrftoken}
+            login_data = {'username': 'justkru', 'password': '9mkdsb3f', 'csrfmiddlewaretoken': csrftoken}
             r1 = client.post(url_login, data=login_data)
 
             self.__session = client.cookies['sessionid']
@@ -85,7 +85,7 @@ class ApiRequestor:
 
     def get_individual_cur_data_score(self, id):
         path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_SCORING + URL_INDIVIDUAL_METHOD_SCORE
-        return self.__get(path)
+        return self.__get(path)[0]
 
     def get_individual_cur_data_parser_values(self, id):
         path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALUES

@@ -21,7 +21,7 @@ def individual_scoring(request, id):
     source_names = []
     for item in sources_done:
         source_names.append(item)
-    score = apiRequestor.get_individual_cur_data_score(id)
+    score = format(apiRequestor.get_individual_cur_data_score(id), '.0f')
     # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
     parser_values = apiRequestor.get_individual_cur_data_parser_values(id)
     parser_validate_errors = apiRequestor.get_individual_cur_data_parser_validate_errors(id)
