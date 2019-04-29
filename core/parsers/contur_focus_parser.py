@@ -35,6 +35,15 @@ def get_values(source_json):
     inn = json1_data[0]['inn']
     ogrn = json1_data[0]['ogrn']
 
+    innList = []
+    try:
+        for jjd in json1_data:
+            innList.append(jjd['inn'])
+    except:
+        pass
+
+    innNumber = len(innList)
+
     try:
         adrCity = json1_data[0]['UL']['legalAddress']['parsedAddressRF']['city']['topoValue']
     except:
@@ -62,7 +71,9 @@ def get_values(source_json):
             {'name': 'OGRN', 'value': ogrn},
             {'name': 'adrCity', 'value': adrCity},
             {'name': 'adrStreet', 'value': adrStreet},
-            {'name': 'adrHouse', 'value': adrHouse}
+            {'name': 'adrHouse', 'value': adrHouse},
+            {'name': 'innList', 'value': innList},
+            {'name': 'innNumber', 'value': innNumber}
             ]
 
 
@@ -109,7 +120,9 @@ def get_available_params():
             {'name': 'OGRN', 'description': 'ОГРН компании', 'type': 'int'},
             {'name': 'adrCity', 'description': 'Адрес компании (город)', 'type': 'string'},
             {'name': 'adrStreet', 'description': 'Адрес компании (улица)', 'type': 'string'},
-            {'name': 'adrHouse', 'description': 'Адрес компании (дом)', 'type': 'string'}
+            {'name': 'adrHouse', 'description': 'Адрес компании (дом)', 'type': 'string'},
+            {'name': 'innList', 'description': 'Лист ИНН аффилированных лиц', 'type': "vector, int"},
+            {'name': 'innNumber', 'description': 'Количество аффилированных лиц', 'type': "int"}
             ]
 
 

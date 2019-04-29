@@ -282,14 +282,13 @@ def validate(individual_json, source_json):
         errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (Скориста)'})
     if individual_json['driver_license']['number'] != scorista_res.loc['License'].value:
         errors.append({'decription': 'Серия и номер ВУ не совпадают с источником (Скориста)'})
-
+    '''
     if scorista_res.loc['BirthDate'].value > datetime.now().date():
         errors.append({'decription': 'Некорректная дата рождения'})
 
     if individual_json['birthday'] != scorista_res.loc['BirthDate'].value:
         errors.append({'decription': 'Не совпадает дата рождения с источником (Скориста)'})
 
-    '''
     Мне не нравится эта проверка, потому что сложно написать её так, чтобы она корректно учла все возможные различия в написании
     По этой же причине проверку подразделения, выдавшего паспорт, я пока не писал: там совсем разброд и шатание
     
