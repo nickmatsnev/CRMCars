@@ -20,7 +20,12 @@ class BasicProcess:
         self.__channel = self.__connection.channel()
         #consume not more than one message at time (between rcv & ack)
         self.__channel.basic_qos(prefetch_count=1)
-        self.__channel.basic_consume(queue_name,self.callback)
+
+        try:
+            self.__channel.basic_consume(queue_name, self.callback)
+        except:
+            self.__channel.basic_consume(self.callback, queue_name)
+
         self.__callbacks = callbacks
 
         print("connected")

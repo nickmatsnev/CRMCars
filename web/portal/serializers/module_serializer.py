@@ -89,3 +89,10 @@ class CacheDataSerializer(serializers.ModelSerializer):
         model = CacheData
         fields = ('type_of_request', 'url', 'data', 'headers')
 
+
+class CacheDataValidator(serializers.ModelSerializer):
+    class Meta:
+        model = CacheData
+        fields = '__all__'
+
+
