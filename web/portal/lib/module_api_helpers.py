@@ -12,7 +12,7 @@ from core.lib import module_save_helper
 from core.lib.modules import *
 from rest_framework.response import Response
 from portal.serializers.module_serializer import *
-from core.lib import requests_with_cache
+from core.lib import cached_requests
 
 
 def get_list_of_names(module_type):
@@ -348,20 +348,17 @@ def get_generation_number(individual_id, generation_id_or_current_generation):
     return generation_number
 
 
-def post_cache_data(request_data):
-    request_json = request_data
-    type_of_request = request_json['type_of_request']
-    url = json.loads( request_json['url'])
-    data = json.loads(request_json['data'])
-    headers = json.loads(request_json['headers'])
+def get_cache_data():
+    queryset = CacheData.objects.filter(is_active=True)
+    serializer = CacheDataSerializer(queryset, many=True)
+    return serializer.data
 
-    if type_of_request== 'GET':
-        return  Response(requests_with_cache.get_data(url))
-    elif type_of_request == 'POST':
-        if headers == '':
-            return Response(requests_with_cache.post_data(url,data))
-        else:
-            return Response(requests_with_cache.post_data_headers(url,data,headers))
-    else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+def deactivate_cache_data(id):
+    queryset = CacheData.objects.filter(id=id)
+    if queryset.count()!=0:
+        queryset = queryset.get()
+        queryset.is_active = False
+        queryset.save(update_fields=['is_active'])
+    return get_cache_data()
 

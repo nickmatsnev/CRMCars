@@ -1,13 +1,27 @@
 import json
-
+import os
 import django
 import requests
 import binascii
 import datetime
+import django.conf
+from rest_framework.response import Response
+from rest_framework import status
 
+
+django.conf.ENVIRONMENT_VARIABLE = "DJANGO_CACHE_SETTINGS_MODULE"
+
+os.environ.setdefault("DJANGO_CACHE_SETTINGS_MODULE", "portal.settings")
+
+# This application object is used by any WSGI server configured to use this
+# file. This includes Django's development server, if the WSGI_APPLICATION
+# setting points here.
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
 
 from core.lib.global_settings import *
 from portal.models import CacheData
+
 
 #Тут запрашиваем информацию с улицы
 def __do_post(url, data, headers):
@@ -25,7 +39,7 @@ def __do_get(url):
 
 #тут работаем с БД
 def __calculate_crc(input):
-    crc = binascii.crc32(input.encode())   & 0xffffffff
+    crc = binascii.crc32(input.encode()) & 0xffffffff
     return ('%08X' % crc)
 
 
@@ -71,13 +85,16 @@ def __get_queryset(type_of_request, url, data='', headers=''):
 
 
 #Тут обрабатываем  запросы
-def post_data(url, data):
-    return json.loads(__get_queryset('POST', url, data=data))
+def post(url, data, headers=''):
+    data = __get_queryset('POST', url, data=data, headers=headers)
+    resp = Response(data)
+    resp.text = data
+    return resp
 
-def post_data_headers(url, data, headers):
-    return json.loads(__get_queryset('POST', url, data=data, headers=headers))
-
-def get_data(url):
-    return json.loads(__get_queryset('GET', url))
+def get(url):
+    data = __get_queryset('GET', url)
+    resp = Response(data)
+    resp.text = data
+    return resp
 
 

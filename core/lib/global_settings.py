@@ -10,3 +10,4 @@ EXCEL_TO_READ_DRIVER_LICENSES_PATH = "https://new.willz.ru/uploads/driverlicense
 
 CACHE_TIMEOUT_DAYS = 90
 CACHE_ALLWAYS_EXTERNAL = False
+

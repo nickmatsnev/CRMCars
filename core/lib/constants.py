@@ -114,7 +114,8 @@ NAME_BODY = "body"
 NAME_UPDATE = "update"
 NAME_GENERAL = "general"
 NAME_ADVANCED = "advanced"
-NAME_EXTERNAL = "external"
+NAME_CACHE= "cache"
+
 
 # specific names
 NAME_HTML = ".html"

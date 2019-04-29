@@ -87,7 +87,7 @@ class CredentialsSerializer(serializers.ModelSerializer):
 class CacheDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = CacheData
-        fields = ('type_of_request', 'url', 'data', 'headers')
+        fields = ('id', 'type_of_request', 'url', 'data', 'headers', 'create_time')
 
 
 class CacheDataValidator(serializers.ModelSerializer):

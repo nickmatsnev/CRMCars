@@ -35,7 +35,9 @@ urlpatterns = [
     path(r'<slug:module_type>/' + f'{NAME_VIEW}/', api_module.ViewModuleApi.as_view()),
 
     path(r'<slug:module_type>/' + f'{NAME_UPLOAD}/', api_module.UploadModuleApi.as_view()),
-    path(f'{NAME_SOURCE}/{NAME_EXTERNAL}/', api_module.ExternalDataApi.as_view()),
+    path(f'{NAME_SOURCE}/{NAME_CACHE}/', api_module.GetSourceCacheApi.as_view()),
+    path(f'{NAME_SOURCE}/{NAME_CACHE}/'+ r'<int:id>/' + f'{NAME_DELETE}/', api_module.DeactivateCacheApi.as_view()),
+
     path(f'{NAME_SOURCE}/' + r'<int:id>/' + f'{NAME_CREDENTIALS}/', api_module.CredentialsApi.as_view()),
 
     path(r'<slug:module_type>/' + f'{NAME_VIEW}/{NAME_PARAMETERS}/', api_module.GetViewParametersApi.as_view()),

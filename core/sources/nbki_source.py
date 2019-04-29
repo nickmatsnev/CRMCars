@@ -2,7 +2,8 @@ import requests
 import sys
 import json
 
-PATH_TO_CACHE = "http://127.0.0.1:8002/api/module/source/external/"
+sys.path.append('../../')
+from core.lib import cached_requests
 
 # Получение урла модуля
 def get_module_url():
@@ -54,7 +55,7 @@ def import_data(credentials_json, individual_json, parsers_data):
     json_req['data'] = json.dumps(request.encode('utf-8'))
     json_req['headers'] = json.dumps('')
 
-    r = requests.post(PATH_TO_CACHE,json.dumps(json_req), headers={'Content-type': 'application/json'})
+    r = cached_requests.post(url=url, data=request.encode('utf-8'))
     sphere_res = {'result': r.text}
     #sphere_res = {'result': r.text}
     return sphere_res

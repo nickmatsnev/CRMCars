@@ -250,11 +250,16 @@ class GetAllScoringAPI(APIView):
         return get_all_info(pk,  get_generation_number(pk,gen_id_or_cur_gen), constants.NAME_SCORING, constants.NAME_SSCORE)
 
 
-class ExternalDataApi(APIView):
-    @swagger_auto_schema(operation_description='Check data for cache or ask external source',
-                         request_body=CacheDataSerializer,
-                         responses={200: "raw data",
-                                    400: "Bad request"})
-    def post(self, request):
-        return post_cache_data(request.data)
+class GetSourceCacheApi(APIView):
+    @swagger_auto_schema(operation_description='Get all cache',
+                         responses={200: CacheDataSerializer})
+    def get(self, request):
+        return Response(get_cache_data())
+
+
+class DeactivateCacheApi(APIView):
+    @swagger_auto_schema(operation_description='Get all cache without deactivated element',
+                         responses={200: CacheDataSerializer})
+    def get(self, request, id):
+        return Response(deactivate_cache_data(id))
 
