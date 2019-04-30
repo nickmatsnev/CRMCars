@@ -131,7 +131,7 @@ def view_module_by_type(module_type):
         item['name'] = module.name
         item['path'] = module.path
         item['is_active'] = module.is_active
-        item['creation_time'] = module.create_time
+        item['creation_time'] = module.create_time.strftime("%Y-%m-%d %H:%M:%S")
         if module_type == "source":
             item['credentials'] = module.credentials
             module_loader = get_class_by_module_type(module_type)(module.path)

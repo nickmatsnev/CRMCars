@@ -1,9 +1,7 @@
-import json
+import sys
 
-from portal.models import *
-from core.lib import message_sender
-from core.lib import constants
-from rest_framework import status
+sys.path.append('../')
+
 from core.lib.api import ApiRequestor
 from portal.lib.client_api_helpers import *
 

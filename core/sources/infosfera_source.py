@@ -46,12 +46,6 @@ def import_data(credentials_json, individual_json, parsers_data):
                              individual_json["passport"]["number"][4:], individual_json["passport"]["issued_at"],
                              individual_json["phone"], individual_json["email"])
 
-    json_req = {}
-    json_req['type_of_request'] = "POST"
-    json_req['url'] = json.dumps(url)
-    json_req['data'] = json.dumps(request.encode('utf-8'))
-    json_req['headers'] = json.dumps('')
-
     r = cached_requests.post(url=url, data=request.encode())
     sphere_res = {'result': r.text}
     #sphere_res = {'result': r.text}

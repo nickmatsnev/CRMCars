@@ -1,6 +1,7 @@
 import requests
 import sys
 import json
+import datetime
 
 sys.path.append('../../')
 from core.lib import cached_requests
@@ -40,20 +41,15 @@ def import_data(credentials_json, individual_json, parsers_data):
             <loanamount>150000</loanamount>
             <loanduration>30</loanduration>
         </loan>
-        <istest>0</istest>
+        <istest>1</istest>
     </credit_rating>
     '''.format(username, password, individual_json["last_name"], individual_json["first_name"],
                individual_json["middle_name"],
-               individual_json["birthday"], individual_json["passport"]["number"][4:],
+               datetime.datetime.strptime(individual_json["birthday"], "%Y-%m-%d").strftime("%d.%m.%Y"),
+               individual_json["passport"]["number"][4:],
                individual_json["passport"]["number"][0:4],
-               individual_json["passport"]["issued_at"])
-
-
-    json_req = {}
-    json_req['type_of_request'] = "POST"
-    json_req['url'] = json.dumps(url)
-    json_req['data'] = json.dumps(request.encode('utf-8'))
-    json_req['headers'] = json.dumps('')
+               datetime.datetime.strptime(individual_json["passport"]["issued_at"], "%Y-%m-%d").strftime("%d.%m.%Y")
+               )
 
     r = cached_requests.post(url=url, data=request.encode('utf-8'))
     sphere_res = {'result': r.text}
