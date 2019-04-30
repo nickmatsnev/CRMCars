@@ -54,10 +54,10 @@ class ScoringProcessor(BasicProcess):
         finished_sources = self._apiRequestor.get_individual_cur_data_source(individual_id)
         fin = list(finished_sources.keys())
         all_sources = list(map(lambda x: x['source'], source_deps))
-        remaining_sources = list(set(all_sources).difference(set(fin)))
-
-        if remaining_sources:
-            next_source = remaining_sources[0]
+        for source in fin:
+            all_sources.remove(source)
+        if all_sources:
+            next_source = all_sources[0]
             next_parser = None
             for source_dep in source_deps:
                 if source_dep['source'] == next_source:

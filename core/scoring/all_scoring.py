@@ -165,7 +165,7 @@ def get_score(parsers_data):
 
 # Получение зависимостей от парсеров
 def get_dependencies():
-    # return ['NBKIParserModule']
+    # return ['InfosferaParserModule']
     return ['ScoristaParserModule', 'ConturFocusParserModule', 'InfosferaParserModule', 'NBKIParserModule']
 
 

@@ -29,11 +29,6 @@ def import_data(credentials_json, individual_json, parsers_data):
 
     request = {"requestID": "agrid5c41aad42dbed"}
 
-    json_req = {}
-    json_req['type_of_request'] = "POST"
-    json_req['url'] = json.dumps(url)
-    json_req['data'] = json.dumps(json.dumps(request))
-    json_req['headers'] = json.dumps(headers)
 
     r = cached_requests.post(url=url, data=json.dumps(request), headers=headers)
     #r = requests.post(url, data=json.dumps(request), headers=headers)

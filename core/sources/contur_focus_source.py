@@ -16,17 +16,12 @@ def import_data(credentials_json, individual_json, parsers_data):
     # credentials = json.loads(credentials_json)
     req_key = "?key=" + "3208d29d15c507395db770d0e65f3711e40374df"
     search_by = "&innfl="
-    inn = "773173084809"
+    inn = parsers_data['ScoristaParserModule']['INN']
     url = get_module_url()
 
     request = url + req_key + search_by + inn + '&JSON'
-    json_req = {}
-    json_req['type_of_request'] = "GET"
-    json_req['url'] = json.dumps(request)
-    json_req['data'] = json.dumps('')
-    json_req['headers'] = json.dumps('')
 
-    r = cached_requests.get(request)
+    r = requests.get(request)
     scorista_res = json.loads(r.text)
     return json.dumps(scorista_res, indent=4, ensure_ascii=True)
 

@@ -1,7 +1,12 @@
 import xlrd
 import json
-from lib.global_settings import *
-from lib.api import ApiRequestor
+import sys
+
+sys.path.append('../')
+sys.path.append('../../')
+
+from core.lib.global_settings import *
+from core.lib.api import ApiRequestor
 
 
 # Номера столбцов

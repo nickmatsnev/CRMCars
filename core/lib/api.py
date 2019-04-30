@@ -29,7 +29,7 @@ class ApiRequestor:
             else:
                 login_data = {'username': 'justkru', 'password': '9mkdsb3f', 'csrfmiddlewaretoken': csrftoken}
 
-            r1 = client.post(url_login, data=login_data)
+            r1 = client.post(url_login, data=login_data, allow_redirects=False)
 
             self.__session = client.cookies['sessionid']
             self.__csrfToken = csrftoken
