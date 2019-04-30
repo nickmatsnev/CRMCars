@@ -25,9 +25,6 @@ try:
                                         email='admin@willz-dev.ru',
                                         password=constants.ADMIN_PASSWORD)
         user.save()
-    print('uploading clients')
-    excel_to_request.do_import(5)
-
     print('uploading modules')
     ApiRequestor().do_module_upload_from_file("source", "../sources/contur_focus_source.py")
     ApiRequestor().do_module_upload_from_file("source", "../sources/infosfera_source.py")
@@ -41,10 +38,12 @@ try:
 
     ApiRequestor().do_module_upload_from_file("scoring", "../scoring/all_scoring.py")
 
-    patch_data = json.dumps(
-        {'primary_scoring': 9, 'other_scoring': 9})
+    json_data = json.dumps({"name": "Willz", "primary_scoring": 9, "other_scoring": 9})
+    ApiRequestor().post_product(json_data)
+    print('uploading clients')
+    excel_to_request.do_import(5)
 
-    response = ApiRequestor().patch_product(1, patch_data)
+
 
 
 
