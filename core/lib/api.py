@@ -4,8 +4,10 @@ import django
 import requests
 import socket
 
-from core.lib.constants import *
+from core.lib import constants
 from core.lib.global_settings import API_ROOT_URL
+from core.lib.constants import *
+
 
 
 class ApiRequestor:
@@ -27,7 +29,8 @@ class ApiRequestor:
             if comp_name=='FIREBLADE-NEW' or comp_name == 'FIREBLADE':
                 login_data = {'username': 'admin', 'password': 'admin', 'csrfmiddlewaretoken': csrftoken}
             else:
-                login_data = {'username': 'justkru', 'password': '9mkdsb3f', 'csrfmiddlewaretoken': csrftoken}
+                login_data = {'username': constants.ADMIN_USERNAME, 'password': constants.ADMIN_PASSWORD,
+                              'csrfmiddlewaretoken': csrftoken}
 
             r1 = client.post(url_login, data=login_data, allow_redirects=False)
 
@@ -62,6 +65,14 @@ class ApiRequestor:
         print("API_requestor:{0}".format(relative_url))
         file = request.FILES['file']
         files = {'file': file.open()}
+        response = requests.post(API_ROOT_URL + relative_url, files=files, cookies=self.__prepare_auth_cookies(),
+                                 headers=self.__prepare_general_headers())
+        print("API_result:{0}".format(response.status_code))
+        return response
+
+    def __post_file_from_path(self, relative_url, path):
+        print("API_requestor:{0}".format(relative_url))
+        files = {'file': open(path, "rb")}
         response = requests.post(API_ROOT_URL + relative_url, files=files, cookies=self.__prepare_auth_cookies(),
                                  headers=self.__prepare_general_headers())
         print("API_result:{0}".format(response.status_code))
@@ -146,6 +157,12 @@ class ApiRequestor:
     def do_module_upload(self, module_name, request):
         path = URL_MAIN_MODULE + f'{module_name}' + URL_MODULE_METHOD_UPLOAD
         return self.__post_file(path, request)
+
+    def do_module_upload_from_file(self, module_name, file_path):
+        path = URL_MAIN_MODULE + f'{module_name}' + URL_MODULE_METHOD_UPLOAD
+        return self.__post_file_from_path(path, file_path)
+
+
 
     def get_module_parser_parameters(self):
         path = URL_MAIN_MODULE + URL_MODULE_PARSER + URL_MODULE_METHOD_VIEW_PARAMETERS

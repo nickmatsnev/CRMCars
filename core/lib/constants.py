@@ -247,3 +247,6 @@ URL_LINK_CLIENTS_LIST = NAME_CONCRETE + "/" + NAME_CLIENTS_LIST + NAME_HTML
 URL_LINK_USERS_LIST = NAME_CONCRETE + "/" + NAME_USERS_LIST + NAME_HTML
 
 MODULE_DICTIONARY = {"source": "Источников", "parser": "Парсеров", "scoring": "Скоринга"}
+
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "Russia+2019!"
