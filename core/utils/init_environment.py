@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import json
 
 sys.path.append('../../')
 sys.path.append('../../web')
@@ -40,6 +41,10 @@ try:
 
     ApiRequestor().do_module_upload_from_file("scoring", "../scoring/all_scoring.py")
 
+    patch_data = json.dumps(
+        {'primary_scoring': 9, 'other_scoring': 9})
+
+    response = ApiRequestor().patch_product(1, patch_data)
 
 
 
