@@ -30,7 +30,7 @@ def get_values(source_json):
     dictall = ast.literal_eval(source_json)
     file_xml = dictall['result']
     soup = BeautifulSoup(file_xml, 'lxml')
-    inn = ""
+    inn = "NA"
     try:
         for aa in soup.findAll('fieldtitle'):
             if aa.text == "ИНН":
@@ -61,6 +61,7 @@ def get_values(source_json):
         birth_date = soup.find('birthdt').text
     except:
         birth_date = "NA"
+        
     birth_place = "NA"
     try:
         for aa in soup.findAll('fieldtitle'):
@@ -72,6 +73,7 @@ def get_values(source_json):
     passport_origin = True if len(passport_sc) == 10 else False
 
     jobs = re.findall("(?s)Карьера(.*?)/FieldValue", file_xml)
+    
     try:
         jobs = jobs[0].split("Место работы")
     except:
@@ -86,7 +88,7 @@ def get_values(source_json):
         currentDebts = dictall['data']['fssp']['sum']['result']
     except:
         currentDebts = "NA"
-
+    
     # Ещё одни нашедшиеся данные - просрочки по кредитам! Тут отдельно считаются по уже закрытым и ещё активным
     try:
         latePaymentInClosedCredits = dictall['data']['creditRating']['rating']['count_due30_60_in_closed_accs']
@@ -130,11 +132,7 @@ def get_values(source_json):
                     "Челябинская", "Дагестан", "Ингушетия", "Алания", "Чеченская", "Чечня"]
 
     riskyRegions2 = ["Дагестан", "Ингушетия", "Алания", "Чеченская", "Чечня"]
-    try:
-        smth = re.findall("(?s)РФ_ССП_ФЛ(.*?)<td class=\"legend\">Паспорт</td>", file_xml)
-        smth = smth[0].lower()
-    except:
-        print("ERROR")
+
 
     nRisky1 = 0
     try:
