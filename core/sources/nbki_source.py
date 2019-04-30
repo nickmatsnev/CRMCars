@@ -51,7 +51,7 @@ def import_data(credentials_json, individual_json, parsers_data):
                datetime.datetime.strptime(individual_json["passport"]["issued_at"], "%Y-%m-%d").strftime("%d.%m.%Y")
                )
 
-    r = requests.post(url=url, data=request)
+    r = cached_requests.post(url=url, data=request.encode('utf-8'))
     sphere_res = {'result': r.text}
     #sphere_res = {'result': r.text}
     return sphere_res

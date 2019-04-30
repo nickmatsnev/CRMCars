@@ -21,7 +21,7 @@ def import_data(credentials_json, individual_json, parsers_data):
 
     request = url + req_key + search_by + inn + '&JSON'
 
-    r = requests.get(request)
+    r = cached_requests.get(request)
     scorista_res = json.loads(r.text)
     return json.dumps(scorista_res, indent=4, ensure_ascii=True)
 

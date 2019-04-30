@@ -9,15 +9,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-django.conf.ENVIRONMENT_VARIABLE = "DJANGO_CACHE_SETTINGS_MODULE"
-
-os.environ.setdefault("DJANGO_CACHE_SETTINGS_MODULE", "portal.settings")
-
-# This application object is used by any WSGI server configured to use this
-# file. This includes Django's development server, if the WSGI_APPLICATION
-# setting points here.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.portal.settings')
+django.setup()
 
 from core.lib.global_settings import *
 from portal.models import CacheData
@@ -58,7 +51,8 @@ def __set_new_record(type_of_request,crc, url, data='', headers=''):
 
 
 def __get_queryset(type_of_request, url, data='', headers=''):
-    crc = __calculate_crc(url + data + json.dumps(headers))
+    crc = __calculate_crc(url + str(data) + json.dumps(headers))
+
     queryset = CacheData.objects.filter(type_of_request=type_of_request, url=url, data=data,
                                         headers=headers, crc=crc, is_active=True)
     if queryset.count() != 0:

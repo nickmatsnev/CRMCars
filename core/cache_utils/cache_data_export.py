@@ -6,16 +6,8 @@ from django.core import serializers
 import django.conf
 
 
-django.conf.ENVIRONMENT_VARIABLE = "DJANGO_SECOND_SETTINGS_MODULE"
-
-os.environ.setdefault("DJANGO_SECOND_SETTINGS_MODULE", "portal.settings")
-
-# This application object is used by any WSGI server configured to use this
-# file. This includes Django's development server, if the WSGI_APPLICATION
-# setting points here.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portal.settings')
+django.setup()
 
 from portal.models import CacheData
 from portal.serializers.module_serializer import CacheDataValidator
