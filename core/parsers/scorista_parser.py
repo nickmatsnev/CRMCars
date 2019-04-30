@@ -130,9 +130,9 @@ def get_values(source_json):
     except:
         birth_date = "NA"
 
-    terrorism = False if dictall['data']['rosFinMonitoring']['result'] == 0 else True
-    fms_invalid_passport = False if dictall['data']['fms']['result'] == 0 else True
-    invalid_inn = False if dictall['data']['inn']['result'] == 0 else True
+    terrorism = False if dictall['data']['rosFinMonitoring']['result'] != 0 else True
+    fms_invalid_passport = False if dictall['data']['fms']['result'] != 0 else True
+    invalid_inn = False if dictall['data']['inn']['result'] != 0 else True
 
     try:
         license_origin = True if len(license_sc) == 10 else False
@@ -350,9 +350,9 @@ def stop_factors(individual_json, source_json):
     if nDCurrent.size > 0:
         errors.append({'decription': 'В настоящий момент есть просрочка по кредиту по данным Скористы'})
 
-    if not scorista_res.loc['BankStopList'].value:
+    if scorista_res.loc['BankStopList'].value:
         errors.append({'decription': 'Клиент присутствует в стоп-листах банков по данным Скористы'})
-    if not scorista_res.loc['DrunkDrive'].value:
+    if scorista_res.loc['DrunkDrive'].value:
         errors.append({'decription': 'Судопроизводства за нетрезвое вождение по данным Скористы'})
 
     if scorista_res.loc['TotalDebt'].value > 150000:
