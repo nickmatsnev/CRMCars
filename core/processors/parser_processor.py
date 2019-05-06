@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import sys
+import traceback
 
 from lib.constants import *
 
@@ -19,6 +20,9 @@ class ParserProcessor(BasicProcess):
                                               {
                                                   constants.INDIVIDUAL_PARSER_PROCESS_MESSAGE: self.__process_checks,
                                               })
+
+    def get_name(self):
+        return constants.PARSER_PROCESSOR_NAME
 
     def __process_checks(self, body):
         input_message = json.loads(body)
@@ -73,7 +77,8 @@ class ParserProcessor(BasicProcess):
                 payload = PARSER_PROCESSOR_UNKNOWN
 
             self._publish_message(constants.INDIVIDUAL_PARSER_ERROR_MESSAGE,
-                                  json.dumps({"individual_id": individual_id, "payload": payload + str(e)}))
+                                  json.dumps(
+                                      {"individual_id": individual_id, "payload": payload + traceback.format_exc()}))
 
 
 

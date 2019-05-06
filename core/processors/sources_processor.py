@@ -2,6 +2,7 @@
 import ast
 import json
 import sys
+import traceback
 
 from lib.constants import *
 from lib import parser_values_converter
@@ -22,6 +23,9 @@ class SourcesProcessor(BasicProcess):
                                                    {
                                                        constants.INDIVIDUAL_SOURCE_PROCESS_MESSAGE: self.__process_sources
                                  })
+
+        def get_name(self):
+            return SOURCE_PROCESSOR_NAME
 
         def __process_sources(self, body):
             input_message = json.loads(body)
@@ -55,9 +59,9 @@ class SourcesProcessor(BasicProcess):
 
             except Exception as e:
                 if no_module_name==True:
-                    payload = SOURCE_PROCESSOR_ERR_MODULE_NAME + str(e)
+                    payload = SOURCE_PROCESSOR_ERR_MODULE_NAME + traceback.format_exc()
                 else:
-                    payload = SOURCE_PROCESSOR_ERR_STRUCTURE + str(e)
+                    payload = SOURCE_PROCESSOR_ERR_STRUCTURE + traceback.format_exc()
 
                 self._publish_message(constants.INDIVIDUAL_SOURCE_ERROR_MESSAGE,
                                       json.dumps({"individual_id": individual_id,"payload": payload}))

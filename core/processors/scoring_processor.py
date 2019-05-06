@@ -28,6 +28,9 @@ class ScoringProcessor(BasicProcess):
                                                    constants.INDIVIDUAL_PARSER_ERROR_MESSAGE: self.__error_parser,
                                                })
 
+    def get_name(self):
+        return constants.SCORING_PROCESSOR_NAME
+
     def __process_scoring(self, body):
         individual_data, individual_id = self.get_individual_data_for_message(body)
         source_deps = parser_helper.get_sources_deps(self._apiRequestor, individual_data['scoring_module_id'])

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-
-from datetime import datetime
+import os
+import sys
+from datetime import datetime, time
 import pika
 
 from core.lib import constants
@@ -8,6 +9,10 @@ from core.lib.global_settings import BUS_HOST
 from lib.api import ApiRequestor
 
 from django.core.files import File
+
+from contextlib import redirect_stdout
+
+from lib.stdout_redirector import StdoutRedirector
 
 
 class BasicProcess:
@@ -28,7 +33,15 @@ class BasicProcess:
 
         self.__callbacks = callbacks
 
+        self.redirect_output()
+
+        print(self.get_name())
         print("connected")
+
+    def redirect_output(self):
+        name = self.get_name()
+        sys.stdout = StdoutRedirector(name)
+
 
     def callback(self, ch, method, properties, body):
         print("-----callback------")
@@ -63,5 +76,3 @@ class BasicProcess:
     @property
     def channel(self):
         return self.__channel
-
-

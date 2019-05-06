@@ -1,5 +1,8 @@
 $(document).ready(function () {
-
+    $(".shorten_payload").shorten({
+        moreText: 'Раскрыть',
+        lessText: 'Скрыть'
+    });
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
     function csrfSafeMethod(method) {

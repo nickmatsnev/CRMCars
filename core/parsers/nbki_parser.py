@@ -32,16 +32,17 @@ def get_values(source_json):
         birth_date = "NA"
 
     try:
-        totalOverDue = soup.find('totaloverdue').text
+        totalOverDue = int(soup.find('totaloverdue').text)
     except:
         totalOverDue = 0
+
     try:
-        delay = soup.find('delay').text
+        delay = int(soup.find('delay').text)
     except:
         delay = 0
 
     try:
-        maxDelay = soup.find('maxdeleay').text
+        maxDelay = int(soup.find('maxdeleay').text)
     except:
         maxDelay = 0
     try:
@@ -49,31 +50,31 @@ def get_values(source_json):
     except:
         closednegative = "NA"
     try:
-        countdue30_60inopenedaccs = soup.find('countdue30_60inopenedaccs').text
+        countdue30_60inopenedaccs = int(soup.find('countdue30_60inopenedaccs').text)
     except:
         countdue30_60inopenedaccs = 0
     try:
-        countdue30_60inclosedaccs = soup.find('countdue30_60inclosedaccs').text
+        countdue30_60inclosedaccs = int(soup.find('countdue30_60inclosedaccs').text)
     except:
         countdue30_60inclosedaccs = 0
 
     try:
-        countdue60_90inopenedaccs = soup.find('countdue60_90inopenedaccs').text
+        countdue60_90inopenedaccs = int(soup.find('countdue60_90inopenedaccs').text)
     except:
         countdue60_90inopenedaccs = 0
 
     try:
-        countdue60_90inclosedaccs = soup.find('countdue60_90inclosedaccs').text
+        countdue60_90inclosedaccs = int(soup.find('countdue60_90inclosedaccs').text)
     except:
         countdue60_90inclosedaccs = 0
 
     try:
-        countdue90plusinopenedaccs = soup.find('countdue90plusinopenedaccs').text
+        countdue90plusinopenedaccs = int(soup.find('countdue90plusinopenedaccs').text)
     except:
         countdue90plusinopenedaccs = 0
 
     try:
-        countdue90plusinclosedaccs = soup.find('closednegative').text
+        countdue90plusinclosedaccs = int(soup.find('countdue90plusinclosedaccs').text)
     except:
         countdue90plusinclosedaccs = 0
 
@@ -114,25 +115,25 @@ def get_values(source_json):
 
 
 def validate(individual_json, source_json):
-    scorista_res = pandas.DataFrame(get_values(source_json)).set_index('name')
+    # scorista_res = pandas.DataFrame(get_values(source_json)).set_index('name')
     errors = []
 
-    if scorista_res.loc['FIO'].value.lower().find(individual_json['last_name'].lower()) < 0:
-        errors.append({'decription': 'Фамилия не совпадает с источником (НБКИ)'})
-    if scorista_res.loc['FIO'].value.lower().find(individual_json['first_name'].lower()) < 0:
-        errors.append({'decription': 'Имя не совпадает с источником (НБКИ)'})
-    if scorista_res.loc['FIO'].value.lower().find(individual_json['middle_name'].lower()) < 0:
-        errors.append({'decription': 'Отчество не совпадает с источником (НБКИ)'})
-
-    if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
-        errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (НБКИ)'})
-    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%Y-%m-%d').date()
-
-    if brth > datetime.now().date():
-        errors.append({'decription': 'Некорректная дата рождения'})
-
-    if individual_json['birthday'] != scorista_res.loc['BirthDate'].value:
-        errors.append({'decription': 'Не совпадает дата рождения с источником (НБКИ)'})
+    # if scorista_res.loc['FIO'].value.lower().find(individual_json['last_name'].lower()) < 0:
+    #     errors.append({'decription': 'Фамилия не совпадает с источником (НБКИ)'})
+    # if scorista_res.loc['FIO'].value.lower().find(individual_json['first_name'].lower()) < 0:
+    #     errors.append({'decription': 'Имя не совпадает с источником (НБКИ)'})
+    # if scorista_res.loc['FIO'].value.lower().find(individual_json['middle_name'].lower()) < 0:
+    #     errors.append({'decription': 'Отчество не совпадает с источником (НБКИ)'})
+    #
+    # if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
+    #     errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (НБКИ)'})
+    # brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%d.%m.%Y').date()
+    #
+    # if brth > datetime.now().date():
+    #     errors.append({'decription': 'Некорректная дата рождения'})
+    #
+    # if individual_json['birthday'] != scorista_res.loc['BirthDate'].value:
+    #     errors.append({'decription': 'Не совпадает дата рождения с источником (НБКИ)'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -141,57 +142,57 @@ def validate(individual_json, source_json):
 
 
 def stop_factors(individual_json, source_json):
-    scorista_res = pandas.DataFrame(get_values(source_json)).set_index('name')
+    nbki_res = pandas.DataFrame(get_values(source_json)).set_index('name')
     errors = []
-    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%Y-%m-%d').date()
+    brth = datetime.strptime(nbki_res.loc['BirthDate'].value, '%d.%m.%Y').date()
 
     if brth + relativedelta(years=+18) > datetime.now().date():
         errors.append({'decription': 'Заявителю нет 18 лет'})
 
-    if scorista_res.loc['totalOverDue'].value > 300000:
+    if int(nbki_res.loc['totalOverDue'].value) > 300000:
         errors.append(
             {'decription': 'Суммарная просроченная задолженность по данным НБКИ по всем активным счетам более 300000 рублей'})
 
-    if scorista_res.loc['delay'].value > 100000:
+    if int(nbki_res.loc['delay'].value) > 100000:
         errors.append({
                           'decription': 'Максимальная текущая просрочка по данным НБКИ по активным кредитам, по справочнику PMTPAT, более 100000 рублей'})
 
-    if scorista_res.loc['maxDelay'].value > 300000:
+    if nbki_res.loc['maxDelay'].value > 300000:
         errors.append({
                           'decription': 'Максимальная историческая просрочка по данным НБКИ по активным кредитам, по справочнику PMTPAT более 300000 рублей'})
 
-    if scorista_res.loc['closednegative'].value == "Y":
+    if nbki_res.loc['closednegative'].value == "Y":
         errors.append({'decription': 'Наличие негатива в закрытых кредитах по данным НБКИ'})
 
-    if scorista_res.loc['countdue30_60inopenedaccs'].value > 6:
+    if nbki_res.loc['countdue30_60inopenedaccs'].value > 6:
         errors.append(
             {'decription': 'Количество просрочек 30 - 59 дней за последние 12 месяцев по открытым счетам более 6 по данным НБКИ'})
 
-    if scorista_res.loc['countdue30_60inclosedaccs'].value > 6:
+    if nbki_res.loc['countdue30_60inclosedaccs'].value > 6:
         errors.append(
             {'decription': 'Количество просрочек 30 - 59 дней за последние 12 месяцев по закрытым счетам более 6 по данным НБКИ'})
 
-    if scorista_res.loc['countdue60_90inopenedaccs'].value > 6:
+    if nbki_res.loc['countdue60_90inopenedaccs'].value > 6:
         errors.append(
             {'decription': 'Количество просрочек 60 - 89 дней за последние 12 месяцев по открытым счетам более 6 по данным НБКИ'})
 
-    if scorista_res.loc['countdue60_90inclosedaccs'].value > 6:
+    if nbki_res.loc['countdue60_90inclosedaccs'].value > 6:
         errors.append(
             {'decription': 'Количество просрочек 60 - 89 дней за последние 12 месяцев по закрытым счетам более 6 по данным НБКИ'})
 
-    if scorista_res.loc['countdue90plusinopenedaccs'].value > 12:
+    if nbki_res.loc['countdue90plusinopenedaccs'].value > 12:
         errors.append({'decription': 'Количество просрочек 90+ дней за все время по открытым счетам более 12 по данным НБКИ'})
 
-    if scorista_res.loc['countdue90plusinclosedaccs'].value > 12:
+    if nbki_res.loc['countdue90plusinclosedaccs'].value > 12:
         errors.append({'decription': 'Количество просрочек 90+ дней за все время по закрытым счетам более 12 по данным НБКИ'})
 
-    if scorista_res.loc['hasnewer'].value == "Y":
+    if nbki_res.loc['hasnewer'].value == "Y":
         errors.append({'decription': 'Есть более свежий паспорт по данным НБКИ'})
 
-    if scorista_res.loc['invalid'].value == "Y":
+    if nbki_res.loc['invalid'].value == "Y":
         errors.append({'decription': 'Признак недействительности паспорта по данным НБКИ'})
 
-    if scorista_res.loc['wanted'].value == "Y":
+    if nbki_res.loc['wanted'].value == "Y":
         errors.append({'decription': 'Розыск по данным НБКИ'})
 
     if len(errors) == 0:
@@ -202,7 +203,7 @@ def stop_factors(individual_json, source_json):
 
 def get_available_params():
     return [{'name': 'Passport', 'description': 'Серия и номер паспорта', 'type': 'int'},
-            {'name': 'PassportDate', 'description': '', 'type': 'int'},
+            {'name': 'PassportDate', 'description': 'Дата выдачи', 'type': 'int'},
             {'name': 'FIO', 'description': 'ФИО клиента', 'type': 'string'},
             {'name': 'BirthDate', 'description': 'Дата рождения', 'type': 'date'},
             {'name': 'totalOverDue', 'description': 'Суммарная просроченная задолженность по всем активным счетам',

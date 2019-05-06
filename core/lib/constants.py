@@ -1,4 +1,6 @@
 # Exchanges
+from os.path import expanduser
+
 MAIN_EXCHANGE_NAME = "main"
 
 SOURCES_PROCESSOR_QUEUE = "sources_processor_queue"
@@ -29,7 +31,10 @@ INDIVIDUAL_SOURCE_PROCESS_MESSAGE = "individual_process_source"
 INDIVIDUAL_SOURCE_PROCESSED_MESSAGE = "individual_source_processed"
 INDIVIDUAL_SOURCE_ERROR_MESSAGE = "individual_source_error"
 
-CLIENT_PROCESSOR_NAME = "New Client Processor"
+CLIENT_PROCESSOR_NAME = "clientprocessor"
+SCORING_PROCESSOR_NAME = "scoringprocessor"
+PARSER_PROCESSOR_NAME = "parserprocessor"
+SOURCE_PROCESSOR_NAME = "sourcesprocessor"
 
 PATH_TO_SCORING_MODULES = "../../core/scoring/"
 PATH_TO_PARSER_MODULES = "../../core/parsers/"
@@ -250,3 +255,7 @@ MODULE_DICTIONARY = {"source": "Источников", "parser": "Парсеро
 
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "Russia+2019!"
+
+home = expanduser("~")
+
+LOG_FILE_FORMAT_STRING = home + "/.log/{0}.log"

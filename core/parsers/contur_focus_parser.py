@@ -35,6 +35,7 @@ def get_values(source_json):
     inn = json1_data[0]['inn']
     ogrn = json1_data[0]['ogrn']
 
+    companyNameList = []
     innList = []
     adrCityList = []
     adrStreetList = []
@@ -44,31 +45,36 @@ def get_values(source_json):
         try:
             innList.append(jjd['inn'])
         except:
-            innList.append(“NA”)
+            innList.append('NA')
 
         try:
-            adrCity =jjd['UL']['legalAddress']['parsedAddressRF']['city']['topoValue']
+            companyName = jjd['UL']['legalName']['short']
+            companyNameList.append(companyName)
+        except:
+            companyNameList.append('NA')
+        try:
+            adrCity = jjd['UL']['legalAddress']['parsedAddressRF']['regionName']['topoValue']
             adrCityList.append(adrCity)
         except:
-            adrCityList.append(“NA”)
+            adrCityList.append('NA')
 
         try:
             adrStreet = jjd['UL']['legalAddress']['parsedAddressRF']['street']['topoValue']
             adrStreetList.append(adrStreet)
         except:
-            adrStreetList.append(“NA”)
+            adrStreetList.append('NA')
 
         try:
             adrHouse = jjd['UL']['legalAddress']['parsedAddressRF']['house']['topoValue']
             adrHouseList.append(adrHouse)
         except:
-            adrHouseList.append(“NA”)
+            adrHouseList.append('NA')
 
         try:
             fioHead = jjd['UL']['heads'][0]['fio']
             fioHeadList.append(fioHead)
         except:
-            fioHeadList.append(“NA”)
+            fioHeadList.append('NA')
 
 
     innNumber = len(innList)
@@ -103,6 +109,7 @@ def get_values(source_json):
             {'name': 'adrStreet', 'value': adrStreet},
             {'name': 'adrHouse', 'value': adrHouse},
             {'name': 'innList', 'value': innList},
+            {'name': 'companyNameList', 'value': companyNameList},
             {'name': 'adrCityList', 'value': adrCityList},
             {'name': 'adrStreetList', 'value': adrStreetList},
             {'name': 'adrHouseList', 'value': adrHouseList},
@@ -156,6 +163,7 @@ def get_available_params():
             {'name': 'adrStreet', 'description': 'Адрес компании (улица)', 'type': 'string'},
             {'name': 'adrHouse', 'description': 'Адрес компании (дом)', 'type': 'string'},
             {'name': 'innList', 'description': 'Лист ИНН аффилированных лиц', 'type': "vector, int"},
+            {'name': 'companyNameList', 'description': 'Имя компании', 'type': 'vector,string'},
             {'name': 'adrCityList', 'description': 'Лист адресов (город) аффилированных лиц', 'type': "vector, string"},
             {'name': 'adrStreetList', 'description': 'Лист адресов (улица) аффилированных лиц', 'type': "vector, string"},
             {'name': 'adrHouseList', 'description': 'Лист адресов (номер дома) аффилированных лиц', 'type': "vector, string"},

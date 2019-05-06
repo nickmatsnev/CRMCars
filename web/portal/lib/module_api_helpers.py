@@ -261,7 +261,8 @@ def get_info(individual, generation_number,module_type,module_name,field_main,fi
     list_of_names = get_list_of_names(module_type)
 
     if module_name in list_of_names:
-        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number, name=module_name)
+        queryset = ModuleData.objects.filter(individual=individual, generation=generation_number,
+                                             name=module_name).order_by('create_time')
         if queryset.count() == 0:
             return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -13,13 +13,12 @@ def get_module_url():
 
 # импорт сырых данных, физ лицо тут нужно будет, чтобы учитывать параметры конкретного физика
 def import_data(credentials_json, individual_json, parsers_data):
-    username = "ev@willz.ru"
-    password = "Qw123456"
+    username = "BU18873"
+    password = "PxU106t8"
 
     url = get_module_url()
 
-    request = '''
-    <credit_rating>
+    request = '''<?xml version="1.0" encoding="windows-1251" ?><credit_rating>
         <auth>
             <login>{0}</login>
             <password>{1}</password>
@@ -51,7 +50,7 @@ def import_data(credentials_json, individual_json, parsers_data):
                datetime.datetime.strptime(individual_json["passport"]["issued_at"], "%Y-%m-%d").strftime("%d.%m.%Y")
                )
 
-    r = cached_requests.post(url=url, data=request.encode('utf-8'))
+    r = requests.post(url=url, data=request.encode('utf-8'))
     sphere_res = {'result': r.text}
     #sphere_res = {'result': r.text}
     return sphere_res

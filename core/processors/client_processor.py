@@ -21,7 +21,7 @@ class ClientProcessor(BasicProcess):
                                               })
 
     def get_name(self):
-        return CLIENT_PROCESSOR_NAME
+        return constants.CLIENT_PROCESSOR_NAME
 
     def __process_raw_client(self, body):
 
