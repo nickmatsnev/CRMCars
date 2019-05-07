@@ -7,7 +7,7 @@ case $1 in
        cd /home/django-user/django-projects/willz-dev/core/processors/
 	
        # Launch your program as a detached process
-       /home/django-user/django-projects/willz-dev/menv/bin/python3 /home/django-user/django-projects/willz-dev/core/processors/sources_processor.py &
+       /home/django-user/django-projects/menv/bin/python3 /home/django-user/django-projects/willz-dev/core/processors/sources_processor.py &
        # Get its PID and store it
        echo $! > ${PIDFILE} 
    ;;
