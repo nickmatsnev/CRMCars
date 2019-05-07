@@ -26,14 +26,14 @@ try:
                                         password=constants.ADMIN_PASSWORD)
         user.save()
     print('uploading modules')
+    ApiRequestor().do_module_upload_from_file("source", "../sources/scorista_source.py")
     ApiRequestor().do_module_upload_from_file("source", "../sources/contur_focus_source.py")
     ApiRequestor().do_module_upload_from_file("source", "../sources/infosfera_source.py")
-    ApiRequestor().do_module_upload_from_file("source", "../sources/scorista_source.py")
     ApiRequestor().do_module_upload_from_file("source", "../sources/nbki_source.py")
 
+    ApiRequestor().do_module_upload_from_file("parser", "../parsers/scorista_parser.py")
     ApiRequestor().do_module_upload_from_file("parser", "../parsers/contur_focus_parser.py")
     ApiRequestor().do_module_upload_from_file("parser", "../parsers/infosfera_parser.py")
-    ApiRequestor().do_module_upload_from_file("parser", "../parsers/scorista_parser.py")
     ApiRequestor().do_module_upload_from_file("parser", "../parsers/nbki_parser.py")
 
     ApiRequestor().do_module_upload_from_file("scoring", "../scoring/all_scoring.py")
