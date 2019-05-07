@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from django.contrib.auth import login, logout
 from portal.controllers.forms import *
@@ -25,7 +26,7 @@ def sign_in(request):
     return render(request, 'concrete/forms/signin.html', {'form': form})
 
 
-
+@login_required(login_url="signin")
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
