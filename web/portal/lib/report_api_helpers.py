@@ -50,13 +50,11 @@ def _get_all_columns_for_header(advanced=False):
     json_header.append(_get_column_for_header(5, 'ФИО основного клиента', True))
     json_header.append(_get_column_for_header(6, 'Статус обработки', True))
     json_header.append(_get_column_for_header(7, 'Результат проверки', True))
-
+    json_header.append(_get_column_for_header(8, 'Название продукта', True))
     if advanced==True:
-        json_header.append(_get_column_for_header(8, 'Найдены StopFactor (список)', True))
-        json_header.append(_get_column_for_header(9, 'Найдены MiddleFactor (список)', True))
-        json_header.append(_get_column_for_header(10, 'Название продукта', True))
-    else:
-        json_header.append(_get_column_for_header(8, 'Название продукта', True))
+        json_header.append(_get_column_for_header(9, 'Найдены Ошибки валидации (список)', True))
+        json_header.append(_get_column_for_header(10, 'Найдены StopFactor (список)', True))
+        json_header.append(_get_column_for_header(11, 'Найдены MiddleFactor (список)', True))
 
     return json_header
 
@@ -92,27 +90,45 @@ def get_standard_report(request,advanced=False):
             json_item["processing_status"] = report_info["processing_status"]
             _check_text_width(json_response['headers'][6], json_item["processing_status"])
             json_item["check_status"] = report_info["check_status"]
+            _check_text_width(json_response['headers'][7], json_item["check_status"])
             json_item["product_name"] = client["product"]
+            _check_text_width(json_response['headers'][8], json_item["product_name"])
 
             if advanced==True:
                 stopf = ""
                 validate = ""
-                if report_info["check_status"] == "Одобрено" or report_info["check_status"] == "Отказано":
-                    validate = ApiRequestor(request).get_individual_cur_data_parser_validate_errors(
-                        client['primary_individual']['id'])
+                values = ""
+                if report_info["processing_status"] == "Одобрено" or report_info["processing_status"] == "Отказано" or \
+                        report_info["processing_status"] == "Ожидает согласования":
+                    validations = ApiRequestor(request).get_individual_cur_data_parser_validate_errors(
+                        individ['id'])
                     stopfactors = ApiRequestor(request).get_individual_cur_data_parser_stopfactor_errors(
-                        client['primary_individual']['id'])
-                    for module in stopfactors:
-                        for factor in stopfactors[module]:
-                            stopf += "Найден стопфактор: " + factor['decription'] + "\n"
+                        individ['id'])
+                    parser_values = ApiRequestor(request).get_individual_cur_data_parser_values(individ['id'])
+                    for module in parser_values:
+                        if module in stopfactors:
+                            for factor in stopfactors[module]:
+                                stopf += "Найден стопфактор: " + factor['decription'] + "\n"
+                        if module in validations:
+                            for validation in validations[module]:
+                                validate += "Найдена проблема в документах:" + validation['decription'] + "\n"
+                        for value in parser_values[module]:
+                            values += "{0}:{1}:{2}\n".format(module, value['name'], value['value'])
+
+                    if values == {}:
+                        values = "Не найдено"
                     if validate == {}:
                         validate = "Не найдено"
                     if stopf == {}:
                         stopf = "Не найдено"
-                json_item['stop_factors'] = validate
-                _check_text_width(json_response['headers'][8], json_item["stop_factors"])
-                json_item['middle_factors'] = stopf
-                _check_text_width(json_response['headers'][9], json_item["middle_factors"])
+                json_item['validate'] = validate
+                _check_text_width(json_response['headers'][9], json_item["validate"])
+                json_item['stop_factors'] = stopf
+                _check_text_width(json_response['headers'][10], json_item["stop_factors"])
+                json_item['middle_factors'] = values
+                _check_text_width(json_response['headers'][11], json_item["middle_factors"])
+
+
 
             report_data.append(json_item)
 
