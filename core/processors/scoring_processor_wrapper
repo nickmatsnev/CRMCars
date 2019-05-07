@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PIDFILE=/var/run/scoring_processor.pid
+PIDFILE=/var/run/processors/scoring_processor.pid
 
 case $1 in
    start)

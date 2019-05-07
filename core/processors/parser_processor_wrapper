@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PIDFILE=/var/run/parser_processor.pid
+PIDFILE=/var/run/processors/parser_processor.pid
 
 case $1 in
    start)
