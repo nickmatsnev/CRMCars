@@ -4,12 +4,12 @@ import json
 import sys
 import traceback
 
-from lib.constants import *
-from lib import parser_values_converter
 
 sys.path.append('../')
 
 sys.path.append('../../')
+from lib.constants import *
+from lib import parser_values_converter
 
 from lib.process import *
 from lib.modules import SourceModule, SOURCE_PROCESSOR_USERNAME

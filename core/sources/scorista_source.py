@@ -4,7 +4,7 @@ import json
 import sys
 
 sys.path.append('../../')
-from core.lib import cached_requests
+#from core.lib import cached_requests
 
 
 # Получение урла модуля
@@ -30,7 +30,7 @@ def import_data(credentials_json, individual_json, parsers_data):
     request = {"requestID": "agrid5c41aad42dbed"}
 
 
-    r = cached_requests.post(url=url, data=json.dumps(request), headers=headers)
+    r = requests.post(url=url, data=json.dumps(request), headers=headers)
     #r = requests.post(url, data=json.dumps(request), headers=headers)
     scorista_res = json.loads(r.text)
     return json.dumps(scorista_res, indent=4, ensure_ascii=True)

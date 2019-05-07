@@ -103,9 +103,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT= '/home/django-user/django-projects/willz-dev/static_collect/static'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/Users/justkru/Documents/GitHub/willz-dev/web/static',
 ]
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))

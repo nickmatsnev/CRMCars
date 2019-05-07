@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PIDFILE=/var/run/sources_processor.pid
+
+case $1 in
+   start)
+       cd /home/django-user/django-projects/willz-dev/core/processors/
+	
+       # Launch your program as a detached process
+       /home/django-user/django-projects/willz-dev/menv/bin/python3 /home/django-user/django-projects/willz-dev/core/processors/sources_processor.py &
+       # Get its PID and store it
+       echo $! > ${PIDFILE} 
+   ;;
+   stop)
+      kill `cat ${PIDFILE}`
+      # Now that it's killed, don't forget to remove the PID file
+      rm ${PIDFILE}
+   ;;
+   *)
+      echo "usage: client_processor_wrapper {start|stop}" ;;
+esac
+exit 0

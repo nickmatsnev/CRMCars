@@ -21,7 +21,7 @@ class ApiRequestor:
             self.__csrfToken = request.COOKIES.get('csrftoken')
         else:
             client = requests.session()
-            url_login = "http://127.0.0.1:8002/signin/"
+            url_login = "http://willz-dev.korishchenko.ru/signin/"
             client.get(url_login)
             csrftoken = client.cookies['csrftoken']
 
@@ -73,9 +73,11 @@ class ApiRequestor:
     def __post_file_from_path(self, relative_url, path):
         print("API_requestor:{0}".format(relative_url))
         files = {'file': open(path, "rb")}
+        print(API_ROOT_URL+relative_url)
         response = requests.post(API_ROOT_URL + relative_url, files=files, cookies=self.__prepare_auth_cookies(),
                                  headers=self.__prepare_general_headers())
         print("API_result:{0}".format(response.status_code))
+        print(response.text)
         return response
 
     def __post(self, relative_url, body):
@@ -160,9 +162,9 @@ class ApiRequestor:
 
     def do_module_upload_from_file(self, module_name, file_path):
         path = URL_MAIN_MODULE + f'{module_name}' + URL_MODULE_METHOD_UPLOAD
+        print(path)
+        print(file_path)
         return self.__post_file_from_path(path, file_path)
-
-
 
     def get_module_parser_parameters(self):
         path = URL_MAIN_MODULE + URL_MODULE_PARSER + URL_MODULE_METHOD_VIEW_PARAMETERS

@@ -3,9 +3,11 @@ import json
 import sys
 import traceback
 
-from lib.constants import *
+
 
 sys.path.append('../')
+sys.path.append('../../')
+from lib.constants import *
 
 from lib.modules import ParserModule
 

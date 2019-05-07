@@ -5,7 +5,7 @@ import requests
 import json
 
 sys.path.append('../../')
-from core.lib import cached_requests
+#from core.lib import cached_requests
 
 # Получение урла модуля
 def get_module_url():
@@ -46,7 +46,7 @@ def import_data(credentials_json, individual_json, parsers_data):
                              individual_json["passport"]["number"][4:], individual_json["passport"]["issued_at"],
                              individual_json["phone"], individual_json["email"])
 
-    r = cached_requests.post(url=url, data=request.encode())
+    r = requests.post(url=url, data=request.encode())
     sphere_res = {'result': r.text}
     #sphere_res = {'result': r.text}
     return sphere_res

@@ -4,7 +4,7 @@ import json
 import datetime
 
 sys.path.append('../../')
-from core.lib import cached_requests
+#from core.lib import cached_requests
 
 # Получение урла модуля
 def get_module_url():
