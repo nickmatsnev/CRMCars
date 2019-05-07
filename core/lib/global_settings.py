@@ -1,5 +1,8 @@
 BUS_HOST = "localhost"
-API_ROOT_URL = "http://willz-dev.korishchenko.ru/api"
+SITE_ROOT_URL = "http://127.0.0.1:8002"
+
+API_ROOT_URL = SITE_ROOT_URL + "/api"
+LOGIN_ROOT_URL = SITE_ROOT_URL + "/signin/"
 
 EXCEL_COLUMN_WIDTH_MAX = 100
 EXCEL_COLUMN_WIDTH_BASE = 10

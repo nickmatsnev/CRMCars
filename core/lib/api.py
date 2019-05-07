@@ -5,7 +5,7 @@ import requests
 import socket
 
 from core.lib import constants
-from core.lib.global_settings import API_ROOT_URL
+from core.lib.global_settings import *
 from core.lib.constants import *
 
 
@@ -21,15 +21,10 @@ class ApiRequestor:
             self.__csrfToken = request.COOKIES.get('csrftoken')
         else:
             client = requests.session()
-            url_login = "http://willz-dev.korishchenko.ru/signin/"
+            url_login = LOGIN_ROOT_URL
             client.get(url_login)
             csrftoken = client.cookies['csrftoken']
-
-            comp_name = socket.gethostname()
-            if comp_name=='FIREBLADE-NEW' or comp_name == 'FIREBLADE':
-                login_data = {'username': 'admin', 'password': 'admin', 'csrfmiddlewaretoken': csrftoken}
-            else:
-                login_data = {'username': constants.ADMIN_USERNAME, 'password': constants.ADMIN_PASSWORD,
+            login_data = {'username': constants.ADMIN_USERNAME, 'password': constants.ADMIN_PASSWORD,
                               'csrfmiddlewaretoken': csrftoken}
 
             r1 = client.post(url_login, data=login_data, allow_redirects=False)
