@@ -16,7 +16,7 @@ from core.lib.api import ApiRequestor
 def individual_scoring(request, id):
     #   res = get_scorista()
     apiRequestor = ApiRequestor(request)
-    individual_id = apiRequestor.get_individual_info(id)
+    individual = apiRequestor.get_individual_info(id)
     sources_done = apiRequestor.get_individual_cur_data_source(id)
     source_names = []
     for item in sources_done:
@@ -39,7 +39,7 @@ def individual_scoring(request, id):
                   {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
                    'validate_status': parser_validate_status, 'stopfactor_status': parser_stopfactor_status,
                    'stopfactors': parser_stopfactor_errors, 'sources': source_names, 'score': score,
-                   'parameters_dict': parameters_dict})
+                   'parameters_dict': parameters_dict, 'individual': individual})
 
 
 @login_required(login_url="signin")

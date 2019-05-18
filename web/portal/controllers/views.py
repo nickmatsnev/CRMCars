@@ -4,8 +4,11 @@ import json
 from xlsxwriter.workbook import Workbook
 
 from core.lib.constants import *
+from core.lib import constants
+from core.lib import log_reader
 
 sys.path.append('../')
+
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
@@ -93,3 +96,13 @@ def reports(request):
     statuses = ApiRequestor(request).get_client_all_status()
     return render(request, URL_LINK_REPORTS, {'statuses': statuses})
 
+
+@login_required(login_url="signin")
+def worker_logs(request):
+    logs_client = log_reader.read_log(constants.CLIENT_PROCESSOR_NAME)
+    logs_sources = log_reader.read_log(constants.SOURCE_PROCESSOR_NAME)
+    logs_parser = log_reader.read_log(constants.PARSER_PROCESSOR_NAME)
+    logs_scoring = log_reader.read_log(constants.SCORING_PROCESSOR_NAME)
+
+    return render(request, "concrete/logs.html", {"logs_client": logs_client, "logs_parser": logs_parser,
+                                                  "logs_scoring": logs_scoring, "logs_sources": logs_sources});

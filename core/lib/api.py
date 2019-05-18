@@ -4,6 +4,9 @@ import django
 import requests
 import socket
 
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+
 from core.lib import constants
 from core.lib.global_settings import *
 from core.lib.constants import *
@@ -228,7 +231,15 @@ class ApiRequestor:
     ### ACTIONS ###
     def add_action(self, individual_id, action_type, processor, payload='None'):
         action = {}
-        action['processor'] = processor
+
+        session = Session.objects.get(session_key=self.__session)
+        session_data = session.get_decoded()
+        uid = session_data.get('_auth_user_id')
+        user = User.objects.get(id=uid)
+        if processor == "user":
+            action['processor'] = str(user)
+        else:
+            action['processor'] = processor
         action['action_type'] = action_type
         action['payload'] = payload
         dumped_data = json.dumps(action)

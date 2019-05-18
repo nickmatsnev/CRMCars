@@ -6,6 +6,9 @@
 {% block head %}
 
 {% endblock %}
+{% load status_color_filter %}
+{% load gender_filter %}
+{% load archive_bool_filter %}
 
 {% block content %}
     <script>
@@ -13,7 +16,7 @@
     </script>
     <div class="modal-header">
         <h1>Досье физ.лица № {{ id }} (Версия №{{ individual.current_generation.number }})</h1>
-        <h2>{{ individual.status }}</h2>
+        <h2 style="color:{{ individual.status|status_color_filter }}">{{ individual.status }}</h2>
     </div>
     <div class="container">
 
@@ -56,14 +59,14 @@
    </tr>
    <tr>
        <td>Пол:</td>
-       <td> {{ individual.gender }}</td>
+       <td> {{ individual.gender|gender_filter }}</td>
    </tr>
    <tr>
        <td>Дата рождения:</td>
        <td> {{ individual.birthday }}</td>
    </tr>
    <tr>
-       <td>Номер паспорта:</td>
+       <td>Cерия и номер паспорта:</td>
        <td>{{ individual.passport.number }}</td>
    </tr>
    <tr>
@@ -124,7 +127,7 @@
                 <tr>
                     <td>{{ item.number }}</td>
                     <td>{{ item.create_time }}</td>
-                    <td>{{ item.is_archive }}</td>
+                    <td>{{ item.is_archive|archive_bool_filter }}</td>
                     <td>
                         {{ item.payload }}
                         <!--<button class="btn btn-info" type="menuButton">Просмотр

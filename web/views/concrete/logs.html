@@ -1,0 +1,98 @@
+{% extends "../base.html" %}
+
+{% block title %} About {% endblock %}
+
+{% block content %}
+    <style>
+        ::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 10px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+    </style>
+    <div class="container">
+        <h4><strong>Логи</strong></h4>
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Процессор клиентов
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="overflow-auto"
+                             style="height: 300px;color:#6E2C00;overflow: scroll; overflow-y: scroll; min-height:101%;">{{ logs_client|linebreaks }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Процессор источников
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="overflow-auto"
+                             style="height: 300px;color:#6E2C00;overflow: scroll; overflow-y: scroll; min-height:101%;"
+                             s>{{ logs_sources|linebreaks }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Процессор парсеров
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="overflow-auto"
+                             style="height: 300px;color:#6E2C00;overflow: scroll; overflow-y: scroll; min-height:101%;">{{ logs_parser|linebreaks }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                            Процессор скоринга
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="overflow-auto"
+                             style="height: 300px;color:#6E2C00;overflow: scroll; overflow-y: scroll; min-height:101%;">{{ logs_scoring|linebreaks }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        {#                            <span>{{ logs_scoring }}</span>#}
+        {#                            <span>{{ logs_parser }}</span>#}
+    </div>
+{% endblock %}

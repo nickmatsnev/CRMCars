@@ -10,8 +10,11 @@
     </script>
     <div id="" class="container">
 
-        <div class="item1"><h1>Оценка физ.лица № {{ id }}</h1>
+    <div class="item1"><h1>Решение скоринга </h1>
+        <h4>Заявка № {{ id }}</h4>
+        <h4> {{ individual.last_name }} {{ individual.first_name }} {{ individual.middle_name }}</h4>
             {#            <h4>{{ item.created_at }}, ID: Willz, Продукт: {{ item.product }}</h4>  </div>#}
+        <br/>
         <a href="{% url "accept_individual" id %}" class="btn btn-success" id="accept-individual">
             Одобрить
         </a>
