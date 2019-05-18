@@ -3,6 +3,8 @@ import sys
 sys.path.append('../')
 sys.path.append('../../')
 from enum import Enum
+from datetime import datetime
+from core.lib.constants import BASE_DATE
 
 
 class RawClientData(models.Model):
@@ -13,7 +15,7 @@ class Client(models.Model):
     #individuals = models.ForeignKey(Individual, related_name='Individuals', on_delete=models.CASCADE)
     willz_external_id = models.IntegerField(default=0)
     #created_at = models.DateTimeField()
-    created_at = models.TextField(null=True,blank=True)
+    created_at = models.DateTimeField(default=datetime.now, blank=True)
     product = models.IntegerField(default=0)
 
 
@@ -29,7 +31,7 @@ class Individual(models.Model):
     gender = models.IntegerField(default=0)
     # gender = models.CharField(max_length=100)
     #birthday = models.DateTimeField()
-    birthday = models.TextField(null=True,blank=True)
+    birthday = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
 
 
 
@@ -38,7 +40,7 @@ class Passport(models.Model):
 
     number = models.CharField(max_length=100)
     #issued_at = models.DateField()
-    issued_at = models.TextField()
+    issued_at = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
     issued_by = models.TextField()
     address_registration = models.CharField(max_length=100)
     division_code = models.CharField(max_length=100, null=True,blank=True)
@@ -50,7 +52,7 @@ class DriverLicense(models.Model):
 
     number = models.CharField(max_length=100, default="")
     #issued_at = models.DateField(null=True)
-    issued_at = models.TextField(null=True,blank=True)
+    issued_at = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
 
 
 class PassportImage(models.Model):

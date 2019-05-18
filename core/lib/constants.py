@@ -1,6 +1,8 @@
 # Exchanges
 from os.path import expanduser
 
+BASE_DATE = "01.01.1900"
+
 MAIN_EXCHANGE_NAME = "main"
 
 SOURCES_PROCESSOR_QUEUE = "sources_processor_queue"

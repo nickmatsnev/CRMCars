@@ -7,6 +7,7 @@ sys.path.append('../../')
 
 from core.lib.global_settings import *
 from core.lib.api import ApiRequestor
+from core.lib.datetime_converters import *
 
 
 # Номера столбцов
@@ -89,7 +90,7 @@ def do_import(limit=0):
         willz_client['ga_client_id'] = ''
         willz_client['utm_source'] = row[COL_UTM_SOURCE - 1]
         willz_client['utm_medium'] = row[COL_UTM_MEDIUM - 1]
-        willz_client['created_at'] = row[COL_CREATED_AT - 1]
+        willz_client['created_at'] = datetime_converter(row[COL_CREATED_AT - 1])
 
         my_passport = {}
         my_passport['id'] = int(row[COL_PASSPORT_DRIVER_ID - 1])
@@ -115,7 +116,7 @@ def do_import(limit=0):
         my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
         my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
         my_passport['birthplace'] = row[COL_PASSPORT_BIRTHPLACE - 1]
-        my_passport['created_at'] = row[COL_DRIVER_LICENSE_CREATED_AT - 1]
+        my_passport['created_at'] = date_converter(row[COL_DRIVER_LICENSE_CREATED_AT - 1])
         willz_client['passport'] = my_passport
 
         willz_client['driver_id'] = int(row[COL_DRIVER_ID - 1])
@@ -151,12 +152,12 @@ def do_import(limit=0):
         my_passport['image4_confirm'] = row[COL_PASSPORT_IMAGE4_CONFIRM - 1]
         my_passport['image4_url'] = EXCEL_TO_READ_PASSPORT_PATH + row[COL_PASSPORT_IMAGE4_URL - 1]
         my_passport['number'] = str(row[COL_PASSPORT_NUMBER - 1]).replace(" ", "")
-        my_passport['issued_at'] = row[COL_PASSPORT_ISSUED_AT - 1]
+        my_passport['issued_at'] = date_converter(row[COL_PASSPORT_ISSUED_AT - 1])
         my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY - 1]
         my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
         my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
         my_passport['birthplace'] = row[COL_PASSPORT_BIRTHPLACE - 1]
-        my_passport['created_at'] = row[COL_DRIVER_LICENSE_CREATED_AT - 1]
+        my_passport['created_at'] = date_converter(row[COL_DRIVER_LICENSE_CREATED_AT - 1])
         driver['passport'] = my_passport
 
         driver_license = {}
@@ -172,7 +173,7 @@ def do_import(limit=0):
         driver_license['number'] = str(row[COL_DRIVER_LICENSE_NUMBER - 1]).replace(" ", "")
         driver_license['issued_at'] = row[COL_DRIVER_LICENSE_ISSUED_AT - 1]
         driver_license['finished_at'] = ""
-        driver_license['created_at'] = row[COL_DRIVER_LICENSE_CREATED_AT - 1]
+        driver_license['created_at'] = date_converter(row[COL_DRIVER_LICENSE_CREATED_AT - 1])
         driver['driver_license'] = driver_license
 
         drivers.append(driver)
