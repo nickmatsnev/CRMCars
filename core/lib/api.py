@@ -4,6 +4,16 @@ import django
 import requests
 import socket
 
+import os
+import django
+import sys
+
+sys.path.append('../../')
+sys.path.append('../../web')
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.portal.settings')
+django.setup()
+
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 
@@ -231,12 +241,11 @@ class ApiRequestor:
     ### ACTIONS ###
     def add_action(self, individual_id, action_type, processor, payload='None'):
         action = {}
-
-        session = Session.objects.get(session_key=self.__session)
-        session_data = session.get_decoded()
-        uid = session_data.get('_auth_user_id')
-        user = User.objects.get(id=uid)
         if processor == "user":
+            session = Session.objects.get(session_key=self.__session)
+            session_data = session.get_decoded()
+            uid = session_data.get('_auth_user_id')
+            user = User.objects.get(id=uid)
             action['processor'] = str(user)
         else:
             action['processor'] = processor

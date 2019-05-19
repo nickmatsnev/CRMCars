@@ -78,9 +78,17 @@
        <td> {{ individual.passport.issued_by }}</td>
    </tr>
    <tr>
-       <td>Адрес прописки:</td>
-       <td> {{ individual.passport.address_registration }}</td>
+       <td>Код подразделения:</td>
+       <td> {{ individual.passport.division_code }}</td>
    </tr>
+          <tr>
+              <td>Место рождения:</td>
+              <td> {{ individual.passport.birthplace }}</td>
+          </tr>
+          <tr>
+              <td>Адрес регистрации:</td>
+              <td> {{ individual.passport.address_registration }}</td>
+          </tr>
          
 </table>
 <div class="panel-heading">

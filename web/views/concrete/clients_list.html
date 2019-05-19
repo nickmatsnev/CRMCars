@@ -16,16 +16,17 @@
     <div class="item1">
         {% for key,value in status_list.data.items %}
     <a href="{% url "clients_list_filtered" key %}">
-        <button style="margin: 3px; padding: 3px; width: 226px;" class="btn btn-light">{{ value.name }}
+
+        <span style="margin: 3px; padding: 3px; width: 226px;" class="btn btn-light">{{ value.name }}
             ({{ value.count }})
-        </button>
+        </span>
     </a>
 {% endfor %}
     </div>
     </div>
 
     {% for item in items %}
-        <h1 class="panel-title">Заявка #{{ item.id }}</h1><strong>Создана</strong>
+        <h4 class="panel-title">Заявка #{{ item.id }}</h4>
         <h4>{{ item.created_at }}, ID: {{ item.willz_external_id }}, Продукт: {{ item.product }}</h4>
                 <table style="border: solid 2px black" class="table table-bordered">
 

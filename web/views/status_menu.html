@@ -1,11 +1,15 @@
-
+{% load status_color_filter %}
 <a href="{% url "clients_list" %}">
-    <button style="margin: 3px; padding: 3px;  width: 226px" class="btn btn-success">Все ({{ status_list.total }})</button>
+    <button style="margin: 3px; padding: 3px;  width: 226px;background: #999999" class="btn">Все
+        ({{ status_list.total }})
+    </button>
 </a>
 
 
 {% for key,value in status_list.data.items %}
     <a href="{% url "clients_list_filtered" key %}">
-        <button style="margin: 3px; padding: 3px; width: 226px;" class="btn btn-success">{{ value.name }} ({{ value.count }})</button>
+        <button style="margin: 3px; padding: 3px; width: 226px;background:{{ value.name |status_color_filter }}"
+                class="btn">{{ value.name }} ({{ value.count }})
+        </button>
     </a>
 {% endfor %}

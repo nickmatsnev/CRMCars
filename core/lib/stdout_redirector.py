@@ -26,9 +26,12 @@ class StdoutRedirector:
 
                 output = "[" + self.__name + "]" + "[" + timestamp + "] " + output.replace("\n",
                                                                                            "\n" + timestamp + " ")
-                print(output, file=f)
+                try:
+                    print(output, file=f)
+                    f.flush()
+                except:
+                    print("problem with file output of log")
                 try:
                    print(output, file=sys.__stdout__)
                 except:
                    print("Possible broken pipe:"+output,file=f)
-                f.flush()

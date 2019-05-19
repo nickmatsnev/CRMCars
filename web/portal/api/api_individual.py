@@ -98,10 +98,10 @@ class NewGenApi(APIView):
 
         individual = Individual.objects.get(pk=pk)
         last += 1
-        new_gen = Generation.objects.create(individual=individual, number=last, create_time=datetime.datetime.now(),
-                                      is_archive=False)
-        action_model = Action.objects.create(generation=new_gen, create_time=datetime.datetime.now(),
-                                             processor='system',action_type='new')
+        new_gen = Generation.objects.create(individual=individual, number=last, create_time=datetime.now(),
+                                            is_archive=False)
+        action_model = Action.objects.create(generation=new_gen, create_time=datetime.now(),
+                                             processor='system', action_type='new')
         return Response(new_gen.number)
 
 

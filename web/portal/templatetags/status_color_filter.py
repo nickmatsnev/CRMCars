@@ -15,4 +15,4 @@ def status_color_filter(value):
     if value == "Новая":
         return "#6C3483;"
 
-    return "grey;"
+    return "#999999"

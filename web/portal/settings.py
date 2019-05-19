@@ -24,6 +24,7 @@ WSGI_APPLICATION = 'web.portal.wsgi.application'
 
 REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%d.%m.%Y  %H:%M",
+    'DATE_FORMAT': "%d.%m.%Y",
     'DEFAULT_RENDERER_CLASSES': (
         'portal.renders.UTF8JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',

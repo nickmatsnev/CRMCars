@@ -192,7 +192,7 @@ def validate(individual_json, source_json):
 
     if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
         errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (Инфосфера)'})
-    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%Y-%m-%d').date()
+    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%d.%m.%Y').date()
     if brth > datetime.now().date():
         errors.append({'decription': 'Некорректная дата рождения'})
 
@@ -208,7 +208,7 @@ def validate(individual_json, source_json):
 def stop_factors(individual_json, source_json):
     scorista_res = pandas.DataFrame(get_values(source_json)).set_index('name')
     errors = []
-    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%Y-%m-%d').date()
+    brth = datetime.strptime(scorista_res.loc['BirthDate'].value, '%d.%m.%Y').date()
     if brth + relativedelta(years=+18) > datetime.now().date():
         errors.append({'decription': 'Заявителю нет 18 лет'})
 
