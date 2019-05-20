@@ -252,13 +252,18 @@ class ApiRequestor:
             except Exception as e:
                 print(traceback.format_exc())
                 action['payload'] = traceback.format_exc()
-                action['processor'] = processor                
+                action['processor'] = processor
         else:
             action['processor'] = processor
         action['action_type'] = action_type
         action['payload'] = payload
         dumped_data = json.dumps(action)
-        return self.__post('/individual/{0}/cur_gen/add_action/'.format(individual_id), dumped_data);
+        res = ""
+        try:
+            res = self.__post('/individual/{0}/cur_gen/add_action/'.format(individual_id), dumped_data)
+        except Exception as e:
+            res = traceback.format_exc()
+        return res
 
     ### CLIENT PROCESSOR ###
     def get_raw_willz(self, raw_willz_id):
