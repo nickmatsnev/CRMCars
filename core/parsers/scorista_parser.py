@@ -114,10 +114,21 @@ def get_values(source_json):
     
     stopWordIndicators = []
     stopWordWords = []
+    stopWordChunks = []
     for wrd in stopWords:
         smth = re.findall(wrd, fileall.lower())
         stopWordIndicators.append(len(smth))
         stopWordWords.append(wrd)
+        smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+        if len(smth) > 0:
+            stopWordChunks.append(smth)
+
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = list(filter(lambda x: x!= ' ', stopWordChunks))
+    stopWordChunks = list(filter(lambda x: x!= '', stopWordChunks))
+    
+    stopWordDict = dict(zip(stopWordWords, stopWordIndicators))
 
     drunk_drive = False if fileall.find('нетрезвом') == -1 else True
     bank_stoplist = False if fileall.find('СТОПЛИСТ') == -1 else True
@@ -134,14 +145,33 @@ def get_values(source_json):
     fms_invalid_passport = False if dictall['data']['fms']['result'] != 0 else True
     invalid_inn = False if dictall['data']['inn']['result'] != 0 else True
 
+    license_origin = True
     try:
         license_origin = True if len(license_sc) == 10 else False
     except:
         license_origin = False
 
-    smth = re.findall("Штраф ГИБДД", fileall)
-    smth2 = re.findall("НАРУШЕНИЕ ПДД", fileall)
+    roadFinesChunks = []
+    smth = re.findall("штраф гибдд", fileall)
+    smth2 = re.findall("нарушение пдд", fileall)
+
     roadPoliceFinesNumber = max(len(smth), len(smth2))
+    
+    wrd = "штраф гибдд"
+    smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+    if len(smth) > 0:
+        roadFinesChunks.append(smth)
+
+    wrd = "нарушение пдд"
+    smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+    if len(smth) > 0:
+        roadFinesChunks.append(smth)
+    
+    roadFinesChunks = [item for sublist in roadFinesChunks for item in sublist]
+    roadFinesChunks = [item for sublist in roadFinesChunks for item in sublist]
+    roadFinesChunks = list(filter(lambda x: x!= ' ', roadFinesChunks))
+    roadFinesChunks = list(filter(lambda x: x!= '', roadFinesChunks))
+    
 
     soup = BeautifulSoup(fileall, 'lxml')
     carsList = []
@@ -164,6 +194,9 @@ def get_values(source_json):
             except:
                 adummy = 2
             carsList.append((carVendor, carModel))
+
+    carsList = [item for sublist in carsList for item in sublist]
+    carsList = [item for sublist in carsList for item in sublist]
 
     smth = re.findall("(?s)Ответ №(.*?)</table>", fileall)
     latePaymentInfo = []
@@ -243,18 +276,20 @@ def get_values(source_json):
             {'name': 'LicenseExpDate', 'value': license_exp_date},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
             {'name': 'StopWordWords', 'value': stopWordWords},
+            {'name': 'StopWordDict', 'value': stopWordDict},
+            {'name': 'StopWordChunks', 'value': stopWordChunks},
             {'name': 'BankStopList', 'value': bank_stoplist},
             {'name': 'DrunkDrive', 'value': drunk_drive},
             {'name': 'TotalDebt', 'value': tot_debt},
             {'name': 'BirthDate', 'value': birth_date},
             {'name': 'Terrorism', 'value': terrorism},
             {'name': 'FMSInvalidPassport', 'value': fms_invalid_passport},
-            {'name': 'InvalidINN', 'value': invalid_inn},
             {'name': 'PassportOrigin', 'value': ""},
             {'name': 'LicenseOrigin', 'value': license_origin},
             {'name': 'RiskRegion', 'value': risk_regions},
             {'name': 'RiskRegion2', 'value': risk_regions2},
             {'name': 'RoadPoliceFinesNumber', 'value': roadPoliceFinesNumber},
+            {'name': 'RoadFinesChunks', 'value': roadFinesChunks},
             {'name': 'CarsList', 'value': carsList},
             {'name': 'LatePaymentInfo', 'value': latePaymentInfo},
             {'name': 'Jobs', 'value': jobsAll},
@@ -380,28 +415,32 @@ def get_available_params():
              'type': 'vector, int'},
             {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
              'type': 'vector, string'},
-            {'name': 'RoadPoliceFinesNumber', 'description': 'Количество штрафов ГИБДД', 'type': 'int'},
+            {'name': 'StopWordDict', 'description': 'Словарь из обнаруженных стоп-слов с их частотой',
+             'type': 'dictionary'},
+            {'name': 'StopWordChunks', 'description': 'Вектор фрагментов текста со стоп-словами',
+             'type': 'vector, string'},
+            {'name': 'RoadPoliceFinesNumber', 'description': 'Количество штрафов ГИБДД', 'type': 'int'}, 
+            {'name': 'RoadFinesChunks', 'description': 'Текст штрафов ГИБДД', 'type': 'int'},
             {'name': 'CarsList', 'description': 'Вектор автомобилей (марка, модель)', 'type': 'vector, string'},
-            {'name': 'LatePaymentInfo', 'description': 'Вектор (дата проверки, результат по наличию просрочек)',
+            {'name': 'LatePaymentInfo', 'description': 'Вектор проверки просроченных кредитов (дата проверки, результат по наличию просрочек)',
              'type': 'vector, string'},
             {'name': 'Jobs', 'description': 'Вектор (место работы, доход, год, ИНН работодателя)',
              'type': 'vector, string'},
             {'name': 'License', 'description': 'Серия и номер паспорта ВУ', 'type': 'int'},
             {'name': 'LicenseExpDate', 'description': 'Срок действия ВУ', 'type': 'date'},
-            {'name': 'BankStopList', 'description': 'Присутствие в стоп листах банков', 'type': 'bool'},
-            {'name': 'DrunkDrive', 'description': 'Отметки о езде в нетрезвом виде', 'type': 'bool'},
+            {'name': 'BankStopList', 'description': 'Факт присутствия в стоп листах банков', 'type': 'bool'},
+            {'name': 'DrunkDrive', 'description': 'Факт наличия отметок о езде в нетрезвом виде', 'type': 'bool'},
             {'name': 'TotalDebt', 'description': 'Суммарный долг по судопроизводствам', 'type': 'float'},
             {'name': 'BirthDate', 'description': 'Дата рождения', 'type': 'date'},
-            {'name': 'Terrorism', 'description': 'Присутствие в перечне террористов/экстремистов', 'type': 'bool'},
-            {'name': 'FMSInvalidPassport', 'description': 'Недействительность паспорта в базе ФМС', 'type': 'bool'},
-            {'name': 'InvalidINN', 'description': 'Недействительный ИНН', 'type': 'bool'},
-            {'name': 'PassportOrigin', 'description': 'Паспорт выдан в России', 'type': 'bool'},
-            {'name': 'LicenseOrigin', 'description': 'ВУ выдано в России', 'type': 'bool'},
+            {'name': 'Terrorism', 'description': 'Факт присутствия в перечне террористов/экстремистов', 'type': 'bool'},
+            {'name': 'FMSInvalidPassport', 'description': 'Факт недействительности паспорта в базе ФМС', 'type': 'bool'},
+            {'name': 'PassportOrigin', 'description': 'Факт, что паспорт выдан в России', 'type': 'bool'},
+            {'name': 'LicenseOrigin', 'description': 'Факт, что ВУ выдано в России', 'type': 'bool'},
             {'name': 'RiskRegion',
-             'description': 'Регистрация в  в рисковых регионах Дагестан; Ингушетия; Северная Осетия-Алания; Чеченская республика',
+             'description': 'Факт регистрации в рисковых регионах Архангельская область; Башкортостан; Волгоградская область; Ивановская область; Кировская область; Краснодарский край; Мордовия; Мурманская область; Нижегородская область; Ростовская область; Саратовская область; Ставропольский край; Татарстан; Ульяновская область; Челябинская область; Дагестан; Ингушетия; Северная Осетия - Алания; Чеченская республика',
              'type': 'bool'},
             {'name': 'RiskRegion2',
-             'description': 'Регистрация в  в рисковых регионах Дагестан; Ингушетия; Северная Осетия-Алания; Чеченская республика',
+             'description': 'Факт регистрации в рисковых регионах Дагестан; Ингушетия; Северная Осетия-Алания; Чеченская республика',
              'type': 'bool'},
             {'name': 'JobsNum', 'description': 'Число работ', 'type': 'int'},
             {'name': 'allPassports', 'description': 'Список паспортов', 'type': 'vector, int'},
