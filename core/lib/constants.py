@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Exchanges
 from os.path import expanduser
 

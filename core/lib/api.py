@@ -248,7 +248,7 @@ class ApiRequestor:
                 session_data = session.get_decoded()
                 uid = session_data.get('_auth_user_id')
                 user = User.objects.get(id=uid)
-                action['processor'] = str(user)
+                action['processor'] = user.username
             except Exception as e:
                 print(traceback.format_exc())
                 action['payload'] = traceback.format_exc()
@@ -257,7 +257,7 @@ class ApiRequestor:
             action['processor'] = processor
         action['action_type'] = action_type
         action['payload'] = payload
-        dumped_data = json.dumps(action, ensure_ascii=False)
+        dumped_data = json.dumps(action, ensure_ascii=False).encode('utf8')
         return self.__post('/individual/{0}/cur_gen/add_action/'.format(individual_id), dumped_data);
 
     ### CLIENT PROCESSOR ###
