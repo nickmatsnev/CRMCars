@@ -257,8 +257,8 @@ class ApiRequestor:
             action['processor'] = processor
         action['action_type'] = action_type
         action['payload'] = payload
-        dumped_data = json.dumps(action, ensure_ascii=False).encode('utf8')
-        return self.__post('/individual/{0}/cur_gen/add_action/'.format(individual_id), dumped_data);
+        dumped_data = json.dumps(action)
+        return self.__post_decode('/individual/{0}/cur_gen/add_action/'.format(individual_id), dumped_data)
 
     ### CLIENT PROCESSOR ###
     def get_raw_willz(self, raw_willz_id):
