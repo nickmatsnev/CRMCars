@@ -1,4 +1,5 @@
 import json
+import traceback
 
 import django
 import requests
@@ -242,11 +243,16 @@ class ApiRequestor:
     def add_action(self, individual_id, action_type, processor, payload='None'):
         action = {}
         if processor == "user":
-            session = Session.objects.get(session_key=self.__session)
-            session_data = session.get_decoded()
-            uid = session_data.get('_auth_user_id')
-            user = User.objects.get(id=uid)
-            action['processor'] = str(user)
+            try:
+                session = Session.objects.get(session_key=self.__session)
+                session_data = session.get_decoded()
+                uid = session_data.get('_auth_user_id')
+                user = User.objects.get(id=uid)
+                action['processor'] = str(user)
+            except Exception as e:
+                print(traceback.format_exc())
+                action['payload'] = traceback.format_exc()
+                action['processor'] = processor                
         else:
             action['processor'] = processor
         action['action_type'] = action_type
