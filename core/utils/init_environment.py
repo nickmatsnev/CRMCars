@@ -22,7 +22,7 @@ try:
     admin_user = User.objects.filter(username=constants.ADMIN_USERNAME)
     if admin_user.count() == 0:
         user = User.objects.create_user(username=constants.ADMIN_USERNAME,
-                                        email='admin@willz-dev.ru', first_name="System", last_name="Administator",
+                                        email='admin@willz-dev.ru', first_name="System", last_name="Administrator",
                                         password=constants.ADMIN_PASSWORD)
         user.save()
     print('uploading modules')
