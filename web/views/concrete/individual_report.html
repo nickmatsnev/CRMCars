@@ -9,6 +9,7 @@
 
 
     {% load cache_bust %}
+    {% load module_loc_filter %}
 
 
     <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
@@ -201,8 +202,7 @@
                             </td>
                             <td>
                                 {{ parser_values.ScoristaParserModule.currentDebts | my_lookup }}
-                                {{ parser_values.ScoristaParserModule.latePaymentInClosedCredits }}
-                                {{ parser_values.ScoristaParserModule.latePaymentInCurrentCredits }}
+
 
                             </td>
                         </tr>
@@ -257,8 +257,9 @@
 
                             </td>
                             <td>
-                                {{ parser_values.ConturFocusParserModule.OGRN }}
-                                {{ parser_values.ConturFocusParserModule.adrCity }}
+                                <span>Организации:{{ parser_values.ConturFocusParserModule.companyNameList | my_lookup }}</span>
+                                <br/><br/>
+                                <span>Директора: {{ parser_values.ConturFocusParserModule.fioHeadList | my_lookup }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -281,7 +282,7 @@
 
                             </td>
                             <td>
-
+                                Не найдено
                             </td>
                         </tr>
                         <tr>
@@ -291,7 +292,7 @@
 
                             </td>
                             <td>
-
+                                Не найдено
                             </td>
                         </tr>
                     </table>

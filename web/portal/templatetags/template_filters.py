@@ -11,9 +11,11 @@ def my_lookup(key):
     if key == None or key == '':
         return "Не найдено"
     if key == []:
-        return "Сведений не найдено"
+        return "Не найдено"
     if key == 0:
-        return "Нарушений не найдено"
+        return "Не найдено"
     if key == True:
-        return "Отсутствует"
+        return "Не найдено"
+    if key == "":
+        return "Не найдено"
     return key

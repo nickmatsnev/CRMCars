@@ -11,8 +11,6 @@ def get_score(parsers_data):
     XScore = 0
     YScore = 0
 
-    if parsers_data['ScoristaParserModule']['PassportOrigin']:
-        XScore += 100
 
     if parsers_data['ScoristaParserModule']['LicenseOrigin']:
         XScore += 100

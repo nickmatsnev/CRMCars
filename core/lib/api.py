@@ -248,7 +248,7 @@ class ApiRequestor:
                 session_data = session.get_decoded()
                 uid = session_data.get('_auth_user_id')
                 user = User.objects.get(id=uid)
-                action['processor'] = user.username
+                action['processor'] = "{0} ({1} {2})".format(user.username, user.first_name, user.last_name)
             except Exception as e:
                 print(traceback.format_exc())
                 action['payload'] = traceback.format_exc()

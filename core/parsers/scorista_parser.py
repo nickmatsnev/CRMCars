@@ -284,7 +284,6 @@ def get_values(source_json):
             {'name': 'BirthDate', 'value': birth_date},
             {'name': 'Terrorism', 'value': terrorism},
             {'name': 'FMSInvalidPassport', 'value': fms_invalid_passport},
-            {'name': 'PassportOrigin', 'value': ""},
             {'name': 'LicenseOrigin', 'value': license_origin},
             {'name': 'RiskRegion', 'value': risk_regions},
             {'name': 'RiskRegion2', 'value': risk_regions2},
@@ -332,8 +331,6 @@ def validate(individual_json, source_json):
 
     if not scorista_res.loc['FMSInvalidPassport'].value:
         errors.append({'decription': 'Недействительность паспорта в базе ФМС по данным Скористы'})
-    if not scorista_res.loc['InvalidINN'].value:
-        errors.append({'decription': 'У клиента недействительный ИНН по данным Скористы'})
 
     if len(errors) == 0:
         return {'status': 'OK'}
@@ -434,7 +431,6 @@ def get_available_params():
             {'name': 'BirthDate', 'description': 'Дата рождения', 'type': 'date'},
             {'name': 'Terrorism', 'description': 'Факт присутствия в перечне террористов/экстремистов', 'type': 'bool'},
             {'name': 'FMSInvalidPassport', 'description': 'Факт недействительности паспорта в базе ФМС', 'type': 'bool'},
-            {'name': 'PassportOrigin', 'description': 'Факт, что паспорт выдан в России', 'type': 'bool'},
             {'name': 'LicenseOrigin', 'description': 'Факт, что ВУ выдано в России', 'type': 'bool'},
             {'name': 'RiskRegion',
              'description': 'Факт регистрации в рисковых регионах Архангельская область; Башкортостан; Волгоградская область; Ивановская область; Кировская область; Краснодарский край; Мордовия; Мурманская область; Нижегородская область; Ростовская область; Саратовская область; Ставропольский край; Татарстан; Ульяновская область; Челябинская область; Дагестан; Ингушетия; Северная Осетия - Алания; Чеченская республика',

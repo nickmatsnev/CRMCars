@@ -54,6 +54,10 @@ $(document).ready(function () {
 
     });
 
+    $("#new-generation").click(function () {
+        return confirm("Вы уверены, что хотите отправить досье в архив?");
+    });
+
     $("#show-raw-data").click(function () {
         var dt = "";
         $.getJSON('/api/individual/' + individual_id + "/cur_gen/data/source", function (data) {

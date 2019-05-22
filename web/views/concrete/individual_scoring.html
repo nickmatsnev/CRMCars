@@ -1,6 +1,8 @@
 {% extends "../base.html" %}
-
+{% load module_loc_filter %}
 {% load color_filter %}
+
+
 {% block title %}
     Скоринг клиента
 {% endblock %}
@@ -45,7 +47,7 @@
                         <p class="float-lg-right font-weight-bold">Статус: <span class="glyphicon glyphicon-ok"
                                                                                  style="color:{{ value|color_filter }}">{{ value }}</span>
                         </p>
-                        <p><b>Модуль: </b>{{ key }}</p>
+                        <p><b>Модуль: </b>{{ key |module_loc_filter }}</p>
 
 
 
@@ -81,7 +83,7 @@
                         <p class="float-lg-right font-weight-bold">Статус: <span class="glyphicon glyphicon-ok"
                                                                                  style="color:{{ value|color_filter }}">{{ value }}</span>
                         </p>
-                        <p><b>Модуль: </b>{{ key }}</p>
+                        <p><b>Модуль: </b>{{ key|module_loc_filter }}</p>
 
 
 
@@ -118,7 +120,7 @@
         <div class="card-body collapse" id="demo111">
             {% for key,value in values.items %}
 
-                <p class="h5"><b>Модуль: </b>{{ key }}</p>
+                <p class="h5"><b>Модуль: </b>{{ key |module_loc_filter }}</p>
 
                 <table class="table" style="padding: 5px;">
 

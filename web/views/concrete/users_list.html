@@ -1,5 +1,5 @@
 {% extends "../base.html" %}
-
+{% load user_active_loc_filter %}
 
 
 {% block title %}
@@ -60,7 +60,7 @@
             <td>{{ item.last_name }}</td>
             <td>{{ item.email }}</td>
              <td>{{ item.last_login }}</td>
-          <td>{{ item.is_active }}</td>
+             <td>{{ item.is_active |user_active_loc_filter }}</td>
 
      </tr>
 
