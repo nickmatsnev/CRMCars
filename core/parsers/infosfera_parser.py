@@ -52,10 +52,21 @@ def get_values(source_json):
 
     stopWordIndicators = []
     stopWordWords = []
+    stopWordChunks = []
     for wrd in stopWords:
         smth = re.findall(wrd, file_xml.lower())
         stopWordIndicators.append(len(smth))
         stopWordWords.append(wrd)
+        smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+        if len(smth) > 0:
+            stopWordChunks.append(smth)
+
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = list(filter(lambda x: x!= ' ', stopWordChunks))
+    stopWordChunks = list(filter(lambda x: x!= '', stopWordChunks))
+    
+    stopWordDict = dict(zip(stopWordWords, stopWordIndicators))
 
     try:
         birth_date = soup.find('birthdt').text
@@ -168,6 +179,8 @@ def get_values(source_json):
             {'name': 'BirthPlace', 'value': birth_place},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
             {'name': 'StopWordWords', 'value': stopWordWords},
+            {'name': 'StopWordDict', 'value': stopWordDict},
+            {'name': 'StopWordChunks', 'value': stopWordChunks},
             {'name': 'BirthDate', 'value': birth_date},
             {'name': 'RiskRegion', 'value': risk_regions},
             {'name': 'RiskRegion2', 'value': risk_regions2},
@@ -231,11 +244,15 @@ def get_available_params():
              'type': 'vector, int'},
             {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
              'type': 'vector, string'},
+            {'name': 'StopWordDict', 'description': 'Словарь из обнаруженных стоп-слов с их частотой',
+             'type': 'dictionary'},
+            {'name': 'StopWordChunks', 'description': 'Вектор фрагментов текста со стоп-словами',
+             'type': 'vector, string'},
             {'name': 'Jobs', 'description': 'Вектор (место работы, доход, год, ИНН работодателя)',
              'type': 'vector, string'},
             {'name': 'BirthDate', 'description': 'Дата рождения', 'type': 'date'},
             {'name': 'RiskRegion',
-             'description': 'Регистрация в  в рисковых регионах Дагестан; Ингушетия; Северная Осетия-Алания; Чеченская республика',
+             'description': 'Факт регистрации в рисковых регионах Архангельская область; Башкортостан; Волгоградская область; Ивановская область; Кировская область; Краснодарский край; Мордовия; Мурманская область; Нижегородская область; Ростовская область; Саратовская область; Ставропольский край; Татарстан; Ульяновская область; Челябинская область; Дагестан; Ингушетия; Северная Осетия - Алания; Чеченская республика',
              'type': 'bool'},
             {'name': 'RiskRegion2',
              'description': 'Регистрация в  в рисковых регионах Дагестан; Ингушетия; Северная Осетия-Алания; Чеченская республика',

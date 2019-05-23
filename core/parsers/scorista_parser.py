@@ -77,8 +77,27 @@ def get_values(source_json):
         except:
             license_sc = "NA"
 
+    licenseDateList = []
+    licenseNumList = []
+
+    smth = re.findall("(?s)Водительские удостоверения(.*?)</table>", fileall)
+    for ld in smth:
+        try:
+            licenseDate = re.findall("\d\d\.\d\d.\d\d\d\d", ld)
+            licenseNumber = re.findall("\d\d\\d\d №\d\d\d\d\d\d", ld)
+            if len(licenseNumber) == 0:
+                licenseNumber = re.findall("\d\d\\d\d \d\d\d\d\d\d", ld)
+                
+            licenseDateList.append(licenseDate[0])
+            licenseNumList.append(licenseNumber[0])
+        except:
+            pass
+
+    print(licenseDateList)
+    print(licenseNumList)
+
     try:
-        license_exp_date = datetime.strptime(re.findall("ДАТА ВЫДАЧИ: (.*?)</p>", fileall)[0], '%d.%m.%Y').date()
+        license_exp_date = datetime.strptime(licenseDateList[0], '%d.%m.%Y').date() + relativedelta(years=+10)
     except:
         license_exp_date = "NA"
 
@@ -108,8 +127,8 @@ def get_values(source_json):
     smth = re.findall("ПРИЧИНЫ ЗАМЕНЫ ПАСПОРТА", fileall)
     numberPassportChanges = (len(smth))
 
-    stopWords = ["банкротство", "страховое мошенничество", "уголовное дело",
-                 "уголовное нарушение", "ответчик", "нетрезвом", "невозвратный", "безнадежный", 'стоплист',
+    stopWords = ["банкротство", "страховое мошенничество", "уголовное",
+                 "административное", "ответчик", "нетрезвом", "невозвратный", "безнадежный", 'стоплист',
                  'наркотик']
     
     stopWordIndicators = []
@@ -130,6 +149,16 @@ def get_values(source_json):
     
     stopWordDict = dict(zip(stopWordWords, stopWordIndicators))
 
+    bankrupt = False
+    bankStopList = False
+    ugolovCrime = False
+    adminCrime = False
+
+    bankrupt = True if stopWordDict["банкротство"] > 0 else False
+    bankStopList = True if stopWordDict["стоплист"] > 0 else False
+    ugolovCrime = True if stopWordDict["уголовное"] > 0 else False
+    adminCrime = True if stopWordDict["административное"] > 0 else False
+
     drunk_drive = False if fileall.find('нетрезвом') == -1 else True
     bank_stoplist = False if fileall.find('СТОПЛИСТ') == -1 else True
 
@@ -142,6 +171,9 @@ def get_values(source_json):
         birth_date = "NA"
 
     terrorism = False if dictall['data']['rosFinMonitoring']['result'] != 0 else True
+    if dictall['data']['rosFinMonitoring']['textResult'] == "В списке экстремистов/террористов найден":
+        terrorism = True
+    
     fms_invalid_passport = False if dictall['data']['fms']['result'] != 0 else True
     invalid_inn = False if dictall['data']['inn']['result'] != 0 else True
 
@@ -273,11 +305,16 @@ def get_values(source_json):
             {'name': 'BirthPlace', 'value': birthPlace},
             {'name': 'NumberPassportChanges', 'value': numberPassportChanges},
             {'name': 'License', 'value': license_sc},
+            {'name': 'LicenseDateList', 'value': licenseDateList},
+            {'name': 'LicenseNumList', 'value': licenseNumList},
             {'name': 'LicenseExpDate', 'value': license_exp_date},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
             {'name': 'StopWordWords', 'value': stopWordWords},
             {'name': 'StopWordDict', 'value': stopWordDict},
             {'name': 'StopWordChunks', 'value': stopWordChunks},
+            {'name': 'Bankrupt', 'value': bankrupt},
+            {'name': 'UgolovCrime', 'value': ugolovCrime},
+            {'name': 'AdminCrime', 'value': adminCrime},
             {'name': 'BankStopList', 'value': bank_stoplist},
             {'name': 'DrunkDrive', 'value': drunk_drive},
             {'name': 'TotalDebt', 'value': tot_debt},
@@ -381,7 +418,17 @@ def stop_factors(individual_json, source_json):
         errors.append({'decription': 'Наличие трёх и более просрочек по кредитам по данным Скористы'})
     if nDCurrent.size > 0:
         errors.append({'decription': 'В настоящий момент есть просрочка по кредиту по данным Скористы'})
+        
+    if scorista_res.loc['Terrorism'].value:
+        errors.append({'decription': 'Клиент найден в списке Росфинмониторинга (экстремизм/терроризм)'})
 
+    if scorista_res.loc['Bankrupt'].value:
+        errors.append({'decription': 'Клиент банкрот или был банкротом'})
+    if scorista_res.loc['UgolovCrime'].value:
+        errors.append({'decription': 'У клиента есть уголовные нарушения'})
+    if scorista_res.loc['AdminCrime'].value:
+        errors.append({'decription': 'У клиента есть административные нарушения'})
+        
     if scorista_res.loc['BankStopList'].value:
         errors.append({'decription': 'Клиент присутствует в стоп-листах банков по данным Скористы'})
     if scorista_res.loc['DrunkDrive'].value:
@@ -416,6 +463,9 @@ def get_available_params():
              'type': 'dictionary'},
             {'name': 'StopWordChunks', 'description': 'Вектор фрагментов текста со стоп-словами',
              'type': 'vector, string'},
+            {'name': 'Bankrupt', 'description': 'Факт банкротства', 'type': 'bool'},
+            {'name': 'UgolovCrime', 'description': 'Факт наличия уголовных нарушений', 'type': 'bool'},
+            {'name': 'AdminCrime', 'description': 'Факт наличия административных нарушений', 'type': 'bool'},
             {'name': 'RoadPoliceFinesNumber', 'description': 'Количество штрафов ГИБДД', 'type': 'int'}, 
             {'name': 'RoadFinesChunks', 'description': 'Текст штрафов ГИБДД', 'type': 'int'},
             {'name': 'CarsList', 'description': 'Вектор автомобилей (марка, модель)', 'type': 'vector, string'},
@@ -424,6 +474,8 @@ def get_available_params():
             {'name': 'Jobs', 'description': 'Вектор (место работы, доход, год, ИНН работодателя)',
              'type': 'vector, string'},
             {'name': 'License', 'description': 'Серия и номер паспорта ВУ', 'type': 'int'},
+            {'name': 'LicenseDateList', 'description': 'Даты выдачи всех ВУ', 'type': 'vector, string'},
+            {'name': 'LicenseNumList', 'description': 'Номера всех выданных ВУ', 'type': 'vector, string'},
             {'name': 'LicenseExpDate', 'description': 'Срок действия ВУ', 'type': 'date'},
             {'name': 'BankStopList', 'description': 'Факт присутствия в стоп листах банков', 'type': 'bool'},
             {'name': 'DrunkDrive', 'description': 'Факт наличия отметок о езде в нетрезвом виде', 'type': 'bool'},

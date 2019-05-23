@@ -18,10 +18,21 @@ def get_values(source_json):
 
     stopWordIndicators = []
     stopWordWords = []
+    stopWordChunks = []
     for wrd in stopWords:
         smth = re.findall(wrd, json1_str.lower())
         stopWordIndicators.append(len(smth))
         stopWordWords.append(wrd)
+        smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+        if len(smth) > 0:
+            stopWordChunks.append(smth)
+
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = [item for sublist in stopWordChunks for item in sublist]
+    stopWordChunks = list(filter(lambda x: x!= ' ', stopWordChunks))
+    stopWordChunks = list(filter(lambda x: x!= '', stopWordChunks))
+
+    stopWordDict = dict(zip(stopWordWords, stopWordIndicators))
 
     riskWords = ["рекомендована дополнительная проверка"]
 
@@ -41,6 +52,9 @@ def get_values(source_json):
     adrStreetList = []
     adrHouseList = []
     fioHeadList = []
+    redStatList = []
+    yellowStatList = []
+    
     for jjd in json1_data:
         try:
             innList.append(jjd['inn'])
@@ -76,6 +90,18 @@ def get_values(source_json):
         except:
             fioHeadList.append('NA')
 
+        try:
+            redStat = jjd['UL']['briefReport']['summary']['redStatements']
+            redStatList.append(redStat)
+        except:
+            redStatList.append('False')
+
+        try:
+            yStat = jjd['UL']['briefReport']['summary']['yellowStatements']
+            yellowStatList.append(yStat)
+        except:
+            yellowStatList.append('False')
+
 
     innNumber = len(innList)
 
@@ -102,6 +128,8 @@ def get_values(source_json):
             {'name': 'fioHead', 'value': fioHead},
             {'name': 'StopWordIndicators', 'value': stopWordIndicators},
             {'name': 'StopWordWords', 'value': stopWordWords},
+            {'name': 'StopWordDict', 'value': stopWordDict},
+            {'name': 'StopWordChunks', 'value': stopWordChunks},
             {'name': 'RiskWordIndicators', 'value': riskWordIndicators},
             {'name': 'RiskWordWords', 'value': riskWordWords},
             {'name': 'OGRN', 'value': ogrn},
@@ -114,7 +142,9 @@ def get_values(source_json):
             {'name': 'adrStreetList', 'value': adrStreetList},
             {'name': 'adrHouseList', 'value': adrHouseList},
             {'name': 'fioHeadList', 'value': fioHeadList},
-            {'name': 'innNumber', 'value': innNumber}
+            {'name': 'innNumber', 'value': innNumber},
+            {'name': 'redStatList', 'value': redStatList},
+            {'name': 'yellowStatList', 'value': yellowStatList}
             ]
 
 
@@ -154,6 +184,10 @@ def get_available_params():
              'type': 'vector, int'},
             {'name': 'StopWordWords', 'description': 'Вектор обнаруженных стоп-слов',
              'type': 'vector, string'},
+            {'name': 'StopWordDict', 'description': 'Словарь из обнаруженных стоп-слов с их частотой',
+             'type': 'dictionary'},
+            {'name': 'StopWordChunks', 'description': 'Вектор фрагментов текста со стоп-словами',
+             'type': 'vector, string'},
             {'name': 'RiskWordIndicators',
              'description': 'Вектор индикаторов на наличие подозрительных слов в описании', 'type': 'vector, int'},
             {'name': 'RiskWordWords', 'description': 'Вектор обнаруженных подозрительных слов',
@@ -168,6 +202,8 @@ def get_available_params():
             {'name': 'adrStreetList', 'description': 'Лист адресов (улица) аффилированных лиц', 'type': "vector, string"},
             {'name': 'adrHouseList', 'description': 'Лист адресов (номер дома) аффилированных лиц', 'type': "vector, string"},
             {'name': 'fioHeadList', 'description': 'Лист ФИО директоров аффилированных лиц', 'type': "vector, string"},
+            {'name': 'redStatList', 'description': 'Ликвидация или банкротство компании', 'type': "vector, string"},
+            {'name': 'yellowStatList', 'description': 'Подозрительная активность компании', 'type': "vector, string"},
             {'name': 'innNumber', 'description': 'Количество аффилированных лиц', 'type': "int"}
             ]
 
