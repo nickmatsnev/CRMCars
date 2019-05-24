@@ -54,7 +54,7 @@ class ScoringProcessor(BasicProcess):
         individual_data, individual_id = self.get_individual_data_for_message(body)
 
         source_deps = parser_helper.get_sources_deps(self._apiRequestor, individual_data['scoring_module_id'])
-        finished_sources = self._apiRequestor.get_individual_cur_data_source(individual_id)
+        finished_sources = self._apiRequestor.get_individual_data_source(individual_id)
         fin = list(finished_sources.keys())
         all_sources = list(map(lambda x: x['source'], source_deps))
         for source in fin:

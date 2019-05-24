@@ -104,36 +104,42 @@ class ApiRequestor:
         return response
 
     ###     INDIVIDUALS     ###
+    def _cur_wrapper(self,gen):
+        if gen=='cur':
+            return URL_MAIN_SUB_CUR_DATA
+        else:
+            return "/" + gen + "/" + NAME_DATA + "/"
+
     def get_individual_info(self, id):
         path = URL_MAIN_INDIVIDUAL + f'{id}'
         return self.__get(path)
 
-    def get_individual_cur_data_source(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_SOURCE
+    def get_individual_data_source(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_SOURCE
         return self.__get(path)
 
-    def get_individual_cur_data_score(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_SCORING + URL_INDIVIDUAL_METHOD_SCORE
+    def get_individual_data_score(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_SCORING + URL_INDIVIDUAL_METHOD_SCORE
         return self.__get(path)[0]
 
-    def get_individual_cur_data_parser_values(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALUES
+    def get_individual_data_parser_values(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALUES
         return self.__get(path)
 
-    def get_individual_cur_data_parser_validate_errors(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALIDATE_ERRORS
+    def get_individual_data_parser_validate_errors(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALIDATE_ERRORS
         return self.__get(path)
 
-    def get_individual_cur_data_parser_validate_status(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALIDATE_STATUS
+    def get_individual_data_parser_validate_status(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_VALIDATE_STATUS
         return self.__get(path)
 
-    def get_individual_cur_data_parser_stopfactor_status(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_STOP_STATUS
+    def get_individual_data_parser_stopfactor_status(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_STOP_STATUS
         return self.__get(path)
 
-    def get_individual_cur_data_parser_stopfactor_errors(self, id):
-        path = URL_MAIN_INDIVIDUAL + f'{id}' + URL_MAIN_SUB_CUR_DATA + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_STOP_ERRORS
+    def get_individual_data_parser_stopfactor_errors(self, id, gen='cur'):
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + self._cur_wrapper(gen) + URL_MODULE_PARSER + URL_INDIVIDUAL_METHOD_STOP_ERRORS
         return self.__get(path)
 
     def do_individual_accept(self, id):

@@ -48,7 +48,7 @@ urlpatterns = [
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_VALIDATE_STATUS}/',         api_module.GetParserValidateStatusAPI.as_view()),
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_VALIDATE_ERRORS}/',         api_module.GetParserValidateErrorsAPI.as_view()),
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_STOPFACTOR_STATUS}/',         api_module.GetParserStopFactorStatusAPI.as_view()),
-    path(r'<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_STOPFACTOR_ERRORS}/',         api_module.GetParserStopFactorErrorsAPI.as_view()),
+    path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_STOPFACTOR_ERRORS}/',         api_module.GetParserStopFactorErrorsAPI.as_view()),
 
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/' + r'<slug:module_name>/' + f'{NAME_VALUES}/',         api_module.GetParserValuesAPI.as_view()),
 
@@ -61,3 +61,4 @@ urlpatterns = [
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/'+r'<slug:module_type>/<slug:module_name>/'+ f'{NAME_META}/',         api_module.ModuleMetaApi.as_view()),
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/'+r'<slug:module_type>/',         api_module.ModuleDataListApi.as_view()),
 ]
+

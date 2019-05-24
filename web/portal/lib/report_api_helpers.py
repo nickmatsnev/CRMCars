@@ -100,11 +100,11 @@ def get_standard_report(request,advanced=False):
                 values = ""
                 if report_info["processing_status"] == "Одобрено" or report_info["processing_status"] == "Отказано" or \
                         report_info["processing_status"] == "Ожидает согласования":
-                    validations = ApiRequestor(request).get_individual_cur_data_parser_validate_errors(
+                    validations = ApiRequestor(request).get_individual_data_parser_validate_errors(
                         individ['id'])
-                    stopfactors = ApiRequestor(request).get_individual_cur_data_parser_stopfactor_errors(
+                    stopfactors = ApiRequestor(request).get_individual_data_parser_stopfactor_errors(
                         individ['id'])
-                    parser_values = ApiRequestor(request).get_individual_cur_data_parser_values(individ['id'])
+                    parser_values = ApiRequestor(request).get_individual_data_parser_values(individ['id'])
                     for module in parser_values:
                         if module in stopfactors:
                             for factor in stopfactors[module]:
