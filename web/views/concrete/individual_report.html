@@ -10,6 +10,8 @@
 
     {% load cache_bust %}
     {% load module_loc_filter %}
+    {% load validate_status_loc_filter %}
+    {% load report_bool_loc_filter %}
 
 
     <link rel="shortcut icon" type="image/svg" href="{% static "logo-willz.svg" %}">
@@ -144,7 +146,26 @@
                     <table style="table-layout: fixed" class="table table-bordered">
                         <tr>
                             <td>
-                                Проверка паспорта:
+                                Проверка документов:
+                            </td>
+                            <td>
+                                {% for key,value in validate_status.items %}
+                                    {% ifequal key "ScoristaParserModule" %}
+                                        {{ value | validate_status_loc_filter }}
+                                        <br/>
+                                    {% endifequal %}
+                                {% endfor %}
+                                {% for kk,vv in validate.items %}{% ifequal kk "ScoristaParserModule" %}
+                                    {% for element in vv %}
+                                        <p>{{ element.decription }}</p>
+                                    {% endfor %}
+                                {% endifequal %} {% endfor %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Найден паспорт:
                             </td>
                             <td>
                                 {{ parser_values.ScoristaParserModule.FIO }}
@@ -155,7 +176,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Проверка водительского удостоверения
+                                Найдено водительского удостоверение:
                             </td>
                             <td>
                                 {{ parser_values.ScoristaParserModule.License }}
@@ -168,8 +189,8 @@
                                 Проверка на присутствие в списке Росфинмониторинга (экстремизм/терроризм)
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.Terrorism | my_lookup }}
-                                {{ parser_values.ScoristaParserModule.StopWordIndicator }}
+                                {{ parser_values.ScoristaParserModule.Terrorism |report_bool_loc_filter }}
+
                             </td>
                         </tr>
 
@@ -178,16 +199,16 @@
                                 Проверка физлиц на банкротство
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.StopWordIndicator | my_lookup }}
+                                {{ parser_values.ScoristaParserModule.Bankrupt|report_bool_loc_filter }}
                             </td>
                         </tr>
 
                         <tr>
                             <td>
-                                Сведения об исполнительном производстве в отношении физлица
+                                Сведения об исполнительном производстве в отношении физлица (сумма)
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.LatePaymentInfo | my_lookup }}
+                                {{ parser_values.ScoristaParserModule.TotalDebt }} р.
                             </td>
                         </tr>
                     </table>
@@ -201,7 +222,9 @@
 
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.currentDebts | my_lookup }}
+                                {{ parser_values.NBKIParserModule.totalOverDue }} р.
+                                <br/>
+                                {{ parser_values.NBKIParserModule.delay }} р.
 
 
                             </td>
@@ -211,7 +234,7 @@
                                 База должников и «стоп-листов» банка
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.StopWordIndicator | my_lookup }}
+                                {{ parser_values.ScoristaParserModule.BankStopList |report_bool_loc_filter }}
 
                             </td>
                         </tr>
@@ -223,7 +246,7 @@
                                 Проверка в федеральном и местном розыске
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.Terrorism| my_lookup }}
+                                {{ parser_values.NBKIParserModule.fact_wanted |report_bool_loc_filter }}
                             </td>
                         </tr>
                         <tr>
@@ -231,7 +254,7 @@
                                 Административные правонарушения
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.RoadPoliceFinesNumber| my_lookup }}
+                                {{ parser_values.ScoristaParserModule.AdminCrime |report_bool_loc_filter }}
 
                             </td>
                         </tr>
@@ -240,7 +263,7 @@
                                 Уголовные правонарушения
                             </td>
                             <td>
-                                {{ parser_values.ScoristaParserModule.StopWordIndicator| my_lookup }}
+                                {{ parser_values.ScoristaParserModule.UgolovCrime |report_bool_loc_filter }}
                             </td>
                         </tr>
                     </table>
@@ -257,9 +280,9 @@
 
                             </td>
                             <td>
-                                <span>Организации:{{ parser_values.ConturFocusParserModule.companyNameList | my_lookup }}</span>
+                                <span>Организации: {{ parser_values.ConturFocusParserModule.companyNameList }}</span>
                                 <br/><br/>
-                                <span>Директора: {{ parser_values.ConturFocusParserModule.fioHeadList | my_lookup }}</span>
+                                <span>Директора: {{ parser_values.ConturFocusParserModule.fioHeadList }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -268,7 +291,9 @@
                                 замещались руководящие должности
                             </td>
                             <td>
-                                {{ parser_values.ConturFocusParserModule.StopWordIndicators | my_lookup }}
+                                Банкротства: {{ parser_values.ConturFocusParserModule.fact_red |report_bool_loc_filter }}
+                                <br/>
+                                Реорганизации: {{ parser_values.ConturFocusParserModule.fact_yellow |report_bool_loc_filter }}
 
                             </td>
                         </tr>

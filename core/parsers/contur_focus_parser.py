@@ -54,7 +54,10 @@ def get_values(source_json):
     fioHeadList = []
     redStatList = []
     yellowStatList = []
-    
+
+    fact_red = False
+    fact_yellow = False
+
     for jjd in json1_data:
         try:
             innList.append(jjd['inn'])
@@ -93,12 +96,14 @@ def get_values(source_json):
         try:
             redStat = jjd['UL']['briefReport']['summary']['redStatements']
             redStatList.append(redStat)
+            fact_red = True
         except:
             redStatList.append('False')
 
         try:
             yStat = jjd['UL']['briefReport']['summary']['yellowStatements']
             yellowStatList.append(yStat)
+            fact_yellow = True
         except:
             yellowStatList.append('False')
 
@@ -144,7 +149,9 @@ def get_values(source_json):
             {'name': 'fioHeadList', 'value': fioHeadList},
             {'name': 'innNumber', 'value': innNumber},
             {'name': 'redStatList', 'value': redStatList},
-            {'name': 'yellowStatList', 'value': yellowStatList}
+            {'name': 'yellowStatList', 'value': yellowStatList},
+            {'name': 'fact_red', 'value': fact_red},
+            {'name': 'fact_yellow', 'value': fact_yellow},
             ]
 
 
@@ -204,6 +211,9 @@ def get_available_params():
             {'name': 'fioHeadList', 'description': 'Лист ФИО директоров аффилированных лиц', 'type': "vector, string"},
             {'name': 'redStatList', 'description': 'Ликвидация или банкротство компании', 'type': "vector, string"},
             {'name': 'yellowStatList', 'description': 'Подозрительная активность компании', 'type': "vector, string"},
+            {'name': 'fact_red', 'description': 'Факт ликвидации или банкротства хотя бы одной афилированной компании',
+             'type': "string"},
+            {'name': 'fact_yellow', 'description': 'Факт подозрительной активности компании', 'type': "string"},
             {'name': 'innNumber', 'description': 'Количество аффилированных лиц', 'type': "int"}
             ]
 

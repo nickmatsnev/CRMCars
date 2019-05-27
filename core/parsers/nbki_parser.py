@@ -77,19 +77,27 @@ def get_values(source_json):
         countdue90plusinclosedaccs = int(soup.find('countdue90plusinclosedaccs').text)
     except:
         countdue90plusinclosedaccs = 0
-
+    fact_hasnewer = False
     try:
         hasnewer = soup.find('hasnewer').text
+
+        if hasnewer == "Y":
+            fact_newer = True
     except:
         hasnewer = "NA"
 
+    fact_invalid = False
     try:
         invalid = soup.find('invalid').text
+        if invalid == "Y":
+            fact_invalid = True
     except:
         invalid = "NA"
-
+    fact_wanted = False
     try:
         wanted = soup.find('wanted').text
+        if wanted == "Y":
+            fact_wanted = True
     except:
         wanted = "NA"
 
@@ -110,7 +118,10 @@ def get_values(source_json):
             {'name': 'countdue90plusinclosedaccs', 'value': countdue90plusinclosedaccs},
             {'name': 'hasnewer', 'value': hasnewer},
             {'name': 'invalid', 'value': invalid},
-            {'name': 'wanted', 'value': wanted}
+            {'name': 'wanted', 'value': wanted},
+            {'name': 'fact_hasnewer', 'value': fact_hasnewer},
+            {'name': 'fact_invalid', 'value': fact_invalid},
+            {'name': 'fact_wanted', 'value': fact_wanted}
             ]
 
 
@@ -232,7 +243,10 @@ def get_available_params():
              'description': 'Количество просрочек 90+ дней за все время по закрытым счетам', 'type': 'int'},
             {'name': 'hasnewer', 'description': 'Есть более свежий паспорт', 'type': 'string'},
             {'name': 'invalid', 'description': 'Признак недействительности паспорта', 'type': 'string'},
-            {'name': 'wanted', 'description': 'Розыск', 'type': 'string'}
+            {'name': 'wanted', 'description': 'Розыск', 'type': 'string'},
+            {'name': 'fact_hasnewer', 'description': 'Факт наличия более свежего паспорта', 'type': 'string'},
+            {'name': 'fact_invalid', 'description': 'Факт недействительности паспорта', 'type': 'string'},
+            {'name': 'fact_wanted', 'description': 'Факт наличия лица в розыске', 'type': 'string'}
             ]
 
 
