@@ -170,12 +170,15 @@ def get_values(source_json):
     except:
         birth_date = "NA"
 
-    terrorism = False if dictall['data']['rosFinMonitoring']['result'] != 0 else True
-    if dictall['data']['rosFinMonitoring']['textResult'] == "В списке экстремистов/террористов найден":
-        terrorism = True
-    
-    fms_invalid_passport = False if dictall['data']['fms']['result'] != 0 else True
-    invalid_inn = False if dictall['data']['inn']['result'] != 0 else True
+    terrorism = True
+    if "не найден" in dictall['data']['rosFinMonitoring']['textResult'].lower():
+        terrorism = False
+    fms_invalid_passport = False
+    if "не значится" in dictall['data']['fms']['textResult'].lower():
+        fms_invalid_passport = False
+    invalid_inn = True
+    if "не найден" in dictall['data']['inn']['textResult'].lower():
+        invalid_inn = False
 
     license_origin = True
     try:

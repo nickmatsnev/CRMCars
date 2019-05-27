@@ -40,6 +40,31 @@ $(document).ready(function () {
 
     });
 
+    $(".check-scoring").click(function () {
+
+        $.ajaxSetup({
+            async: false
+        });
+        var id = jQuery(this).attr("custom_id");
+        var gen = jQuery(this).attr("custom_gen");
+        status = true;
+        $.getJSON({
+            url: "/api/individual/" + id + "/" + gen + "/data/scoring/",
+            async: false,
+            success: function (data, textstatus, jqXHR) {
+                if (jqXHR.status != 200 || jQuery.isEmptyObject(data)) {
+                    status = false;
+                }
+            }
+        });
+        if (status == "false") {
+            alert("В версии данных отсутствуют данные скоринга.");
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    });
+
     $(".img-custom").click(function () {
         var data = jQuery(this).attr('src');
         $("#myModal #modal-content-main").html("<img src=\"" + data + "\"class='img-modal'/>");
@@ -57,6 +82,7 @@ $(document).ready(function () {
     $("#new-generation").click(function () {
         return confirm("Вы уверены, что хотите отправить досье в архив?");
     });
+
 
     $("#show-raw-data").click(function () {
         var dt = "";
@@ -109,3 +135,4 @@ $(document).ready(function () {
 
 
 });
+

@@ -26,7 +26,8 @@
             </button>
             <a id="scoring-button" class="btn btn-success" href="{% url "start_individual_scoring" individual.id %}">2.
                 Отправить на скоринг</a>
-             <a id="scoring_results" class="btn btn-success" href="{% url "individual_scoring" individual.id %}">
+            <a id="scoring_results" class="btn btn-success"
+               href="{% url "individual_scoring" id=individual.id gen_id_or_cur_gen="cur_gen" %}">
                  3. Решение скоринга</a>
             </a>
             <a id="new-generation" class="btn btn-success" href="{% url "individual_new_generation" individual.id %}">4.
@@ -34,8 +35,10 @@
 
             <div class="float-lg-right">
                 <a class="btn btn-success" id="scoring_report" style="margin-right: 5px;"
-                   href="{% url "individual_report" individual.id %}">Отчет по клиенту</a>
-                <a class="btn btn-success" href="{% url "individual_operations" individual.id %}">История
+                   href="{% url "individual_report" id=individual.id gen_id_or_cur_gen="cur_gen" %}">Отчет по
+                    клиенту</a>
+                <a class="btn btn-success"
+                   href="{% url "individual_operations" id=individual.id gen_id_or_cur_gen="cur_gen" %}">История
                 операций</a>
             </div>
         </div>
@@ -128,6 +131,9 @@
                 <td>Версия</td>
                 <td>Дата</td>
                 <td>В архиве</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
 
             {% for item in individual.generations %}
@@ -137,9 +143,21 @@
                     <td>{{ item.is_archive|archive_bool_filter }}</td>
                     <td>
                         {{ item.payload }}
-                        <!--<button class="btn btn-info" type="menuButton">Просмотр
-                        </button>-->
                     </td>
+                    {% if item.is_archive %}
+                        <td>
+                            <a class="btn btn-success check-scoring" custom_id="{{ individual.id }}"
+                               custom_gen="{{ item.number }}"
+                               href="{% url "individual_scoring" id=individual.id gen_id_or_cur_gen=item.number %}">
+                                Решение</a>
+
+
+                            <a class="btn btn-success check-scoring" custom_id="{{ individual.id }}"
+                               custom_gen="{{ item.number }}"
+                               href="{% url "individual_report" id=individual.id gen_id_or_cur_gen=item.number %}">
+                                Отчет</a></td>
+                    {% endif %}
+
                 </tr>
             {% endfor %}
         </table>

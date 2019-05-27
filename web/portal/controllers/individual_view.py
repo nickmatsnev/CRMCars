@@ -13,27 +13,27 @@ from core.lib.api import ApiRequestor
 
 
 @login_required(login_url="signin")
-def individual_scoring(request, id):
+def individual_scoring(request, id, gen_id_or_cur_gen):
     #   res = get_scorista()
     apiRequestor = ApiRequestor(request)
     individual = apiRequestor.get_individual_info(id)
-    sources_done = apiRequestor.get_individual_data_source(id)
+    sources_done = apiRequestor.get_individual_data_source(id, gen=gen_id_or_cur_gen)
     source_names = []
     for item in sources_done:
         source_names.append(item)
-    score = format(apiRequestor.get_individual_data_score(id), '.0f')
+    score = format(apiRequestor.get_individual_data_score(id, gen=gen_id_or_cur_gen), '.0f')
     # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
-    parser_values = apiRequestor.get_individual_data_parser_values(id)
-    parser_validate_errors = apiRequestor.get_individual_data_parser_validate_errors(id)
-    parser_validate_status = apiRequestor.get_individual_data_parser_validate_status(id)
-    parser_stopfactor_status = apiRequestor.get_individual_data_parser_stopfactor_status(id)
+    parser_values = apiRequestor.get_individual_data_parser_values(id, gen=gen_id_or_cur_gen)
+    parser_validate_errors = apiRequestor.get_individual_data_parser_validate_errors(id, gen=gen_id_or_cur_gen)
+    parser_validate_status = apiRequestor.get_individual_data_parser_validate_status(id, gen=gen_id_or_cur_gen)
+    parser_stopfactor_status = apiRequestor.get_individual_data_parser_stopfactor_status(id, gen=gen_id_or_cur_gen)
 
     parser_parameters = apiRequestor.get_module_parser_parameters()
     parameters_dict = {}
     for item in parser_parameters:
         parameters_dict[item['name']] = item['description']
 
-    parser_stopfactor_errors = apiRequestor.get_individual_data_parser_stopfactor_errors(id)
+    parser_stopfactor_errors = apiRequestor.get_individual_data_parser_stopfactor_errors(id, gen=gen_id_or_cur_gen)
 
     return render(request, URL_LINK_INDIVIDUAL_SCORING,
                   {'id': id, 'values': parser_values, 'validate': parser_validate_errors,
@@ -43,28 +43,28 @@ def individual_scoring(request, id):
 
 
 @login_required(login_url="signin")
-def individual_report(request, id):
+def individual_report(request, id, gen_id_or_cur_gen):
     #   res = get_scorista()
     apiRequestor = ApiRequestor(request)
     individual = apiRequestor.get_individual_info(id)
-    sources_done = apiRequestor.get_individual_data_source(id)
+    sources_done = apiRequestor.get_individual_data_source(id, gen=gen_id_or_cur_gen)
     source_names = []
     for item in sources_done:
         source_names.append(item)
-    score = apiRequestor.get_individual_data_score(id)
+    score = apiRequestor.get_individual_data_score(id, gen=gen_id_or_cur_gen)
     # scoring_data = api_requestor.request('/individual/{0}/cur_gen/data/{1}/'.format(id, "scoring"))
-    parser_values = apiRequestor.get_individual_data_parser_values(id)
+    parser_values = apiRequestor.get_individual_data_parser_values(id, gen=gen_id_or_cur_gen)
     parser_values_dictionary = parser_values_converter.get_parser_values(parser_values)
-    parser_validate_errors = apiRequestor.get_individual_data_parser_validate_errors(id)
-    parser_validate_status = apiRequestor.get_individual_data_parser_validate_status(id)
-    parser_stopfactor_status = apiRequestor.get_individual_data_parser_stopfactor_status(id)
+    parser_validate_errors = apiRequestor.get_individual_data_parser_validate_errors(id, gen=gen_id_or_cur_gen)
+    parser_validate_status = apiRequestor.get_individual_data_parser_validate_status(id, gen=gen_id_or_cur_gen)
+    parser_stopfactor_status = apiRequestor.get_individual_data_parser_stopfactor_status(id, gen=gen_id_or_cur_gen)
 
     parser_parameters = apiRequestor.get_module_parser_parameters()
     parameters_dict = {}
     for item in parser_parameters:
         parameters_dict[item['name']] = item['description']
 
-    parser_stopfactor_errors = apiRequestor.get_individual_data_parser_stopfactor_errors(id)
+    parser_stopfactor_errors = apiRequestor.get_individual_data_parser_stopfactor_errors(id, gen=gen_id_or_cur_gen)
 
     return render(request, URL_LINK_INDIVIDUAL_REPORT,
                   {'id': id, 'parser_values': parser_values_dictionary, 'validate': parser_validate_errors,
@@ -96,7 +96,7 @@ def individual_inspect(request, id):
 
 
 @login_required(login_url="signin")
-def individual_operations(request, id):
+def individual_operations(request, id, gen_id_or_cur_gen):
     raw_data = ApiRequestor(request).get_individual_info(id)
 
     context = {

@@ -23,7 +23,7 @@ def get_values(source_json):
         smth = re.findall(wrd, json1_str.lower())
         stopWordIndicators.append(len(smth))
         stopWordWords.append(wrd)
-        smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', fileall.lower())
+        smth = re.findall('(>((?!>).)*?' + wrd + '.*?<)', json1_str.lower())
         if len(smth) > 0:
             stopWordChunks.append(smth)
 

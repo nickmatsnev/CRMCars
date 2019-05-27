@@ -8,7 +8,7 @@ sys.path.append('../../web')
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portal.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.portal.settings')
 django.setup()
 
 from core.utils import excel_to_request
