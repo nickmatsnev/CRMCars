@@ -369,7 +369,7 @@ def validate(individual_json, source_json):
     -- можно взять векторный способ - сколько букв или слов совпадает.
     '''
 
-    if not scorista_res.loc['FMSInvalidPassport'].value:
+    if scorista_res.loc['FMSInvalidPassport'].value:
         errors.append({'decription': 'Недействительность паспорта в базе ФМС по данным Скористы'})
 
     if len(errors) == 0:
