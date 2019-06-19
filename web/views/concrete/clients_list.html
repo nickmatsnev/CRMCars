@@ -10,21 +10,13 @@
 {% block content %}
 
     {% load status_menu %}
+    <h1>Список клиентов</h1>
+    <div style="width:100%; text-align: center;">
     {% status_menu statuses %}
-    <div class="grid-container">
-        {#        <div class="item1"><h4>Все заявки: 5 {{ status_list.total }}</h4></div>#}
-    <div class="item1">
-        {% for key,value in status_list.data.items %}
-    <a href="{% url "clients_list_filtered" key %}">
-
-        <span style="margin: 3px; padding: 3px; width: 226px;" class="btn btn-light">{{ value.name }}
-            ({{ value.count }})
-        </span>
-    </a>
-{% endfor %}
-    </div>
     </div>
 
+
+    <br/>
     {% for item in items %}
         <h4 class="panel-title">Заявка #{{ item.id }}</h4>
         <h4>{{ item.created_at }}, ID: {{ item.willz_external_id }}, Продукт: {{ item.product }}</h4>
@@ -35,7 +27,7 @@
 
                         <td><big>Клиент: {{ item.primary_individual.last_name }} {{ item.primary_individual.first_name }}</big></td>
                         <td><big>Статус:</big> <big
-                                style="color:{{ item.primary_individual.status|status_color_filter }}">{{ item.primary_individual.status }}</big>
+                                style="background:{{ item.primary_individual.status|status_color_filter }};opacity: 0.8;">{{ item.primary_individual.status }}</big>
                         </td>
                         <td style="text-align: right"><a
                                 href="{% url "individual_inspect" item.primary_individual.id %}">
@@ -49,7 +41,7 @@
                     <tr>
                         <td><strong>Дополнительные водители</strong></td>    <td><big>Клиент: {{ secondary.last_name }} {{ secondary.first_name }}</big></td>
                         <td><big>Статус:</big> <big
-                                style="color:{{ secondary.status|status_color_filter }}">{{ secondary.status }}</big>
+                                style="text-decoration:underline;text-decoration-color:{{ secondary.status|status_color_filter }};">{{ secondary.status }}</big>
                         </td>
                             <td style="text-align: right"><a href="{% url "individual_inspect" secondary.id %}">
                                 <button class="btn btn-success">Карточка клиента</button>

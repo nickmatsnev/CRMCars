@@ -212,7 +212,10 @@ class ApiRequestor:
 
     def get_client_all_status(self):
         path = URL_MAIN_CLIENT + URL_CLIENT_METHOD_STATUS
-        return self.__get(path)
+        statuses = self.__get(path)
+        statuses['data'].pop('scoring_stopfactors_failed',None)
+        statuses['data'].pop('scoring_validate_failed', None)
+        return statuses
 
     def get_client_by_status(self, status):
         path = URL_MAIN_CLIENT + status + '/'

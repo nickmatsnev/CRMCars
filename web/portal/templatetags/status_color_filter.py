@@ -5,14 +5,13 @@ from django.template.defaulttags import register
 @register.filter(name='status_color_filter')
 def status_color_filter(value):
     if value == "Одобрено":
-        return "green;"
+        return "#B2FEB6;"
     if value == "Отказано до скоринга":
-        return "red;"
+        return "#FE7F7F;"
     if value == "Отказано":
-        return "red;"
+        return "#FE7F7F;"
     if value == "Ожидает согласования":
-        return "#E67E22;"
+        return "#FCB161;"
     if value == "Новая":
-        return "#6C3483;"
-
-    return "#999999"
+        return "#E5C8F1;"
+    return "#DEDEDE;"

@@ -14,13 +14,15 @@ from portal.lib.module_api_helpers import get_generation_number
 
 def get_dictionary_of_status():
     my_dic = {}
+    my_dic['new'] = 'Новая'
+    my_dic['manual_decline'] = 'Отказано до скоринга'
+    my_dic['scoring'] = 'Скоринг обрабатывается'
+    my_dic['scoring_checks_failed'] = 'Техническая ошибка'
+    my_dic['scoring_complete']= 'Ожидает согласования'
     my_dic['scoring_complete_declined']='Отказано'
     my_dic['scoring_complete_accepted']='Одобрено'
-    my_dic['new'] = 'Новая'
-    my_dic['manual_decline']='Отказано до скоринга'
-    my_dic['scoring']='Скоринг обрабатывается'
-    my_dic['scoring_complete']= 'Ожидает согласования'
-    my_dic['scoring_checks_failed'] = 'Техническая ошибка'
+
+
     my_dic['scoring_validate_failed'] = 'Ошибка в документах'
     my_dic['scoring_stopfactors_failed'] = 'Обнаружены стоп-факторы'
     my_dic['unknown']= 'Неизвестно'

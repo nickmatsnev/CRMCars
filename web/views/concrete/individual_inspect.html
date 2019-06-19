@@ -14,10 +14,14 @@
     <script>
         var individual_id = {{ individual.id }};
     </script>
+    <h1 style="margin-left:15px;">Досье №{{ id }}</h1>
     <div class="modal-header">
-        <h1>Досье физ.лица № {{ id }} (Версия №{{ individual.current_generation.number }})</h1>
+        <h1>{{ individual.last_name }} {{ individual.first_name }} {{ individual.middle_name }} </h1>
+        <br/>
+
         <h2 style="color:{{ individual.status|status_color_filter }}">{{ individual.status }}</h2>
     </div>
+
     <div class="container">
 
         <div class="panel-heading" style="padding: 10px;">
