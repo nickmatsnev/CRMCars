@@ -11,19 +11,28 @@ from portal.lib.status_api_helpers import *
 from portal.lib.product_api_helpers import get_product_name
 
 
-def get_all_clients_info(filter_status=''):
-    queryset = Client.objects.all()
+def get_all_clients_info(filter_status_or_surname=''):
     clients_list = []
-    for client in queryset:
-        client_info = get_current_client_info(client.id)
+    queryset = Client.objects.all()
 
-        if filter_status == '':
+    if filter_status_or_surname != '':
+        renamed_status = get_status_name(filter_status_or_surname)
+    else:
+        renamed_status = ''
+
+    for client in queryset:
+        if filter_status_or_surname == '':
+            client_info = get_current_client_info(client.id)
             clients_list.append(client_info)
         else:
-            renamed_status = get_status_name(filter_status)
-
-            if client_info['primary_individual']['status'] == renamed_status:
-                clients_list.append(client_info)
+            if renamed_status != 'Неизвестно':
+                client_info = get_current_client_info(client.id)
+                if client_info['primary_individual']['status'] == renamed_status:
+                    clients_list.append(client_info)
+            else:
+                client_info = get_current_client_info(client.id, filter_status_or_surname)
+                if client_info != 0:
+                    clients_list.append(client_info)
 
     return clients_list
 
@@ -33,7 +42,7 @@ def get_all_clients_status():
     names_dic = get_dictionary_of_status()
     counter = 0
 
-    for key_el in  names_dic.keys():
+    for key_el in names_dic.keys():
         element = {}
         element['name'] = names_dic.get(key_el)
         element['count'] = 0
@@ -63,7 +72,7 @@ def get_all_clients_status():
     return final_list
 
 
-def get_current_client_info(client_id):
+def get_current_client_info(client_id, surname=''):
     queryset = Client.objects.get(id=client_id)
     client_serializer = ClientGetSerializer(queryset, many=False)
 
@@ -71,9 +80,22 @@ def get_current_client_info(client_id):
     secondary_individuals = []
     individuals_count = 0
 
+    if surname != '':
+        qSurname = Individual.objects.filter(last_name__icontains=surname)
+        cntr = 0;
+        for surObj in qSurname:
+            for ind_raw in client_serializer.data['individuals']:
+                if ind_raw['id'] == surObj.id:
+                    cntr=cntr+1
+        if cntr == 0:
+            return 0
+
+
     for individual_raw in client_serializer.data['individuals']:
         individuals_count += 1
+
         individual = Individual.objects.get(id=individual_raw['id'])
+
         individual_serializer = IndividualGetSerializer(individual, many=False)
         status = get_status(individual_raw['id'])
 
@@ -133,7 +155,7 @@ def post_client(data):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-def post_existing_client(data,id):
+def post_existing_client(data, id):
     client_serializer = ClientSerializer(data=data)
     if client_serializer.is_valid():
 
@@ -142,15 +164,14 @@ def post_existing_client(data,id):
         individuals_data = validated_data.pop('individuals')
         client = queryset.update(**validated_data)
 
-
         for individual_data in individuals_data:
             passport_data = individual_data.pop('passport')
             driver_license_data = individual_data.pop('driver_license')
 
             queryset = Individual.objects.filter(client=client)
             individual = queryset.update(**individual_data)
-            #Generation.objects.create(individual=individual, number=1, create_time=datetime.datetime.now(),
-             #                         is_archive=False)
+            # Generation.objects.create(individual=individual, number=1, create_time=datetime.datetime.now(),
+            #                         is_archive=False)
 
             passport_images_data = passport_data.pop('images')
             queryset = Passport.objects.filter(individual=individual)
@@ -172,5 +193,3 @@ def post_existing_client(data,id):
         cur_client = ClientSerializer(queryset)
         return Response(data=cur_client.data)
     return Response(status=status.HTTP_400_BAD_REQUEST)
-
-

@@ -17,6 +17,7 @@ from rest_framework.schemas import ManualSchema
 import coreapi
 import coreschema
 from rest_framework.schemas import AutoSchema
+from django.utils.encoding import uri_to_iri
 
 
 class MainAPI(mixins.ListModelMixin,mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin,
@@ -61,11 +62,11 @@ class ClientGetStatusApi(APIView):
 
 
 class ClientFilterApi(APIView):
-    @swagger_auto_schema(operation_description='get all clients with filter',
+    @swagger_auto_schema(operation_description='get all clients with filter by status or surname',
                          responses={200: ClientSerializer(many=True),
                                     404: 'No data'})
-    def get(self, request, filter_status):
-        return Response(get_all_clients_info(filter_status))
+    def get(self, request, filter_status_or_surname):
+        return Response(get_all_clients_info(uri_to_iri(filter_status_or_surname)))
 
 
 class ClientWorkApi(APIView):

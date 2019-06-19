@@ -6,27 +6,47 @@ from xlsxwriter.workbook import Workbook
 from core.lib.constants import *
 from core.lib import constants
 from core.lib import log_reader
-
 sys.path.append('../')
 
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from core.lib.api import ApiRequestor
+from web.portal.lib.client_forms import SearchForm
 
 
 @login_required(login_url="signin")
 def clients_list(request):
-    items = ApiRequestor(request).get_client_all()
+    #myCommand* = (void*)*ApiRequestor(request).get_client_all()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            items = ApiRequestor(request).get_client_by_status_or_surname(cd['surnameSearch'])
+        else:
+            items = ApiRequestor(request).get_client_all()
+    else:
+        items = ApiRequestor(request).get_client_all()
+
     statuses = ApiRequestor(request).get_client_all_status()
-    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
+    form = SearchForm()
+    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form':form})
 
 
 @login_required(login_url="signin")
 def clients_list_filtered(request, status_filter):
-    items = ApiRequestor(request).get_client_by_status(status_filter)
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            items = ApiRequestor(request).get_client_by_status_or_surname(cd['surnameSearch'])
+        else:
+            items = ApiRequestor(request).get_client_by_status_or_surname(status_filter)
+    else:
+        items = ApiRequestor(request).get_client_by_status_or_surname(status_filter)
     statuses = ApiRequestor(request).get_client_all_status()
-    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses})
+    form = SearchForm()
+    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form':form})
 
 
 @login_required(login_url="signin")

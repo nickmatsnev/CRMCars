@@ -15,6 +15,14 @@
     {% status_menu statuses %}
     </div>
 
+<div style="width:100%; text-align: center;">
+<form class="form-inline mt-2 mt-md-0 ml-4" method="POST">
+    {% csrf_token %}
+            <input id="surnameSearch" name="surnameSearch" class="form-control mr-sm-2" type="text" placeholder="Поиск по фамилии"
+                   aria-label="Поиск по фамилии">
+            <button class="btn btn-outline my-2 my-sm-0" type="submit">Поиск</button>
+        </form>
+</div>
 
     <br/>
     {% for item in items %}

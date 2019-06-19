@@ -9,6 +9,7 @@ import os
 import django
 import sys
 
+from django.utils.encoding import iri_to_uri
 sys.path.append('../../')
 sys.path.append('../../web')
 
@@ -210,16 +211,16 @@ class ApiRequestor:
         path = URL_MAIN_CLIENT
         return self.__get(path)
 
+    def get_client_by_status_or_surname(self,status_or_surname):
+        path = iri_to_uri(URL_MAIN_CLIENT + status_or_surname + '/')
+        return self.__get(path)
+
     def get_client_all_status(self):
         path = URL_MAIN_CLIENT + URL_CLIENT_METHOD_STATUS
         statuses = self.__get(path)
         statuses['data'].pop('scoring_stopfactors_failed',None)
         statuses['data'].pop('scoring_validate_failed', None)
         return statuses
-
-    def get_client_by_status(self, status):
-        path = URL_MAIN_CLIENT + status + '/'
-        return self.__get(path)
 
     ###     PRODUCTS     ###
     def post_product(self, data):
