@@ -41,7 +41,7 @@ try:
     json_data = json.dumps({"name": "Willz", "primary_scoring": 9, "other_scoring": 9})
     ApiRequestor().post_product(json_data)
     print('uploading clients')
-    excel_to_request.do_import(5)
+    excel_to_request.do_import(12)
 
 
 
