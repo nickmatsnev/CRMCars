@@ -10,12 +10,13 @@
 {% block content %}
 
     {% load status_menu %}
-    <h1>Список клиентов</h1>
+    <h1>Список заявок</h1>
+    <br/>
     <div style="width:100%; text-align: center;">
     {% status_menu statuses %}
     </div>
 
-<div style="width:100%; text-align: center;">
+    <div style="width:100%; margin-left:40%;margin-top:5px;">
 <form class="form-inline mt-2 mt-md-0 ml-4" method="POST">
     {% csrf_token %}
             <input id="surnameSearch" name="surnameSearch" class="form-control mr-sm-2" type="text" placeholder="Поиск по фамилии"
@@ -27,7 +28,7 @@
     <br/>
     {% for item in items %}
         <h4 class="panel-title">Заявка #{{ item.id }}</h4>
-        <h4>{{ item.created_at }}, ID: {{ item.willz_external_id }}, Продукт: {{ item.product }}</h4>
+        <h4>{{ item.created_at }}</h4>
                 <table style="border: solid 2px black" class="table table-bordered">
 
                     <tr>

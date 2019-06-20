@@ -19,3 +19,8 @@ p strong {
     font-size: 14pt;
 }
 
+.navbar-light .navbar-nav .nav-link,
+.navbar-nav .dropdown-item {
+    font-size: 13pt;
+}
+
