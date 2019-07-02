@@ -99,7 +99,13 @@
                                             <a class="dropdown-item" href="{% url "parameters_list" %}">Справочник
                                                 полей</a>
                                     <a class="dropdown-item" href="{% url "worker_logs" %}">Логи</a>
+
                                         </div>
+                            </li>
+
+                        <li class="nav-item">
+                               <a class="nav-link {% if "upload_client_manually" in request.path %}active{% endif %}"
+                                  href="{% url "upload_client_manually" %}">Создать клиента</a>
                             </li>
 
                             <li class="nav-item">

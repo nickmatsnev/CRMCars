@@ -8,7 +8,7 @@ from core.lib import constants
 from core.lib import log_reader
 sys.path.append('../')
 
-
+from portal.controllers.forms import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import *
 from core.lib.api import ApiRequestor
@@ -125,4 +125,21 @@ def worker_logs(request):
     logs_scoring = log_reader.read_log(constants.SCORING_PROCESSOR_NAME)
 
     return render(request, "concrete/logs.html", {"logs_client": logs_client, "logs_parser": logs_parser,
-                                                  "logs_scoring": logs_scoring, "logs_sources": logs_sources});
+                                                  "logs_scoring": logs_scoring, "logs_sources": logs_sources})
+
+
+@login_required(login_url="signin")
+def upload_client_manually(request):
+    if request.method == 'POST':
+        form = UploadClientForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+           # items = ApiRequestor(request).get_client_by_status_or_surname(cd['surnameSearch'])
+            return HttpResponse('OK')
+
+        return HttpResponse(f'Error {form.errors}')
+    else:
+        form = UploadClientForm()
+
+    return render(request, "concrete/forms/upload_client.html",{'form': form})
+

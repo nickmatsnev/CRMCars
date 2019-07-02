@@ -42,3 +42,31 @@ class SignUpForm(UserCreationForm):
 
 class UploadFileForm(forms.Form):
     file = forms.FileField()
+
+
+class UploadClientForm(forms.Form):
+    willz_external_id = forms.IntegerField()
+    individual_willz_external_id  = forms.IntegerField()
+    last_name = forms.CharField(max_length=30)
+    first_name = forms.CharField(max_length=30)
+    middle_name = forms.CharField(max_length=30)
+    email = forms.EmailField()
+    phone = forms.CharField(max_length=15)
+    gender = forms.CharField(max_length=10)
+    birthday = forms.DateField()
+
+    passport_number = forms.CharField(max_length=20)
+    passport_issued_at = forms.DateField()
+    passport_issued_by = forms.CharField(max_length=50)
+    passport_address_registration = forms.CharField(max_length=50)
+    passport_division_code = forms.CharField(max_length=10)
+    passport_birthplace = forms.CharField(max_length=30)
+    passport_image_1 = forms.FileField()
+    passport_image_2 = forms.FileField()
+    passport_image_3 = forms.FileField()
+    passport_image_4 = forms.FileField()
+
+    driver_license_number = forms.CharField(max_length=10)
+    driver_license_issued_at = forms.DateField()
+    driver_license_image_1 = forms.FileField()
+    driver_license_image_2 = forms.FileField()

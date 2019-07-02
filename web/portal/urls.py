@@ -139,7 +139,7 @@ urlpatterns = [
     path(f'{NAME_PRODUCT_NEW}/', product_new, name=NAME_PRODUCT_NEW),
 
     path(f'{NAME_UPLOAD_MODULE}/' + r'<slug:module_type>/', upload_module, name=NAME_UPLOAD_MODULE),
-
+    path(f'{NAME_UPLOAD_CLIENT_MANUALLY}/', upload_client_manually, name=NAME_UPLOAD_CLIENT_MANUALLY),
 ]
 
 urlpatterns += static(settings.STATIC_URL, view=never_cache(serve))
