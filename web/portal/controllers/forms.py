@@ -45,8 +45,6 @@ class UploadFileForm(forms.Form):
 
 
 class UploadClientForm(forms.Form):
-    willz_external_id = forms.IntegerField()
-    individual_willz_external_id  = forms.IntegerField()
     last_name = forms.CharField(max_length=30)
     first_name = forms.CharField(max_length=30)
     middle_name = forms.CharField(max_length=30)
