@@ -100,14 +100,14 @@
 <div class="panel-heading">
     <p><strong>Сканы документов</strong></p>
   </div>
-
+{% load static %}
 
         <table border="1" bgcolor="#FFFFFF" bordercolor="#FFFFFF" class="scoring">
     <tr>
     {% for item in individual.passport.images %}
             <td>
                 <img class="zoomTarget img-custom" style="height: 100px; width: 100px"
-                     src="{{ item.url }}" alt=""/>
+                     src="{{ item.url }}" onerror="this.onerror=null; this.src='{% static item.url  %}'" alt=""/>
 
             </td>
 
@@ -117,7 +117,7 @@
         {% for item in individual.driver_license.images %}
             <td>
                 <img class="img-custom" style="height: 100px; width: 100px"
-                     src="{{ item.url }}" alt=""/>
+                     src="{{ item.url }}" onerror="this.onerror=null; this.src='{% static item.url  %}'" alt=""/>
             </td>
 
 

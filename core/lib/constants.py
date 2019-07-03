@@ -46,6 +46,7 @@ PATH_TO_SOURCE_MODULES = "../../core/sources/"
 CLIENT_PROCESSOR_SUCCESS = " client is processed"
 CLIENT_PROCESSOR_NOT_SUCCESS = " client is not processed"
 CLIENT_PROCESSOR_WILLZ_SUCCESS = "Клиент загружен из системы WillZ"
+CLIENT_PROCESSOR_MANUAL_SUCCESS = "Клиент создан в ручном режиме через портал"
 
 PARSER_PROCESSOR_SUCCESS = "Обработаны данные от источника: "
 PARSER_PROCESSOR_ERR_MODULE_NAME = 'Error: no module with requested name: '

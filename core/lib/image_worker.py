@@ -2,7 +2,7 @@ from datetime import datetime
 from django.conf import settings
 import hashlib
 import os
-
+from portal.settings import STATICFILES_DIRS
 
 def __get_hex_name(file_name, user_id):
     name = f'{user_id}{datetime.now().strftime("%d.%m.%Y_%H:%M:%S")}{file_name}'
@@ -14,7 +14,7 @@ def __get_hex_name(file_name, user_id):
 def __save_file(file, path, hex_name):
     filename, file_extension = os.path.splitext(file.name)
 
-    full_path = f'D:\\static\\{path}'
+    full_path = f'{STATICFILES_DIRS[0]}\\{path}'
     if not os.path.exists(full_path):
         os.makedirs(full_path)
 
@@ -24,11 +24,11 @@ def __save_file(file, path, hex_name):
         for chunk in file.chunks():
             destination.write(chunk)
 
-    return f'{path}\\{hex_name}{file_extension}'
+    return f'{path}/{hex_name}{file_extension}'
 
 
 def save_photo(file, user_id):
     hex_name = __get_hex_name(file.name, user_id)
-    path =  'users\\photos'
+    path = 'images'
     return __save_file(file, path, hex_name)
 
