@@ -352,7 +352,8 @@ def validate(individual_json, source_json):
     if scorista_res.loc['FIO'].value.lower().find(individual_json['middle_name'].lower()) < 0:
         errors.append({'decription': 'Отчество не совпадает с источником (Скориста)'})
 
-    if individual_json['passport']['number'] != scorista_res.loc['Passport'].value:
+    pass_num = '{0} {1}'.format(individual_json['passport']['SN_serial'],individual_json['passport']['SN_number'])
+    if pass_num != scorista_res.loc['Passport'].value:
         errors.append({'decription': 'Серия и номер паспорта не совпадают с источником (Скориста)'})
     if individual_json['driver_license']['number'] != scorista_res.loc['License'].value:
         errors.append({'decription': 'Серия и номер ВУ не совпадают с источником (Скориста)'})

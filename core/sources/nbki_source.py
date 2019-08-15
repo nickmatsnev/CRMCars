@@ -45,8 +45,8 @@ def import_data(credentials_json, individual_json, parsers_data):
     '''.format(username, password, individual_json["last_name"], individual_json["first_name"],
                individual_json["middle_name"],
                individual_json["birthday"],
-               individual_json["passport"]["number"][4:],
-               individual_json["passport"]["number"][0:4],
+               individual_json["passport"]["SN_serial"],
+               individual_json["passport"]["SN_number"],
                individual_json["passport"]["issued_at"],
                )
 
