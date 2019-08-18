@@ -39,7 +39,13 @@ urlpatterns = [
     path(f'/{NAME_CURRENT_GENERATION}/',         api_individual.CurGenApi.as_view()),
     path(f'/{NAME_CURRENT_GENERATION}/{NAME_STATE}/',         api_individual.CurGenStateApi.as_view()),
     path(f'/{NAME_GENERATIONS}/',         api_individual.GenApi.as_view()),
-    path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_ADD_ACTION}/',         api_individual.AddActionApi.as_view()),
+
+    path('/' + NAME_UPDATE_DADATA + '/', api_individual.UpdateDaDataApi.as_view()),
+    path('/' + NAME_UPDATE_SCORISTA + '/', api_individual.UpdateScoristaApi.as_view()),
+
+    path(r'/<slug:gen_id_or_cur_gen>/' + NAME_ADD_ACTION + '/',         api_individual.AddActionApi.as_view()),
+
+
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_PARSER}/{NAME_VALUES}/',         api_module.GetAllParserValuesAPI.as_view()),
 
     path(r'/<slug:gen_id_or_cur_gen>/' + f'{NAME_DATA}/{NAME_SCORING}/' + r'<slug:module_name>/' + f'{NAME_SCORE}/',         api_module.GetScoringAPI.as_view()),

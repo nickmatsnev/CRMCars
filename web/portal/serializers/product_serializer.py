@@ -22,3 +22,6 @@ class ProductGetSerializer(serializers.ModelSerializer):
 class ProductUpdateSerializer(serializers.Serializer):
     product = serializers.CharField(max_length=30)
 
+
+class ContentUpdateSerializer(serializers.Serializer):
+    raw_content = serializers.CharField(max_length=None)

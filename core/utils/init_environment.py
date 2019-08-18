@@ -12,6 +12,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.portal.settings')
 django.setup()
 
 from core.utils import excel_to_request
+from core.utils import excel_to_request_special
+
 from core.lib.api import ApiRequestor
 from core.lib import constants
 
@@ -41,8 +43,8 @@ try:
     json_data = json.dumps({"name": "Willz", "primary_scoring": 9, "other_scoring": 9})
     ApiRequestor().post_product(json_data)
     print('uploading clients')
-    excel_to_request.do_import(12)
-
+   # excel_to_request.do_import(3)
+    excel_to_request_special.do_import(0)
 
 
 

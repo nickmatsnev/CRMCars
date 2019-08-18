@@ -94,3 +94,4 @@ class UpdateProductApi(APIView):
     def post(self, request, id):
         return update_product(request.data, id)
 
+

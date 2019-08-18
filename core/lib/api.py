@@ -325,3 +325,23 @@ class ApiRequestor:
     def post_new_client(self, client_json):
         return self.__post(URL_MAIN_WILLZ+NAME_NEW+'/', client_json)
 
+
+
+    ### DADATA  ###
+    def get_dadata(self,address):
+        _dadata_url = 'https://dadata.ru/api/v2/clean/address'
+        _dadata_headers = {'Authorization': 'Token ef91370eac05b4a8a7b7b92695a31eab3ac14386', 'Content-Type':'application/json','X-Secret':'e419b256dd837749f7c79c8a9ec8247664d46c36'}
+        my_body = []
+        my_body.append(address)
+        print("API_requestor:{0}".format(_dadata_url))
+        response = requests.post(_dadata_url, data=json.dumps(my_body), headers=_dadata_headers)
+        print("API_result:{0}".format(response.status_code))
+        return json.loads(response.content.decode('utf-8'))
+
+
+    def post_dadata(self,id,data):
+        body = {}
+        body['raw_content'] = json.dumps(data)
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + '/' + NAME_UPDATE_DADATA + '/'
+        return self.__post(path,json.dumps(body))
+

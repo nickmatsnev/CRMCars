@@ -30,17 +30,23 @@ def convert(willz_json_data):
             images.append(image)
 
         pass_SN = get_splited_passport(drvr['passport']['number'])
-        pass_adr = get_converted_address(drvr['passport']['address_registration'])
+        #pass_adr = get_converted_address(drvr['passport']['address_registration'])
+
+        #passport = {'SN_serial': pass_SN.SN_serial,'SN_number': pass_SN.SN_number
+        #    , 'issued_at': date_converter(drvr['passport']['issued_at']),
+        #            'issued_by': drvr['passport']['issued_by']
+        #    , 'reg_index' : pass_adr.index, 'reg_obl': pass_adr.oblast
+        #, 'reg_city': pass_adr.city, 'reg_street': pass_adr.street
+        #, 'reg_house': pass_adr.house, 'reg_building': pass_adr.building
+        #, 'reg_flat': pass_adr.flat, 'reg_kladrID': pass_adr.kladr
+         #   , 'division_code': drvr['passport']['division_code'],'birth_region':'',
+          #          'birth_city': drvr['passport']['birthplace'], 'images': images}
 
         passport = {'SN_serial': pass_SN.SN_serial,'SN_number': pass_SN.SN_number
-            , 'issued_at': date_converter(drvr['passport']['issued_at']),
-                    'issued_by': drvr['passport']['issued_by']
-            , 'reg_index' : pass_adr.index, 'reg_obl': pass_adr.oblast
-        , 'reg_city': pass_adr.city, 'reg_street': pass_adr.street
-        , 'reg_house': pass_adr.house, 'reg_building': pass_adr.building
-        , 'reg_flat': pass_adr.flat, 'reg_kladrID': pass_adr.kladr
-            , 'division_code': drvr['passport']['division_code'],'birth_region':'',
-                    'birth_city': drvr['passport']['birthplace'], 'images': images}
+            , 'issued_at': drvr['passport']['issued_at'], 'issued_by': drvr['passport']['issued_by']
+            , 'address_registration': drvr['passport']['address_registration']
+            , 'division_code': drvr['passport']['division_code'],
+                    'birthplace': drvr['passport']['birthplace'], 'images': images}
 
         individual['passport'] = passport
 

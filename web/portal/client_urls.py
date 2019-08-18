@@ -36,5 +36,6 @@ urlpatterns = [
     path(r'<str:filter_status_or_surname>/', api_client.ClientFilterApi.as_view()),
     path(r'<int:id>/', api_client.ClientWorkApi.as_view()),
     path(r'<int:id>/' + f'{NAME_UPDATE}/', api_client.UpdateClientWorkApi.as_view()),
-    path(r'<int:id>/' + f'{NAME_UPDATE_PRODUCT}/', api_client.UpdateProductApi.as_view())
-    ]
+    path(r'<int:id>/' + f'{NAME_UPDATE_PRODUCT}/', api_client.UpdateProductApi.as_view()),
+
+]

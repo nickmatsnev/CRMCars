@@ -32,7 +32,10 @@ class Individual(models.Model):
     # gender = models.CharField(max_length=100)
     #birthday = models.DateTimeField()
     birthday = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
-
+    dadata_raw = models.TextField(null=True, blank=True)
+    dadata_isready = models.BooleanField(default=False)
+    scorista_raw = models.TextField(null=True, blank=True)
+    scorista_isready = models.BooleanField(default=False)
 
 
 class Passport(models.Model):
@@ -49,15 +52,15 @@ class Passport(models.Model):
     birth_region = models.CharField(max_length=100, null=True, blank=True)
     birth_city = models.CharField(max_length=100, null=True, blank=True)
 
-    #address_registration = models.CharField(max_length=100)
-    reg_index = models.IntegerField(default=0)
-    reg_obl = models.CharField(max_length=100)
-    reg_city = models.CharField(max_length=100)
-    reg_street = models.CharField(max_length=100, null=True,blank=True)
-    reg_house = models.CharField(max_length=100, null=True,blank=True)
-    reg_building = models.CharField(max_length=100, null=True,blank=True)
-    reg_flat = models.CharField(max_length=100, null=True,blank=True)
-    reg_kladrID = models.CharField(max_length=100, null=True,blank=True)
+    address_registration = models.CharField(max_length=100)
+    #reg_index = models.IntegerField(default=0)
+    #reg_obl = models.CharField(max_length=100)
+    #reg_city = models.CharField(max_length=100)
+    #reg_street = models.CharField(max_length=100, null=True,blank=True)
+    #reg_house = models.CharField(max_length=100, null=True,blank=True)
+    #reg_building = models.CharField(max_length=100, null=True,blank=True)
+    #reg_flat = models.CharField(max_length=100, null=True,blank=True)
+    #reg_kladrID = models.CharField(max_length=100, null=True,blank=True)
 
 class DriverLicense(models.Model):
     individual = models.OneToOneField(Individual, related_name='driver_license', on_delete=models.CASCADE)

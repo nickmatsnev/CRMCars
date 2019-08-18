@@ -48,7 +48,8 @@ class ClientProcessor(BasicProcess):
                     self._apiRequestor.add_action(individual['id'], NAME_NEW, self.get_name(),
                                                   payload=CLIENT_PROCESSOR_WILLZ_SUCCESS)
 
-
+                    dadata = self._apiRequestor.get_dadata(individual['passport']['address_registration'])
+                    self._apiRequestor.post_dadata(individual['id'],dadata)
                 print(CLIENT_PROCESSOR_SUCCESS)
 
             except:
