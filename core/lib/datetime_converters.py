@@ -1,12 +1,14 @@
 from datetime import datetime
 from core.lib.constants import BASE_DATE
-
+from core.lib.constants import BASE_DATETIME
 
 def datetime_converter(input):
     if input is None:
-        ret = datetime.now()
+        my_datetime = BASE_DATETIME
     else:
-        ret = datetime.strptime(input, '%Y-%m-%d %H:%M:%S')
+        my_datetime = input
+
+    ret = datetime.strptime(my_datetime, '%Y-%m-%d %H:%M:%S')
 
     return ret.__str__()
 

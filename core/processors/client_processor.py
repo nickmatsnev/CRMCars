@@ -30,13 +30,14 @@ class ClientProcessor(BasicProcess):
             raw_client_id = input_message['raw_client_id']
 
             raw_data = self._apiRequestor.get_raw_willz(raw_client_id)
-            # парсим payload виллзовский
-            raw_json = json.loads(raw_data['payload'])
-
-            new_client = willz_to_client.convert(raw_json)
-            json_data = json.dumps(new_client)
-
             try:
+                # парсим payload виллзовский
+                raw_json = json.loads(raw_data['payload'])
+
+                new_client = willz_to_client.convert(raw_json)
+                json_data = json.dumps(new_client)
+
+
                 client = self._apiRequestor.get_client_from_raw_willz(json_data)
 
                 client_id = client['id']

@@ -10,7 +10,7 @@ from core.lib.global_settings import *
 from core.lib.api import ApiRequestor
 from core.lib.datetime_converters import *
 
-NEW_EXCEL_PATH = "../test_data/test_users.xlsx"
+NEW_EXCEL_PATH = "../test_data/test.xlsx"
 
 
 # Номера столбцов
@@ -52,7 +52,7 @@ def do_import(limit=0):
         willz_client['lastname'] = row[COL_LASTNAME - 1]
         willz_client['firstname'] = row[COL_FIRSTNAME - 1]
         willz_client['middlename'] = row[COL_MIDDLENAME - 1]
-        willz_client['email'] = ""
+        willz_client['email'] = "blank@blank.com"
 
         if row[COL_GENDER - 1] == 'Женский':
             gender = 2
@@ -60,7 +60,8 @@ def do_import(limit=0):
             gender = 1
         willz_client['gender_id'] = gender
         willz_client['gender'] = row[COL_GENDER - 1]
-        willz_client['birthday'] = row[COL_BIRTHDAY - 1]
+
+        willz_client['birthday'] = date_converter(row[COL_BIRTHDAY - 1])
         willz_client['communication'] = ""
         willz_client['phone_confirm'] = ""
         willz_client['welcome'] = ""
@@ -91,7 +92,7 @@ def do_import(limit=0):
         my_passport['image4_url'] = ""
 
         my_passport['number'] = row[COL_PASSPORT_NUMBER - 1]
-        my_passport['issued_at'] = row[COL_PASSPORT_ISSUED_AT - 1]
+        my_passport['issued_at'] = date_converter(row[COL_PASSPORT_ISSUED_AT - 1])
         my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY - 1]
         my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
         my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
@@ -107,7 +108,7 @@ def do_import(limit=0):
         driver['lastname'] = row[COL_LASTNAME - 1]
         driver['firstname'] = row[COL_FIRSTNAME - 1]
         driver['middlename'] = row[COL_MIDDLENAME - 1]
-        driver['email'] = ""
+        driver['email'] = "blank@blank.com"
         driver['phone'] = row[COL_PHONE - 1]
         driver['gender_id'] = gender
         driver['gender'] = gender
@@ -133,8 +134,8 @@ def do_import(limit=0):
         my_passport['image4_confirm'] = ""
         my_passport['image4_url'] = ""
 
-        my_passport['number'] = str(row[COL_PASSPORT_NUMBER - 1]).replace(" ", "")
-        my_passport['issued_at'] = date_converter(row[COL_PASSPORT_ISSUED_AT - 1])
+        my_passport['number'] = str(row[COL_PASSPORT_SERIAL - 1]).replace(" ", "") +' '+ str(row[COL_PASSPORT_NUMBER - 1]).replace(" ", "")
+        my_passport['issued_at'] = date_converter(row[COL_PASSPORT_ISSUED_AT - 1].replace('/', '.'))
         my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY - 1]
         my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
         my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
@@ -155,8 +156,8 @@ def do_import(limit=0):
         driver_license['image2_url'] = ""
 
         driver_license['number'] = "0000000000"
-        driver_license['issued_at'] = ""
-        driver_license['finished_at'] = ""
+        driver_license['issued_at'] = date_converter(None)
+        driver_license['finished_at'] = date_converter(None)
         driver_license['created_at'] = date_converter(None)
         driver['driver_license'] = driver_license
 

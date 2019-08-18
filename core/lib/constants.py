@@ -3,6 +3,7 @@
 from os.path import expanduser
 
 BASE_DATE = "01.01.1900"
+BASE_DATETIME = "1900-01-01 00:00:01"
 
 MAIN_EXCHANGE_NAME = "main"
 
