@@ -131,6 +131,23 @@ class UpdateDaDataApi(APIView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+class UpdateDaDataBirthplaceApi(APIView):
+    @swagger_auto_schema(operation_description='update dadata birthplace',
+                         request_body=ContentUpdateSerializer,
+                         responses={200: ContentUpdateSerializer,
+                                    404: 'No data'})
+    def post(self, request, pk):
+        serializer = ContentUpdateSerializer(data=request.data)
+        if serializer.is_valid():
+            individual = Individual.objects.get(id=pk)
+            individual.dadata_birthplace_raw = json.dumps(serializer.data['raw_content'])
+            individual.dadata_birthplace_isready = True
+            individual.save()
+            individual_serializer = IndividualGetSerializer(individual)
+            return Response(status=status.HTTP_202_ACCEPTED, data=individual_serializer.data)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 class UpdateScoristaApi(APIView):
     @swagger_auto_schema(operation_description='update scorista',
                          request_body=ContentUpdateSerializer,

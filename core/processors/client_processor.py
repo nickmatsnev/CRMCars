@@ -51,6 +51,9 @@ class ClientProcessor(BasicProcess):
 
                     dadata = self._apiRequestor.get_dadata(individual['passport']['address_registration'])
                     self._apiRequestor.post_dadata(individual['id'],dadata)
+
+                    dadata_birthplace = self._apiRequestor.get_dadata(individual['passport']['birthplace'])
+                    self._apiRequestor.post_dadata_birthplace(individual['id'], dadata_birthplace)
                 print(CLIENT_PROCESSOR_SUCCESS)
 
             except:

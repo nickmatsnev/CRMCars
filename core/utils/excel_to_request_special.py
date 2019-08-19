@@ -139,7 +139,13 @@ def do_import(limit=0):
         my_passport['issued_by'] = row[COL_PASSPORT_ISSUED_BY - 1]
         my_passport['address_registration'] = row[COL_PASSPORT_ADDRESS_REGISTRATION - 1]
         my_passport['division_code'] = row[COL_PASSPORT_DIVISION_CODE - 1]
-        my_passport['birthplace'] = row[COL_PASSPORT_BIRTHPLACE - 1]
+
+        if row[COL_PASSPORT_BIRTHPLACE_REG-1] != "":
+            birthplace = row[COL_PASSPORT_BIRTHPLACE_REG-1] + ', ' + row[COL_PASSPORT_BIRTHPLACE - 1]
+        else:
+            birthplace = row[COL_PASSPORT_BIRTHPLACE - 1]
+        my_passport['birthplace'] = birthplace
+
         my_passport['created_at'] = date_converter(None)
         driver['passport'] = my_passport
 

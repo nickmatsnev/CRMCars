@@ -345,3 +345,9 @@ class ApiRequestor:
         path = URL_MAIN_INDIVIDUAL + f'{id}' + '/' + NAME_UPDATE_DADATA + '/'
         return self.__post(path,json.dumps(body))
 
+
+    def post_dadata_birthplace(self,id,data):
+        body = {}
+        body['raw_content'] = json.dumps(data)
+        path = URL_MAIN_INDIVIDUAL + f'{id}' + '/' + NAME_UPDATE_DADATA_BIRTHPLACE + '/'
+        return self.__post(path,json.dumps(body))

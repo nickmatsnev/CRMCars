@@ -18,7 +18,7 @@ class PassportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Passport
-        fields =  ('issued_at', 'issued_by', 'division_code','SN_serial','SN_number','birth_region','birth_city',
+        fields =  ('issued_at', 'issued_by', 'division_code','SN_serial','SN_number','birthplace',
                    'address_registration', 'images')
 
 
@@ -92,7 +92,7 @@ class IndividualGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Individual
-        fields = ('id','willz_external_id','dadata_raw','dadata_isready','scorista_raw','scorista_isready','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone',
+        fields = ('id','willz_external_id','dadata_raw','dadata_isready','dadata_birthplace_raw','dadata_birthplace_isready','scorista_raw','scorista_isready','primary', 'last_name', 'first_name', 'middle_name', 'email', 'phone',
                   'gender','birthday', 'passport', 'driver_license')
 
 

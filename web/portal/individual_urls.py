@@ -41,6 +41,7 @@ urlpatterns = [
     path(f'/{NAME_GENERATIONS}/',         api_individual.GenApi.as_view()),
 
     path('/' + NAME_UPDATE_DADATA + '/', api_individual.UpdateDaDataApi.as_view()),
+    path('/' + NAME_UPDATE_DADATA_BIRTHPLACE + '/', api_individual.UpdateDaDataBirthplaceApi.as_view()),
     path('/' + NAME_UPDATE_SCORISTA + '/', api_individual.UpdateScoristaApi.as_view()),
 
     path(r'/<slug:gen_id_or_cur_gen>/' + NAME_ADD_ACTION + '/',         api_individual.AddActionApi.as_view()),

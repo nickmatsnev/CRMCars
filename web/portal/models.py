@@ -34,6 +34,8 @@ class Individual(models.Model):
     birthday = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
     dadata_raw = models.TextField(null=True, blank=True)
     dadata_isready = models.BooleanField(default=False)
+    dadata_birthplace_raw = models.TextField(null=True, blank=True)
+    dadata_birthplace_isready = models.BooleanField(default=False)
     scorista_raw = models.TextField(null=True, blank=True)
     scorista_isready = models.BooleanField(default=False)
 
@@ -48,9 +50,9 @@ class Passport(models.Model):
     issued_at = models.DateField(default=datetime.strptime(BASE_DATE, "%m.%d.%Y").date(), blank=True)
     issued_by = models.TextField()
     division_code = models.CharField(max_length=100, null=True,blank=True)
-    #birthplace = models.CharField(max_length=100, null=True,blank=True)
-    birth_region = models.CharField(max_length=100, null=True, blank=True)
-    birth_city = models.CharField(max_length=100, null=True, blank=True)
+    birthplace = models.CharField(max_length=100, null=True,blank=True)
+    #birth_region = models.CharField(max_length=100, null=True, blank=True)
+    #birth_city = models.CharField(max_length=100, null=True, blank=True)
 
     address_registration = models.CharField(max_length=100)
     #reg_index = models.IntegerField(default=0)
