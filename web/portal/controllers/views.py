@@ -18,6 +18,7 @@ from core.lib.api import ApiRequestor
 from web.portal.lib.client_forms import SearchForm
 from web.portal.templatetags import gender_filter
 from core.lib.datetime_converters import date_converter
+from core.lib.scorista_converter import get_splited_passport
 
 @login_required(login_url="signin")
 def clients_list(request):
@@ -157,7 +158,11 @@ def upload_client_manually(request):
             individual['birthday'] = cd['birthday'].__str__()
 
             passport = {}
-            passport['number'] = cd['passport_number']
+
+            pass_num = get_splited_passport(cd['passport_number'])
+            passport['SN_serial'] = pass_num.SN_serial
+            passport['SN_number'] = pass_num.SN_number
+
             passport['issued_at'] = cd['passport_issued_at'].__str__()
             passport['issued_by'] = cd['passport_issued_by']
             passport['address_registration'] = cd['passport_address_registration']
@@ -186,7 +191,7 @@ def upload_client_manually(request):
             for x in range(1, 3):
                 image = {}
                 image['title'] = 'manual'
-                if f'passport_image_{x}' in request.FILES:
+                if f'driver_license_image_{x}' in request.FILES:
                     path = save_photo(request.FILES[f'driver_license_image_{x}'], request.user.id)
                 else:
                     path = ""
@@ -211,7 +216,16 @@ def upload_client_manually(request):
                 ApiRequestor(request).add_action(individual['id'], NAME_NEW, request.user.username,
                                                  payload=CLIENT_PROCESSOR_MANUAL_SUCCESS)
 
-            return redirect('/' + NAME_CLIENTS_LIST + NAME_HTML)
+                try:
+                    dadata = ApiRequestor(request).get_dadata(individual['passport']['address_registration'])
+                    ApiRequestor(request).post_dadata(individual['id'], dadata)
+
+                    dadata_birthplace =ApiRequestor(request).get_dadata(individual['passport']['birthplace'])
+                    ApiRequestor(request).post_dadata_birthplace(individual['id'], dadata_birthplace)
+                    return redirect('/' + NAME_CLIENTS_LIST + NAME_HTML)
+                except Exception as e:
+                    return HttpResponse(f'Error {e.__str__()}')
+
 
         return HttpResponse(f'Error {form.errors}')
 
