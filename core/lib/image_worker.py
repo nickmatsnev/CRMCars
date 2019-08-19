@@ -14,17 +14,17 @@ def __get_hex_name(file_name, user_id):
 def __save_file(file, path, hex_name):
     filename, file_extension = os.path.splitext(file.name)
 
-    full_path = f'{STATICFILES_DIRS[0]}\\{path}'
+    full_path = os.path.join(STATICFILES_DIRS[0], path)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
 
-    full_file_path = f'{full_path}\\{hex_name}{file_extension}'
+    full_file_path = os.path.join(full_path,hex_name+file_extension)
 
     with open(full_file_path, 'wb+') as destination:
         for chunk in file.chunks():
             destination.write(chunk)
 
-    return f'{path}/{hex_name}{file_extension}'
+    return os.path.join(path,hex_name+file_extension)
 
 
 def save_photo(file, user_id):

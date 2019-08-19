@@ -21,7 +21,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="lastName">Фамилия</label>
                     <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Фамилия"
-                           value="{{ form.last_name.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="firstName">Имя</label>
                     <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Имя"
-                           value="{{ form.first_name.value|default_if_none:"" }}"
+                           value=""
                            required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
@@ -38,7 +38,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="middleName">Отчество</label>
                     <input type="text" class="form-control" id="middleName" name="middle_name" placeholder="Отчество"
-                           value="{{ form.middle_name.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -50,14 +50,15 @@
                 <div class="col-md-3 mb-3">
                     <label for="email">Электронная почта</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com"
-                           value="{{ form.email.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="phone">Телефон</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="" value="{{ form.phone.value|default_if_none:"" }}"
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder=""
+                           value=""
                            required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
@@ -66,7 +67,7 @@
                 <div class="col-md-3 mb-3">
                     <label for="gender">Пол</label>
                     <select class="custom-select d-block w-100" id="gender" name="gender" required="">
-                        <option value="{{ form.gender.value|default_if_none:"Женский" }}">Женский</option>
+                        <option value="">Женский</option>
                         <option>Мужской</option>
                     </select>
                     <div class="invalid-feedback">
@@ -76,7 +77,7 @@
                 <div class="col-md-3 mb-3">
                     <label for="birthday">Дата рождения</label>
                     <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Отчество"
-                           value="{{ form.birthday.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -89,7 +90,7 @@
                     <label for="passportNumber">Номер паспорта</label>
                     <input type="text" class="form-control" id="passportNumber" name="passport_number"
                            placeholder="0000 000000"
-                           value="{{ form.passport_number.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -99,7 +100,7 @@
                     <label for="passportIssuedAt">Паспорт выдан (когда)</label>
                     <input type="date" class="form-control" id="passportIssuedAt" name="passport_issued_at"
                            placeholder=""
-                           value="{{ form.passport_issued_at.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -109,7 +110,7 @@
                     <label for="passportIssuedBy">Паспорт выдан (Кем)</label>
                     <input type="text" class="form-control" id="passportIssuedBy" name="passport_issued_by"
                            placeholder="Паспорт выдан (Кем)"
-                           value="{{ form.passport_issued_by.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -119,8 +120,9 @@
                 <div class="col-md-4 mb-3">
                     <label for="passportAddressRegistration">Адрес регистрации</label>
                     <input type="text" class="form-control" id="passportAddressRegistration"
-                           name="passport_address_registration" placeholder="000000, Х обл., д. Х, ул. Х, к.0, д.0, кв.0"
-                           value="{{ form.passport_address_registration.value|default_if_none:"" }}" required="">
+                           name="passport_address_registration"
+                           placeholder="000000, Х обл., д. Х, ул. Х, к.0, д.0, кв.0"
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -130,7 +132,7 @@
                     <label for="passportDivisionCode">Код подразделения</label>
                     <input type="text" class="form-control" id="passportDivisionCode" name="passport_division_code"
                            placeholder="Код подразделения"
-                           value="{{ form.passport_division_code.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -147,68 +149,91 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
-                    <input type="hidden" name="passport_image_1_url" value="{% if form.passport_image_1_url.initial %}{{ form.initial.passport_image_1_url }}{% else %}{{ form.passport_image_1_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                   src="{% if form.passport_image_1_url.initial %}{% static form.initial.passport_image_1_url %}{% else %}{% static form.passport_image_1_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Первый разворот</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="passport_image_1"
-                               accept="image/*">
-                    </label>
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_passport_image_1" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_passport_image_1">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Первый разворот</span>
+                            <input name="passport_image_1" style="display:none" id="upload_passport_image_1"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'passport_image_1')">
+                        </label>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <input type="hidden" name="passport_image_2_url" value="{% if form.passport_image_2_url.initial %}{{ form.initial.passport_image_2_url }}{% else %}{{ form.passport_image_2_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                  src="{% if form.passport_image_2_url.initial %}{% static form.initial.passport_image_2_url %}{% else %}{% static form.passport_image_2_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Разворот с регистрацией</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="passport_image_2"
-                               accept="image/*">
-                    </label>
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_passport_image_2" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_passport_image_2">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Разворот с регистрацией</span>
+                            <input name="passport_image_2" style="display:none" id="upload_passport_image_2"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'passport_image_2')">
+                        </label>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <input type="hidden" name="passport_image_3_url" value="{% if form.passport_image_3_url.initial %}{{ form.initial.passport_image_3_url }}{% else %}{{ form.passport_image_3_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                  src="{% if form.passport_image_3_url.initial %}{% static form.initial.passport_image_3_url %}{% else %}{% static form.passport_image_3_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Селфи с паспортом</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="passport_image_3"
-                               accept="image/*">
-                    </label>
+                 <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_passport_image_3" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_passport_image_3">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Селфи с паспортом</span>
+                            <input name="passport_image_3" style="display:none" id="upload_passport_image_3"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'passport_image_3')">
+                        </label>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <input type="hidden" name="passport_image_4_url" value="{% if form.passport_image_4_url.initial %}{{ form.initial.passport_image_4_url }}{% else %}{{ form.passport_image_4_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                  src="{% if form.passport_image_4_url.initial %}{% static form.initial.passport_image_4_url %}{% else %}{% static form.passport_image_4_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>
-                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Подтверждение дохода</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="passport_image_4"
-                               accept="image/*">
-                    </label>
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_passport_image_4" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_passport_image_4">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Подтверждение дохода</span>
+                            <input name="passport_image_4" style="display:none" id="upload_passport_image_4"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'passport_image_4')">
+                        </label>
+                    </div>
                 </div>
             </div>
             <hr class="mb-4">
-        <!-- END passport -->
+            <!-- END passport -->
 
-        <!-- driver license -->
+            <!-- driver license -->
             <div class="row">
-                <div class="col-md-5 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="licenseNumber">Номер водительского удостоверения</label>
                     <input type="text" class="form-control" id="licenseNumber" name="driver_license_number"
-                           placeholder="Номер водительского удостоверенияа"
-                           value="{{ form.driver_license_number.value|default_if_none:"" }}" required="">
+                           placeholder="0000000000"
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
                 </div>
 
-                <div class="col-md-5 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="licenseIssuedAt">Когда выдано</label>
                     <input type="date" class="form-control" id="licenseIssuedAt" name="driver_license_issued_at"
                            placeholder=""
-                           value="{{ form.driver_license_issued_at.value|default_if_none:"" }}" required="">
+                           value="" required="">
                     <div class="invalid-feedback">
                         Поле обязательно для заполнения
                     </div>
@@ -216,29 +241,40 @@
 
             </div>
             <div class="row">
-                <div class="form-group col-md-5">
-                    <input type="hidden" name="driver_license_image_1_url" value="{% if form.driver_license_image_1_url.initial %}{{ form.initial.driver_license_image_1_url }}{% else %}{{ form.driver_license_image_1_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                   src="{% if form.driver_license_image_1_url.initial %}{% static form.initial.driver_license_image_1_url %}{% else %}{% static form.driver_license_image_1_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Лицевая сторона</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="driver_license_image_1"
-                               accept="image/*">
-                    </label>
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_driver_license_image_1" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_driver_license_image_1">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Лицевая сторона</span>
+                            <input name="driver_license_image_1" style="display:none" id="upload_driver_license_image_1"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'driver_license_image_1')">
+                        </label>
+                    </div>
                 </div>
-                <div class="form-group col-md-5">
-                    <input type="hidden" name="driver_license_image_2_url" value="{% if form.driver_license_image_2_url.initial %}{{ form.initial.driver_license_image_2_url }}{% else %}{{ form.driver_license_image_2_url.value|default_if_none:"images/no_pic.png" }}{% endif %}"/>
-
-                    <div class="media pb-3 "><img class="rounded align-self-start mr-3"
-                                                   src="{% if form.driver_license_image_2_url.initial %}{% static form.initial.driver_license_image_2_url %}{% else %}{% static form.driver_license_image_2_url.value|default_if_none:"images/no_pic.png" %}{% endif %}"  alt="..."></div>                    <label class="btn btn-outline-secondary btn-sm btn-block">
-                        <span>Задняя сторона</span>
-                        <input type="file" hidden onchange="this.form.submit()" name="driver_license_image_2"
-                               accept="image/*">
-                    </label>
+                <div class="col-md-3">
+                    <div class="card mb-4 box-shadow gallery">
+                        <div class="media aspect-ratio aspect-ratio-4-3">
+                            <img src="{% static 'images/no_pic.png' %}"
+                                 id="output_driver_license_image_2" alt="" class="fit-img fit-img-tight"/>
+                        </div>
+                        <label for="upload_driver_license_image_2">
+                                                    <span class="btn btn-outline-secondary btn-sm btn-block"
+                                                          aria-hidden="true">Задняя сторона</span>
+                            <input name="driver_license_image_2" style="display:none" id="upload_driver_license_image_2"
+                                   type="file"
+                                   accept="application/pdf, application/vnd.ms-excel,image/*"
+                                   multiple="" onchange="LoadFile(event,'driver_license_image_2')">
+                        </label>
+                    </div>
                 </div>
-
             </div>
-        <!-- END driver license -->
+            <!-- END driver license -->
 
             <hr class="mb-4">
 

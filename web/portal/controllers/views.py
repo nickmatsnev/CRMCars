@@ -137,87 +137,83 @@ def upload_client_manually(request):
     if request.method == 'POST':
         form = UploadClientForm(request.POST)
 
-        if len(request.FILES) != 0:
+        if form.is_valid():
+
+            cd = form.cleaned_data
+            new_client = {}
+            new_client['willz_external_id'] = 0
+            new_client['created_at'] = datetime.now().__str__()
+            individuals = []
+
+            individual = {}
+            individual['willz_external_id'] = 0
+            individual['primary'] = True
+            individual['last_name'] = cd['last_name']
+            individual['first_name'] = cd['first_name']
+            individual['middle_name'] = cd['middle_name']
+            individual['email'] = cd['email']
+            individual['phone'] = cd['phone']
+            individual['gender'] = gender_filter.gender_back_filter(cd['gender'])
+            individual['birthday'] = cd['birthday'].__str__()
+
+            passport = {}
+            passport['number'] = cd['passport_number']
+            passport['issued_at'] = cd['passport_issued_at'].__str__()
+            passport['issued_by'] = cd['passport_issued_by']
+            passport['address_registration'] = cd['passport_address_registration']
+            passport['division_code'] = cd['passport_division_code']
+            passport['birthplace'] = cd['passport_birthplace']
+
+            pass_images = []
             for x in range(1, 5):
+                image = {}
+                image['title'] = 'manual'
                 if f'passport_image_{x}' in request.FILES:
                     path = save_photo(request.FILES[f'passport_image_{x}'], request.user.id)
-                    form.initial[f'passport_image_{x}_url'] = path
+                else:
+                    path = ""
+                image['url'] = path
+                pass_images.append(image)
 
-            for y in range(1, 3):
-                if f'driver_license_image_{y}' in request.FILES:
-                    path = save_photo(request.FILES[f'driver_license_image_{y}'], request.user.id)
-                    form.initial[f'driver_license_image_{y}_url'] = path
+            passport['images'] = pass_images
+            individual['passport'] = passport
 
-        else:
-            if form.is_valid():
-                cd = form.cleaned_data
-                new_client = {}
-                new_client['willz_external_id'] = 0
-                new_client['created_at'] = datetime.now().__str__()
-                individuals = []
+            license = {}
+            license['number'] = cd['driver_license_number']
+            license['issued_at'] = cd['driver_license_issued_at'].__str__()
 
-                individual = {}
-                individual['willz_external_id'] = 0
-                individual['primary'] = True
-                individual['last_name'] = cd['last_name']
-                individual['first_name'] = cd['first_name']
-                individual['middle_name'] = cd['middle_name']
-                individual['email'] = cd['email']
-                individual['phone'] = cd['phone']
-                individual['gender'] = gender_filter.gender_back_filter(cd['gender'])
-                individual['birthday'] = cd['birthday'].__str__()
+            license_images = []
+            for x in range(1, 3):
+                image = {}
+                image['title'] = 'manual'
+                if f'passport_image_{x}' in request.FILES:
+                    path = save_photo(request.FILES[f'driver_license_image_{x}'], request.user.id)
+                else:
+                    path = ""
+                image['url'] = path
+                license_images.append(image)
 
-                passport = {}
-                passport['number'] = cd['passport_number']
-                passport['issued_at'] = cd['passport_issued_at'].__str__()
-                passport['issued_by'] = cd['passport_issued_by']
-                passport['address_registration'] = cd['passport_address_registration']
-                passport['division_code'] = cd['passport_division_code']
-                passport['birthplace'] = cd['passport_birthplace']
+            license['images'] = license_images
+            individual['driver_license'] = license
 
-                pass_images = []
-                for x in range(1,5):
-                    image = {}
-                    image['title'] = 'manual'
-                    image['url'] = cd[f'passport_image_{x}_url']
-                    pass_images.append(image)
+            individuals.append(individual)
+            new_client['individuals'] = individuals
 
-                passport['images'] = pass_images
-                individual['passport'] = passport
+            json_data = json.dumps(new_client)
+            client = ApiRequestor(request).get_client_from_raw_willz(json_data)
 
-                license = {}
-                license['number'] = cd['driver_license_number']
-                license['issued_at'] = cd['driver_license_issued_at'].__str__()
+            client_id = client['id']
 
-                license_images = []
-                for x in range(1, 3):
-                    image = {}
-                    image['title'] = 'manual'
-                    image['url'] = cd[f'driver_license_image_{x}_url']
-                    license_images.append(image)
+            json_data = json.dumps({"product": "Willz"})
+            response = ApiRequestor(request).update_client_product(client_id, json_data)
 
-                license['images'] = license_images
-                individual['driver_license'] = license
+            for individual in client['individuals']:
+                ApiRequestor(request).add_action(individual['id'], NAME_NEW, request.user.username,
+                                                 payload=CLIENT_PROCESSOR_MANUAL_SUCCESS)
 
-                individuals.append(individual)
-                new_client['individuals'] = individuals
+            return redirect('/' + NAME_CLIENTS_LIST + NAME_HTML)
 
-                json_data = json.dumps(new_client)
-                client = ApiRequestor(request).get_client_from_raw_willz(json_data)
+        return HttpResponse(f'Error {form.errors}')
 
-                client_id = client['id']
-
-                json_data = json.dumps({"product": "Willz"})
-                response = ApiRequestor(request).update_client_product(client_id, json_data)
-
-                for individual in client['individuals']:
-                    ApiRequestor(request).add_action(individual['id'], NAME_NEW, request.user.username,
-                                                  payload=CLIENT_PROCESSOR_MANUAL_SUCCESS)
-                #TODO: Куда редирект делаем???
-                return redirect('/'+NAME_CLIENTS_LIST +NAME_HTML)
-
-            return HttpResponse(f'Error {form.errors}')
-
-    else:
-        form = UploadClientForm()
+    form = UploadClientForm()
     return render(request, "concrete/forms/upload_client.html", {'form': form})
