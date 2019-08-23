@@ -53,6 +53,14 @@ class ClientApi(APIView):
         return post_client(request.data)
 
 
+class ClientPageApi(APIView):
+    @swagger_auto_schema(operation_description='get all clients',
+                         responses={200: ClientSerializer(many=True),
+                                    404: 'No data'})
+    def get(self, request, page):
+        return Response(get_all_clients_info(page=page))
+
+
 class ClientGetStatusApi(APIView):
     @swagger_auto_schema(operation_description='get all clients status' ,
                          responses={200: 'list of status and number of clients',
@@ -67,6 +75,14 @@ class ClientFilterApi(APIView):
                                     404: 'No data'})
     def get(self, request, filter_status_or_surname):
         return Response(get_all_clients_info(uri_to_iri(filter_status_or_surname)))
+
+
+class ClientFilterPageApi(APIView):
+    @swagger_auto_schema(operation_description='get all clients with filter by status or surname',
+                         responses={200: ClientSerializer(many=True),
+                                    404: 'No data'})
+    def get(self, request, filter_status_or_surname, page):
+        return Response(get_all_clients_info(uri_to_iri(filter_status_or_surname),page=page))
 
 
 class ClientWorkApi(APIView):

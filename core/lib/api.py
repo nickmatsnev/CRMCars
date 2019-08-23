@@ -211,8 +211,16 @@ class ApiRequestor:
         path = URL_MAIN_CLIENT
         return self.__get(path)
 
+    def get_client_page(self,page_number):
+        path = URL_MAIN_CLIENT + f'page{page_number}/'
+        return self.__get(path)
+
     def get_client_by_status_or_surname(self,status_or_surname):
         path = iri_to_uri(URL_MAIN_CLIENT + status_or_surname + '/')
+        return self.__get(path)
+
+    def get_client_by_status_or_surname_page(self,status_or_surname,page_number):
+        path = iri_to_uri(URL_MAIN_CLIENT + status_or_surname + f'/page{page_number}/')
         return self.__get(path)
 
     def get_client_all_status(self):

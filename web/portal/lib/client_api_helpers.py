@@ -10,29 +10,74 @@ from portal.serializers.product_serializer import *
 from portal.lib.status_api_helpers import *
 from portal.lib.product_api_helpers import get_product_name
 
+def __get_page_number__(records):
+    pages = round(records / CLIENTS_PER_PAGE)
+    tst = records - CLIENTS_PER_PAGE * round(records / CLIENTS_PER_PAGE)
+    if tst > 0:
+        pages += 1
+    if pages == 0:
+        pages = 1
+    return pages
 
-def get_all_clients_info(filter_status_or_surname=''):
+
+def get_all_clients_info(filter_status_or_surname='', page=0):
     clients_list = []
-    queryset = Client.objects.all()
 
     if filter_status_or_surname != '':
         renamed_status = get_status_name(filter_status_or_surname)
+        counter = 0
+        queryset = Client.objects.all()
+        for client in queryset:
+            client_info = get_current_client_info(client.id)
+            if renamed_status == client_info['primary_individual']['status']:
+                counter += 1
+        max_pages = __get_page_number__(counter)
+        max_rec = counter
+        start = (page - 1) * CLIENTS_PER_PAGE
+        stop = page * CLIENTS_PER_PAGE
+        if stop > max_rec:
+            stop = max_rec
     else:
         renamed_status = ''
 
+        cntr = Client.objects.all().count()
+        max_pages = __get_page_number__(cntr)
+        max_rec = cntr
+
+        if page == 0:
+            queryset = Client.objects.all()
+        else:
+            start = (page - 1) * CLIENTS_PER_PAGE
+            stop = page * CLIENTS_PER_PAGE
+            if stop > max_rec:
+                stop = max_rec
+            queryset = Client.objects.all()[start:stop]
+
+    counter = 0
     for client in queryset:
         if filter_status_or_surname == '':
             client_info = get_current_client_info(client.id)
+            client_info['max_pages'] = max_pages
             clients_list.append(client_info)
         else:
             if renamed_status != 'Неизвестно':
                 client_info = get_current_client_info(client.id)
                 if client_info['primary_individual']['status'] == renamed_status:
-                    clients_list.append(client_info)
+                    client_info['max_pages'] = max_pages
+                    counter += 1
+                    if counter>start:
+                        if counter>stop:
+                            break
+                        clients_list.append(client_info)
             else:
                 client_info = get_current_client_info(client.id, filter_status_or_surname)
                 if client_info != 0:
-                    clients_list.append(client_info)
+                    client_info['max_pages'] = max_pages
+                    counter += 1
+                    if counter > start:
+                        if counter > stop:
+                            break
+                        clients_list.append(client_info)
 
     return clients_list
 
@@ -82,7 +127,7 @@ def get_current_client_info(client_id, surname=''):
 
     if surname != '':
         qSurname = Individual.objects.filter(last_name__icontains=surname)
-        cntr = 0;
+        cntr = 0
         for surObj in qSurname:
             for ind_raw in client_serializer.data['individuals']:
                 if ind_raw['id'] == surObj.id:

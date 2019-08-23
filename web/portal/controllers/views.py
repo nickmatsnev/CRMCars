@@ -29,13 +29,13 @@ def clients_list(request):
             cd = form.cleaned_data
             items = ApiRequestor(request).get_client_by_status_or_surname(cd['surnameSearch'])
         else:
-            items = ApiRequestor(request).get_client_all()
+            items = ApiRequestor(request).get_client_page(page_number=1)#TODO: Дима - для тебя - вот тут меняешь номер страницы
     else:
-        items = ApiRequestor(request).get_client_all()
+        items = ApiRequestor(request).get_client_page(page_number=1)#TODO: Дима - для тебя - вот тут меняешь номер страницы
 
     statuses = ApiRequestor(request).get_client_all_status()
     form = SearchForm()
-    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form': form})
+    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form': form}) #TODO: Где искать количество страниц? В каждой из items есть поле max_pages - в нем лежит предел
 
 
 @login_required(login_url="signin")
@@ -46,12 +46,12 @@ def clients_list_filtered(request, status_filter):
             cd = form.cleaned_data
             items = ApiRequestor(request).get_client_by_status_or_surname(cd['surnameSearch'])
         else:
-            items = ApiRequestor(request).get_client_by_status_or_surname(status_filter)
+            items = ApiRequestor(request).get_client_by_status_or_surname_page(status_filter,page_number=1)#TODO: Дима - для тебя - вот тут меняешь номер страницы для фильтрации
     else:
-        items = ApiRequestor(request).get_client_by_status_or_surname(status_filter)
+        items = ApiRequestor(request).get_client_by_status_or_surname_page(status_filter,page_number=1)#TODO: Дима - для тебя - вот тут меняешь номер страницы для фильтрации
     statuses = ApiRequestor(request).get_client_all_status()
     form = SearchForm()
-    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form': form})
+    return render(request, URL_LINK_CLIENTS_LIST, {'items': items, 'statuses': statuses, 'form': form})#TODO: Где искать количество страниц? В каждой из items есть поле max_pages - в нем лежит предел
 
 
 @login_required(login_url="signin")
