@@ -387,8 +387,9 @@ def stop_factors(individual_json, source_json):
         errors.append({'decription': 'Заявителю нет 18 лет'})
     if scorista_res.loc['NumberPassportChanges'].value > 5:
         errors.append({'decription': 'Паспорт менялся больше 5 раз'})
-    if scorista_res.loc['LicenseExpDate'].value + relativedelta(years=+10) < datetime.now().date():
-        errors.append({'decription': 'Истёк срок действия водительского удостоверения'})
+    if scorista_res.loc['LicenseExpDate'].value != "NA":
+        if scorista_res.loc['LicenseExpDate'].value + relativedelta(years=+10) < datetime.now().date():
+            errors.append({'decription': 'Истёк срок действия водительского удостоверения'})
 
     if sum(scorista_res.loc['StopWordIndicators'].value) > 0:
         errors.append({'decription': 'Наличие стоп-слов в характеристиках клиента по описанию Скористы'})

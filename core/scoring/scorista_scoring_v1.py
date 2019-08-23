@@ -11,12 +11,6 @@ def get_score(parsers_data):
     XScore = 0
     YScore = 0
 
-    if not sum(parsers_data['ConturFocusParserModule']['RiskWordIndicators']) > 0:
-        XScore += 100
-
-    if parsers_data['ScoristaParserModule']['PassportOrigin']:
-        XScore += 100
-
     if parsers_data['ScoristaParserModule']['LicenseOrigin']:
         XScore += 100
 
@@ -26,26 +20,33 @@ def get_score(parsers_data):
     if not parsers_data['ScoristaParserModule']['RiskRegion2']:
         XScore += 100
 
-        '''
+    '''
         Вообще говоря, больше 10 работ - не то же самое, что руководитель более 10 организаций
         Но с руководителем сложно - число повторов "Генеральный директор" считать? Тоже не очень.
         '''
+
     if not parsers_data['ScoristaParserModule']['JobsNum'] > 10:
         XScore += 100
 
     latePaymentInfo = parsers_data['ScoristaParserModule']['LatePaymentInfo']
     nDelays = 0
+
     for pm in latePaymentInfo:
-        tmp = datetime.strptime(pm[0], '%d.%m.%Y').date()
-        if tmp + relativedelta(years=+2) > datetime.now().date():
-            if pm[1].find("есть") > -1 or pm[1].find("были") > -1:
-                nDelays += 1
+        try:
+            tmp = datetime.strptime(pm[0], '%d.%m.%Y').date()
+            if tmp + relativedelta(years=+2) > datetime.now().date():
+                if pm[1].find("есть") > -1 or pm[1].find("были") > -1:
+                    nDelays += 1
+        except:
+            continue
 
     if nDelays == 0:
         XScore += 100
-        '''
+
+    '''
         Считаем, что была работа, если работал в этом году или прошлом
         '''
+
     jobs = parsers_data['ScoristaParserModule']['Jobs']
     jobsRecent = False
     # тут было jb[2] а надо jb[2][0] + int
@@ -61,10 +62,10 @@ def get_score(parsers_data):
     if jobsRecent:
         XScore += 100
 
-    if parsers_data['ScoristaParserModule']['TotalDebt'] > 50000:
-        YScore += 100 - 100 * (parsers_data['ScoristaParserModule']['TotalDebt'] - 50000) / 100000
-    else:
-        YScore += 100
+        if parsers_data['ScoristaParserModule']['currentDebts'] > 50000:
+            YScore += 100 - 100 * (parsers_data['ScoristaParserModule']['TotalDebt'] - 50000) / 100000
+        else:
+            YScore += 100
 
     bd = parsers_data['ScoristaParserModule']['BirthDate']
     clientAge = datetime.date.today().year - parse(bd).year
@@ -75,14 +76,14 @@ def get_score(parsers_data):
 
     YScore += 100 - 100 * (parsers_data['ScoristaParserModule']['RoadPoliceFinesNumber'] / 25)
 
-    result = (XScore + YScore) / 10
+    resultScorista = (XScore + YScore) / 10
 
-    return result
+    return resultScorista
 
 
 # Получение зависимостей от парсеров
 def get_dependencies():
-    return ['ScoristaParserModule', 'ConturFocusParserModule']
+    return ['ScoristaParserModule']
 
 
 # Получение имени модуля

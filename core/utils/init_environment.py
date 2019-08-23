@@ -44,7 +44,7 @@ try:
     ApiRequestor().post_product(json_data)
     print('uploading clients')
    # excel_to_request.do_import(3)
-    excel_to_request_special.do_import(3)
+    excel_to_request_special.do_import(20)
 
 
 

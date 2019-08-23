@@ -10,7 +10,7 @@ from core.lib.global_settings import *
 from core.lib.api import ApiRequestor
 from core.lib.datetime_converters import *
 
-NEW_EXCEL_PATH = "../test_data/test.xlsx"
+NEW_EXCEL_PATH = "../test_data/test22.xlsx"
 
 
 # Номера столбцов
@@ -40,7 +40,7 @@ def do_import(limit=0):
     rb = xlrd.open_workbook(NEW_EXCEL_PATH)
     sheet = rb.sheet_by_index(0)
     index = 0
-    for rownum in range(1, sheet.nrows):
+    for rownum in range(25, sheet.nrows):
         if limit != 0 and index == limit:
             break
         row = sheet.row_values(rownum)
